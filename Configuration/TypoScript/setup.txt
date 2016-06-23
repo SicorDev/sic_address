@@ -1,0 +1,57 @@
+
+plugin.tx_sicaddress_sicaddress {
+	view {
+		templateRootPaths.0 = {$plugin.tx_sicaddress_sicaddress.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_sicaddress_sicaddress.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_sicaddress_sicaddress.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_sicaddress_sicaddress.persistence.storagePid}
+	}
+}
+
+plugin.tx_sicaddress._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-sic-address table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-sic-address table th {
+		font-weight:bold;
+	}
+
+	.tx-sic-address table td {
+		vertical-align:top;
+	}
+
+	.typo3-messages .message-error {
+		color:red;
+	}
+
+	.typo3-messages .message-ok {
+		color:green;
+	}
+
+)
+
+ # Module configuration
+module.tx_sicaddress_web_sicaddresssicaddress {
+	persistence {
+		storagePid = {$module.tx_sicaddress_sicaddress.persistence.storagePid}
+	}
+	view {
+		templateRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.layoutRootPath}
+	}
+}

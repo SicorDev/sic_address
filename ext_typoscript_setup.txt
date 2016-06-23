@@ -1,0 +1,21 @@
+
+config.tx_extbase{
+    persistence{
+        classes{
+
+            TYPO3\CMS\Extbase\Domain\Model\Category {
+                subclasses {
+                    Tx_SicAddress_Category = SICOR\SicAddress\Domain\Model\Category
+					
+          		}
+            }
+            SICOR\SicAddress\Domain\Model\Category {
+                mapping {
+                    tableName = sys_category
+                    recordType = Tx_SicAddress_Category
+                }
+            }
+            
+    	}
+    }
+}

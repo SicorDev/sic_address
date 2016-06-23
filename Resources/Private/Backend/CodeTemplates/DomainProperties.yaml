@@ -1,0 +1,12 @@
+DomainProperties:
+  -
+    title: "firstName"
+    type: "string"
+
+  -
+    title: "lastName"
+    type: "string"
+
+  -
+    title: "place"
+    type: "string"

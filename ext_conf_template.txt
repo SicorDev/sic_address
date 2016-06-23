@@ -10,3 +10,6 @@ AdditionalTable = tt_address
 
   # cat=basic/enable/40; type=options[Vianovis,Google]; label=Map Type: Choose either Vianovis or Google.
 mapType = Vianovis
+
+  # cat=basic/enable/50; type=options[nicosdir,spdir,cronaddr,ualcomp]; label=TemplateSet: Choose one of the preset template sets.
+templateSet = nicosdir

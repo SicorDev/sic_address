@@ -49,13 +49,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected $addressRepository = NULL;
 
-    /**
-     * fieldTypeRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\fieldTypeRepository
-     * @inject
-     */
-    protected $fieldTypeRepository = NULL;
 
     /**
      * Called before any action
@@ -79,6 +72,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function saveAction() {
+
+
+
         // Model
         $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration['DomainProperties']);
         // SQL

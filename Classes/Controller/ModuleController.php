@@ -1,7 +1,7 @@
 <?php
 namespace SICOR\SicAddress\Controller;
 
-require_once(PATH_site . 'typo3conf/ext/sic_address/Classes/Utility/YamlParser.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . 'Classes/Utility/YamlParser.php');
 
 /***************************************************************
  *
@@ -41,7 +41,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 
     public function initializeAction() {
-        $this->configuration = spyc_load_file(PATH_site . 'typo3conf/ext/sic_address/Resources/Private/Backend/CodeTemplates/DomainProperties.yaml');
+        $this->configuration = spyc_load_file(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . 'Resources/Private/CodeTemplates/DomainProperties.yaml');
     }
 
     /**
@@ -59,20 +59,21 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function saveAction() {
-        $emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
-        $templatePathAndFilename = $templateRootPath . '/var/www/virtual/extension.playground.sicor-kdl.local/htdocs/typo3conf/ext/sic_address/Resources/Private/Backend/CodeTemplates/Classes/Domain/Model/Model.tmpl';
+        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        $templatePathAndFilename = $templateRootPath . 'Classes/Domain/Model/Model.tmpl';
 
+        $customView->setTemplatePathAndFilename($templatePathAndFilename);
+        $customView->assign("properties", $this->configuration['DomainProperties']);
 
-        $emailView->setTemplatePathAndFilename($templatePathAndFilename);
-        $emailView->assign("properties", $this->configuration['DomainProperties']);
+        $content = $customView->render();
 
-        $content = $emailView->render();
-
-        $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "Classes/Domain/Model/Address2.php";
+        $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "Classes/Domain/Model/Address.php";
         file_put_contents($path, $content) ;
+
+        $this->redirect('list');
     }
 
 }

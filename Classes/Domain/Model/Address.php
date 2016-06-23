@@ -31,7 +31,7 @@ namespace SICOR\SicAddress\Domain\Model;
  */
 class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
+ 
     /**
      * categories
      *

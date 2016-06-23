@@ -27,9 +27,9 @@ namespace SICOR\SicAddress\Domain\Model;
      ***************************************************************/
 
 /**
- * DomainProperty
+ * FieldType
  */
-class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FieldType extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
 
     /**
@@ -38,40 +38,4 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $title = "";
-
-    /**
-     * type
-     *
-     * @var SICOR\SicAddress\Domain\Model\FieldType
-     */
-    protected $type = "";
-
-    /**
-     * label
-     *
-     * @var string
-     */
-    protected $label = "";
-
-    /**
-     * tcaOverride
-     *
-     * @var string
-     */
-    protected $tcaOverride;
-
-    /**
-     * Settings
-     *
-     * @var string
-     */
-    protected $settings;
-
-    /**
-     * TCA list label
-     *
-     * @var boolean
-     */
-    protected $isListLabel;
-
 }

@@ -1,5 +1,5 @@
 <?php
-namespace SICOR\SicAddress\Domain\Model;
+namespace SICOR\SicAddress\Domain\Repository;
 
     /***************************************************************
      *
@@ -27,51 +27,16 @@ namespace SICOR\SicAddress\Domain\Model;
      ***************************************************************/
 
 /**
- * DomainProperty
+ * The repository for FieldTypes
  */
-class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FieldTypeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
 
     /**
-     * title
-     *
-     * @var string
+     * @var array
      */
-    protected $title = "";
-
-    /**
-     * type
-     *
-     * @var SICOR\SicAddress\Domain\Model\FieldType
-     */
-    protected $type = "";
-
-    /**
-     * label
-     *
-     * @var string
-     */
-    protected $label = "";
-
-    /**
-     * tcaOverride
-     *
-     * @var string
-     */
-    protected $tcaOverride;
-
-    /**
-     * Settings
-     *
-     * @var string
-     */
-    protected $settings;
-
-    /**
-     * TCA list label
-     *
-     * @var boolean
-     */
-    protected $isListLabel;
+    protected $defaultOrderings = array(
+        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+    );
 
 }

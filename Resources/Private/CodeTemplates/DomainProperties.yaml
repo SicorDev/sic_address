@@ -10,3 +10,9 @@ DomainProperties:
   -
     title: "place"
     type: "string"
+
+
+Fieldtypes:
+  string
+  int
+  map

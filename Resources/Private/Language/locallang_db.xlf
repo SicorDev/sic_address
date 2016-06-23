@@ -15,6 +15,21 @@
 			<trans-unit id="sys_category.tx_extbase_type.Tx_SicAddress_Category">
 				<source>sic_address Category</source>
 			</trans-unit>
+
+			
+			<trans-unit id="tx_sicaddress_domain_model_address.firstName">
+                <source>firstName</source>
+            </trans-unit>
+			
+			<trans-unit id="tx_sicaddress_domain_model_address.lastName">
+                <source>lastName</source>
+            </trans-unit>
+			
+			<trans-unit id="tx_sicaddress_domain_model_address.place">
+                <source>place</source>
+            </trans-unit>
+			
+
 		</body>
 	</file>
 </xliff>

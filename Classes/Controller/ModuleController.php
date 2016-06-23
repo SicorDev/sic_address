@@ -52,7 +52,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function listAction() {
-        $this->view->assign("properties", $this->configuration['DomainProperties']);
+        $this->view->assign("properties", $this->configuration);
     }
 
     /**

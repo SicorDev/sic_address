@@ -1,4 +1,3 @@
-# noinspection SqlNoDataSourceInspectionForFile
 #
 # Table structure for table 'tx_sicaddress_domain_model_address'
 #
@@ -21,6 +20,14 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
+
+	
+	firstName varchar(255) DEFAULT '' NOT NULL,
+	
+	lastName varchar(255) DEFAULT '' NOT NULL,
+	
+	place varchar(255) DEFAULT '' NOT NULL,
+	
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

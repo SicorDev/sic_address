@@ -2,11 +2,29 @@
 <f:layout name="Default" />
 
 <f:section name="content">
+    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/allgemein/css/bootstrap.min.css" media="all">
+
     <h1><f:translate key="BackendListTitle" /></h1>
 
-    <div class="btn">
-        <f:link.action action="save">save configuration</f:link.action>
-    </div>
+    <f:form id="fieldDefinition" action="save">
 
-    <hr/>
+        <div class="row">
+            <div class="col-md-4">Feldname:</div>
+            <div class="col-md-4">Beschriftung:</div>
+            <div class="col-md-4">Typ:</div>
+        </div>
+            <f:for each="{properties.DomainProperties}" as="property">
+                <div class="row">
+                    <div class="col-md-4"><f:form.textfield name="title" value="{property.title}" /></div>
+                    <div class="col-md-4"><f:form.textfield name="label" value="{property.label}" /></div>
+                    <div class="col-md-4"><f:form.select name="type" options="{properties.Fieldtypes}"/></div>
+                </div>
+            </f:for>
+
+        <hr/>
+
+        <f:form.submit value="Save Field Definitions" />
+
+    </f:form>
+
 </f:section>

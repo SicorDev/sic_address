@@ -31,14 +31,14 @@ namespace SICOR\SicAddress\Domain\Model;
  */
 class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
- 
+
     /**
      * categories
      *
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\Category>
      */
     protected $categories = null;
-
+    
     /**
      * __construct
      */
@@ -103,7 +103,5 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->categories = $categories;
     }
-
-
 
 }

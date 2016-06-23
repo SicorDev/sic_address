@@ -1,11 +1,11 @@
 <?php
-namespace SICOR\SicAddress\Domain\Repository;
+namespace SICOR\SicAddress\Userfuncs;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 SICOR DEVTEAM <dev@sicor-kdl.net>, Sicor KDL GmbH
+ *  (c) 2014 DEV Team <dev@sicor-kdl.net>, SICOR KDL GmbH
  *
  *  All rights reserved
  *
@@ -26,17 +26,19 @@ namespace SICOR\SicAddress\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-/**
- * The repository for FieldTypes
- */
-class FieldTypeRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
-{
+class Tca {
 
-    /**
-     * @var array
-     */
-    protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-    );
+    public function addressTitle(&$parameters, $parentObject) {
+        //$addressRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameters['table'], $parameters['row']['uid']);
 
+        $extbaseObjectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $domainPropertyRepository = $extbaseObjectManager->get('SICOR\SicAddress\Domain\Repository\DomainPropertyRepository');
+
+        $domainProperties = $domainPropertyRepository->findAll();
+        foreach($domainProperties as $key => $value) {
+            if($value["isListLabel"]) {
+                $parameters['title'] .= $value["title"];
+            }
+        }
+    }
 }

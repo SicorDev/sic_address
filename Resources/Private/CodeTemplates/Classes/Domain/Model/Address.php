@@ -1,4 +1,7 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}
+<?php
+
+namespace SICOR\SicAddress\Domain\Model;
 
 /***************************************************************
 *
@@ -116,7 +119,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Returns the {property.title}
     *
-    * @return void
+    * @return string
     */
     public function get<sic:format.case case="capital">{property.title}</sic:format.case>() {
         return $this->{property.title};
@@ -125,8 +128,8 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Sets the {property.title}
     *
-    * @param {property.type} {property.title}
-    * @return {property.type}
+    * @param string ${property.title}
+    * @return void
     */
     public function set<sic:format.case case="capital">{property.title}</sic:format.case>(${property.title}) {
         $this->{property.title} = ${property.title};

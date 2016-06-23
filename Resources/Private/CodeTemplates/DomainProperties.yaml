@@ -2,27 +2,38 @@ DomainProperties:
   -
     title: "firstName"
     type: "string"
+    special: ""
     label: ""
 
   -
     title: "lastName"
     type: "string"
+    special: ""
+    label: ""
 
   -
     title: "zip"
     type: "integer"
+    special: ""
+    label: ""
 
   -
     title: "place"
     type: "string"
+    special: ""
+    label: ""
 
   -
     title: "logo"
-    type: "image"
+    type: "string"
+    special: "image"
+    label: ""
 
   -
     title: "map"
-    type: "map"
+    type: "string"
+    special: "map"
+    label: ""
 
 
 Fieldtypes:

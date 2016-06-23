@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" product-name="sic_address">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-23T16:33:08Z" product-name="sic_address">
 		<header/>
 		<body>
 			<trans-unit id="tx_sicaddress_domain_model_address">
@@ -15,12 +15,39 @@
 			<trans-unit id="sys_category.tx_extbase_type.Tx_SicAddress_Category">
 				<source>sic_address Category</source>
 			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty">
+				<source>Domain Property</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.tca_label">
+				<source>Tca Label</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.tca_override">
+				<source>Tca Override</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.settings">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.is_list_label">
+				<source>Is List Label</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_domainproperty.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_fieldtype">
+				<source>Field Type</source>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_fieldtype.title">
+				<source>Title</source>
+			</trans-unit>
 
 			<f:for each="{properties}" as="property">
-			<trans-unit id="tx_sicaddress_domain_model_address.{property.title}">
+            <trans-unit id="tx_sicaddress_domain_model_address.{property.title}">
                 <source>{property.title}</source>
             </trans-unit>
-			</f:for>
+            </f:for>
 
 		</body>
 	</file>

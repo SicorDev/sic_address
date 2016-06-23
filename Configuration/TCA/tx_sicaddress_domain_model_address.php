@@ -106,7 +106,6 @@ return array(
                 ),
             ),
         ),
-
         'categories' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.categories',

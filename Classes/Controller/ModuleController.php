@@ -40,7 +40,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $configuration;
 
     /**
-     * Called bevore any action
+     * Called before any action
      */
     public function initializeAction() {
         $this->configuration = spyc_load_file(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . 'Resources/Private/CodeTemplates/DomainProperties.yaml');
@@ -69,6 +69,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php',$this->getTCAConfiguration());
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration['DomainProperties']);
+
+
 
         //$this->redirect('list');
     }
@@ -103,37 +105,32 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getTCAConfiguration() {
         $tca = array();
         foreach($this->configuration['DomainProperties'] as $key => $value) {
-            switch($value["type"]) {
-                case "string"|| "map" || "image":
-                    $tca[] = array("title" => $value["title"], "config" => "
-                        '" . $value["title"] . "' => array(
-                        'exclude' => 1,
-                        'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address." . $value["title"] . "',
-                        'config' => array(
-                            'type' => 'input',
-                            'size' => 30,
-                            'eval' => 'trim'
-                        ),
-                    ),        
-                    ");
-                    break;
-                case "image":
-                    $tca[] = array("title" => $value["title"], "config" => "
-                        '" . $value["title"] . "' => array(
-                        'exclude' => 1,
-                        'label' => 'Image',
-                        'config' => \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
-                                'appearance' => array(
-                                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
-                                ),
-                                'minitems' => 0,
-                                'maxitems' => 1,
-                        )," . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ." ),
+            if($value["type"] == "string" || $value["type"] == "map" || $value["type"] == "integer") {
+                $tca[] = array("title" => $value["title"], "config" => "
+                    '" . $value["title"] . "' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address." . $value["title"] . "',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
                     ),
-                    ");
-                    break;
-                default:
-                    break;
+                ),        
+                ");
+            }else if($value["type"] == "image") {
+                $tca[] = array("title" => $value["title"], "config" => "
+                    '" . $value["title"] . "' => array(
+                    'exclude' => 1,
+                    'label' => 'Image',
+                    'config' => \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
+                            'appearance' => array(
+                                    'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference',
+                            ),
+                            'minitems' => 0,
+                            'maxitems' => 1,
+                    )," . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ." ),
+                ),
+                ");
             }
         }
         return $tca;

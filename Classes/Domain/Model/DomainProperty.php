@@ -31,7 +31,6 @@ namespace SICOR\SicAddress\Domain\Model;
  */
 class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * title
      *
@@ -75,15 +74,32 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $isListLabel = false;
     
     /**
-     * Returns the title
-     *
-     * @return string $title
+     * DomainProperty constructor.
+     * @param string $title
+     * @param SICOR\SicAddress\Domain\Model\FieldType $type
+     * @param string $label
+     * @param string $tcaOverride
+     * @param string $settings
+     * @param bool $isListLabel
+     */
+    public function __construct($title, SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $settings, $isListLabel)
+    {
+        $this->title = $title;
+        $this->type = $type;
+        $this->label = $label;
+        $this->tcaOverride = $tcaOverride;
+        $this->settings = $settings;
+        $this->isListLabel = $isListLabel;
+    }
+
+    /**
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the title
      *

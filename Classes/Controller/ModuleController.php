@@ -1,6 +1,8 @@
 <?php
 namespace SICOR\SicAddress\Controller;
 
+use SICOR\SicAddress\Domain\Model\DomainProperty;
+
 require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . 'Classes/Utility/YamlParser.php');
 
 /***************************************************************
@@ -38,6 +40,22 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @var array
      */
     protected $configuration;
+
+    /**
+     * addressRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
+     * @inject
+     */
+    protected $addressRepository = NULL;
+
+    /**
+     * fieldTypeRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\fieldTypeRepository
+     * @inject
+     */
+    protected $fieldTypeRepository = NULL;
 
     /**
      * Called before any action
@@ -158,4 +176,45 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         file_put_contents($path, $content) ;
     }
 
+    /**
+     * Migrate from NicosDirectory
+     */
+    public function migrateNicosDirectoryAction()
+    {
+        // Retrieve legacy data
+        $nicosDataQuery = "SELECT pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image ".
+        "FROM tx_nicosdirectory_entry WHERE deleted = 0 AND hidden = 0;";
+
+        $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image',
+            'tx_nicosdirectory_entry',
+            'deleted = 0 AND hidden = 0',
+            '');
+
+        $fieldset = array();
+        $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
+        $type = new \SICOR\SicAddress\Domain\Model\FieldType("string");
+        $this->fieldTypeRepository->add($type);
+
+        $type = $this->fieldTypeRepository->findAll()->first();
+
+        foreach($address as $key => $value) {
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($key);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($type);
+            $field = new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", false);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("2");
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($field);
+            $fieldset[] = new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", false);
+        }
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($fieldset);
+
+        do
+        {
+            //$address = new \SICOR\SicAddress\Domain\Model\Address();
+        }
+        while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
+
+        //$this->redirect('list');
+    }
 }

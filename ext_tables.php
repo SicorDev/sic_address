@@ -22,7 +22,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		'sicaddress',	// Submodule key
 		'',						// Position
 		array(
-			'Module' => 'list, show, save',
+			'Module' => 'list, show, save, migrateNicosDirectory',
 			
 		),
 		array(

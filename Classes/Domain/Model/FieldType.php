@@ -31,7 +31,6 @@ namespace SICOR\SicAddress\Domain\Model;
  */
 class FieldType extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * title
      *
@@ -40,15 +39,22 @@ class FieldType extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $title = '';
     
     /**
-     * Returns the title
-     *
-     * @return string $title
+     * FieldType constructor.
+     * @param string $title
+     */
+    public function __construct($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
     }
-    
+
     /**
      * Sets the title
      *

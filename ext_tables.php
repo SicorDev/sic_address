@@ -9,7 +9,9 @@ if (!defined('TYPO3_MODE')) {
 	'Adressverwaltung'
 );
 
-if (TYPO3_MODE === 'BE') {
+$extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+
+if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 
 	/**
 	 * Registers a Backend Module

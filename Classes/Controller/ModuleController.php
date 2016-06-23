@@ -62,7 +62,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function saveAction() {
         // Model
-        $this->saveTemplate('Classes/Domain/Model/Model.tmpl', $this->configuration['DomainProperties']);
+        $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration['DomainProperties']);
         // SQL
         $this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration());
         // TCA
@@ -70,7 +70,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration['DomainProperties']);
 
-        $this->redirect('list');
+        //$this->redirect('list');
     }
 
     /**
@@ -82,7 +82,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $sql = array();
         foreach($this->configuration['DomainProperties'] as $key => $value) {
             switch($value["type"]) {
-                case "string":
+                case "string" || "map" || "image":
                     $sql[] = $value["title"] . " " . "varchar(255) DEFAULT '' NOT NULL";
                     break;
                 case "integer":
@@ -103,17 +103,38 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getTCAConfiguration() {
         $tca = array();
         foreach($this->configuration['DomainProperties'] as $key => $value) {
-            $tca[] = array("title" => $value["title"], "config" => "
-                '" . $value["title"] . "' => array(
-                'exclude' => 1,
-                'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address." . $value["title"] . "',
-                'config' => array(
-                    'type' => 'input',
-                    'size' => 30,
-                    'eval' => 'trim'
-                ),
-            ),        
-            ");
+            switch($value["type"]) {
+                case "string"|| "map" || "image":
+                    $tca[] = array("title" => $value["title"], "config" => "
+                        '" . $value["title"] . "' => array(
+                        'exclude' => 1,
+                        'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address." . $value["title"] . "',
+                        'config' => array(
+                            'type' => 'input',
+                            'size' => 30,
+                            'eval' => 'trim'
+                        ),
+                    ),        
+                    ");
+                    break;
+                case "image":
+                    $tca[] = array("title" => $value["title"], "config" => "
+                        '" . $value["title"] . "' => array(
+                        'exclude' => 1,
+                        'label' => 'Image',
+                        'config' => \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
+                                'appearance' => array(
+                                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
+                                ),
+                                'minitems' => 0,
+                                'maxitems' => 1,
+                        )," . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ." ),
+                    ),
+                    ");
+                    break;
+                default:
+                    break;
+            }
         }
         return $tca;
     }

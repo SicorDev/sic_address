@@ -32,10 +32,15 @@ class Tca {
         //$addressRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameters['table'], $parameters['row']['uid']);
 
         $extbaseObjectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $domainPropertyRepository = $extbaseObjectManager->get('SICOR\SicAddress\Domain\Repository\DomainPropertyRepository');
+        $domainPropertyRepository = $extbaseObjectManager->get('SICOR\\SicAddress\\Domain\\Repository\\DomainPropertyRepository');
+
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("TEST");
 
         $domainProperties = $domainPropertyRepository->findAll();
         foreach($domainProperties as $key => $value) {
+
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($value);
+
             if($value["isListLabel"]) {
                 $parameters['title'] .= $value["title"];
             }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-23T16:33:08Z" product-name="sic_address">
+		<header/>
+		<body>
+			<trans-unit id="title.description">
+				<source>title</source>
+			</trans-unit>
+			<trans-unit id="tca_label.description">
+				<source>tcaLabel</source>
+			</trans-unit>
+			<trans-unit id="tca_override.description">
+				<source>tcaOverride</source>
+			</trans-unit>
+			<trans-unit id="settings.description">
+				<source>settings</source>
+			</trans-unit>
+			<trans-unit id="is_list_label.description">
+				<source>isListLabel</source>
+			</trans-unit>
+			<trans-unit id="type.description">
+				<source>type</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

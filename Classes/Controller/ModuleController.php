@@ -245,17 +245,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Clear Cache
      */
     private function updateExtension() {
-
         $service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
         $service->install($this->request->getControllerExtensionKey());
-
-        // Clear Typo3 Code_Cache
-        //$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "../../../typo3temp/Cache/Code/cache_core/*";
-        //array_map('unlink', glob($path));
-
-        // Run ext_tables.php
-        //@TODO Error if Table exists
-        //$sql = file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "ext_tables.sql");
-        //$GLOBALS['TYPO3_DB']->sql_query($sql);
     }
 }

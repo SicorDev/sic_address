@@ -39,4 +39,13 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
+    /**
+     * @param string $sql
+     */
+    public function runUpdate($sql) {
+        $query = $this->createQuery();
+        $query->statement($sql);
+        return $query->execute();
+    }
+
 }

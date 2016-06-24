@@ -81,12 +81,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction() {
         $this->view->assign("properties", $this->configuration);
-        $this->view->assign("token", \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('BE user setup', 'edit'));
     }
 
     /**
      * action save
      *
+     * @param bool $bRedirect
      * @return void
      */
     public function saveAction($bRedirect = true) {
@@ -99,11 +99,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
-        //@TODO Cache löschen
-        //@TODO SQL ausführen
+        $this->updateExtension();
 
-        if($bRedirect)
-            $this->redirect('list');
+        //if($bRedirect)
+           //$this->redirect('list');
     }
 
     /**
@@ -234,11 +233,29 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * Transform key/value array into sic_address entries
      */
-    public function getSicAddrfromLegacyAddr($address)
+    private function getSicAddrfromLegacyAddr($address)
     {
         $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
         foreach($address as $key => $value)
             \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($sicaddress, $key, $value);
         return $sicaddress;
+    }
+
+    /**
+     * Clear Cache
+     */
+    private function updateExtension() {
+
+        $service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+        $service->install($this->request->getControllerExtensionKey());
+
+        // Clear Typo3 Code_Cache
+        //$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "../../../typo3temp/Cache/Code/cache_core/*";
+        //array_map('unlink', glob($path));
+
+        // Run ext_tables.php
+        //@TODO Error if Table exists
+        //$sql = file_get_contents(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . "ext_tables.sql");
+        //$GLOBALS['TYPO3_DB']->sql_query($sql);
     }
 }

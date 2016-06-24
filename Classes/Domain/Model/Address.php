@@ -43,60 +43,32 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * company
+    * firstName
     *
     * @var string
     */
-    protected $company;
+    protected $firstName;
     
     /**
-    * street
+    * lastName
     *
     * @var string
     */
-    protected $street;
+    protected $lastName;
     
     /**
-    * city
+    * test
     *
     * @var string
     */
-    protected $city;
+    protected $test;
     
     /**
-    * tel
+    * test2
     *
     * @var string
     */
-    protected $tel;
-    
-    /**
-    * fax
-    *
-    * @var string
-    */
-    protected $fax;
-    
-    /**
-    * email
-    *
-    * @var string
-    */
-    protected $email;
-    
-    /**
-    * www
-    *
-    * @var string
-    */
-    protected $www;
-    
-    /**
-    * image
-    *
-    * @var string
-    */
-    protected $image;
+    protected $test2;
     
 
     /**
@@ -166,155 +138,79 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * Returns the company
+    * Returns the firstName
     *
     * @return string
     */
-    public function getCompany() {
-        return $this->company;
+    public function getFirstName() {
+        return $this->firstName;
     }
 
     /**
-    * Sets the company
+    * Sets the firstName
     *
-    * @param string $company
+    * @param string $firstName
     * @return void
     */
-    public function setCompany($company) {
-        $this->company = $company;
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
     }
     
     /**
-    * Returns the street
+    * Returns the lastName
     *
     * @return string
     */
-    public function getStreet() {
-        return $this->street;
+    public function getLastName() {
+        return $this->lastName;
     }
 
     /**
-    * Sets the street
+    * Sets the lastName
     *
-    * @param string $street
+    * @param string $lastName
     * @return void
     */
-    public function setStreet($street) {
-        $this->street = $street;
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
     }
     
     /**
-    * Returns the city
+    * Returns the test
     *
     * @return string
     */
-    public function getCity() {
-        return $this->city;
+    public function getTest() {
+        return $this->test;
     }
 
     /**
-    * Sets the city
+    * Sets the test
     *
-    * @param string $city
+    * @param string $test
     * @return void
     */
-    public function setCity($city) {
-        $this->city = $city;
+    public function setTest($test) {
+        $this->test = $test;
     }
     
     /**
-    * Returns the tel
+    * Returns the test2
     *
     * @return string
     */
-    public function getTel() {
-        return $this->tel;
+    public function getTest2() {
+        return $this->test2;
     }
 
     /**
-    * Sets the tel
+    * Sets the test2
     *
-    * @param string $tel
+    * @param string $test2
     * @return void
     */
-    public function setTel($tel) {
-        $this->tel = $tel;
-    }
-    
-    /**
-    * Returns the fax
-    *
-    * @return string
-    */
-    public function getFax() {
-        return $this->fax;
-    }
-
-    /**
-    * Sets the fax
-    *
-    * @param string $fax
-    * @return void
-    */
-    public function setFax($fax) {
-        $this->fax = $fax;
-    }
-    
-    /**
-    * Returns the email
-    *
-    * @return string
-    */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
-    * Sets the email
-    *
-    * @param string $email
-    * @return void
-    */
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-    
-    /**
-    * Returns the www
-    *
-    * @return string
-    */
-    public function getWww() {
-        return $this->www;
-    }
-
-    /**
-    * Sets the www
-    *
-    * @param string $www
-    * @return void
-    */
-    public function setWww($www) {
-        $this->www = $www;
-    }
-    
-    /**
-    * Returns the image
-    *
-    * @return string
-    */
-    public function getImage() {
-        return $this->image;
-    }
-
-    /**
-    * Sets the image
-    *
-    * @param string $image
-    * @return void
-    */
-    public function setImage($image) {
-        $this->image = $image;
+    public function setTest2($test2) {
+        $this->test2 = $test2;
     }
     
 

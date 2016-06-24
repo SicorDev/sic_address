@@ -23,6 +23,6 @@ module.tx_sicaddress_web_sicaddresssicaddress {
 	}
 }
 
-page.includeCSS.tx_sicaddress = EXT:sicagencylist/Resources/Public/Css/styles_agencylist.css
+#page.includeCSS.tx_sicaddress = EXT:sicagencylist/Resources/Public/Css/styles_agencylist.css
 #page.includeJSFooter.tx_sicagencylist = EXT:sicagencylist/Resources/Public/Js/sicagencylist.js
 

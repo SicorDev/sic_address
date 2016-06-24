@@ -42,38 +42,6 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     protected $domainPropertyRepository = NULL;
 
     /**
-     * action list
-     *
-     * @return void
-     */
-    public function listAction()
-    {
-        $domainProperties = $this->domainPropertyRepository->findAll();
-        $this->view->assign('domainProperties', $domainProperties);
-    }
-
-    /**
-     * action show
-     *
-     * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
-     * @return void
-     */
-    public function showAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
-    {
-        $this->view->assign('domainProperty', $domainProperty);
-    }
-
-    /**
-     * action new
-     *
-     * @return void
-     */
-    public function newAction()
-    {
-
-    }
-
-    /**
      * action create
      *
      * @param \SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty
@@ -81,35 +49,25 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function createAction(\SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->domainPropertyRepository->add($newDomainProperty);
-        $this->redirect('list');
-    }
-
-    /**
-     * action edit
-     *
-     * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
-     * @ignorevalidation $domainProperty
-     * @return void
-     */
-    public function editAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
-    {
-        $this->view->assign('domainProperty', $domainProperty);
+        if (TYPO3_MODE == 'BE') {
+            $this->domainPropertyRepository->add($newDomainProperty);
+            $this->redirect('list', 'Module');
+        }
     }
 
     /**
      * action update
+     * @TODO Update listLabel Checkbox
      *
      * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
      * @return void
      */
-    public function updateAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty = null)
+    public function updateAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
     {
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->request->getArguments());
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->domainPropertyRepository->update($domainProperty);
-        $this->redirect('list', 'Module');
+        if (TYPO3_MODE == 'BE') {
+            $this->domainPropertyRepository->update($domainProperty);
+            $this->redirect('list', 'Module');
+        }
     }
 
     /**
@@ -120,9 +78,10 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function deleteAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->domainPropertyRepository->remove($domainProperty);
-        $this->redirect('list');
+        if (TYPO3_MODE == 'BE') {
+            $this->domainPropertyRepository->remove($domainProperty);
+            $this->redirect('list', 'Module');
+        }
     }
 
 }

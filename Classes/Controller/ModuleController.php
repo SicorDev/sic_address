@@ -96,7 +96,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function saveAction() {
+    public function createAction() {
         // Model
         $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
         // SQL
@@ -107,6 +107,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
         $this->updateExtension();
+
         $this->view->assign("alert", "Successfully updated Extension");
     }
 
@@ -228,7 +229,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
            if($key == "pid" || $key == "tstamp" || $key == "crdate" || $key == "cruser_id" || $key == "category")
                continue;
 
-            $this->domainPropertyRepository->add(new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", "", false));
+            $domainProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
+            $domainProperty->setProperties($key, $type, $key, "", "", "", false);
+            $this->domainPropertyRepository->add($domainProperty);
         }
 
         // Enhance everything for new fields (sql, model, tca, ...)

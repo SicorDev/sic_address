@@ -23,21 +23,13 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_diffsource mediumblob,
 
 	
-	company varchar(255) DEFAULT '' NOT NULL,
+	firstName varchar(255) DEFAULT '' NOT NULL,
 	
-	street varchar(255) DEFAULT '' NOT NULL,
+	lastName varchar(255) DEFAULT '' NOT NULL,
 	
-	city varchar(255) DEFAULT '' NOT NULL,
+	test varchar(255) DEFAULT '' NOT NULL,
 	
-	tel varchar(255) DEFAULT '' NOT NULL,
-	
-	fax varchar(255) DEFAULT '' NOT NULL,
-	
-	email varchar(255) DEFAULT '' NOT NULL,
-	
-	www varchar(255) DEFAULT '' NOT NULL,
-	
-	image varchar(255) DEFAULT '' NOT NULL,
+	test2 varchar(255) DEFAULT '' NOT NULL,
 	
 
 	PRIMARY KEY (uid),

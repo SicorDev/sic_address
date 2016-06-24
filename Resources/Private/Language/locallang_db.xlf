@@ -47,36 +47,20 @@
 			</trans-unit>
 
 			
-            <trans-unit id="tx_sicaddress_domain_model_address.company">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.firstName">
+                <source>Vorname</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.street">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.lastName">
+                <source>Nachname</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.city">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.test">
+                <source>test</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.tel">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.fax">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.email">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.www">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.image">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.test2">
+                <source>test2</source>
             </trans-unit>
             
 

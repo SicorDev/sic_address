@@ -91,7 +91,7 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $settings
      * @param bool $isListLabel
      */
-    public function __construct($title, \SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $dbOverride, $settings, $isListLabel)
+    public function setProperties($title, \SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $dbOverride, $settings, $isListLabel)
     {
         $this->title = $title;
         $this->type = $type;

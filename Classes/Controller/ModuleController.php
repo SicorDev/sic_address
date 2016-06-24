@@ -62,11 +62,26 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected $domainPropertyRepository = NULL;
 
+    /**
+     * categoryRepository
+     *
+     * @var TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository = NULL;
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration
+     */
+    protected $extbaseFrameworkConfiguration = NULL;
 
     /**
      * Called before any action
      */
     public function initializeAction() {
+
+        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+
         $this->configuration = $this->domainPropertyRepository->findAll();
         foreach($this->configuration as $key => $value) {
             //Convert fieldTitles to lowerCamelCase
@@ -100,7 +115,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
         $this->updateExtension();
-
         $this->view->assign("alert", "Successfully updated Extension");
     }
 
@@ -144,7 +158,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         'size' => 30,
                         'eval' => 'trim'
                     ),
-                ),        
+                ),
                 ");
             }else if($value->getType()->getTitle() == "image") {
                 $tca[] = array("title" => $value->getTitle(), "config" => "
@@ -174,8 +188,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function saveTemplate($path, $properties) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
         $templatePathAndFilename = $templateRootPath . $path;
 
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
@@ -192,13 +205,26 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function migrateNicosDirectoryAction()
     {
+        // Get config
+        $pid = $this->extbaseFrameworkConfiguration['persistence']['storagePid'];
+
+        // Persistance manager
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_address");
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = ".$pid);
 
-        // Retrieve legacy data
+        // Move legacy category data to sys_category
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name as title, '.$pid.' as pid', 'tx_nicosdirectory_category', 'deleted = 0 AND hidden = 0', '');
+        while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+        }
+
+        // Retrieve legacy address data
         $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image',
+            'pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image, category',
             'tx_nicosdirectory_entry',
             'deleted = 0 AND hidden = 0',
             '');
@@ -207,32 +233,44 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
         $type = $this->fieldTypeRepository->findOneByTitle("string");
         foreach($address as $key => $value) {
-           if($key == "pid" || $key == "tstamp"  || $key == "crdate" || $key == "cruser_id")
+           if($key == "pid" || $key == "tstamp" || $key == "crdate" || $key == "cruser_id" || $key == "category")
                continue;
 
-           $this->domainPropertyRepository->add(new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", "", false));
+            $this->domainPropertyRepository->add(new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", "", false));
         }
 
         // Enhance everything for new fields (sql, model, tca, ...)
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
         $persistenceManager->persistAll();
         $this->initializeAction();
         $this->saveAction(false);
 
-        // Insert data into sic_address
         do
         {
-            $this->addressRepository->add($this->getSicAddrfromLegacyAddr($address));
+            // Insert address data into sic_address
+            $sicAddress = $this->getSicAddrfromLegacyAddr($address);
+            $this->addressRepository->add($sicAddress);
+            $persistenceManager->persistAll();
+
+            $foreignId = $sicAddress->getUid();
+            $uids = explode(",", $address["category"]);
+            foreach($uids as $uid) {
+                $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('name', 'tx_nicosdirectory_category', 'uid = '.$uid, ''))["name"];
+                $category = $this->categoryRepository->findOneByTitle($title);
+                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($category);
+            }
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
-        $this->redirect('list');
+        //$this->redirect('list');
     }
 
     /**
      * Transform key/value array into sic_address entries
+     *
+     * @param  \SICOR\SicAddress\Domain\Model\Address $address
+     * @return \SICOR\SicAddress\Domain\Model\Address
      */
-    private function getSicAddrfromLegacyAddr($address)
+    public function getSicAddrfromLegacyAddr($address)
     {
         $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
         foreach($address as $key => $value)

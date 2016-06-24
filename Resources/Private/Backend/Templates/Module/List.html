@@ -2,33 +2,45 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/allgemein/css/bootstrap.min.css" media="all">
+    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/bootstrap/css/bootstrap.min.css" media="all">
 
     <h1><f:translate key="BackendListTitle" /></h1>
 
     <f:form id="fieldDefinition" action="save">
-
-        <div class="row">
-            <div class="col-md-4">Feldname:</div>
-            <div class="col-md-4">Beschriftung:</div>
-            <div class="col-md-4">Typ:</div>
+        <div class="table-responsive">
+            <table id="fieldEditor" class="table">
+                <thead>
+                    <tr>
+                        <th width="15%">Name:</th>
+                        <th width="15%">Beschriftung:</th>
+                        <th width="25%">TCA Override:</th>
+                        <th width="25%">DB Override:</th>
+                        <th width="10%">ListLabel:</th>
+                        <th width="10%">Feldtyp:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{properties}" as="property">
+                        <tr>
+                            <td><f:form.textfield name="title" value="{property.title}" /></td>
+                            <td><f:form.textfield name="label" value="{property.label}" /></td>
+                            <td><f:form.textarea name="tcaOverride" value="{property.tcaOverride}" /></td>
+                            <td><f:form.textarea name="dbOverride" value="{property.dbOverride}" /></td>
+                            <td><f:form.checkbox name="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
+                            <td><f:form.select name="type" value="{property.type}" options="{fieldTypes}" optionLabelField="title"/></td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+            <a href="javascript:addModuleRow()" class="btn btn-default">Reihe hinzufügen</a>
         </div>
-            <f:for each="{properties.DomainProperties}" as="property">
-                <div class="row">
-                    <div class="col-md-4"><f:form.textfield name="title" value="{property.title}" /></div>
-                    <div class="col-md-4"><f:form.textfield name="label" value="{property.label}" /></div>
-                    <div class="col-md-4"><f:form.select name="type" options="{properties.Fieldtypes}"/></div>
-                </div>
-            </f:for>
-
         <hr/>
 
-        <f:form.submit value="Save Field Definitions" />
-
+        <f:form.submit class="btn btn-primary" value="Save Field Definitions" />
     </f:form>
 
     <f:form action="migrateNicosDirectory">
-        <f:form.submit value="Migrate Data from nicos_directory" />
+        <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />
     </f:form>
 
 </f:section>

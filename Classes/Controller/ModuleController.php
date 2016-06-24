@@ -81,15 +81,15 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction() {
         $this->view->assign("properties", $this->configuration);
+        $this->view->assign("fieldTypes", $this->fieldTypeRepository->findAll());
     }
 
     /**
      * action save
      *
-     * @param bool $bRedirect
      * @return void
      */
-    public function saveAction($bRedirect = true) {
+    public function saveAction() {
         // Model
         $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
         // SQL
@@ -101,8 +101,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $this->updateExtension();
 
-        //if($bRedirect)
-           //$this->redirect('list');
+        $this->view->assign("alert", "Successfully updated Extension");
     }
 
     /**

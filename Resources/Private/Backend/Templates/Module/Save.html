@@ -1,0 +1,12 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="content">
+    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/bootstrap/css/bootstrap.min.css" media="all">
+
+    <h1><f:translate key="BackendListTitle" /></h1>
+
+    <div class="alert alert-success">{alert}</div>
+
+    <f:link.action action="list" controller="Module">back</f:link.action>
+</f:section>

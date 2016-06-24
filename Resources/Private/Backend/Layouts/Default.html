@@ -1,36 +1,45 @@
+<f:be.container
+		includeCssFiles="{0: '{f:uri.resource(path:\'CSS/module_sicaddress.css\')}' }"
+		includeJsFiles="{0: '{f:uri.resource(path:\'Javascript/module_sicaddress.js\')}' }"
+		enableClickMenu="false"
+		loadExtJs="false"
+		loadExtJsTheme="false"
+		enableExtJsDebug="false"
+		loadJQuery="true"
+		jQueryNamespace="defaultNoConflict"
+		pageTitle="Addressverwaltung">
 
-<f:be.container>
-	<div class="typo3-fullDoc">
-		<div id="typo3-docheader">
-			<div class="typo3-docheader-functions">
-				<div class="left">
-					<f:be.buttons.csh />
-					<f:be.menus.actionMenu>
-						<f:be.menus.actionMenuItem label="Overview" controller="" action="list" />
-						<f:be.menus.actionMenuItem label="Create new Address" action="new" controller="Address" />
-								<f:be.menus.actionMenuItem label="Create new Category" action="new" controller="Category" />
-					</f:be.menus.actionMenu>
-				</div>
-				<div class="right">
-					<f:be.pagePath />
-					<f:be.pageInfo />
-				</div>
+<div class="typo3-fullDoc">
+	<div id="typo3-docheader">
+		<div class="typo3-docheader-functions">
+			<div class="left">
+				<f:be.buttons.csh />
+				<f:be.menus.actionMenu>
+					<f:be.menus.actionMenuItem label="Overview" controller="" action="list" />
+					<f:be.menus.actionMenuItem label="Create new Address" action="new" controller="Address" />
+					<f:be.menus.actionMenuItem label="Create new Category" action="new" controller="Category" />
+				</f:be.menus.actionMenu>
 			</div>
-			<div class="typo3-docheader-buttons">
-				<div class="left">
-
-				</div>
-				<div class="right">
-					<f:be.buttons.shortcut />
-				</div>
+			<div class="right">
+				<f:be.pagePath />
+				<f:be.pageInfo />
 			</div>
-
 		</div>
-		<div id="typo3-docbody">
-			<div id="typo3-inner-docbody">
-				<f:flashMessages />
-				<f:render section="content" />
+		<div class="typo3-docheader-buttons">
+			<div class="left">
+
 			</div>
+			<div class="right">
+				<f:be.buttons.shortcut />
+			</div>
+		</div>
+
+	</div>
+	<div id="typo3-docbody">
+		<div id="typo3-inner-docbody">
+			<f:flashMessages />
+			<f:render section="content" />
 		</div>
 	</div>
+</div>
 </f:be.container>

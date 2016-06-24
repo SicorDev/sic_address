@@ -10,40 +10,6 @@ plugin.tx_sicaddress_sicaddress {
 	}
 }
 
-plugin.tx_sicaddress._CSS_DEFAULT_STYLE (
-	textarea.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
-
-	input.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
-
-	.tx-sic-address table {
-		border-collapse:separate;
-		border-spacing:10px;
-	}
-
-	.tx-sic-address table th {
-		font-weight:bold;
-	}
-
-	.tx-sic-address table td {
-		vertical-align:top;
-	}
-
-	.typo3-messages .message-error {
-		color:red;
-	}
-
-	.typo3-messages .message-ok {
-		color:green;
-	}
-
-)
-
  # Module configuration
 module.tx_sicaddress_web_sicaddresssicaddress {
 	persistence {
@@ -56,3 +22,7 @@ module.tx_sicaddress_web_sicaddresssicaddress {
 		codeTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.codeTemplateRootPaths}
 	}
 }
+
+page.includeCSS.tx_sicaddress = EXT:sicagencylist/Resources/Public/Css/styles_agencylist.css
+#page.includeJSFooter.tx_sicagencylist = EXT:sicagencylist/Resources/Public/Js/sicagencylist.js
+

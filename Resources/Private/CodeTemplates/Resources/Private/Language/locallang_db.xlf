@@ -48,7 +48,7 @@
 
 			<f:for each="{properties}" as="property">
             <trans-unit id="tx_sicaddress_domain_model_address.{property.title}">
-                <source>{property.title}</source>
+                <source>{property.tcaLabel}</source>
             </trans-unit>
             </f:for>
 

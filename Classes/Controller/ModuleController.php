@@ -72,9 +72,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function saveAction() {
-
-
-
         // Model
         $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration['DomainProperties']);
         // SQL

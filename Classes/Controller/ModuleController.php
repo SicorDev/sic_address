@@ -63,14 +63,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $domainPropertyRepository = NULL;
 
     /**
-     * categoryRepository
-     *
-     * @var TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
-     * @inject
-     */
-    protected $categoryRepository = NULL;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Configuration
      */
     protected $extbaseFrameworkConfiguration = NULL;
@@ -251,17 +243,17 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $this->addressRepository->add($sicAddress);
             $persistenceManager->persistAll();
 
+            // Insert entry in sys_category_mm
             $foreignId = $sicAddress->getUid();
             $uids = explode(",", $address["category"]);
             foreach($uids as $uid) {
                 $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('name', 'tx_nicosdirectory_category', 'uid = '.$uid, ''))["name"];
-                $category = $this->categoryRepository->findOneByTitle($title);
-                \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($category);
+                $localId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_category', 'title = \''.$title.'\'', '', '', 1))["uid"];
+                $mapping = array("uid_local" => $localId, 'uid_foreign' => $foreignId);
+                $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category_record_mm', $mapping);
             }
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
-
-        //$this->redirect('list');
     }
 
     /**

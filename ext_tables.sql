@@ -117,7 +117,7 @@ CREATE TABLE tx_sicaddress_domain_model_fieldtype (
 # Table structure for table 'sys_category'
 #
 CREATE TABLE sys_category (
-
+	tx_extbase_type varchar(255) DEFAULT '0' NOT NULL,
 );
 
 #

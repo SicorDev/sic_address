@@ -4,6 +4,7 @@ return array(
     'ctrl' => array(
         'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address',
         'label' => 'categories',
+        'label_userFunc' => "SICOR\\SicAddress\\Userfuncs\\Tca->addressTitle",
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -23,10 +24,10 @@ return array(
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sic_address') . 'Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories, firstName, lastName, place,',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories, company, street, city, tel, fax, email, www, image,',
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, categories, firstName, lastName, place, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, categories, company, street, city, tel, fax, email, www, image, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -150,44 +151,114 @@ return array(
         
         
         
-                'firstName' => array(
-                'exclude' => 1,
-                'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.firstName',
-                'config' => array(
-                    'type' => 'input',
-                    'size' => 30,
-                    'eval' => 'trim'
-                ),
-            ),        
-            
+                    'company' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.company',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
         
         
         
         
-                'lastName' => array(
-                'exclude' => 1,
-                'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.lastName',
-                'config' => array(
-                    'type' => 'input',
-                    'size' => 30,
-                    'eval' => 'trim'
-                ),
-            ),        
-            
+                    'street' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.street',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
         
         
         
         
-                'place' => array(
-                'exclude' => 1,
-                'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.place',
-                'config' => array(
-                    'type' => 'input',
-                    'size' => 30,
-                    'eval' => 'trim'
-                ),
-            ),        
-            
+                    'city' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.city',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
+        
+        
+        
+        
+                    'tel' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.tel',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
+        
+        
+        
+        
+                    'fax' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.fax',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
+        
+        
+        
+        
+                    'email' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.email',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
+        
+        
+        
+        
+                    'www' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.www',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
+        
+        
+        
+        
+                    'image' => array(
+                    'exclude' => 1,
+                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.image',
+                    'config' => array(
+                        'type' => 'input',
+                        'size' => 30,
+                        'eval' => 'trim'
+                    ),
+                ),        
+                
         
         
     ),

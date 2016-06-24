@@ -16,22 +16,34 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	starttime int(11) unsigned DEFAULT '0' NOT NULL,
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
+	fe_group varchar(100) DEFAULT '0' NOT NULL,
 
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
 
+	
+	company varchar(255) DEFAULT '' NOT NULL,
+	
+	street varchar(255) DEFAULT '' NOT NULL,
+	
+	city varchar(255) DEFAULT '' NOT NULL,
+	
+	tel varchar(255) DEFAULT '' NOT NULL,
+	
+	fax varchar(255) DEFAULT '' NOT NULL,
+	
+	email varchar(255) DEFAULT '' NOT NULL,
+	
+	www varchar(255) DEFAULT '' NOT NULL,
+	
+	image varchar(255) DEFAULT '' NOT NULL,
+	
+
 	PRIMARY KEY (uid),
 	KEY parent (pid),
 
-	KEY language (l10n_parent,sys_language_uid)
-
-);
-
-#
-# Table structure for table 'sys_category'
-#
-CREATE TABLE sys_category (
+ KEY language (l10n_parent,sys_language_uid)
 
 );
 
@@ -102,6 +114,13 @@ CREATE TABLE tx_sicaddress_domain_model_fieldtype (
 );
 
 #
+# Table structure for table 'sys_category'
+#
+CREATE TABLE sys_category (
+
+);
+
+#
 # Table structure for table 'tx_sicaddress_domain_model_address'
 #
 CREATE TABLE tx_sicaddress_domain_model_address (
@@ -109,9 +128,9 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 );
 
 #
-# Table structure for table 'sys_category_record_mm'
+# Table structure for table 'tx_sicaddress_address_category_mm'
 #
-CREATE TABLE sys_category_record_mm (
+CREATE TABLE tx_sicaddress_address_category_mm (
 	uid_local int(11) unsigned DEFAULT '0' NOT NULL,
 	uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
 	sorting int(11) unsigned DEFAULT '0' NOT NULL,

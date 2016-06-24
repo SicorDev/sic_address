@@ -1,9 +1,6 @@
 <?php
 namespace SICOR\SicAddress\Controller;
-
 use SICOR\SicAddress\Domain\Model\DomainProperty;
-
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . 'Classes/Utility/YamlParser.php');
 
 /***************************************************************
  *
@@ -193,32 +190,35 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function migrateNicosDirectoryAction()
     {
         // Retrieve legacy data
-        $nicosDataQuery = "SELECT pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image ".
-        "FROM tx_nicosdirectory_entry WHERE deleted = 0 AND hidden = 0;";
-
         $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image',
             'tx_nicosdirectory_entry',
             'deleted = 0 AND hidden = 0',
             '');
 
-        $fieldset = array();
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
-        $type = new \SICOR\SicAddress\Domain\Model\FieldType("string");
-        $this->fieldTypeRepository->add($type);
-
-        $type = $this->fieldTypeRepository->findAll()->first();
-
+        $type = $this->fieldTypeRepository->findByTitle("string")[0];
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
         foreach($address as $key => $value) {
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($key);
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($type);
-            $field = new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", false);
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("2");
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($field);
-            $fieldset[] = new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", false);
+           if($key == "pid" || $key == "tstamp"  || $key == "crdate" || $key == "cruser_id")
+               continue;
+
+           $this->domainPropertyRepository->add(new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", "", false));
         }
 
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($fieldset);
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+        $persistenceManager->persistAll();
+
+        $this->initializeAction();
+
+        // Model
+        $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
+        // SQL
+        $this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration());
+        // TCA
+        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration());
+        // Language
+        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
         do
         {

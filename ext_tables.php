@@ -23,7 +23,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		'',						// Position
 		array(
 			'Module' => 'list, show, save, migrateNicosDirectory',
-			
+			'DomainProperty' => 'update',
 		),
 		array(
 			'access' => 'user,group',
@@ -32,7 +32,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		)
 	);
  
-} 
+}
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');
 

@@ -6,38 +6,57 @@
 
     <h1><f:translate key="BackendListTitle" /></h1>
 
-    <f:form id="fieldDefinition" action="save">
-        <div class="table-responsive">
-            <table id="fieldEditor" class="table">
-                <thead>
-                    <tr>
-                        <th width="15%">Name:</th>
-                        <th width="15%">Beschriftung:</th>
-                        <th width="25%">TCA Override:</th>
-                        <th width="25%">DB Override:</th>
-                        <th width="10%">ListLabel:</th>
-                        <th width="10%">Feldtyp:</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <div class="table-responsive">
+        <table id="fieldEditor" class="table">
+            <thead>
+                <tr>
+                    <th width="15%">Name:</th>
+                    <th width="15%">Beschriftung:</th>
+                    <th width="25%">TCA Override:</th>
+                    <th width="25%">DB Override:</th>
+                    <th width="10%">ListLabel:</th>
+                    <th width="10%">Feldtyp:</th>
+                    <th width="5%"></th>
+                    <th width="5%"></th>
+                </tr>
+            </thead>
+            <tbody>
+            <f:if condition="{properties}">
+                <f:then>
                     <f:for each="{properties}" as="property">
-                        <tr>
-                            <td><f:form.textfield name="title" value="{property.title}" /></td>
-                            <td><f:form.textfield name="label" value="{property.label}" /></td>
-                            <td><f:form.textarea name="tcaOverride" value="{property.tcaOverride}" /></td>
-                            <td><f:form.textarea name="dbOverride" value="{property.dbOverride}" /></td>
-                            <td><f:form.checkbox name="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
-                            <td><f:form.select name="type" value="{property.type}" options="{fieldTypes}" optionLabelField="title"/></td>
-                        </tr>
+                        <f:form action="update" controller="DomainProperty" arguments="{domainProperty: property}">
+                            <tr>
+                                <td><f:form.textfield property="title" value="{property.title}" /></td>
+                                <td><f:form.textfield property="label" value="{property.label}" /></td>
+                                <td><f:form.textarea property="tcaOverride" value="{property.tcaOverride}" /></td>
+                                <td><f:form.textarea property="dbOverride" value="{property.dbOverride}" /></td>
+                                <td><f:form.checkbox property="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
+                                <td><f:form.submit class="btn btn-success" value="Save" />
+                                <td><f:link.action class="btn btn-danger" controller="DomainProperty" action="delete" arguments="{domainProperty: domainProperty}">Delete</f:link.action></td>
+                            </tr>
+                        </f:form>
                     </f:for>
-                </tbody>
-            </table>
-            <a href="javascript:addModuleRow()" class="btn btn-default">Reihe hinzufügen</a>
-        </div>
-        <hr/>
-
-        <f:form.submit class="btn btn-primary" value="Save Field Definitions" />
-    </f:form>
+                </f:then>
+                <f:else>
+                    <f:form action="save">
+                        <tr>
+                            <td><f:form.textfield name="title" value="" /></td>
+                            <td><f:form.textfield name="label" value="" /></td>
+                            <td><f:form.textarea name="tcaOverride" value="" /></td>
+                            <td><f:form.textarea name="dbOverride" value="" /></td>
+                            <td><f:form.checkbox name="isListLabel" value="" /></td>
+                            <td><f:form.select name="type" value="" options="{fieldTypes}" optionLabelField="title"/></td>
+                            <td><f:link.action class="btn btn-success" action="update" controller="DomainProperty" arguments="{domainProperty: domainProperty}">Save</f:link.action></td>
+                            <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: domainProperty}">Delete</f:link.action></td>
+                        </tr>
+                    </f:form>
+                </f:else>
+            </f:if>
+            </tbody>
+        </table>
+        <a href="javascript:addModuleRow()" class="btn btn-default">Reihe hinzufügen</a>
+    </div>
+    <hr/>
 
     <f:form action="migrateNicosDirectory">
         <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />

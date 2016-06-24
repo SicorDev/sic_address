@@ -81,6 +81,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction() {
         $this->view->assign("properties", $this->configuration);
+        $this->view->assign("token", \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->generateToken('BE user setup', 'edit'));
     }
 
     /**
@@ -98,8 +99,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
-        //@TODO Cache löschen
-        //@TODO SQL ausführen
+        //@TODO Cache lÃ¶schen
+        //@TODO SQL ausfÃ¼hren
 
         if($bRedirect)
             $this->redirect('list');

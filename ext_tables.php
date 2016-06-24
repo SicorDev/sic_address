@@ -32,7 +32,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		)
 	);
  
-}
+} 
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');
 

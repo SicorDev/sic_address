@@ -12,6 +12,12 @@
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>
+			<trans-unit id="BackendListTitle">
+				<source>Datenbank Editor</source>
+			</trans-unit>
+			<trans-unit id="BackendImporterListTitle">
+				<source>Importer</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

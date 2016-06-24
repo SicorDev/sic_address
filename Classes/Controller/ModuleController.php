@@ -99,6 +99,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
         $this->redirect('list');
+
+        //@TODO Cache löschen
+        //@TODO SQL ausführen
     }
 
     /**
@@ -196,8 +199,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             'deleted = 0 AND hidden = 0',
             '');
 
+        // Add required fields to DomainProperty table
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
-        $type = $this->fieldTypeRepository->findByTitle("string")[0];
+        $type = $this->fieldTypeRepository->findOneByTitle("string");
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
         foreach($address as $key => $value) {
            if($key == "pid" || $key == "tstamp"  || $key == "crdate" || $key == "cruser_id")
@@ -206,26 +210,19 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
            $this->domainPropertyRepository->add(new \SICOR\SicAddress\Domain\Model\DomainProperty($key, $type, $key, "", "", "", false));
         }
 
+        // Enhance everything for new fields (sql, model, tca, ...)
         $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
         $persistenceManager->persistAll();
-
         $this->initializeAction();
+        $this->saveAction();
 
-        // Model
-        $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
-        // SQL
-        $this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration());
-        // TCA
-        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration());
-        // Language
-        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
-
+        // Insert data into sic_address
         do
         {
-            //$address = new \SICOR\SicAddress\Domain\Model\Address();
+            $address = new \SICOR\SicAddress\Domain\Model\Address();
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
-        //$this->redirect('list');
+        $this->redirect('list');
     }
 }

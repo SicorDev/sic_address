@@ -262,15 +262,5 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->isListLabel = $isListLabel;
     }
-    
-    /**
-     * Returns the boolean state of isListLabel
-     *
-     * @return bool
-     */
-    public function isIsListLabel()
-    {
-        return $this->isListLabel;
-    }
 
 }

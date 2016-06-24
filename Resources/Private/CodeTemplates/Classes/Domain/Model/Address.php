@@ -1,7 +1,7 @@
-{namespace sic=SICOR\SicAddress\ViewHelpers}
 <?php
-
 namespace SICOR\SicAddress\Domain\Model;
+
+{namespace sic=SICOR\SicAddress\ViewHelpers}
 
 /***************************************************************
 *

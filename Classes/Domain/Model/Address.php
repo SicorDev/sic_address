@@ -1,7 +1,7 @@
-
 <?php
-
 namespace SICOR\SicAddress\Domain\Model;
+
+
 
 /***************************************************************
 *

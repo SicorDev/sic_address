@@ -88,7 +88,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function saveAction() {
+    public function saveAction($bRedirect = true) {
         // Model
         $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
         // SQL
@@ -98,10 +98,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
-        $this->redirect('list');
-
         //@TODO Cache löschen
         //@TODO SQL ausführen
+
+        if($bRedirect)
+            $this->redirect('list');
     }
 
     /**
@@ -192,6 +193,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function migrateNicosDirectoryAction()
     {
+        // Clear database
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_address");
+
         // Retrieve legacy data
         $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'pid, tstamp, crdate, cruser_id, name as company, street, city, tel, fax, email, www, CAST(image AS CHAR(10000)) as image',
@@ -202,7 +207,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Add required fields to DomainProperty table
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
         $type = $this->fieldTypeRepository->findOneByTitle("string");
-        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
         foreach($address as $key => $value) {
            if($key == "pid" || $key == "tstamp"  || $key == "crdate" || $key == "cruser_id")
                continue;
@@ -214,15 +218,23 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
         $persistenceManager->persistAll();
         $this->initializeAction();
-        $this->saveAction();
+        $this->saveAction(false);
 
         // Insert data into sic_address
         do
         {
-            $address = new \SICOR\SicAddress\Domain\Model\Address();
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("1");
+            $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("2");
+            $sicaddress->setPid($address["pid"]);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("3");
+            $this->addressRepository->add($sicaddress);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("4");
+
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($sicaddress);
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
-        $this->redirect('list');
+        // $this->redirect('list');
     }
 }

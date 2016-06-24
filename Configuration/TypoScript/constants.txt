@@ -10,7 +10,7 @@ plugin.tx_sicaddress_sicaddress {
 	}
 	persistence {
 		# cat=plugin.tx_sicaddress_sicaddress//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 1
 	}
 }
 
@@ -28,6 +28,6 @@ module.tx_sicaddress_sicaddress {
 	}
 	persistence {
 		# cat=module.tx_sicaddress_sicaddress//a; type=string; label=Default storage PID
-		storagePid =
+		storagePid = 1
 	}
 }

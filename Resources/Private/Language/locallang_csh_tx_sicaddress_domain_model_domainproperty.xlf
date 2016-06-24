@@ -12,6 +12,9 @@
 			<trans-unit id="tca_override.description">
 				<source>tcaOverride</source>
 			</trans-unit>
+			<trans-unit id="db_override.description">
+				<source>dbOverride</source>
+			</trans-unit>
 			<trans-unit id="settings.description">
 				<source>settings</source>
 			</trans-unit>

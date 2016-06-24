@@ -51,6 +51,14 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $tcaOverride = '';
+
+
+    /**
+     * dbOverride
+     *
+     * @var string
+     */
+    protected $dbOverride = '';
     
     /**
      * settings
@@ -76,18 +84,20 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * DomainProperty constructor.
      * @param string $title
-     * @param SICOR\SicAddress\Domain\Model\FieldType $type
+     * @param \SICOR\SicAddress\Domain\Model\FieldType $type
      * @param string $label
      * @param string $tcaOverride
+     * @param string $dbOverride
      * @param string $settings
      * @param bool $isListLabel
      */
-    public function __construct($title, SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $settings, $isListLabel)
+    public function __construct($title, \SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $dbOverride, $settings, $isListLabel)
     {
         $this->title = $title;
         $this->type = $type;
         $this->label = $label;
         $this->tcaOverride = $tcaOverride;
+        $this->dbOverride = $dbOverride;
         $this->settings = $settings;
         $this->isListLabel = $isListLabel;
     }
@@ -152,6 +162,43 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->tcaOverride = $tcaOverride;
     }
+
+    /**
+     * Returns the $label
+     *
+     * @return string
+     */
+    public function getLabel() {
+        return $this->label;
+    }
+
+    /**
+     * Sets the label
+     *
+     * @param string $label
+     */
+    public function setLabel($label) {
+        $this->label = $label;
+    }
+
+    /**
+     * Returns the $dbOverride
+     *
+     * @return string
+     */
+    public function getDbOverride() {
+        return $this->dbOverride;
+    }
+
+    /**
+     * Sets the dbOverride
+     *
+     * @param string $dbOverride
+     */
+    public function setDbOverride($dbOverride) {
+        $this->dbOverride = $dbOverride;
+    }
+
     
     /**
      * Returns the settings

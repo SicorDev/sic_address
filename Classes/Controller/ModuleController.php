@@ -223,18 +223,21 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Insert data into sic_address
         do
         {
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("1");
-            $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("2");
-            $sicaddress->setPid($address["pid"]);
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("3");
-            $this->addressRepository->add($sicaddress);
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump("4");
-
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($sicaddress);
+            $this->addressRepository->add($this->getSicAddrfromLegacyAddr($address));
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
-        // $this->redirect('list');
+        $this->redirect('list');
+    }
+
+    /**
+     * Transform key/value array into sic_address entries
+     */
+    public function getSicAddrfromLegacyAddr($address)
+    {
+        $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
+        foreach($address as $key => $value)
+            \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($sicaddress, $key, $value);
+        return $sicaddress;
     }
 }

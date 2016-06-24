@@ -45,7 +45,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * {property.title}
     *
-    * @var {property.type}
+    * @var {property.type.title} 
     */
     protected ${property.title};
     </f:for>

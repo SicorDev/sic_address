@@ -101,9 +101,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
 
-
-
-        //$this->redirect('list');
+        $this->redirect('list');
     }
 
     /**

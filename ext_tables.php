@@ -27,7 +27,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		),
 		array(
 			'access' => 'user,group',
-			'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon.png',
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddress.xlf',
 		)
 	);

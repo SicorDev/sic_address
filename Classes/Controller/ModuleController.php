@@ -32,12 +32,6 @@ use SICOR\SicAddress\Domain\Model\DomainProperty;
  */
 class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
-
-    /**
-     * @var array
-     */
-    protected $configuration;
-
     /**
      * addressRepository
      *
@@ -45,14 +39,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @inject
      */
     protected $addressRepository = NULL;
-
-    /**
-     * fieldTypeRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\FieldTypeRepository
-     * @inject
-     */
-    protected $fieldTypeRepository = NULL;
 
     /**
      * domainPropertyRepository
@@ -63,6 +49,22 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $domainPropertyRepository = NULL;
 
     /**
+     * Holds all domainProperties
+     *
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * Fixed set of fieldTypes
+     *
+     * @var array
+     */
+    protected $fieldTypes = array("String, Integer");
+
+    /**
+     * Holds the Typoscript configuration
+     * 
      * @var \TYPO3\CMS\Extbase\Configuration
      */
     protected $extbaseFrameworkConfiguration = NULL;
@@ -71,13 +73,19 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Called before any action
      */
     public function initializeAction() {
-
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 
         $this->configuration = $this->domainPropertyRepository->findAll();
         foreach($this->configuration as $key => $value) {
             //Convert fieldTitles to lowerCamelCase
             $this->configuration[$key]->setTitle(lcfirst($this->configuration[$key]->getTitle()));
+
+            // Initialize Type Objects
+            $type = $this->configuration[$key]->getType();
+            $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\".ucfirst($type)."Type";
+
+            $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $this->configuration[$key]->setType($objectManager->get($class));
         }
     }
 
@@ -88,7 +96,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction() {
         $this->view->assign("properties", $this->configuration);
-        $this->view->assign("fieldTypes", $this->fieldTypeRepository->findAll());
     }
 
     /**
@@ -97,18 +104,23 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function createAction() {
+        $errorMessages = array();
+
         // Model
-        $this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration);
+        if(!$this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration))
+            $errorMessages[] = "Unable to save Model: Address.php";
         // SQL
-        $this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration());
+        if(!$this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration()))
+            $errorMessages[] = "Unable to save SQL: ext_tables.sql";
         // TCA
-        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration());
+        if(!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
+            $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
         // Language
-        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration);
-
+        if(!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
+            $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
+        
         $this->updateExtension();
-
-        $this->view->assign("alert", "Successfully updated Extension");
+        $this->view->assign("errorMessages", $errorMessages);
     }
 
     /**
@@ -119,16 +131,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getSQLConfiguration() {
         $sql = array();
         foreach($this->configuration as $key => $value) {
-            switch($value->getType()) {
-                case "string" || "map" || "image":
-                    $sql[] = $value->getTitle() . " " . "varchar(255) DEFAULT '' NOT NULL";
-                    break;
-                case "integer":
-                    $sql[] = $value->getTitle() . " " . "int(11) unsigned DEFAULT '0' NOT NULL";
-                    break;
-                default:
-                    break;
-            }
+            $sql[] = $value->getType()->getSQLDefinition($value->getTitle());
         }
         return $sql;
     }
@@ -140,57 +143,38 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     private function getTCAConfiguration() {
         $tca = array();
+        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
         foreach($this->configuration as $key => $value) {
-            if($value->getType()->getTitle() == "string" || $value->getType()->getTitle() == "map" || $value->getType()->getTitle() == "integer") {
-                $tca[] = array("title" => $value->getTitle(), "config" => "
-                    '" . $value->getTitle() . "' => array(
-                    'exclude' => 1,
-                    'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address." . $value->getTitle() . "',
-                    'config' => array(
-                        'type' => 'input',
-                        'size' => 30,
-                        'eval' => 'trim'
-                    ),
-                ),
-                ");
-            }else if($value->getType()->getTitle() == "image") {
-                $tca[] = array("title" => $value->getTitle(), "config" => "
-                    '" . $value->getTitle() . "' => array(
-                    'exclude' => 1,
-                    'label' => 'Image',
-                    'config' => \\TYPO3\\CMS\\Core\\Utility\\ExtensionManagementUtility::getFileFieldTCAConfig('image', array(
-                            'appearance' => array(
-                                    'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference',
-                            ),
-                            'minitems' => 0,
-                            'maxitems' => 1,
-                    )," . $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ." ),
-                ),
-                ");
-            }
+            $config = file_get_contents($templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca");
+            $tca[] = array("title" => $value->getTitle(), "config" => $config);
         }
         return $tca;
     }
 
     /**
-     * Save templates
+     * Save Templates
      *
-     * @param $path
+     * @param $filename
      * @param $properties
+     *
+     * @return bool
      */
-    private function saveTemplate($path, $properties) {
+    private function saveTemplate($filename, $properties) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
-        $templatePathAndFilename = $templateRootPath . $path;
+        $templatePathAndFilename = $templateRootPath . $filename;
 
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->assign("properties", $properties);
 
         $content = $customView->render();
 
-        $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $path;
-        file_put_contents($path, $content) ;
+        $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
+        if(is_writable($filename) && file_put_contents($filename, $content))
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -224,7 +208,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         // Add required fields to DomainProperty table
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
-        $type = $this->fieldTypeRepository->findOneByTitle("string");
+        //@FIXME
+        /*$type = $this->fieldTypeRepository->findOneByTitle("string");
         foreach($address as $key => $value) {
            if($key == "pid" || $key == "tstamp" || $key == "crdate" || $key == "cruser_id" || $key == "category")
                continue;
@@ -238,6 +223,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $persistenceManager->persistAll();
         $this->initializeAction();
         $this->saveAction(false);
+        */
 
         do
         {

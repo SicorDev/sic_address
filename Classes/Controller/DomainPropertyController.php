@@ -57,7 +57,6 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 
     /**
      * action update
-     * @TODO Update listLabel Checkbox
      *
      * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
      * @return void

@@ -3,7 +3,7 @@ return array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_fieldtype',
 		'label' => 'title',
-		'hideTable' => 1, 
+		'hideTable' => 1,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',

@@ -47,7 +47,7 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 	db_override text NOT NULL,
 	settings text NOT NULL,
 	is_list_label tinyint(1) unsigned DEFAULT '0' NOT NULL,
-	type int(11) unsigned DEFAULT '0',
+	type varchar(255) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,

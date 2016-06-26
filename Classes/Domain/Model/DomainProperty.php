@@ -70,9 +70,9 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * type
      *
-     * @var \SICOR\SicAddress\Domain\Model\FieldType
+     * @var string
      */
-    protected $type = null;
+    protected $type = '';
     
     /**
      * isListLabel
@@ -84,14 +84,14 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * DomainProperty constructor.
      * @param string $title
-     * @param \SICOR\SicAddress\Domain\Model\FieldType $type
+     * @param \SICOR\SicAddress\Domain\Model\AbstractFieldType $type
      * @param string $label
      * @param string $tcaOverride
      * @param string $dbOverride
      * @param string $settings
      * @param bool $isListLabel
      */
-    public function setProperties($title, \SICOR\SicAddress\Domain\Model\FieldType $type, $label, $tcaOverride, $dbOverride, $settings, $isListLabel)
+    public function setProperties($title, \SICOR\SicAddress\Domain\Model\AbstractFieldType $type, $label, $tcaOverride, $dbOverride, $settings, $isListLabel)
     {
         $this->title = $title;
         $this->type = $type;
@@ -220,27 +220,21 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->settings = $settings;
     }
-    
+
     /**
-     * Returns the type
-     *
-     * @return \SICOR\SicAddress\Domain\Model\FieldType $type
+     * @return string
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
-    
+
     /**
-     * Sets the type
-     *
-     * @param \SICOR\SicAddress\Domain\Model\FieldType $type
-     * @return void
+     * @param string $type
      */
-    public function setType(\SICOR\SicAddress\Domain\Model\FieldType $type)
-    {
+    public function setType($type) {
         $this->type = $type;
     }
+    
     
     /**
      * Returns the isListLabel

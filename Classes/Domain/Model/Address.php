@@ -1,8 +1,6 @@
 <?php
 namespace SICOR\SicAddress\Domain\Model;
 
-
-
 /***************************************************************
 *
 *  Copyright notice
@@ -52,23 +50,9 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * lastName
     *
-    * @var string
+    * @var integer
     */
     protected $lastName;
-    
-    /**
-    * test
-    *
-    * @var string
-    */
-    protected $test;
-    
-    /**
-    * test2
-    *
-    * @var string
-    */
-    protected $test2;
     
 
     /**
@@ -159,7 +143,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Returns the lastName
     *
-    * @return string
+    * @return integer
     */
     public function getLastName() {
         return $this->lastName;
@@ -168,49 +152,11 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Sets the lastName
     *
-    * @param string $lastName
+    * @param integer $lastName
     * @return void
     */
     public function setLastName($lastName) {
         $this->lastName = $lastName;
-    }
-    
-    /**
-    * Returns the test
-    *
-    * @return string
-    */
-    public function getTest() {
-        return $this->test;
-    }
-
-    /**
-    * Sets the test
-    *
-    * @param string $test
-    * @return void
-    */
-    public function setTest($test) {
-        $this->test = $test;
-    }
-    
-    /**
-    * Returns the test2
-    *
-    * @return string
-    */
-    public function getTest2() {
-        return $this->test2;
-    }
-
-    /**
-    * Sets the test2
-    *
-    * @param string $test2
-    * @return void
-    */
-    public function setTest2($test2) {
-        $this->test2 = $test2;
     }
     
 

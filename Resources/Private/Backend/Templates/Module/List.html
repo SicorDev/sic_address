@@ -20,33 +20,49 @@
             </thead>
             <tbody>
             <f:if condition="{properties}">
-                <f:for each="{properties}" as="property">
-                    <f:form action="update" controller="DomainProperty" object="{property}" objectName="domainProperty">
-                        <tr>
-                            <td><f:form.textfield property="title" value="{property.title}" /></td>
-                            <td><f:form.textfield property="tcaLabel" value="{property.label}" /></td>
-                            <td><f:form.textarea property="tcaOverride" value="{property.tcaOverride}" /></td>
-                            <td><f:form.textarea property="dbOverride" value="{property.dbOverride}" /></td>
-                            <td><f:form.checkbox property="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
-                            <td><f:form.select property="type" value="" options="{fieldTypes}" optionLabelField="title"/></td>
-                            <td><f:form.submit class="btn btn-success" value="Save" />
-                            <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
+                <f:then>
+                    <f:for each="{properties}" as="property">
+                        <f:form action="update" controller="DomainProperty" object="{property}" objectName="domainProperty">
+                            <tr>
+                                <td><f:form.textfield property="title" value="{property.title}" /></td>
+                                <td><f:form.textfield property="tcaLabel" value="{property.label}" /></td>
+                                <td><f:form.textarea property="tcaOverride" value="{property.tcaOverride}" /></td>
+                                <td><f:form.textarea property="dbOverride" value="{property.dbOverride}" /></td>
+                                <td><f:form.checkbox property="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
+                                <td><f:form.select property="type" value="" options="{string: 'string'}" optionLabelField="title"/></td>
+                                <td><f:form.submit class="btn btn-success" value="Save" />
+                                <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
 
+                            </tr>
+                        </f:form>
+                    </f:for>
+                    <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
+                        <tr>
+                            <td><f:form.textfield property="title" value="" /></td>
+                            <td><f:form.textfield property="tcaLabel" value="" /></td>
+                            <td><f:form.textarea property="tcaOverride" value="" /></td>
+                            <td><f:form.textarea property="dbOverride" value="" /></td>
+                            <td><f:form.checkbox property="isListLabel" value="" /></td>
+                            <td><f:form.select property="type" value="" options="{}" optionLabelField="title"/></td>
+                            <td><f:form.submit class="btn btn-success" value="Save">Save</f:form.submit></td>
+                            <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
                         </tr>
                     </f:form>
-                </f:for>
-                <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
-                    <tr>
-                        <td><f:form.textfield property="title" value="" /></td>
-                        <td><f:form.textfield property="tcaLabel" value="" /></td>
-                        <td><f:form.textarea property="tcaOverride" value="" /></td>
-                        <td><f:form.textarea property="dbOverride" value="" /></td>
-                        <td><f:form.checkbox property="isListLabel" value="" /></td>
-                        <td><f:form.select property="type" value="" options="{fieldTypes}" optionLabelField="title"/></td>
-                        <td><f:form.submit class="btn btn-success" value="Save">Save</f:form.submit></td>
-                        <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
-                    </tr>
-                </f:form>
+                </f:then>
+                <f:else>
+                    <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
+                        <tr>
+                            <td><f:form.textfield property="title" value="" /></td>
+                            <td><f:form.textfield property="tcaLabel" value="" /></td>
+                            <td><f:form.textarea property="tcaOverride" value="" /></td>
+                            <td><f:form.textarea property="dbOverride" value="" /></td>
+                            <td><f:form.checkbox property="isListLabel" value="" /></td>
+                            <td><f:form.select property="type" value="" options="{}" optionLabelField="title"/></td>
+                            <td><f:form.submit class="btn btn-success" value="Save">Save</f:form.submit></td>
+                            <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
+                        </tr>
+                    </f:form>
+                </f:else>
             </f:if>
             </tbody>
         </table>

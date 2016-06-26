@@ -55,14 +55,6 @@
                 <source>Nachname</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.test">
-                <source>test</source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.test2">
-                <source>test2</source>
-            </trans-unit>
-            
 
 		</body>
 	</file>

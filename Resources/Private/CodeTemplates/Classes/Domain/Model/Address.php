@@ -1,8 +1,6 @@
 <?php
 namespace SICOR\SicAddress\Domain\Model;
-
 {namespace sic=SICOR\SicAddress\ViewHelpers}
-
 /***************************************************************
 *
 *  Copyright notice
@@ -45,7 +43,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * {property.title}
     *
-    * @var {property.type.title}
+    * @var {property.type.modelType}
     */
     protected ${property.title};
     </f:for>
@@ -119,7 +117,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Returns the {property.title}
     *
-    * @return string
+    * @return {property.type.modelType}
     */
     public function get<sic:format.case case="capital">{property.title}</sic:format.case>() {
         return $this->{property.title};
@@ -128,7 +126,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Sets the {property.title}
     *
-    * @param string ${property.title}
+    * @param {property.type.modelType} ${property.title}
     * @return void
     */
     public function set<sic:format.case case="capital">{property.title}</sic:format.case>(${property.title}) {

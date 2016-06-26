@@ -167,9 +167,9 @@ return array(
             'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.lastName',
             'config' =>             array(
                 'type' => 'input',
-                'size' => 4,
-                'eval' => 'int'
-            )
+                'size' => 30,
+                'eval' => 'trim'
+            ),
         ),
         
     

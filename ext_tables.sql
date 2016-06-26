@@ -25,7 +25,7 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	
 	firstName varchar(255) DEFAULT '' NOT NULL,
 	
-	lastName int(11) DEFAULT '0' NOT NULL,
+	lastName varchar(255) DEFAULT '' NOT NULL,
 	
 
 	PRIMARY KEY (uid),
@@ -46,7 +46,6 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 	title varchar(255) DEFAULT '' NOT NULL,
 	tca_label varchar(255) DEFAULT '' NOT NULL,
 	tca_override text NOT NULL,
-	db_override text NOT NULL,
 	settings text NOT NULL,
 	is_list_label tinyint(1) unsigned DEFAULT '0' NOT NULL,
 	type varchar(255) DEFAULT '' NOT NULL,

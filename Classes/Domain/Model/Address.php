@@ -50,7 +50,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * lastName
     *
-    * @var integer
+    * @var string
     */
     protected $lastName;
     
@@ -143,7 +143,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Returns the lastName
     *
-    * @return integer
+    * @return string
     */
     public function getLastName() {
         return $this->lastName;
@@ -152,7 +152,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Sets the lastName
     *
-    * @param integer $lastName
+    * @param string $lastName
     * @return void
     */
     public function setLastName($lastName) {

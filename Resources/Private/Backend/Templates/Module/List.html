@@ -11,7 +11,7 @@
                     <th width="15%">DB Feld Name:</th>
                     <th width="15%">Beschriftung:</th>
                     <th width="25%">TCA Override:</th>
-                    <th width="25%">DB Feld Typ Override:</th>
+                    <th width="25%">Settings:</th>
                     <th width="10%">Teil des Labels:</th>
                     <th width="10%">Feldtyp:</th>
                     <th width="5%"></th>
@@ -27,12 +27,11 @@
                                 <td><f:form.textfield property="title" value="{property.title}" /></td>
                                 <td><f:form.textfield property="tcaLabel" value="{property.label}" /></td>
                                 <td><f:form.textarea property="tcaOverride" value="{property.tcaOverride}" /></td>
-                                <td><f:form.textarea property="dbOverride" value="{property.dbOverride}" /></td>
-                                <td><f:form.checkbox property="isListLabel" value="{property.isListLabel}" checked="{property.isListLabel}" /></td>
-                                <td><f:form.select property="type" value="" options="{string: 'string'}" optionLabelField="title"/></td>
+                                <td><f:form.textarea property="settings" value="{property.settings}" /></td>
+                                <td><f:form.checkbox property="isListLabel" value="{f:if(condition: '{property.isListLabel} == true', then: 1, else: 0)}" /></td>
+                                <td><f:form.select property="type" value="{property.type.title}" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/></td>
                                 <td><f:form.submit class="btn btn-success" value="Save" />
                                 <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
-
                             </tr>
                         </f:form>
                     </f:for>
@@ -41,9 +40,9 @@
                             <td><f:form.textfield property="title" value="" /></td>
                             <td><f:form.textfield property="tcaLabel" value="" /></td>
                             <td><f:form.textarea property="tcaOverride" value="" /></td>
-                            <td><f:form.textarea property="dbOverride" value="" /></td>
-                            <td><f:form.checkbox property="isListLabel" value="" /></td>
-                            <td><f:form.select property="type" value="" options="{}" optionLabelField="title"/></td>
+                            <td><f:form.textarea property="settings" value="" /></td>
+                            <td><f:form.checkbox property="isListLabel" value="0" /></td>
+                            <td><f:form.select property="type" value="" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/></td>
                             <td><f:form.submit class="btn btn-success" value="Save">Save</f:form.submit></td>
                             <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
                         </tr>
@@ -55,9 +54,9 @@
                             <td><f:form.textfield property="title" value="" /></td>
                             <td><f:form.textfield property="tcaLabel" value="" /></td>
                             <td><f:form.textarea property="tcaOverride" value="" /></td>
-                            <td><f:form.textarea property="dbOverride" value="" /></td>
-                            <td><f:form.checkbox property="isListLabel" value="" /></td>
-                            <td><f:form.select property="type" value="" options="{}" optionLabelField="title"/></td>
+                            <td><f:form.textarea property="settings" value="" /></td>
+                            <td><f:form.checkbox property="isListLabel" value="0" /></td>
+                            <td><f:form.select property="type" value="" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/></td>
                             <td><f:form.submit class="btn btn-success" value="Save">Save</f:form.submit></td>
                             <td><f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action></td>
                         </tr>
@@ -72,7 +71,7 @@
     <hr/>
 
     <h2><f:translate key="BackendImporterListTitle" /></h2>
-    <f:form action="migrateNicosDirectory">
+    <f:form action="migrateNicosDirectory" controller="Import">
         <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />
     </f:form>
 

@@ -1,0 +1,10 @@
+            array(
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => array(
+                    array('-- Label --', 0),
+                ),
+                'size' => 1,
+                'maxitems' => 1,
+                'eval' => ''
+            ),

@@ -25,7 +25,11 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	
 	firstName varchar(255) DEFAULT '' NOT NULL,
 	
-	lastName varchar(255) DEFAULT '' NOT NULL,
+	country int(11) DEFAULT '0' NOT NULL,
+	
+	place varchar(255) DEFAULT '' NOT NULL,
+	
+	plz int(11) DEFAULT '0' NOT NULL,
 	
 
 	PRIMARY KEY (uid),

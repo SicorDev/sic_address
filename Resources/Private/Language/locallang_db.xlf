@@ -51,8 +51,16 @@
                 <source>Vorname</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.lastName">
-                <source>Nachname</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.country">
+                <source>Land</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.place">
+                <source>Ort</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.plz">
+                <source>Postleitzahl</source>
             </trans-unit>
             
 

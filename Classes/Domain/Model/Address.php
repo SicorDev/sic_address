@@ -48,11 +48,25 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $firstName;
     
     /**
-    * lastName
+    * country
+    *
+    * @var integer
+    */
+    protected $country;
+    
+    /**
+    * place
     *
     * @var string
     */
-    protected $lastName;
+    protected $place;
+    
+    /**
+    * plz
+    *
+    * @var integer
+    */
+    protected $plz;
     
 
     /**
@@ -141,22 +155,60 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
-    * Returns the lastName
+    * Returns the country
     *
-    * @return string
+    * @return integer
     */
-    public function getLastName() {
-        return $this->lastName;
+    public function getCountry() {
+        return $this->country;
     }
 
     /**
-    * Sets the lastName
+    * Sets the country
     *
-    * @param string $lastName
+    * @param integer $country
     * @return void
     */
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
+    public function setCountry($country) {
+        $this->country = $country;
+    }
+    
+    /**
+    * Returns the place
+    *
+    * @return string
+    */
+    public function getPlace() {
+        return $this->place;
+    }
+
+    /**
+    * Sets the place
+    *
+    * @param string $place
+    * @return void
+    */
+    public function setPlace($place) {
+        $this->place = $place;
+    }
+    
+    /**
+    * Returns the plz
+    *
+    * @return integer
+    */
+    public function getPlz() {
+        return $this->plz;
+    }
+
+    /**
+    * Sets the plz
+    *
+    * @param integer $plz
+    * @return void
+    */
+    public function setPlz($plz) {
+        $this->plz = $plz;
     }
     
 

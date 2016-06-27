@@ -149,6 +149,13 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $templatePathAndFilename = $templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
 
             $config = file_get_contents($templatePathAndFilename);
+
+            // TCA Override
+            if($value->getTcaOverride()) {
+                $config = $value->getTcaOverride();
+            }
+
+            // TCA Settings
             if($value->getSettings()) {
                 $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
                 $customView->setTemplatePathAndFilename($templatePathAndFilename);

@@ -2,3 +2,6 @@
 /* Backend */
 /* ***************** */
 input[type="text"], textarea {width: 100%;}
+.table .thead {border-bottom: 2px solid #ddd; font-weight: bold;}
+.table .tr {border-bottom: 1px solid #ddd; padding: 10px 0;}
+.table .td {padding: 5px;}

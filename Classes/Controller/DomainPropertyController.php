@@ -64,6 +64,10 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     public function updateAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
     {
         if (TYPO3_MODE == 'BE') {
+            $arguments = $this->request->getArgument("domainProperty");
+            if(!array_key_exists("isListLabel",$arguments)) {
+                $domainProperty->setIsListLabel(false);
+            }
             $this->domainPropertyRepository->update($domainProperty);
             $this->redirect('list', 'Module');
         }

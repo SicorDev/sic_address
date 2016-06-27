@@ -30,30 +30,7 @@ use SICOR\SicAddress\Domain\Model\DomainProperty;
 /**
  * ImportController
  */
-class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-
-    /**
-     * addressRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @inject
-     */
-    protected $addressRepository = NULL;
-
-    /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
-     * Holds the Typoscript configuration
-     *
-     * @var \TYPO3\CMS\Extbase\Configuration
-     */
-    protected $extbaseFrameworkConfiguration = NULL;
+class ImportController extends ModuleController {
 
     /**
      * Migrate from NicosDirectory
@@ -86,22 +63,20 @@ class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         // Add required fields to DomainProperty table
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
-        //@FIXME
-        /*$type = $this->fieldTypeRepository->findOneByTitle("string");
+
         foreach($address as $key => $value) {
            if($key == "pid" || $key == "tstamp" || $key == "crdate" || $key == "cruser_id" || $key == "category")
                continue;
 
             $domainProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
-            $domainProperty->setProperties($key, $type, $key, "", "", "", false);
+            $domainProperty->setProperties($key, "string", $key, "", "", "", false);
             $this->domainPropertyRepository->add($domainProperty);
         }
 
         // Enhance everything for new fields (sql, model, tca, ...)
         $persistenceManager->persistAll();
         $this->initializeAction();
-        $this->saveAction(false);
-        */
+        $this->createAction();
 
         do
         {
@@ -121,6 +96,8 @@ class ImportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
+
+        $this->redirect("list", "Module");
     }
 
     /**

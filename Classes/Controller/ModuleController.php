@@ -64,16 +64,32 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * Holds the Typoscript configuration
-     * 
+     *
      * @var \TYPO3\CMS\Extbase\Configuration
      */
     protected $extbaseFrameworkConfiguration = NULL;
+
+    /**
+     * Holds the ExtensionManager configuration
+     *
+     * @var array
+     */
+    protected $extbaseExtensionConfiguration = NULL;
+
+    /**
+     * Template Root Path
+     *
+     * @var string
+     */
+    protected $templateRootPath = "";
 
     /**
      * Called before any action
      */
     public function initializeAction() {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $this->extbaseExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
         $this->configuration = $this->domainPropertyRepository->findAll();
         foreach($this->configuration as $key => $value) {
@@ -119,7 +135,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Language
         if(!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
-        
+
+        //@TODO Rückwärts gehen -> Felder nach tt_address Schema anlegen
+        if($this->extbaseExtensionConfiguration["AdditionalTable"]) {
+            // Table Mapping
+            if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->configuration))
+                $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
+        }
+
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
     }
@@ -144,9 +167,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     private function getTCAConfiguration() {
         $tca = array();
-        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
         foreach($this->configuration as $key => $value) {
-            $templatePathAndFilename = $templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
+            $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
 
             $config = file_get_contents($templatePathAndFilename);
 
@@ -159,7 +181,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if($value->getSettings()) {
                 $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
                 $customView->setTemplatePathAndFilename($templatePathAndFilename);
-                $customView->assign("properties", $value->getSettings());
+
+                $settings = array();
+                parse_str($value->getSettings(), $settings);
+                $customView->assign("properties", $settings);
 
                 $config = $customView->render();
             }
@@ -180,8 +205,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function saveTemplate($filename, $properties) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
-        $templatePathAndFilename = $templateRootPath . $filename;
+        $templatePathAndFilename = $this->templateRootPath . $filename;
 
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->assign("properties", $properties);

@@ -63,6 +63,14 @@
                 <source>Postleitzahl</source>
             </trans-unit>
             
+            <trans-unit id="tx_sicaddress_domain_model_address.test">
+                <source></source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.image">
+                <source>Bild</source>
+            </trans-unit>
+            
 
 		</body>
 	</file>

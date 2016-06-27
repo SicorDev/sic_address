@@ -27,9 +27,9 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
      ***************************************************************/
 
 /**
- * StringType
+ * ImageType
  */
-class StringType extends AbstractFieldType
+class ImageType extends AbstractFieldType
 {
 
     /**
@@ -43,7 +43,7 @@ class StringType extends AbstractFieldType
      * @return string
      */
     public function getModelType() {
-        return "string";
+        return "\TYPO3\CMS\Extbase\Domain\Model\FileReference";
     }
 
     /**
@@ -52,6 +52,6 @@ class StringType extends AbstractFieldType
      * @return string
      */
     public function getSQLDefinition($fieldName) {
-        return $fieldName . " varchar(255) DEFAULT '' NOT NULL";
+        return $fieldName . " int(11) unsigned DEFAULT '0' NOT NULL";
     }
 }

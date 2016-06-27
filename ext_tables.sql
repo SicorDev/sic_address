@@ -31,6 +31,10 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	
 	plz int(11) DEFAULT '0' NOT NULL,
 	
+	test varchar(255) DEFAULT '' NOT NULL,
+	
+	image int(11) unsigned DEFAULT '0' NOT NULL,
+	
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
@@ -111,12 +115,6 @@ CREATE TABLE sys_category (
 	tx_extbase_type varchar(255) DEFAULT '0' NOT NULL,
 );
 
-#
-# Table structure for table 'tx_sicaddress_domain_model_address'
-#
-CREATE TABLE tx_sicaddress_domain_model_address (
-	categories int(11) unsigned DEFAULT '0' NOT NULL,
-);
 
 #
 # Table structure for table 'tx_sicaddress_address_category_mm'

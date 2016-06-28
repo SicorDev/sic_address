@@ -41,39 +41,53 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * firstName
+    * company
     *
     * @var string
     */
-    protected $firstName;
+    protected $company;
     
     /**
-    * country
-    *
-    * @var integer
-    */
-    protected $country;
-    
-    /**
-    * place
+    * street
     *
     * @var string
     */
-    protected $place;
+    protected $street;
     
     /**
-    * plz
-    *
-    * @var integer
-    */
-    protected $plz;
-    
-    /**
-    * test
+    * city
     *
     * @var string
     */
-    protected $test;
+    protected $city;
+    
+    /**
+    * tel
+    *
+    * @var string
+    */
+    protected $tel;
+    
+    /**
+    * fax
+    *
+    * @var string
+    */
+    protected $fax;
+    
+    /**
+    * email
+    *
+    * @var string
+    */
+    protected $email;
+    
+    /**
+    * www
+    *
+    * @var string
+    */
+    protected $www;
     
     /**
     * image
@@ -150,98 +164,136 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * Returns the firstName
+    * Returns the company
     *
     * @return string
     */
-    public function getFirstName() {
-        return $this->firstName;
+    public function getCompany() {
+        return $this->company;
     }
 
     /**
-    * Sets the firstName
+    * Sets the company
     *
-    * @param string $firstName
+    * @param string $company
     * @return void
     */
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
+    public function setCompany($company) {
+        $this->company = $company;
     }
     
     /**
-    * Returns the country
-    *
-    * @return integer
-    */
-    public function getCountry() {
-        return $this->country;
-    }
-
-    /**
-    * Sets the country
-    *
-    * @param integer $country
-    * @return void
-    */
-    public function setCountry($country) {
-        $this->country = $country;
-    }
-    
-    /**
-    * Returns the place
+    * Returns the street
     *
     * @return string
     */
-    public function getPlace() {
-        return $this->place;
+    public function getStreet() {
+        return $this->street;
     }
 
     /**
-    * Sets the place
+    * Sets the street
     *
-    * @param string $place
+    * @param string $street
     * @return void
     */
-    public function setPlace($place) {
-        $this->place = $place;
+    public function setStreet($street) {
+        $this->street = $street;
     }
     
     /**
-    * Returns the plz
-    *
-    * @return integer
-    */
-    public function getPlz() {
-        return $this->plz;
-    }
-
-    /**
-    * Sets the plz
-    *
-    * @param integer $plz
-    * @return void
-    */
-    public function setPlz($plz) {
-        $this->plz = $plz;
-    }
-    
-    /**
-    * Returns the test
+    * Returns the city
     *
     * @return string
     */
-    public function getTest() {
-        return $this->test;
+    public function getCity() {
+        return $this->city;
     }
 
     /**
-    * Sets the test
+    * Sets the city
     *
-    * @param string $test
+    * @param string $city
     * @return void
     */
-    public function setTest($test) {
-        $this->test = $test;
+    public function setCity($city) {
+        $this->city = $city;
+    }
+    
+    /**
+    * Returns the tel
+    *
+    * @return string
+    */
+    public function getTel() {
+        return $this->tel;
+    }
+
+    /**
+    * Sets the tel
+    *
+    * @param string $tel
+    * @return void
+    */
+    public function setTel($tel) {
+        $this->tel = $tel;
+    }
+    
+    /**
+    * Returns the fax
+    *
+    * @return string
+    */
+    public function getFax() {
+        return $this->fax;
+    }
+
+    /**
+    * Sets the fax
+    *
+    * @param string $fax
+    * @return void
+    */
+    public function setFax($fax) {
+        $this->fax = $fax;
+    }
+    
+    /**
+    * Returns the email
+    *
+    * @return string
+    */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
+    * Sets the email
+    *
+    * @param string $email
+    * @return void
+    */
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+    
+    /**
+    * Returns the www
+    *
+    * @return string
+    */
+    public function getWww() {
+        return $this->www;
+    }
+
+    /**
+    * Sets the www
+    *
+    * @param string $www
+    * @return void
+    */
+    public function setWww($www) {
+        $this->www = $www;
     }
     
     /**

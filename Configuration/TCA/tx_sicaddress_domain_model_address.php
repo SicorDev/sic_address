@@ -24,10 +24,10 @@ return array(
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sic_address') . 'Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories, firstName, country, place, plz, test, image,',
+        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories, company, street, city, tel, fax, email, www, image,',
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, categories, firstName, country, place, plz, test, image, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, categories, company, street, city, tel, fax, email, www, image, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -150,38 +150,9 @@ return array(
         ),
     
         
-        'firstName' => array(
+        'company' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.firstName',
-            'config' =>             array(
-                'type' => 'input',
-                'size' => 50,
-                'eval' => 'trim'
-            ),
-        ),
-        
-    
-        
-        'country' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.country',
-            'config' =>             array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('-- Label --', 0),
-                ),
-                'size' => 1,
-                'maxitems' => 1,
-                'eval' => ''
-            ),
-        ),
-        
-    
-        
-        'place' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.place',
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.company',
             'config' =>             array(
                 'type' => 'input',
                 'size' => 30,
@@ -191,21 +162,69 @@ return array(
         
     
         
-        'plz' => array(
+        'street' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.plz',
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.street',
             'config' =>             array(
                 'type' => 'input',
-                'size' => 4,
-                'eval' => 'int'
-            )
+                'size' => 30,
+                'eval' => 'trim'
+            ),
         ),
         
     
         
-        'test' => array(
+        'city' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.test',
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.city',
+            'config' =>             array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        
+    
+        
+        'tel' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.tel',
+            'config' =>             array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        
+    
+        
+        'fax' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.fax',
+            'config' =>             array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        
+    
+        
+        'email' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.email',
+            'config' =>             array(
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim'
+            ),
+        ),
+        
+    
+        
+        'www' => array(
+            'exclude' => 1,
+            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.www',
             'config' =>             array(
                 'type' => 'input',
                 'size' => 30,
@@ -218,48 +237,28 @@ return array(
         'image' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.image',
-            'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-        '',
-        array(
-                'appearance' => array(
-                        'createNewRelationLinkTitle' => 'LLL:EXT:cms/locallang_ttc.xlf:images.addFileReference'
-                ),
-                'foreign_types' => array(
-                        '0' => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
-                        ),
-                        \TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
-                                'showitem' => '
-                                --palette--;LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.imageoverlayPalette;imageoverlayPalette,
-                                --palette--;;filePalette'
+            'config' => array(
+        'maxitems' => 1,
+        'type' => 'inline',
+        'foreign_table' => 'sys_file_reference',
+        'foreign_field' => 'uid_foreign',
+        'foreign_sortby' => 'sorting_foreign',
+        'foreign_table_field' => 'tablenames',
+        'foreign_match_fields' => array(
+                'tablenames' => 'tx_sicaddress_domain_model_address',
+                'fieldname' => ''
+        ),
+        'foreign_label' => 'uid_local',
+        'foreign_selector' => 'uid_local',
+        'foreign_selector_fieldTcaOverride' => array(
+                'config' => array(
+                        'appearance' => array(
+                                'elementBrowserType' => 'file',
+                                'elementBrowserAllowed' => $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
                         )
                 )
-        ),
-        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+        )
 ),
-
         ),
         
     

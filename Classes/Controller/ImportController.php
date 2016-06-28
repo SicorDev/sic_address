@@ -97,6 +97,10 @@ class ImportController extends ModuleController {
         }
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
+        // Migrate images to FAL
+        $wizard = new \SICOR\SicAddress\Utility\FALImageWizard();
+        $wizard->migrateNicosImages();
+
         $this->redirect("list", "Module");
     }
 
@@ -113,5 +117,4 @@ class ImportController extends ModuleController {
             \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($sicaddress, $key, $value);
         return $sicaddress;
     }
-
 }

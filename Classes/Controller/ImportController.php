@@ -103,7 +103,7 @@ class ImportController extends ModuleController {
 
         $this->redirect("list", "Module");
     }
-
+    
     /**
      * Transform key/value array into sic_address entries
      *

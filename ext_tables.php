@@ -10,7 +10,6 @@ if (!defined('TYPO3_MODE')) {
 );
 
 $extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
-
 if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 
 	/**
@@ -22,7 +21,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 		'sicaddress',	// Submodule key
 		'',						// Position
 		array(
-			'Module' => 'list, create',
+			'Module' => 'list, create, createTableMapping, removeAllDomainProperties',
 			'Import' => 'migrateNicosDirectory',
 			'DomainProperty' => 'create, update, delete',
 		),
@@ -34,6 +33,8 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 	);
  
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');
 

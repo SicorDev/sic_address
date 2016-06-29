@@ -175,6 +175,14 @@ return array(
 				'maxitems' => 1,
 			),
 		),
+		'external' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_domainproperty.external',
+			'config' => array(
+				'type' => 'check',
+				'default' => 0
+			)
+		),
 		
 	),
 );

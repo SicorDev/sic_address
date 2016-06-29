@@ -41,39 +41,53 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * company
+    * gender
     *
     * @var string
     */
-    protected $company;
+    protected $gender;
     
     /**
-    * street
+    * name
     *
     * @var string
     */
-    protected $street;
+    protected $name;
     
     /**
-    * city
+    * first_name
     *
     * @var string
     */
-    protected $city;
+    protected $first_name;
     
     /**
-    * tel
+    * middle_name
     *
     * @var string
     */
-    protected $tel;
+    protected $middle_name;
     
     /**
-    * fax
+    * last_name
     *
     * @var string
     */
-    protected $fax;
+    protected $last_name;
+    
+    /**
+    * birthday
+    *
+    * @var string
+    */
+    protected $birthday;
+    
+    /**
+    * title
+    *
+    * @var string
+    */
+    protected $title;
     
     /**
     * email
@@ -83,6 +97,20 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $email;
     
     /**
+    * phone
+    *
+    * @var string
+    */
+    protected $phone;
+    
+    /**
+    * mobile
+    *
+    * @var string
+    */
+    protected $mobile;
+    
+    /**
     * www
     *
     * @var string
@@ -90,11 +118,144 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $www;
     
     /**
+    * address
+    *
+    * @var string
+    */
+    protected $address;
+    
+    /**
+    * building
+    *
+    * @var string
+    */
+    protected $building;
+    
+    /**
+    * room
+    *
+    * @var string
+    */
+    protected $room;
+    
+    /**
+    * company
+    *
+    * @var string
+    */
+    protected $company;
+    
+    /**
+    * position
+    *
+    * @var string
+    */
+    protected $position;
+    
+    /**
+    * city
+    *
+    * @var string
+    */
+    protected $city;
+    
+    /**
+    * zip
+    *
+    * @var string
+    */
+    protected $zip;
+    
+    /**
+    * region
+    *
+    * @var string
+    */
+    protected $region;
+    
+    /**
+    * country
+    *
+    * @var string
+    */
+    protected $country;
+    
+    /**
     * image
+    *
+    * @var string
+    */
+    protected $image;
+    
+    /**
+    * fax
+    *
+    * @var string
+    */
+    protected $fax;
+    
+    /**
+    * description
+    *
+    * @var string
+    */
+    protected $description;
+    
+    /**
+    * skype
+    *
+    * @var string
+    */
+    protected $skype;
+    
+    /**
+    * twitter
+    *
+    * @var string
+    */
+    protected $twitter;
+    
+    /**
+    * facebook
+    *
+    * @var string
+    */
+    protected $facebook;
+    
+    /**
+    * linkedin
+    *
+    * @var string
+    */
+    protected $linkedin;
+    
+    /**
+    * categories
+    *
+    * @var string
+    */
+    protected $categories;
+    
+    /**
+    * latitude
+    *
+    * @var string
+    */
+    protected $latitude;
+    
+    /**
+    * longitude
+    *
+    * @var string
+    */
+    protected $longitude;
+    
+    /**
+    * hans
     *
     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
     */
-    protected $image;
+    protected $hans;
     
 
     /**
@@ -164,98 +325,136 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * Returns the company
+    * Returns the gender
     *
     * @return string
     */
-    public function getCompany() {
-        return $this->company;
+    public function getGender() {
+        return $this->gender;
     }
 
     /**
-    * Sets the company
+    * Sets the gender
     *
-    * @param string $company
+    * @param string $gender
     * @return void
     */
-    public function setCompany($company) {
-        $this->company = $company;
+    public function setGender($gender) {
+        $this->gender = $gender;
     }
     
     /**
-    * Returns the street
+    * Returns the name
     *
     * @return string
     */
-    public function getStreet() {
-        return $this->street;
+    public function getName() {
+        return $this->name;
     }
 
     /**
-    * Sets the street
+    * Sets the name
     *
-    * @param string $street
+    * @param string $name
     * @return void
     */
-    public function setStreet($street) {
-        $this->street = $street;
+    public function setName($name) {
+        $this->name = $name;
     }
     
     /**
-    * Returns the city
+    * Returns the first_name
     *
     * @return string
     */
-    public function getCity() {
-        return $this->city;
+    public function getFirst_name() {
+        return $this->first_name;
     }
 
     /**
-    * Sets the city
+    * Sets the first_name
     *
-    * @param string $city
+    * @param string $first_name
     * @return void
     */
-    public function setCity($city) {
-        $this->city = $city;
+    public function setFirst_name($first_name) {
+        $this->first_name = $first_name;
     }
     
     /**
-    * Returns the tel
+    * Returns the middle_name
     *
     * @return string
     */
-    public function getTel() {
-        return $this->tel;
+    public function getMiddle_name() {
+        return $this->middle_name;
     }
 
     /**
-    * Sets the tel
+    * Sets the middle_name
     *
-    * @param string $tel
+    * @param string $middle_name
     * @return void
     */
-    public function setTel($tel) {
-        $this->tel = $tel;
+    public function setMiddle_name($middle_name) {
+        $this->middle_name = $middle_name;
     }
     
     /**
-    * Returns the fax
+    * Returns the last_name
     *
     * @return string
     */
-    public function getFax() {
-        return $this->fax;
+    public function getLast_name() {
+        return $this->last_name;
     }
 
     /**
-    * Sets the fax
+    * Sets the last_name
     *
-    * @param string $fax
+    * @param string $last_name
     * @return void
     */
-    public function setFax($fax) {
-        $this->fax = $fax;
+    public function setLast_name($last_name) {
+        $this->last_name = $last_name;
+    }
+    
+    /**
+    * Returns the birthday
+    *
+    * @return string
+    */
+    public function getBirthday() {
+        return $this->birthday;
+    }
+
+    /**
+    * Sets the birthday
+    *
+    * @param string $birthday
+    * @return void
+    */
+    public function setBirthday($birthday) {
+        $this->birthday = $birthday;
+    }
+    
+    /**
+    * Returns the title
+    *
+    * @return string
+    */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+    * Sets the title
+    *
+    * @param string $title
+    * @return void
+    */
+    public function setTitle($title) {
+        $this->title = $title;
     }
     
     /**
@@ -278,6 +477,44 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
+    * Returns the phone
+    *
+    * @return string
+    */
+    public function getPhone() {
+        return $this->phone;
+    }
+
+    /**
+    * Sets the phone
+    *
+    * @param string $phone
+    * @return void
+    */
+    public function setPhone($phone) {
+        $this->phone = $phone;
+    }
+    
+    /**
+    * Returns the mobile
+    *
+    * @return string
+    */
+    public function getMobile() {
+        return $this->mobile;
+    }
+
+    /**
+    * Sets the mobile
+    *
+    * @param string $mobile
+    * @return void
+    */
+    public function setMobile($mobile) {
+        $this->mobile = $mobile;
+    }
+    
+    /**
     * Returns the www
     *
     * @return string
@@ -297,9 +534,180 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
+    * Returns the address
+    *
+    * @return string
+    */
+    public function getAddress() {
+        return $this->address;
+    }
+
+    /**
+    * Sets the address
+    *
+    * @param string $address
+    * @return void
+    */
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+    
+    /**
+    * Returns the building
+    *
+    * @return string
+    */
+    public function getBuilding() {
+        return $this->building;
+    }
+
+    /**
+    * Sets the building
+    *
+    * @param string $building
+    * @return void
+    */
+    public function setBuilding($building) {
+        $this->building = $building;
+    }
+    
+    /**
+    * Returns the room
+    *
+    * @return string
+    */
+    public function getRoom() {
+        return $this->room;
+    }
+
+    /**
+    * Sets the room
+    *
+    * @param string $room
+    * @return void
+    */
+    public function setRoom($room) {
+        $this->room = $room;
+    }
+    
+    /**
+    * Returns the company
+    *
+    * @return string
+    */
+    public function getCompany() {
+        return $this->company;
+    }
+
+    /**
+    * Sets the company
+    *
+    * @param string $company
+    * @return void
+    */
+    public function setCompany($company) {
+        $this->company = $company;
+    }
+    
+    /**
+    * Returns the position
+    *
+    * @return string
+    */
+    public function getPosition() {
+        return $this->position;
+    }
+
+    /**
+    * Sets the position
+    *
+    * @param string $position
+    * @return void
+    */
+    public function setPosition($position) {
+        $this->position = $position;
+    }
+    
+    /**
+    * Returns the city
+    *
+    * @return string
+    */
+    public function getCity() {
+        return $this->city;
+    }
+
+    /**
+    * Sets the city
+    *
+    * @param string $city
+    * @return void
+    */
+    public function setCity($city) {
+        $this->city = $city;
+    }
+    
+    /**
+    * Returns the zip
+    *
+    * @return string
+    */
+    public function getZip() {
+        return $this->zip;
+    }
+
+    /**
+    * Sets the zip
+    *
+    * @param string $zip
+    * @return void
+    */
+    public function setZip($zip) {
+        $this->zip = $zip;
+    }
+    
+    /**
+    * Returns the region
+    *
+    * @return string
+    */
+    public function getRegion() {
+        return $this->region;
+    }
+
+    /**
+    * Sets the region
+    *
+    * @param string $region
+    * @return void
+    */
+    public function setRegion($region) {
+        $this->region = $region;
+    }
+    
+    /**
+    * Returns the country
+    *
+    * @return string
+    */
+    public function getCountry() {
+        return $this->country;
+    }
+
+    /**
+    * Sets the country
+    *
+    * @param string $country
+    * @return void
+    */
+    public function setCountry($country) {
+        $this->country = $country;
+    }
+    
+    /**
     * Returns the image
     *
-    * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+    * @return string
     */
     public function getImage() {
         return $this->image;
@@ -308,11 +716,201 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
     * Sets the image
     *
-    * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $image
+    * @param string $image
     * @return void
     */
     public function setImage($image) {
         $this->image = $image;
+    }
+    
+    /**
+    * Returns the fax
+    *
+    * @return string
+    */
+    public function getFax() {
+        return $this->fax;
+    }
+
+    /**
+    * Sets the fax
+    *
+    * @param string $fax
+    * @return void
+    */
+    public function setFax($fax) {
+        $this->fax = $fax;
+    }
+    
+    /**
+    * Returns the description
+    *
+    * @return string
+    */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+    * Sets the description
+    *
+    * @param string $description
+    * @return void
+    */
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+    
+    /**
+    * Returns the skype
+    *
+    * @return string
+    */
+    public function getSkype() {
+        return $this->skype;
+    }
+
+    /**
+    * Sets the skype
+    *
+    * @param string $skype
+    * @return void
+    */
+    public function setSkype($skype) {
+        $this->skype = $skype;
+    }
+    
+    /**
+    * Returns the twitter
+    *
+    * @return string
+    */
+    public function getTwitter() {
+        return $this->twitter;
+    }
+
+    /**
+    * Sets the twitter
+    *
+    * @param string $twitter
+    * @return void
+    */
+    public function setTwitter($twitter) {
+        $this->twitter = $twitter;
+    }
+    
+    /**
+    * Returns the facebook
+    *
+    * @return string
+    */
+    public function getFacebook() {
+        return $this->facebook;
+    }
+
+    /**
+    * Sets the facebook
+    *
+    * @param string $facebook
+    * @return void
+    */
+    public function setFacebook($facebook) {
+        $this->facebook = $facebook;
+    }
+    
+    /**
+    * Returns the linkedin
+    *
+    * @return string
+    */
+    public function getLinkedin() {
+        return $this->linkedin;
+    }
+
+    /**
+    * Sets the linkedin
+    *
+    * @param string $linkedin
+    * @return void
+    */
+    public function setLinkedin($linkedin) {
+        $this->linkedin = $linkedin;
+    }
+    
+    /**
+    * Returns the categories
+    *
+    * @return string
+    */
+    public function getCategories() {
+        return $this->categories;
+    }
+
+    /**
+    * Sets the categories
+    *
+    * @param string $categories
+    * @return void
+    */
+    public function setCategories($categories) {
+        $this->categories = $categories;
+    }
+    
+    /**
+    * Returns the latitude
+    *
+    * @return string
+    */
+    public function getLatitude() {
+        return $this->latitude;
+    }
+
+    /**
+    * Sets the latitude
+    *
+    * @param string $latitude
+    * @return void
+    */
+    public function setLatitude($latitude) {
+        $this->latitude = $latitude;
+    }
+    
+    /**
+    * Returns the longitude
+    *
+    * @return string
+    */
+    public function getLongitude() {
+        return $this->longitude;
+    }
+
+    /**
+    * Sets the longitude
+    *
+    * @param string $longitude
+    * @return void
+    */
+    public function setLongitude($longitude) {
+        $this->longitude = $longitude;
+    }
+    
+    /**
+    * Returns the hans
+    *
+    * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
+    */
+    public function getHans() {
+        return $this->hans;
+    }
+
+    /**
+    * Sets the hans
+    *
+    * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $hans
+    * @return void
+    */
+    public function setHans($hans) {
+        $this->hans = $hans;
     }
     
 

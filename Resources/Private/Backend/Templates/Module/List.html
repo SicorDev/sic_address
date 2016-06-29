@@ -65,12 +65,28 @@
             </f:else>
         </f:if>
     </div>
+    <hr />
 
-    <f:link.action class="btn btn-primary" action="create">Generate Model, TCA, i18n, DB</f:link.action>
+    <div class="row">
+        <div class="col-sm-2"><f:link.action class="btn btn-primary" action="create">Generate Model, TCA, i18n, DB</f:link.action></div>
+        <div class="col-sm-2 col-sm-offset-8"><f:link.action class="btn btn-danger" action="removeAllDomainProperties">Clear Field Definition</f:link.action></div>
+    </div>
 
-    <hr/>
+    <hr />
 
     <h2><f:translate key="BackendImporterListTitle" /></h2>
+
+    <hr />
+
+    <f:form action="createTableMapping">
+        <div class="row">
+            <div class="col-sm-2"><f:form.textfield id="schemaName" name="schema" value="" placeholder="Name der Datenbank"/></div>
+            <div class="col-sm-2"><f:form.submit class="btn btn-primary" value="Import tt_address Field Definition" /></div>
+        </div>
+    </f:form>
+
+    <hr />
+
     <f:form action="migrateNicosDirectory" controller="Import">
         <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />
     </f:form>

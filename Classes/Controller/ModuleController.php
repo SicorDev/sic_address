@@ -124,27 +124,58 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $errorMessages = array();
 
         // Model
-        if(!$this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration))
+        if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration))
             $errorMessages[] = "Unable to save Model: Address.php";
         // SQL
-        if(!$this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration()))
+        if (!$this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration()))
             $errorMessages[] = "Unable to save SQL: ext_tables.sql";
         // TCA
-        if(!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
+        if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
             $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
         // Language
-        if(!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
+        if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
-
-        //@TODO Rückwärts gehen -> Felder nach tt_address Schema anlegen
-        if($this->extbaseExtensionConfiguration["AdditionalTable"]) {
-            // Table Mapping
-            if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->configuration))
-                $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
-        }
+        // Table Mapping
+        if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->extbaseExtensionConfiguration))
+            $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
+        // Table Mapping Override
+        if(!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
+            $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
 
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
+    }
+
+    /**
+     * action createTableMapping
+     *
+     * @return void
+     */
+    public function createTableMappingAction() {
+        if($this->request->hasArgument("schema") && $this->extbaseExtensionConfiguration["ttAddressMapping"]) {
+            $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
+            while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
+                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted)$/", $category["COLUMN_NAME"]) === 0) {
+                    $domainProperty = new DomainProperty();
+                    $domainProperty->setTitle($category["COLUMN_NAME"]);
+                    $domainProperty->setType("string");
+                    $domainProperty->setExternal(true);
+
+                    $this->domainPropertyRepository->add($domainProperty);
+                }
+            }
+        }
+
+        $this->redirect("list");
+    }
+
+    /**
+     * Clear DomainProperties
+     */
+    public function removeAllDomainPropertiesAction() {
+        $this->domainPropertyRepository->removeAll();
+
+        $this->redirect("list");
     }
 
     /**
@@ -168,28 +199,31 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getTCAConfiguration() {
         $tca = array();
         foreach($this->configuration as $key => $value) {
-            $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
+            if(!$value->getExternal()) {
+                $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
 
-            $config = file_get_contents($templatePathAndFilename);
+                $config = file_get_contents($templatePathAndFilename);
 
-            // TCA Override
-            if($value->getTcaOverride()) {
-                $config = $value->getTcaOverride();
+                // TCA Override
+                if ($value->getTcaOverride()) {
+                    $config = $value->getTcaOverride();
+                }
+
+                // TCA Settings
+                // @TODO -> Allgemeines Konfigurationsformat festlegen
+                if ($value->getSettings()) {
+                    $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+                    $customView->setTemplatePathAndFilename($templatePathAndFilename);
+
+                    $settings = array();
+                    parse_str($value->getSettings(), $settings);
+                    $customView->assign("properties", $settings);
+
+                    $config = $customView->render();
+                }
+
+                $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extbaseExtensionConfiguration["ttAddressMapping"]);
             }
-
-            // TCA Settings
-            if($value->getSettings()) {
-                $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-                $customView->setTemplatePathAndFilename($templatePathAndFilename);
-
-                $settings = array();
-                parse_str($value->getSettings(), $settings);
-                $customView->assign("properties", $settings);
-
-                $config = $customView->render();
-            }
-
-            $tca[] = array("title" => $value->getTitle(), "config" => $config);
         }
         return $tca;
     }
@@ -206,17 +240,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         $templatePathAndFilename = $this->templateRootPath . $filename;
-
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
+        $customView->setPartialRootPath($templatePathAndFilename);
+        $customView->assign("settings", $this->extbaseExtensionConfiguration);
         $customView->assign("properties", $properties);
-
         $content = $customView->render();
 
         $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
-        if(is_writable($filename) && file_put_contents($filename, $content))
-            return true;
-        else
-            return false;
+        return is_writable($filename) && (file_put_contents($filename, $content) !== false);
     }
 
     /**

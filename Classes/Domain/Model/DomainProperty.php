@@ -71,8 +71,15 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @var bool
      */
-    protected $isListLabel = false;
-    
+    protected $isListLabel;
+
+    /**
+     * external
+     *
+     * @var bool
+     */
+    protected $external;
+
     /**
      * DomainProperty constructor.
      * @param string $title
@@ -199,7 +206,7 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return $this->isListLabel;
     }
-    
+
     /**
      * Sets the isListLabel
      *
@@ -209,6 +216,27 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setIsListLabel($isListLabel)
     {
         $this->isListLabel = $isListLabel;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExternal() {
+        return $this->external;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExternal() {
+        return $this->external;
+    }
+
+    /**
+     * @param boolean $external
+     */
+    public function setExternal($external) {
+        $this->external = $external;
     }
 
 }

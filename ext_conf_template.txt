@@ -5,8 +5,8 @@ enableDirectoryBrowsing = 0
   # cat=basic/enable/20; type=boolean; label=Developer Mode: Enables the backend module with the field configurator.
 developerMode = 0
 
-  # cat=basic/enable/30; type=string; label=Additional Table: Choose an additional table to use, e.g. tt_address
-AdditionalTable = tt_address
+  # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
+ttAddressMapping = 0
 
   # cat=basic/enable/40; type=options[Vianovis,Google]; label=Map Type: Choose either Vianovis or Google.
 mapType = Vianovis

@@ -5,7 +5,6 @@ config.tx_extbase{
             TYPO3\CMS\Extbase\Domain\Model\Category {
                 subclasses {
                     Tx_SicAddress_Category = SICOR\SicAddress\Domain\Model\Category
-
                 }
             }
             SICOR\SicAddress\Domain\Model\Category {
@@ -14,7 +13,14 @@ config.tx_extbase{
                     recordType = Tx_SicAddress_Category
                 }
             }
-
+        <f:if condition="{properties.ttAddressMapping}">
+            SICOR\SicAddress\Domain\Model\Address {
+                mapping {
+                    tableName = tt_address
+                    recordType = Tx_SicAddress_Address
+                }
+             }
+        </f:if>
         }
     }
 }

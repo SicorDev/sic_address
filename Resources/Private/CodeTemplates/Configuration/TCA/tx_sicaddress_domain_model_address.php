@@ -150,11 +150,11 @@ return array(
         ),
     <f:for each="{properties}" as="field">
         <f:format.htmlentitiesDecode>
-        '{field.title}' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.{field.title}',
-            'config' => {field.config}
-        ),
+    '{field.title}' => array(
+        'exclude' => 1,
+        'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.{field.title}',
+        'config' => {field.config}
+    ),
         </f:format.htmlentitiesDecode>
     </f:for>
     ),

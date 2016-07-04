@@ -39,7 +39,21 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @inject
      */
     protected $addressRepository = NULL;
-    
+
+    /**
+     * Holds the Extension configuration
+     *
+     * @var array
+     */
+    protected $extensionConfiguration = NULL;
+
+    /**
+     * Called before any action
+     */
+    public function initializeAction() {
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+    }
+
     /**
      * action list
      *
@@ -49,6 +63,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $addresses = $this->addressRepository->findAll();
         $this->view->assign('addresses', $addresses);
+
+        $this->setConfiguredTemplate();
     }
     
     /**
@@ -123,4 +139,19 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->redirect('list');
     }
 
+
+    /**
+     *  Helper method
+     */
+    public function setConfiguredTemplate() {
+        switch($this->extensionConfiguration["templateSet"]) {
+            case 'nicosdir': $this->view->setTemplatePathAndFilename('typo3conf\ext\sic_address\Resources\Private\Templates\Address\NicosList.html'); break;
+            case 'spdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
+            case 'wtdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
+            case 'mmdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
+            case 'company': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
+        }
+    }
 }
+
+

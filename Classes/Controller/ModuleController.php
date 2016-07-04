@@ -70,11 +70,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $extbaseFrameworkConfiguration = NULL;
 
     /**
-     * Holds the ExtensionManager configuration
+     * Holds the Extension configuration
      *
      * @var array
      */
-    protected $extbaseExtensionConfiguration = NULL;
+    protected $extensionConfiguration = NULL;
 
     /**
      * Template Root Path
@@ -88,7 +88,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function initializeAction() {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->extbaseExtensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
         $this->configuration = $this->domainPropertyRepository->findAll();
@@ -136,7 +136,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
         // Table Mapping
-        if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->extbaseExtensionConfiguration))
+        if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
         // Table Mapping Override
         if(!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
@@ -152,7 +152,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     public function createTableMappingAction() {
-        if($this->request->hasArgument("schema") && $this->extbaseExtensionConfiguration["ttAddressMapping"]) {
+        if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
             $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
             while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
                 if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted)$/", $category["COLUMN_NAME"]) === 0) {
@@ -222,7 +222,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $config = $customView->render();
                 }
 
-                $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extbaseExtensionConfiguration["ttAddressMapping"]);
+                $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
             }
         }
         return $tca;
@@ -242,7 +242,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $templatePathAndFilename = $this->templateRootPath . $filename;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPath($templatePathAndFilename);
-        $customView->assign("settings", $this->extbaseExtensionConfiguration);
+        $customView->assign("settings", $this->extensionConfiguration);
         $customView->assign("properties", $properties);
         $content = $customView->render();
 

@@ -18,6 +18,18 @@
 			<trans-unit id="BackendImporterListTitle">
 				<source>Importer</source>
 			</trans-unit>
+			<trans-unit id="label_switchAction">
+				<source>Ansicht</source>
+			</trans-unit>
+			<trans-unit id="label_list">
+				<source>Liste</source>
+			</trans-unit>
+			<trans-unit id="label_detail">
+				<source>Detail</source>
+			</trans-unit>
+			<trans-unit id="label_atozField">
+				<source>A-Z Feld</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

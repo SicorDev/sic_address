@@ -24,67 +24,21 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_diffsource mediumblob,
 
 	
-	gender varchar(255) DEFAULT '' NOT NULL,
-	
-	name varchar(255) DEFAULT '' NOT NULL,
-	
-	first_name varchar(255) DEFAULT '' NOT NULL,
-	
-	middle_name varchar(255) DEFAULT '' NOT NULL,
-	
-	last_name varchar(255) DEFAULT '' NOT NULL,
-	
-	birthday varchar(255) DEFAULT '' NOT NULL,
-	
-	title varchar(255) DEFAULT '' NOT NULL,
-	
-	email varchar(255) DEFAULT '' NOT NULL,
-	
-	phone varchar(255) DEFAULT '' NOT NULL,
-	
-	mobile varchar(255) DEFAULT '' NOT NULL,
-	
-	www varchar(255) DEFAULT '' NOT NULL,
-	
-	address varchar(255) DEFAULT '' NOT NULL,
-	
-	building varchar(255) DEFAULT '' NOT NULL,
-	
-	room varchar(255) DEFAULT '' NOT NULL,
-	
 	company varchar(255) DEFAULT '' NOT NULL,
 	
-	position varchar(255) DEFAULT '' NOT NULL,
+	street varchar(255) DEFAULT '' NOT NULL,
 	
 	city varchar(255) DEFAULT '' NOT NULL,
 	
-	zip varchar(255) DEFAULT '' NOT NULL,
-	
-	region varchar(255) DEFAULT '' NOT NULL,
-	
-	country varchar(255) DEFAULT '' NOT NULL,
-	
-	image varchar(255) DEFAULT '' NOT NULL,
+	tel varchar(255) DEFAULT '' NOT NULL,
 	
 	fax varchar(255) DEFAULT '' NOT NULL,
 	
-	description varchar(255) DEFAULT '' NOT NULL,
+	email varchar(255) DEFAULT '' NOT NULL,
 	
-	skype varchar(255) DEFAULT '' NOT NULL,
+	www varchar(255) DEFAULT '' NOT NULL,
 	
-	twitter varchar(255) DEFAULT '' NOT NULL,
-	
-	facebook varchar(255) DEFAULT '' NOT NULL,
-	
-	linkedin varchar(255) DEFAULT '' NOT NULL,
-	
-	categories varchar(255) DEFAULT '' NOT NULL,
-	
-	latitude varchar(255) DEFAULT '' NOT NULL,
-	
-	longitude varchar(255) DEFAULT '' NOT NULL,
-	
-	hans int(11) unsigned DEFAULT '0' NOT NULL,
+	image int(11) unsigned DEFAULT '0' NOT NULL,
 	
 
 	PRIMARY KEY (uid),

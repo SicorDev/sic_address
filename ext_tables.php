@@ -9,6 +9,13 @@ if (!defined('TYPO3_MODE')) {
 	'Adressverwaltung'
 );
 
+$extensionName = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));
+$pluginName = strtolower('sicaddress');
+$pluginSignature = $extensionName.'_'.$pluginName;
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:'.$_EXTKEY . '/Configuration/FlexForms/flexform_sicaddresslist.xml');
+
 $extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
 if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
 

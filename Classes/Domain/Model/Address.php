@@ -41,104 +41,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * gender
-    *
-    * @var string
-    */
-    protected $gender;
-    
-    /**
-    * name
-    *
-    * @var string
-    */
-    protected $name;
-    
-    /**
-    * first_name
-    *
-    * @var string
-    */
-    protected $first_name;
-    
-    /**
-    * middle_name
-    *
-    * @var string
-    */
-    protected $middle_name;
-    
-    /**
-    * last_name
-    *
-    * @var string
-    */
-    protected $last_name;
-    
-    /**
-    * birthday
-    *
-    * @var string
-    */
-    protected $birthday;
-    
-    /**
-    * title
-    *
-    * @var string
-    */
-    protected $title;
-    
-    /**
-    * email
-    *
-    * @var string
-    */
-    protected $email;
-    
-    /**
-    * phone
-    *
-    * @var string
-    */
-    protected $phone;
-    
-    /**
-    * mobile
-    *
-    * @var string
-    */
-    protected $mobile;
-    
-    /**
-    * www
-    *
-    * @var string
-    */
-    protected $www;
-    
-    /**
-    * address
-    *
-    * @var string
-    */
-    protected $address;
-    
-    /**
-    * building
-    *
-    * @var string
-    */
-    protected $building;
-    
-    /**
-    * room
-    *
-    * @var string
-    */
-    protected $room;
-    
-    /**
     * company
     *
     * @var string
@@ -146,11 +48,11 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $company;
     
     /**
-    * position
+    * street
     *
     * @var string
     */
-    protected $position;
+    protected $street;
     
     /**
     * city
@@ -160,32 +62,11 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $city;
     
     /**
-    * zip
+    * tel
     *
     * @var string
     */
-    protected $zip;
-    
-    /**
-    * region
-    *
-    * @var string
-    */
-    protected $region;
-    
-    /**
-    * country
-    *
-    * @var string
-    */
-    protected $country;
-    
-    /**
-    * image
-    *
-    * @var string
-    */
-    protected $image;
+    protected $tel;
     
     /**
     * fax
@@ -195,67 +76,25 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $fax;
     
     /**
-    * description
+    * email
     *
     * @var string
     */
-    protected $description;
+    protected $email;
     
     /**
-    * skype
+    * www
     *
     * @var string
     */
-    protected $skype;
+    protected $www;
     
     /**
-    * twitter
-    *
-    * @var string
-    */
-    protected $twitter;
-    
-    /**
-    * facebook
-    *
-    * @var string
-    */
-    protected $facebook;
-    
-    /**
-    * linkedin
-    *
-    * @var string
-    */
-    protected $linkedin;
-    
-    /**
-    * categories
-    *
-    * @var string
-    */
-    protected $categories;
-    
-    /**
-    * latitude
-    *
-    * @var string
-    */
-    protected $latitude;
-    
-    /**
-    * longitude
-    *
-    * @var string
-    */
-    protected $longitude;
-    
-    /**
-    * hans
+    * image
     *
     * @var \TYPO3\CMS\Extbase\Domain\Model\FileReference
     */
-    protected $hans;
+    protected $image;
     
 
     /**
@@ -325,272 +164,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     
     /**
-    * Returns the gender
-    *
-    * @return string
-    */
-    public function getGender() {
-        return $this->gender;
-    }
-
-    /**
-    * Sets the gender
-    *
-    * @param string $gender
-    * @return void
-    */
-    public function setGender($gender) {
-        $this->gender = $gender;
-    }
-    
-    /**
-    * Returns the name
-    *
-    * @return string
-    */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-    * Sets the name
-    *
-    * @param string $name
-    * @return void
-    */
-    public function setName($name) {
-        $this->name = $name;
-    }
-    
-    /**
-    * Returns the first_name
-    *
-    * @return string
-    */
-    public function getFirst_name() {
-        return $this->first_name;
-    }
-
-    /**
-    * Sets the first_name
-    *
-    * @param string $first_name
-    * @return void
-    */
-    public function setFirst_name($first_name) {
-        $this->first_name = $first_name;
-    }
-    
-    /**
-    * Returns the middle_name
-    *
-    * @return string
-    */
-    public function getMiddle_name() {
-        return $this->middle_name;
-    }
-
-    /**
-    * Sets the middle_name
-    *
-    * @param string $middle_name
-    * @return void
-    */
-    public function setMiddle_name($middle_name) {
-        $this->middle_name = $middle_name;
-    }
-    
-    /**
-    * Returns the last_name
-    *
-    * @return string
-    */
-    public function getLast_name() {
-        return $this->last_name;
-    }
-
-    /**
-    * Sets the last_name
-    *
-    * @param string $last_name
-    * @return void
-    */
-    public function setLast_name($last_name) {
-        $this->last_name = $last_name;
-    }
-    
-    /**
-    * Returns the birthday
-    *
-    * @return string
-    */
-    public function getBirthday() {
-        return $this->birthday;
-    }
-
-    /**
-    * Sets the birthday
-    *
-    * @param string $birthday
-    * @return void
-    */
-    public function setBirthday($birthday) {
-        $this->birthday = $birthday;
-    }
-    
-    /**
-    * Returns the title
-    *
-    * @return string
-    */
-    public function getTitle() {
-        return $this->title;
-    }
-
-    /**
-    * Sets the title
-    *
-    * @param string $title
-    * @return void
-    */
-    public function setTitle($title) {
-        $this->title = $title;
-    }
-    
-    /**
-    * Returns the email
-    *
-    * @return string
-    */
-    public function getEmail() {
-        return $this->email;
-    }
-
-    /**
-    * Sets the email
-    *
-    * @param string $email
-    * @return void
-    */
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-    
-    /**
-    * Returns the phone
-    *
-    * @return string
-    */
-    public function getPhone() {
-        return $this->phone;
-    }
-
-    /**
-    * Sets the phone
-    *
-    * @param string $phone
-    * @return void
-    */
-    public function setPhone($phone) {
-        $this->phone = $phone;
-    }
-    
-    /**
-    * Returns the mobile
-    *
-    * @return string
-    */
-    public function getMobile() {
-        return $this->mobile;
-    }
-
-    /**
-    * Sets the mobile
-    *
-    * @param string $mobile
-    * @return void
-    */
-    public function setMobile($mobile) {
-        $this->mobile = $mobile;
-    }
-    
-    /**
-    * Returns the www
-    *
-    * @return string
-    */
-    public function getWww() {
-        return $this->www;
-    }
-
-    /**
-    * Sets the www
-    *
-    * @param string $www
-    * @return void
-    */
-    public function setWww($www) {
-        $this->www = $www;
-    }
-    
-    /**
-    * Returns the address
-    *
-    * @return string
-    */
-    public function getAddress() {
-        return $this->address;
-    }
-
-    /**
-    * Sets the address
-    *
-    * @param string $address
-    * @return void
-    */
-    public function setAddress($address) {
-        $this->address = $address;
-    }
-    
-    /**
-    * Returns the building
-    *
-    * @return string
-    */
-    public function getBuilding() {
-        return $this->building;
-    }
-
-    /**
-    * Sets the building
-    *
-    * @param string $building
-    * @return void
-    */
-    public function setBuilding($building) {
-        $this->building = $building;
-    }
-    
-    /**
-    * Returns the room
-    *
-    * @return string
-    */
-    public function getRoom() {
-        return $this->room;
-    }
-
-    /**
-    * Sets the room
-    *
-    * @param string $room
-    * @return void
-    */
-    public function setRoom($room) {
-        $this->room = $room;
-    }
-    
-    /**
     * Returns the company
     *
     * @return string
@@ -610,22 +183,22 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
-    * Returns the position
+    * Returns the street
     *
     * @return string
     */
-    public function getPosition() {
-        return $this->position;
+    public function getStreet() {
+        return $this->street;
     }
 
     /**
-    * Sets the position
+    * Sets the street
     *
-    * @param string $position
+    * @param string $street
     * @return void
     */
-    public function setPosition($position) {
-        $this->position = $position;
+    public function setStreet($street) {
+        $this->street = $street;
     }
     
     /**
@@ -648,79 +221,22 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
-    * Returns the zip
+    * Returns the tel
     *
     * @return string
     */
-    public function getZip() {
-        return $this->zip;
+    public function getTel() {
+        return $this->tel;
     }
 
     /**
-    * Sets the zip
+    * Sets the tel
     *
-    * @param string $zip
+    * @param string $tel
     * @return void
     */
-    public function setZip($zip) {
-        $this->zip = $zip;
-    }
-    
-    /**
-    * Returns the region
-    *
-    * @return string
-    */
-    public function getRegion() {
-        return $this->region;
-    }
-
-    /**
-    * Sets the region
-    *
-    * @param string $region
-    * @return void
-    */
-    public function setRegion($region) {
-        $this->region = $region;
-    }
-    
-    /**
-    * Returns the country
-    *
-    * @return string
-    */
-    public function getCountry() {
-        return $this->country;
-    }
-
-    /**
-    * Sets the country
-    *
-    * @param string $country
-    * @return void
-    */
-    public function setCountry($country) {
-        $this->country = $country;
-    }
-    
-    /**
-    * Returns the image
-    *
-    * @return string
-    */
-    public function getImage() {
-        return $this->image;
-    }
-
-    /**
-    * Sets the image
-    *
-    * @param string $image
-    * @return void
-    */
-    public function setImage($image) {
-        $this->image = $image;
+    public function setTel($tel) {
+        $this->tel = $tel;
     }
     
     /**
@@ -743,174 +259,60 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
     
     /**
-    * Returns the description
+    * Returns the email
     *
     * @return string
     */
-    public function getDescription() {
-        return $this->description;
+    public function getEmail() {
+        return $this->email;
     }
 
     /**
-    * Sets the description
+    * Sets the email
     *
-    * @param string $description
+    * @param string $email
     * @return void
     */
-    public function setDescription($description) {
-        $this->description = $description;
+    public function setEmail($email) {
+        $this->email = $email;
     }
     
     /**
-    * Returns the skype
+    * Returns the www
     *
     * @return string
     */
-    public function getSkype() {
-        return $this->skype;
+    public function getWww() {
+        return $this->www;
     }
 
     /**
-    * Sets the skype
+    * Sets the www
     *
-    * @param string $skype
+    * @param string $www
     * @return void
     */
-    public function setSkype($skype) {
-        $this->skype = $skype;
+    public function setWww($www) {
+        $this->www = $www;
     }
     
     /**
-    * Returns the twitter
-    *
-    * @return string
-    */
-    public function getTwitter() {
-        return $this->twitter;
-    }
-
-    /**
-    * Sets the twitter
-    *
-    * @param string $twitter
-    * @return void
-    */
-    public function setTwitter($twitter) {
-        $this->twitter = $twitter;
-    }
-    
-    /**
-    * Returns the facebook
-    *
-    * @return string
-    */
-    public function getFacebook() {
-        return $this->facebook;
-    }
-
-    /**
-    * Sets the facebook
-    *
-    * @param string $facebook
-    * @return void
-    */
-    public function setFacebook($facebook) {
-        $this->facebook = $facebook;
-    }
-    
-    /**
-    * Returns the linkedin
-    *
-    * @return string
-    */
-    public function getLinkedin() {
-        return $this->linkedin;
-    }
-
-    /**
-    * Sets the linkedin
-    *
-    * @param string $linkedin
-    * @return void
-    */
-    public function setLinkedin($linkedin) {
-        $this->linkedin = $linkedin;
-    }
-    
-    /**
-    * Returns the categories
-    *
-    * @return string
-    */
-    public function getCategories() {
-        return $this->categories;
-    }
-
-    /**
-    * Sets the categories
-    *
-    * @param string $categories
-    * @return void
-    */
-    public function setCategories($categories) {
-        $this->categories = $categories;
-    }
-    
-    /**
-    * Returns the latitude
-    *
-    * @return string
-    */
-    public function getLatitude() {
-        return $this->latitude;
-    }
-
-    /**
-    * Sets the latitude
-    *
-    * @param string $latitude
-    * @return void
-    */
-    public function setLatitude($latitude) {
-        $this->latitude = $latitude;
-    }
-    
-    /**
-    * Returns the longitude
-    *
-    * @return string
-    */
-    public function getLongitude() {
-        return $this->longitude;
-    }
-
-    /**
-    * Sets the longitude
-    *
-    * @param string $longitude
-    * @return void
-    */
-    public function setLongitude($longitude) {
-        $this->longitude = $longitude;
-    }
-    
-    /**
-    * Returns the hans
+    * Returns the image
     *
     * @return \TYPO3\CMS\Extbase\Domain\Model\FileReference
     */
-    public function getHans() {
-        return $this->hans;
+    public function getImage() {
+        return $this->image;
     }
 
     /**
-    * Sets the hans
+    * Sets the image
     *
-    * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $hans
+    * @param \TYPO3\CMS\Extbase\Domain\Model\FileReference $image
     * @return void
     */
-    public function setHans($hans) {
-        $this->hans = $hans;
+    public function setImage($image) {
+        $this->image = $image;
     }
     
 

@@ -47,128 +47,36 @@
 			</trans-unit>
 
 			
-            <trans-unit id="tx_sicaddress_domain_model_address.gender">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.name">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.first_name">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.middle_name">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.last_name">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.birthday">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.title">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.email">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.phone">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.mobile">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.www">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.address">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.building">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.room">
-                <source></source>
-            </trans-unit>
-            
             <trans-unit id="tx_sicaddress_domain_model_address.company">
-                <source></source>
+                <source>company</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.position">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.street">
+                <source>street</source>
             </trans-unit>
             
             <trans-unit id="tx_sicaddress_domain_model_address.city">
-                <source></source>
+                <source>city</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.zip">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.region">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.country">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.image">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.tel">
+                <source>tel</source>
             </trans-unit>
             
             <trans-unit id="tx_sicaddress_domain_model_address.fax">
-                <source></source>
+                <source>fax</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.description">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.email">
+                <source>email</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.skype">
-                <source></source>
+            <trans-unit id="tx_sicaddress_domain_model_address.www">
+                <source>www</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.twitter">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.facebook">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.linkedin">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.categories">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.latitude">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.longitude">
-                <source></source>
-            </trans-unit>
-            
-            <trans-unit id="tx_sicaddress_domain_model_address.hans">
-                <source>Hans</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.image">
+                <source>image</source>
             </trans-unit>
             
 

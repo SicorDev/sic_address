@@ -93,12 +93,12 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     public function getFlexStringFields($config)
     {
         // Query Database
-        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, tca_label', 'tx_sicaddress_domain_model_domainproperty', 'type = "string" AND deleted = 0 AND hidden = 0');
+        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, tca_label', 'tx_sicaddress_domain_model_domainproperty', 'type = "string" AND deleted = 0 AND hidden = 0', 'tca_label');
 
         $optionList = array();
-        $optionList[0] = array(0 => 'Ausblenden', 1 => '-1');
+        $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');
         foreach ($types as $type) {
-            $optionList[] = array(0 => $type["tca_label"], 1 => $type["uid"]);
+            $optionList[] = array(0 => $type["tca_label"], 1 => $type["title"]);
         }
 
         $config['items'] = array_merge($config['items'], $optionList);

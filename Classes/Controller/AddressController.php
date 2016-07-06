@@ -159,8 +159,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     private function getAtoz()
     {
+        // Get config
+        $field = $this->settings['atozField'];
+
+        if(!$field || $field === "none") return null;
+
         // Query Database
-        $res = $this->addressRepository->findAtoz();
+        $res = $this->addressRepository->findAtoz($field);
 
         // Build two dimensional result array
         $atoz = array();

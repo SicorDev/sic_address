@@ -51,9 +51,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz() {
+    public function findAtoz($field) {
         $res = array();
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT(company , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0', 'company');
+        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0', $field);
         while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
             $res[] = $result['letter'];
         }

@@ -41,6 +41,14 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $addressRepository = NULL;
 
     /**
+     * categoryRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository = NULL;
+
+    /**
      * Holds the Extension configuration
      *
      * @var array
@@ -63,6 +71,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $addresses = $this->addressRepository->findAll();
         $this->view->assign('addresses', $addresses);
+
+        $categories = $this->categoryRepository->findAll();
+        $this->view->assign('categories', $categories);
+
         $this->view->assign('atoz', $this->getAtoz());
 
         $this->setConfiguredTemplate();

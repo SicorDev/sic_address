@@ -34,7 +34,11 @@
 			</f:if>
 		</div>
 		<div class="row">
-			<div class="category col-xs-5 col-xs-offset-1">###KATEGORIE###</div>
+			<div class="category col-xs-5 col-xs-offset-1">
+				<f:debug>{categories}</f:debug>
+				<f:form.select name="menu1" options="{categories}" optionValueField="uid" optionLabelField="title" prependOptionValue="-1" class="tx_nicosdirectory-pi1-small" size="5"
+							   prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
+			</div>
 			<div class="search col-xs-5">###SUCHE###</div>
 		</div>
 

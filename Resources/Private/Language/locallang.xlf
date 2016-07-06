@@ -30,6 +30,9 @@
 			<trans-unit id="label_atozField">
 				<source>A-Z Feld</source>
 			</trans-unit>
+			<trans-unit id="noselect_category_label">
+				<source>Kategorie</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

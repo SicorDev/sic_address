@@ -91,7 +91,11 @@ class ImportController extends ModuleController {
             foreach($uids as $uid) {
                 $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('name', 'tx_nicosdirectory_category', 'uid = '.$uid, ''))["name"];
                 $localId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_category', 'title = \''.$title.'\'', '', '', 1))["uid"];
-                $mapping = array("uid_local" => $localId, 'uid_foreign' => $foreignId, 'tablenames' => 'tx_sicaddress_domain_model_address', 'fieldname' => 'categories');
+                $mapping = array("uid_local" => $localId,
+                                 "uid_foreign" => $foreignId,
+                                 "tablenames" => "tx_sicaddress_domain_model_address",
+                                 "fieldname" => "categories",
+                                 "tx_extbase_type" => "Tx_SicAddress_Category");
                 $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category_record_mm', $mapping);
             }
         }

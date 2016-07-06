@@ -29,14 +29,13 @@ namespace SICOR\SicAddress\Domain\Repository;
 /**
  * The repository for Categories
  */
-class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class CategoryRepository extends \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
 {
-
     /**
      * @var array
      */
     protected $defaultOrderings = array(
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
 }

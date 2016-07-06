@@ -63,6 +63,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $addresses = $this->addressRepository->findAll();
         $this->view->assign('addresses', $addresses);
+        $this->view->assign('atoz', $this->getAtoz());
 
         $this->setConfiguredTemplate();
     }
@@ -141,7 +142,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
 
     /**
-     *  Helper method
+     *  Switch temaplates based on config
      */
     public function setConfiguredTemplate() {
         switch($this->extensionConfiguration["templateSet"]) {
@@ -152,6 +153,25 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             case 'company': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
         }
     }
+
+    /**
+     *  Create A-Z Info for Fluid Template
+     */
+    private function getAtoz()
+    {
+        // Query Database
+        $res = $this->addressRepository->findAtoz();
+
+        // Build two dimensional result array
+        $atoz = array();
+        foreach(range("A","Z") as $char) {
+            $atoz[] =  array ("character" => $char, "active" => (array_search($char, $res) !== false));
+        }
+
+        // Add 'alle'
+        if(count($res) > 0)
+            $atoz[] =  array ("character" => "alle", "active" => true);
+
+        return $atoz;
+    }
 }
-
-

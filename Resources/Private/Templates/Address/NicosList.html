@@ -19,7 +19,20 @@
 	</style>
 
 	<div class="listview">
-		<div class="abisz">###ABISZ###</div>
+		<div class="abisz">
+			<f:if condition="{atoz}">
+				<f:for each="{atoz}" as="value">
+					<f:if condition="{value.active}">
+						<f:then>
+							<f:link.action action="search" arguments="{atoz: value.character}">{value.character}</f:link.action>
+						</f:then>
+						<f:else>
+							<span color="#999999">{value.character}</span>
+						</f:else>
+					</f:if>
+				</f:for>
+			</f:if>
+		</div>
 		<div class="row">
 			<div class="category col-xs-5 col-xs-offset-1">###KATEGORIE###</div>
 			<div class="search col-xs-5">###SUCHE###</div>

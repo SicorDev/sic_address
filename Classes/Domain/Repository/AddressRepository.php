@@ -59,4 +59,16 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
         return $res;
     }
+
+    /**
+     * @return array
+     */
+    public function search($atozvalue, $categoryvalue, $queryvalue, $searchfield) {
+        $res = array();
+        //$results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0', $field);
+        //while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
+        //    $res[] = $result['letter'];
+        //}
+        return $res;
+    }
 }

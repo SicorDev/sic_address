@@ -94,9 +94,16 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('categories', $categories);
         $this->view->assign('categoryvalue', $categoryvalue);
 
+        $queryfield = $this->settings['queryField'];
+        $queryactive = !($queryfield === "none");
+        $this->view->assign('queryactive', $queryactive);
         $this->view->assign('queryvalue', $queryvalue);
 
-        $addresses = $this->addressRepository->findAll();
+        // Get config
+        $field = $this->settings['atozField'];
+        if(!$field || $field === "none") return null;
+        
+        $addresses = $this->addressRepository->search($atozvalue, $categoryvalue, $queryvalue, $queryfield);
         $this->view->assign('addresses', $addresses);
 
         $this->setConfiguredTemplate();
@@ -195,8 +202,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Get config
         $field = $this->settings['atozField'];
-
-        if(!$field || $field === "none") return null;
+        if($field === "none") return null;
 
         // Query Database
         $res = $this->addressRepository->findAtoz($field);

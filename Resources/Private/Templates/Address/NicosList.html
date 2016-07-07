@@ -53,8 +53,10 @@
 					</f:if>
 				</div>
 				<div class="search col-xs-5">
-					<f:form.textfield name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-					<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" />
+					<f:if condition="{queryactive}">
+						<f:form.textfield name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" />
+					</f:if>
 				</div>
 			</div>
 		</f:form>

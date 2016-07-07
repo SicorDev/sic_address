@@ -15,7 +15,7 @@
                         <items type="array">
                             <numIndex index="1" type="array">
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_list</numIndex>
-                                <numIndex index="1">Address->list</numIndex>
+                                <numIndex index="1">Address->list;Address->search</numIndex>
                             </numIndex>
                         </items>
                     </config>
@@ -29,7 +29,7 @@
                         <type>select</type>
                         <itemsProcFunc>\SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.atozField>
 		</el>

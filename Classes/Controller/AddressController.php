@@ -69,17 +69,39 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
-        $addresses = $this->addressRepository->findAll();
-        $this->view->assign('addresses', $addresses);
+        $this->fillAddressList('alle', '', '');
+    }
+
+    /**
+     * action search
+     *
+     * @return void
+     */
+    public function searchAction()
+    {
+        $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'alle';
+        $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
+        $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
+        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue);
+    }
+
+    public function fillAddressList($atozvalue, $categoryvalue, $queryvalue)
+    {
+        $this->view->assign('atoz', $this->getAtoz());
+        $this->view->assign('atozvalue', $atozvalue);
 
         $categories = $this->categoryRepository->findAll();
         $this->view->assign('categories', $categories);
+        $this->view->assign('categoryvalue', $categoryvalue);
 
-        $this->view->assign('atoz', $this->getAtoz());
+        $this->view->assign('queryvalue', $queryvalue);
+
+        $addresses = $this->addressRepository->findAll();
+        $this->view->assign('addresses', $addresses);
 
         $this->setConfiguredTemplate();
     }
-    
+
     /**
      * action show
      *

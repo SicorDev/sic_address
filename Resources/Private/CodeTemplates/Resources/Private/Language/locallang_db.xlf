@@ -45,10 +45,16 @@
 			<trans-unit id="tx_sicaddress_domain_model_fieldtype.title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="tx_sicaddress.tx_extbase_type">
+				<source>Erweiterte Adressliste</source>
+			</trans-unit>
 
 			<f:for each="{properties}" as="property">
             <trans-unit id="tx_sicaddress_domain_model_address.{property.title}">
-                <source>{property.tcaLabel}</source>
+                <f:if condition="{property.tcaLabel}">
+                    <f:then><source>{property.tcaLabel}</source></f:then>
+                    <f:else><source>{property.title}</source></f:else>
+                </f:if>
             </trans-unit>
             </f:for>
 

@@ -68,6 +68,9 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             if(!array_key_exists("isListLabel",$arguments)) {
                 $domainProperty->setIsListLabel(false);
             }
+            if(!array_key_exists("external",$arguments)) {
+                $domainProperty->setExternal(false);
+            }
             $this->domainPropertyRepository->update($domainProperty);
             $this->redirect('list', 'Module');
         }

@@ -1,4 +1,4 @@
-<f:if condition="{properties.ttAddressMapping}">
+<f:if condition="{settings.ttAddressMapping}">
 <f:then>
 #
 # Table structure for table 'tt_address'

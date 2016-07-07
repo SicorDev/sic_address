@@ -170,6 +170,13 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
+     * @return void
+     */
+    public function helpAction() {
+
+    }
+
+    /**
      * Clear DomainProperties
      */
     public function removeAllDomainPropertiesAction() {
@@ -199,6 +206,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getTCAConfiguration() {
         $tca = array();
         foreach($this->configuration as $key => $value) {
+            //If not a default column
             if(!$value->getExternal()) {
                 $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
 

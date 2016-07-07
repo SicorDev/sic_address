@@ -1,4 +1,4 @@
-<f:if condition="{settings.ttAddressMapping}">
+<f:if condition="{settings.ttAddressMapping}"><f:then>
 <?php
 
 if (!isset($GLOBALS['TCA']['tt_address']['ctrl']['type'])) {
@@ -66,4 +66,6 @@ $GLOBALS['TCA']['tt_address']['columns'][$GLOBALS['TCA']['tt_address']['ctrl']['
     '',
     'EXT:/Resources/Private/Language/locallang_csh_.xlf'
 );
+</f:then>
+<f:else></f:else>
 </f:if>

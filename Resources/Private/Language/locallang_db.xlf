@@ -45,38 +45,177 @@
 			<trans-unit id="tx_sicaddress_domain_model_fieldtype.title">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="tx_sicaddress.tx_extbase_type">
+				<source>Erweiterte Adressliste</source>
+			</trans-unit>
 
 			
-            <trans-unit id="tx_sicaddress_domain_model_address.company">
-                <source>company</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_siccomcal_event_location">
+                <source>tx_siccomcal_event_location</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.street">
-                <source>street</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.name">
+                <source>name</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.city">
-                <source>city</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.gender">
+                <source>gender</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.tel">
-                <source>tel</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.first_name">
+                <source>first_name</source>
             </trans-unit>
             
-            <trans-unit id="tx_sicaddress_domain_model_address.fax">
-                <source>fax</source>
+            <trans-unit id="tx_sicaddress_domain_model_address.middle_name">
+                <source>middle_name</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.last_name">
+                <source>last_name</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.birthday">
+                <source>birthday</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.title">
+                <source>title</source>
             </trans-unit>
             
             <trans-unit id="tx_sicaddress_domain_model_address.email">
                 <source>email</source>
             </trans-unit>
             
+            <trans-unit id="tx_sicaddress_domain_model_address.phone">
+                <source>phone</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.mobile">
+                <source>mobile</source>
+            </trans-unit>
+            
             <trans-unit id="tx_sicaddress_domain_model_address.www">
                 <source>www</source>
             </trans-unit>
             
+            <trans-unit id="tx_sicaddress_domain_model_address.address">
+                <source>address</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.building">
+                <source>building</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.room">
+                <source>room</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.company">
+                <source>company</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.city">
+                <source>city</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.zip">
+                <source>zip</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.region">
+                <source>region</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.country">
+                <source>country</source>
+            </trans-unit>
+            
             <trans-unit id="tx_sicaddress_domain_model_address.image">
                 <source>image</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.fax">
+                <source>fax</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.description">
+                <source>description</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.addressgroup">
+                <source>addressgroup</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_spdirectory_cat">
+                <source>tx_spdirectory_cat</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_spdirectory_fegroup">
+                <source>tx_spdirectory_fegroup</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_spdirectory_feuser">
+                <source>tx_spdirectory_feuser</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_lng">
+                <source>tx_rggooglemap_lng</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_lat">
+                <source>tx_rggooglemap_lat</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_display">
+                <source>tx_rggooglemap_display</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_cat">
+                <source>tx_rggooglemap_cat</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_tab">
+                <source>tx_rggooglemap_tab</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_cat2">
+                <source>tx_rggooglemap_cat2</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_ce">
+                <source>tx_rggooglemap_ce</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitesymstylespre_style">
+                <source>tx_msitesymstylespre_style</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_firstname">
+                <source>tx_msitegis_firstname</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_gis_x">
+                <source>tx_msitegis_gis_x</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_gis_y">
+                <source>tx_msitegis_gis_y</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_zentroid">
+                <source>tx_msitegis_zentroid</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_geometry">
+                <source>tx_msitegis_geometry</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_msitegis_gis_q">
+                <source>tx_msitegis_gis_q</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_q">
+                <source>tx_rggooglemap_q</source>
             </trans-unit>
             
 

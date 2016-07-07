@@ -2,6 +2,11 @@
 /* Backend */
 /* ***************** */
 input[type="text"], textarea {width: 100%;}
-.table .thead {border-bottom: 2px solid #ddd; font-weight: bold;}
-.table .tr {border-bottom: 1px solid #ddd; padding: 10px 0;}
+input[type="text"], textarea {padding: 10px;border: none;border-bottom: solid 2px #c9c9c9;transition: border 0.3s;}
+input[type="text"]:focus,textarea:focus {border-bottom: solid 2px #969696;box-shadow: none;}
+
+.container-fluid {padding: 0;}
+.table .tr, .table ul {margin: 0;padding: 0;}
+.table .tr {padding: 10px 0;}
 .table .td {padding: 5px;}
+.table ul li {background: #efefef;list-style: none;padding: 5px;margin-bottom: 10px;}

@@ -14,6 +14,13 @@ config.tx_extbase{
                 }
             }
         
+            SICOR\SicAddress\Domain\Model\Address {
+                mapping {
+                    tableName = tt_address
+                    recordType = Tx_SicAddress_Address
+                }
+             }
+        
         }
     }
 }

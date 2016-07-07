@@ -1,51 +1,96 @@
 
 #
-# Table structure for table 'tx_sicaddress_domain_model_address'
+# Table structure for table 'tt_address'
 #
-CREATE TABLE tx_sicaddress_domain_model_address (
-
-	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
-
-	categories int(11) unsigned DEFAULT '0' NOT NULL,
-
-	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-	crdate int(11) unsigned DEFAULT '0' NOT NULL,
-	cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	starttime int(11) unsigned DEFAULT '0' NOT NULL,
-	endtime int(11) unsigned DEFAULT '0' NOT NULL,
-	sorting int(11) DEFAULT '0' NOT NULL,
-	fe_group varchar(100) DEFAULT '0' NOT NULL,
-
-	sys_language_uid int(11) DEFAULT '0' NOT NULL,
-	l10n_parent int(11) DEFAULT '0' NOT NULL,
-	l10n_diffsource mediumblob,
+CREATE TABLE tt_address (
+  tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
+  sorting int(11) DEFAULT '0' NOT NULL,
 
 	
-	company varchar(255) DEFAULT '' NOT NULL,
+	tx_siccomcal_event_location varchar(255) DEFAULT '' NOT NULL,
 	
-	street varchar(255) DEFAULT '' NOT NULL,
+	name varchar(255) DEFAULT '' NOT NULL,
 	
-	city varchar(255) DEFAULT '' NOT NULL,
+	gender varchar(255) DEFAULT '' NOT NULL,
 	
-	tel varchar(255) DEFAULT '' NOT NULL,
+	first_name varchar(255) DEFAULT '' NOT NULL,
 	
-	fax varchar(255) DEFAULT '' NOT NULL,
+	middle_name varchar(255) DEFAULT '' NOT NULL,
+	
+	last_name varchar(255) DEFAULT '' NOT NULL,
+	
+	birthday varchar(255) DEFAULT '' NOT NULL,
+	
+	title varchar(255) DEFAULT '' NOT NULL,
 	
 	email varchar(255) DEFAULT '' NOT NULL,
 	
+	phone varchar(255) DEFAULT '' NOT NULL,
+	
+	mobile varchar(255) DEFAULT '' NOT NULL,
+	
 	www varchar(255) DEFAULT '' NOT NULL,
 	
-	image int(11) unsigned DEFAULT '0' NOT NULL,
+	address varchar(255) DEFAULT '' NOT NULL,
 	
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-
- KEY language (l10n_parent,sys_language_uid)
-
+	building varchar(255) DEFAULT '' NOT NULL,
+	
+	room varchar(255) DEFAULT '' NOT NULL,
+	
+	company varchar(255) DEFAULT '' NOT NULL,
+	
+	city varchar(255) DEFAULT '' NOT NULL,
+	
+	zip varchar(255) DEFAULT '' NOT NULL,
+	
+	region varchar(255) DEFAULT '' NOT NULL,
+	
+	country varchar(255) DEFAULT '' NOT NULL,
+	
+	image varchar(255) DEFAULT '' NOT NULL,
+	
+	fax varchar(255) DEFAULT '' NOT NULL,
+	
+	description varchar(255) DEFAULT '' NOT NULL,
+	
+	addressgroup varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_spdirectory_cat varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_spdirectory_fegroup varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_spdirectory_feuser varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_lng varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_lat varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_display varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_cat varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_tab varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_cat2 varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_ce varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitesymstylespre_style varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_firstname varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_gis_x varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_gis_y varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_zentroid varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_geometry varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_msitegis_gis_q varchar(255) DEFAULT '' NOT NULL,
+	
+	tx_rggooglemap_q varchar(255) DEFAULT '' NOT NULL,
+	
 );
 
 #

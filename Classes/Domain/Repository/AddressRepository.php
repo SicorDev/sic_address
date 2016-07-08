@@ -63,12 +63,21 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function search($atozvalue, $categoryvalue, $queryvalue, $searchfield) {
-        $res = array();
-        //$results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0', $field);
-        //while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
-        //    $res[] = $result['letter'];
-        //}
-        return $res;
+    public function search($atozvalue, $atozField, $categoryvalue, $queryvalue, $queryField) {
+        $query = $this->createQuery();
+
+        $constraints = array();
+        if ($atozField && !($atozField === "none") && $atozvalue && !($atozvalue === "alle"))
+            $constraints[] = $query->like($atozField, $atozvalue.'%');
+        if ($queryField && !($queryField === "none") && $queryvalue && !($queryvalue === ""))
+            $constraints[] = $query->like($queryField, '%'.$queryvalue.'%');
+        if ($atozField && $categoryvalue > 0)
+            $constraints[] = $query->equals("categories", $categoryvalue);
+        
+        if(count($constraints) < 1)
+            return $this->findAll();
+
+        $query->matching($query->logicalAnd($constraints));
+        return $query->execute();
     }
 }

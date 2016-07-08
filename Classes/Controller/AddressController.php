@@ -87,6 +87,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     public function fillAddressList($atozvalue, $categoryvalue, $queryvalue)
     {
+        $atozField = $this->settings['atozField'];
         $this->view->assign('atoz', $this->getAtoz());
         $this->view->assign('atozvalue', $atozvalue);
 
@@ -94,16 +95,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('categories', $categories);
         $this->view->assign('categoryvalue', $categoryvalue);
 
-        $queryfield = $this->settings['queryField'];
-        $queryactive = !($queryfield === "none");
+        $queryField = $this->settings['queryField'];
+        $queryactive = !($queryField === "none");
         $this->view->assign('queryactive', $queryactive);
         $this->view->assign('queryvalue', $queryvalue);
 
-        // Get config
-        $field = $this->settings['atozField'];
-        if(!$field || $field === "none") return null;
-        
-        $addresses = $this->addressRepository->search($atozvalue, $categoryvalue, $queryvalue, $queryfield);
+        $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalue, $queryvalue, $queryField);
+
         $this->view->assign('addresses', $addresses);
 
         $this->setConfiguredTemplate();

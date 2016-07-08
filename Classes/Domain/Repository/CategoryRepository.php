@@ -29,7 +29,7 @@ namespace SICOR\SicAddress\Domain\Repository;
 /**
  * The repository for Categories
  */
-class CategoryRepository extends \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository
+class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
     /**
      * @var array

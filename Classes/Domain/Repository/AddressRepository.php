@@ -31,13 +31,20 @@ namespace SICOR\SicAddress\Domain\Repository;
  */
 class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
+    
     /**
      * @var array
      */
     protected $defaultOrderings = array(
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
+
+    
+    public function initializeObject() {
+        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings->setRespectStoragePage(FALSE);
+        $this->setDefaultQuerySettings($querySettings);
+    }
 
     /**
      * @param string $sql

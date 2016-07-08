@@ -334,6 +334,69 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     */
     protected $tx_rggooglemap_q;
     
+    /**
+    * tx_extbase_type
+    *
+    * @var string
+    */
+    protected $tx_extbase_type;
+    
+    /**
+    * sorting
+    *
+    * @var string
+    */
+    protected $sorting;
+    
+    /**
+    * position
+    *
+    * @var string
+    */
+    protected $position;
+    
+    /**
+    * skype
+    *
+    * @var string
+    */
+    protected $skype;
+    
+    /**
+    * twitter
+    *
+    * @var string
+    */
+    protected $twitter;
+    
+    /**
+    * facebook
+    *
+    * @var string
+    */
+    protected $facebook;
+    
+    /**
+    * linkedin
+    *
+    * @var string
+    */
+    protected $linkedin;
+    
+    /**
+    * latitude
+    *
+    * @var string
+    */
+    protected $latitude;
+    
+    /**
+    * longitude
+    *
+    * @var string
+    */
+    protected $longitude;
+    
 
     /**
     * __construct
@@ -1197,6 +1260,177 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     */
     public function setTx_rggooglemap_q($tx_rggooglemap_q) {
         $this->tx_rggooglemap_q = $tx_rggooglemap_q;
+    }
+    
+    /**
+    * Returns the tx_extbase_type
+    *
+    * @return string
+    */
+    public function getTx_extbase_type() {
+        return $this->tx_extbase_type;
+    }
+
+    /**
+    * Sets the tx_extbase_type
+    *
+    * @param string $tx_extbase_type
+    * @return void
+    */
+    public function setTx_extbase_type($tx_extbase_type) {
+        $this->tx_extbase_type = $tx_extbase_type;
+    }
+    
+    /**
+    * Returns the sorting
+    *
+    * @return string
+    */
+    public function getSorting() {
+        return $this->sorting;
+    }
+
+    /**
+    * Sets the sorting
+    *
+    * @param string $sorting
+    * @return void
+    */
+    public function setSorting($sorting) {
+        $this->sorting = $sorting;
+    }
+    
+    /**
+    * Returns the position
+    *
+    * @return string
+    */
+    public function getPosition() {
+        return $this->position;
+    }
+
+    /**
+    * Sets the position
+    *
+    * @param string $position
+    * @return void
+    */
+    public function setPosition($position) {
+        $this->position = $position;
+    }
+    
+    /**
+    * Returns the skype
+    *
+    * @return string
+    */
+    public function getSkype() {
+        return $this->skype;
+    }
+
+    /**
+    * Sets the skype
+    *
+    * @param string $skype
+    * @return void
+    */
+    public function setSkype($skype) {
+        $this->skype = $skype;
+    }
+    
+    /**
+    * Returns the twitter
+    *
+    * @return string
+    */
+    public function getTwitter() {
+        return $this->twitter;
+    }
+
+    /**
+    * Sets the twitter
+    *
+    * @param string $twitter
+    * @return void
+    */
+    public function setTwitter($twitter) {
+        $this->twitter = $twitter;
+    }
+    
+    /**
+    * Returns the facebook
+    *
+    * @return string
+    */
+    public function getFacebook() {
+        return $this->facebook;
+    }
+
+    /**
+    * Sets the facebook
+    *
+    * @param string $facebook
+    * @return void
+    */
+    public function setFacebook($facebook) {
+        $this->facebook = $facebook;
+    }
+    
+    /**
+    * Returns the linkedin
+    *
+    * @return string
+    */
+    public function getLinkedin() {
+        return $this->linkedin;
+    }
+
+    /**
+    * Sets the linkedin
+    *
+    * @param string $linkedin
+    * @return void
+    */
+    public function setLinkedin($linkedin) {
+        $this->linkedin = $linkedin;
+    }
+    
+    /**
+    * Returns the latitude
+    *
+    * @return string
+    */
+    public function getLatitude() {
+        return $this->latitude;
+    }
+
+    /**
+    * Sets the latitude
+    *
+    * @param string $latitude
+    * @return void
+    */
+    public function setLatitude($latitude) {
+        $this->latitude = $latitude;
+    }
+    
+    /**
+    * Returns the longitude
+    *
+    * @return string
+    */
+    public function getLongitude() {
+        return $this->longitude;
+    }
+
+    /**
+    * Sets the longitude
+    *
+    * @param string $longitude
+    * @return void
+    */
+    public function setLongitude($longitude) {
+        $this->longitude = $longitude;
     }
     
 

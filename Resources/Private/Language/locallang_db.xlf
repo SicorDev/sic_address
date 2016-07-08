@@ -15,6 +15,9 @@
 			<trans-unit id="sys_category.tx_extbase_type.Tx_SicAddress_Category">
 				<source>sic_address Category</source>
 			</trans-unit>
+			<trans-unit id="tt_address.tx_extbase_type.Tx_SicAddress_Address">
+                <source>sic_address tt_address</source>
+            </trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_domainproperty">
 				<source>Domain Property</source>
 			</trans-unit>
@@ -216,6 +219,42 @@
             
             <trans-unit id="tx_sicaddress_domain_model_address.tx_rggooglemap_q">
                 <source>tx_rggooglemap_q</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.tx_extbase_type">
+                <source>tx_extbase_type</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.sorting">
+                <source>sorting</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.position">
+                <source>position</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.skype">
+                <source>skype</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.twitter">
+                <source>twitter</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.facebook">
+                <source>facebook</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.linkedin">
+                <source>linkedin</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.latitude">
+                <source>latitude</source>
+            </trans-unit>
+            
+            <trans-unit id="tx_sicaddress_domain_model_address.longitude">
+                <source>longitude</source>
             </trans-unit>
             
 

@@ -1,5 +1,6 @@
 <?php
 namespace SICOR\SicAddress\Controller;
+use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 
 /***************************************************************
@@ -155,7 +156,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
             $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
             while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
-                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted)$/", $category["COLUMN_NAME"]) === 0) {
+                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories)$/", $category["COLUMN_NAME"]) === 0) {
                     $domainProperty = new DomainProperty();
                     $domainProperty->setTitle($category["COLUMN_NAME"]);
                     $domainProperty->setType("string");
@@ -164,6 +165,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $this->domainPropertyRepository->add($domainProperty);
                 }
             }
+
+            //Set tx_extbase_type for old tt_address entries
+            $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tt_address", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
         }
 
         $this->redirect("list");

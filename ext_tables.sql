@@ -91,6 +91,24 @@ CREATE TABLE tt_address (
 	
 	tx_rggooglemap_q varchar(255) DEFAULT '' NOT NULL,
 	
+	tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
+	
+	sorting varchar(255) DEFAULT '' NOT NULL,
+	
+	position varchar(255) DEFAULT '' NOT NULL,
+	
+	skype varchar(255) DEFAULT '' NOT NULL,
+	
+	twitter varchar(255) DEFAULT '' NOT NULL,
+	
+	facebook varchar(255) DEFAULT '' NOT NULL,
+	
+	linkedin varchar(255) DEFAULT '' NOT NULL,
+	
+	latitude varchar(255) DEFAULT '' NOT NULL,
+	
+	longitude varchar(255) DEFAULT '' NOT NULL,
+	
 );
 
 #

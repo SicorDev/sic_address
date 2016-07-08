@@ -54,6 +54,12 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface{
       // Language
       if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array()))
          $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
+      // Table Mapping
+      if(!$this->saveTemplate('ext_typoscript_setup.txt', array()))
+         $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
+      // Table Mapping Override
+      if(!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', array()))
+         $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
    }
 
    /**

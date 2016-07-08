@@ -15,6 +15,8 @@
 		.f3-widget-paginator > li.previous,
 		.f3-widget-paginator > li.next  { display:none; }
 		.f3-widget-paginator::before { content: 'Seite'; }
+		.activelinkcolor { color: #CC0000;}
+		.deadlinkcolor { color: #999999;}
 	</style>
 	<script>
 		function submitAtoz (choice) {
@@ -35,10 +37,17 @@
 					<f:for each="{atoz}" as="value">
 						<f:if condition="{value.active}">
 							<f:then>
-								<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+								<f:if condition="{value.character} == {atozvalue}">
+									<f:then>
+										<span class="activelinkcolor">{value.character}</span>
+									</f:then>
+									<f:else>
+										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+									</f:else>
+								</f:if>
 							</f:then>
 							<f:else>
-								<span color="#999999">{value.character}</span>
+								<span class="deadlinkcolor">{value.character}</span>
 							</f:else>
 						</f:if>
 					</f:for>

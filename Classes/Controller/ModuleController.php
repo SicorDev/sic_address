@@ -1,6 +1,5 @@
 <?php
 namespace SICOR\SicAddress\Controller;
-use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 
 /***************************************************************
@@ -48,6 +47,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @inject
      */
     protected $domainPropertyRepository = NULL;
+
+    /**
+     * categoryRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository = NULL;
 
     /**
      * Holds all domainProperties

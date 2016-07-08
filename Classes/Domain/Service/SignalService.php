@@ -82,6 +82,6 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface{
       $content = $customView->render();
 
       $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
-      return is_writable($filename) && (file_put_contents($filename, $content) !== false);
+      return (file_put_contents($filename, $content) !== false);
    }
 }

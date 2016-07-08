@@ -114,7 +114,11 @@ return array(
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'sys_category',
-                'MM' => 'tx_sicaddress_address_category_mm',
+                'MM' => 'sys_category_record_mm',
+                'MM_match_fields' => array(
+                    'fieldname' => 'categories',
+                    'tablenames' => 'tx_sicaddress_domain_model_address',
+                ),
                 'size' => 10,
                 'autoSizeMax' => 30,
                 'maxitems' => 9999,

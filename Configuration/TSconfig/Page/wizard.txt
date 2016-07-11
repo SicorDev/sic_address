@@ -4,7 +4,7 @@ mod.wizards.newContentElement.wizardItems {
                         sicaddress {
                                 title = Adressverwaltung
                                 description = Plugin zur Anzeige und Verwaltung von Adressen
-                                icon = ../typo3conf/ext/sic_address/Resources/Public/Icons/module_icon.png
+                                icon = ../typo3conf/ext/sic_address/Resources/Public/Icons/module_icon_24.png
                                 tt_content_defValues {
                                         CType = list
                                         list_type = sicaddress_sicaddress

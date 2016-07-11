@@ -70,18 +70,22 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface{
     *
     * @return bool
     */
-   private function saveTemplate($filename, $properties) {
+   private function saveTemplate($filename, $properties)
+   {
+      // Build filenames
+      $templatePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address"))."Resources/Private/CodeTemplates/".$filename;
+      $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address").$filename;
+	  if(file_exists($filename))
+	  	return true;
+
       $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
       $customView = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-
-      $templatePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address")) . "Resources/Private/CodeTemplates/" . $filename;
       $customView->setTemplatePathAndFilename($templatePathAndFilename);
       $customView->setPartialRootPath($templatePathAndFilename);
       $customView->assign("settings", array());
       $customView->assign("properties", $properties);
       $content = $customView->render();
 
-      $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
       return (file_put_contents($filename, $content) !== false);
    }
 }

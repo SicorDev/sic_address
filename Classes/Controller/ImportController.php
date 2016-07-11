@@ -49,7 +49,7 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = ".$pid);
 
         // Move legacy category data to sys_category
-        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name as title, '.$pid.' as pid', 'Tx_SicAddress_Category' as tx_extbase_type, 'deleted = 0 AND hidden = 0', '');
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name as title, '.$pid.' as pid', "Tx_SicAddress_Category" as tx_extbase_type, 'deleted = 0 AND hidden = 0', '');
         while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
         }

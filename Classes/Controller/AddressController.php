@@ -60,6 +60,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function initializeAction() {
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+
+        $field = $this->settings['sortField'];
+        if(!($field === "none")) {
+            $this->addressRepository->setDefaultOrderings(array(
+                $field => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+            ));
+        }
     }
 
     /**

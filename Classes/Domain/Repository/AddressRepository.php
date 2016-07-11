@@ -39,7 +39,22 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
-    
+    /**
+     * @return array
+     */
+    public function getDefaultOrderings()
+    {
+        return $this->defaultOrderings;
+    }
+
+    /**
+     * @param array $defaultOrderings
+     */
+    public function setDefaultOrderings(array $defaultOrderings)
+    {
+        $this->defaultOrderings = $defaultOrderings;
+    }
+
     public function initializeObject() {
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
@@ -60,7 +75,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findAtoz($field) {
         $res = array();
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0', $field);
+        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', 'tx_sicaddress_domain_model_address', 'deleted = 0 AND hidden = 0');
         while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
             $res[] = $result['letter'];
         }

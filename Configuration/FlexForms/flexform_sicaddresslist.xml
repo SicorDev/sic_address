@@ -43,6 +43,17 @@
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.queryField>
+            <settings.sortField>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_sortField</label>
+                    <config>
+                        <type>select</type>
+                        <itemsProcFunc>\SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                </TCEforms>
+            </settings.sortField>
 		</el>
 	</ROOT>
 </T3DataStructure> 

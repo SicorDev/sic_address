@@ -33,6 +33,9 @@
 			<trans-unit id="label_queryField">
 				<source>Suchfeld</source>
 			</trans-unit>
+			<trans-unit id="label_sortField">
+				<source>Sortierfeld</source>
+			</trans-unit>
 			<trans-unit id="noselect_category_label">
 				<source>Kategorie</source>
 			</trans-unit>

@@ -117,7 +117,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $this->view->assign('address', $address);
     }
-    
+
     /**
      * action new
      *
@@ -125,9 +125,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function newAction()
     {
-        
+
     }
-    
+
     /**
      * action create
      *
@@ -140,7 +140,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->addressRepository->add($newAddress);
         $this->redirect('list');
     }
-    
+
     /**
      * action edit
      *
@@ -152,7 +152,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $this->view->assign('address', $address);
     }
-    
+
     /**
      * action update
      *
@@ -165,7 +165,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->addressRepository->update($address);
         $this->redirect('list');
     }
-    
+
     /**
      * action delete
      *
@@ -181,11 +181,11 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
 
     /**
-     *  Switch temaplates based on config
+     *  Switch templates based on config
      */
     public function setConfiguredTemplate() {
         switch($this->extensionConfiguration["templateSet"]) {
-            case 'nicosdir': $this->view->setTemplatePathAndFilename('typo3conf\ext\sic_address\Resources\Private\Templates\Address\NicosList.html'); break;
+            case 'nicosdir': $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/NicosList.html')); break;
             case 'spdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
             case 'wtdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
             case 'mmdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;

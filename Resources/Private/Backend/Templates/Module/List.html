@@ -35,8 +35,6 @@
                                         <f:form.checkbox property="isListLabel" value="{f:if(condition: '{property.isListLabel} == true', then: 1, else: 0)}" />
                                     </div>
                                     <div class="col-sm-3 td">
-                                        <label>Standardfeld:</label>
-                                        <f:form.checkbox property="external" value="{f:if(condition: '{property.external} == true', then: 1, else: 0)}" />
                                     </div>
                                     <div class="col-sm-3 td">
                                         <label>Feld Typ:</label>
@@ -79,8 +77,6 @@
                                         <f:form.checkbox property="isListLabel" value="" />
                                     </div>
                                     <div class="col-sm-3 td">
-                                        <label>Standardfeld:</label>
-                                        <f:form.checkbox property="external" value="" />
                                     </div>
                                     <div class="col-sm-3 td">
                                         <label>Feld Typ:</label>
@@ -124,8 +120,6 @@
                                         <f:form.checkbox property="isListLabel" value="" />
                                     </div>
                                     <div class="col-sm-3 td">
-                                        <label>Standardfeld:</label>
-                                        <f:form.checkbox property="external" value="" />
                                     </div>
                                     <div class="col-sm-3 td">
                                         <label>Feld Typ:</label>
@@ -154,7 +148,7 @@
 
     <h2><f:translate key="BackendImporterListTitle" /></h2>
 
-    <f:form action="createTableMapping">
+    <f:form action="importTTAddress" controller="Import">
         <div class="row">
             <div class="col-sm-2"><f:form.textfield id="schemaName" name="schema" value="" placeholder="Name der Datenbank"/></div>
             <div class="col-sm-2"><f:form.submit class="btn btn-primary" value="Import tt_address Field Definition" /></div>

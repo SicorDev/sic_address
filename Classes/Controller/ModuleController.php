@@ -1,6 +1,7 @@
 <?php
 namespace SICOR\SicAddress\Controller;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
+use SICOR\SicAddress\Utility;
 
 /***************************************************************
  *
@@ -155,32 +156,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * action createTableMapping
-     *
-     * @return void
-     */
-    public function createTableMappingAction() {
-        if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
-            $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
-            while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
-                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories)$/", $category["COLUMN_NAME"]) === 0) {
-                    $domainProperty = new DomainProperty();
-                    $domainProperty->setTitle($category["COLUMN_NAME"]);
-                    $domainProperty->setType("string");
-                    $domainProperty->setExternal(true);
-
-                    $this->domainPropertyRepository->add($domainProperty);
-                }
-            }
-
-            //Set tx_extbase_type for old tt_address entries
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tt_address", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
-        }
-
-        $this->redirect("list");
-    }
-
-    /**
      * @return void
      */
     public function helpAction() {
@@ -204,7 +179,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     private function getSQLConfiguration() {
         $sql = array();
         foreach($this->configuration as $key => $value) {
-            $sql[] = $value->getType()->getSQLDefinition($value->getTitle());
+            if(!$value->isExternal()) {
+                $sql[] = $value->getType()->getSQLDefinition($value->getTitle());
+            }
         }
         return $sql;
     }
@@ -218,31 +195,29 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $tca = array();
         foreach($this->configuration as $key => $value) {
             //If not a default column
-            if(!$value->getExternal()) {
-                $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
+            $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
 
-                $config = file_get_contents($templatePathAndFilename);
+            $config = file_get_contents($templatePathAndFilename);
 
-                // TCA Override
-                if ($value->getTcaOverride()) {
-                    $config = $value->getTcaOverride();
-                }
-
-                // TCA Settings
-                // @TODO -> Allgemeines Konfigurationsformat festlegen
-                if ($value->getSettings()) {
-                    $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-                    $customView->setTemplatePathAndFilename($templatePathAndFilename);
-
-                    $settings = array();
-                    parse_str($value->getSettings(), $settings);
-                    $customView->assign("properties", $settings);
-
-                    $config = $customView->render();
-                }
-
-                $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
+            // TCA Override
+            if ($value->getTcaOverride()) {
+                $config = $value->getTcaOverride();
             }
+
+            // TCA Settings
+            // @TODO -> Allgemeines Konfigurationsformat festlegen
+            if ($value->getSettings()) {
+                $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+                $customView->setTemplatePathAndFilename($templatePathAndFilename);
+
+                $settings = array();
+                parse_str($value->getSettings(), $settings);
+                $customView->assign("properties", $settings);
+
+                $config = $customView->render();
+            }
+
+            $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
         }
         return $tca;
     }

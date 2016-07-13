@@ -12,14 +12,8 @@ if (!isset($GLOBALS['TCA']['tt_address']['ctrl']['type'])) {
         'exclude' => 1,
         'label'   => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress.tx_extbase_type',
         'config' => array(
-            'type' => 'select',
-            'renderType' => 'selectSingle',
-            'items' => array(
-                array('Address','Tx_SicAddress_Address')
-            ),
+            'type' => 'passthrough',
             'default' => 'Tx_SicAddress_Address',
-            'size' => 1,
-            'maxitems' => 1,
         )
     );
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumnstx_sicaddress_tt_address, 1);
@@ -66,6 +60,14 @@ $GLOBALS['TCA']['tt_address']['columns'][$GLOBALS['TCA']['tt_address']['ctrl']['
     '',
     'EXT:/Resources/Private/Language/locallang_csh_.xlf'
 );
+
+// Edit description field to RTE Field
+$GLOBALS['TCA']['tt_address']['types']['1']['showitem'] = str_replace(', description,',', description;;;richtext[*]:rte_transdorm[mode=ts];1-1-1,',$TCA['tt_address']['types']['1']['showitem']);
+// Set company field as label, name and email as alternative label, ordering by company
+$GLOBALS['TCA']['tt_address']['ctrl']['label'] = 'company';
+$GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';
+$GLOBALS['TCA']['tt_address']['ctrl']['default_sortby'] = 'ORDER BY company';
+
 </f:then>
 <f:else></f:else>
 </f:if>

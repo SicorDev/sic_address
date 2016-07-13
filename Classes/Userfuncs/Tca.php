@@ -38,7 +38,6 @@ class Tca {
         $domainProperties = $domainPropertyRepository->findAll();
         foreach($domainProperties as $key => $value) {
             if($value->getIsListLabel()) {
-
                 if($addressRecord) {
                     $title = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($addressRecord, lcfirst($value->getTitle()));
                     $parameters['title'] .= $title . " ";

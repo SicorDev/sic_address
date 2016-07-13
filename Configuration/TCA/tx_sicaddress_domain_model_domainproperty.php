@@ -183,6 +183,5 @@ return array(
 				'default' => 0
 			)
 		),
-		
 	),
 );

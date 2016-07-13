@@ -1,0 +1,107 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<f:flashMessages />
+	<style>
+		.listview { width: 100%;}
+		.abisz { height: 22px; text-align: center; }
+		.category { margin-top: 10px; margin-bottom: 10px; }
+		.search { margin-top: 10px; margin-bottom: 10px; }
+		.list { border: solid lightgrey 1px; margin: 5px;}
+		.sorry { text-align: center; margin-top: 45px;}
+		.image > img { float: right; padding: 5px; }
+		.f3-widget-paginator { list-style: none; text-align: center;}
+		.f3-widget-paginator > li { display: inline; }
+		.f3-widget-paginator > li.current { color: #CC0000;}
+		.f3-widget-paginator > li.previous,
+		.f3-widget-paginator > li.next  { display:none; }
+		.f3-widget-paginator::before { content: 'Seite'; }
+		.activelinkcolor { color: #CC0000;}
+		.deadlinkcolor { color: #999999;}
+	</style>
+	<script>
+		function submitAtoz (choice) {
+			$('#atoz').val(choice);
+			$('#sic_address_search_form').submit();
+			return false;
+		}
+		function submitCategory (choice) {
+			$('#sic_address_search_form').submit();
+		}
+	</script>
+
+	<div class="listview">
+		<f:form id="sic_address_search_form" action="search">
+			<div class="abisz">
+				<f:if condition="{atoz}">
+					<f:form.hidden id="atoz" name="atoz" value="{atozvalue}" />
+					<f:for each="{atoz}" as="value">
+						<f:if condition="{value.active}">
+							<f:then>
+								<f:if condition="{value.character} == {atozvalue}">
+									<f:then>
+										<span class="activelinkcolor">{value.character}</span>
+									</f:then>
+									<f:else>
+										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+									</f:else>
+								</f:if>
+							</f:then>
+							<f:else>
+								<span class="deadlinkcolor">{value.character}</span>
+							</f:else>
+						</f:if>
+					</f:for>
+				</f:if>
+			</div>
+			<div class="row">
+				<div class="category col-xs-5 col-xs-offset-1">
+					<f:if condition="{categories}">
+						<f:form.select name="category" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
+									   prependOptionValue="-1" class="tx_nicosdirectory-pi1-small" size="5" additionalAttributes="{onchange: 'submitCategory();'}"
+									   prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
+					</f:if>
+				</div>
+				<div class="search col-xs-5">
+					<f:if condition="{queryactive}">
+						<f:form.textfield name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" />
+					</f:if>
+				</div>
+			</div>
+		</f:form>
+		<f:if condition="{addresses}">
+			<f:then>
+				<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1}">
+					<f:for each="{addresspage}" as="address">
+						<div class="list row">
+							<div class="col-xs-4">
+								<strong>{address.company}</strong><br><br>
+								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+							</div>
+							<div class="col-xs-4">
+								{address.street}<br>
+								{address.city}<br>
+								{address.tel}<br>
+								{address.fax}
+							</div>
+							<div class="col-xs-4 image">
+								<f:if condition="{address.image}">
+									<f:image treatIdAsReference="1" src="{address.image.uid}" width="120c" />
+								</f:if>
+							</div>
+						</div>
+					</f:for>
+				</f:widget.paginate>
+			</f:then>
+			<f:else>
+				<div class="list row" style="height: 100px;">
+					<div class="sorry">
+						{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+					</div>
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+
+</f:section>

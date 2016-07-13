@@ -1,5 +1,4 @@
 <f:if condition="{settings.ttAddressMapping}">
-<f:then>
 #
 # Table structure for table 'tt_address'
 #
@@ -8,11 +7,11 @@ CREATE TABLE tt_address (
   sorting int(11) DEFAULT '0' NOT NULL,
 
 	<f:for each="{properties}" as="field">
-	{field},
+    {field},
 	</f:for>
 );
-</f:then>
-<f:else>
+</f:if>
+
 #
 # Table structure for table 'tx_sicaddress_domain_model_address'
 #
@@ -37,9 +36,11 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
 
+<f:if condition="{settings.ttAddressMapping} == 0">
 	<f:for each="{properties}" as="field">
 	{field},
 	</f:for>
+</f:if>
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
@@ -47,8 +48,7 @@ CREATE TABLE tx_sicaddress_domain_model_address (
  KEY language (l10n_parent,sys_language_uid)
 
 );
-</f:else>
-</f:if>
+
 #
 # Table structure for table 'tx_sicaddress_domain_model_domainproperty'
 #

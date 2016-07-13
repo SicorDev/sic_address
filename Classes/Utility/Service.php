@@ -1,5 +1,5 @@
 <?php
-namespace SICOR\SicAddress\Domain\Utility;
+namespace SICOR\SicAddress\Utility;
 
 /***************************************************************
  *
@@ -32,5 +32,8 @@ namespace SICOR\SicAddress\Domain\Utility;
  */
 class Service implements \TYPO3\CMS\Core\SingletonInterface
 {
-    
+    public static function startsWith($haystack, $needle) {
+        // search backwards starting from haystack length characters from the end
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+    }
 }

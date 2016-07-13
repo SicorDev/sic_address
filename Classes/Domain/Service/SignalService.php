@@ -78,7 +78,7 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface{
 	  if(file_exists($filename))
 	  	return true;
 
-      $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('\TYPO3\CMS\Extbase\Object\ObjectManager');
+      $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
       $customView = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
       $customView->setTemplatePathAndFilename($templatePathAndFilename);
       $customView->setPartialRootPath($templatePathAndFilename);

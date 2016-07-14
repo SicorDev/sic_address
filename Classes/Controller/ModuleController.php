@@ -217,7 +217,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $config = $customView->render();
             }
 
-            $tca[] = array("title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
+            $tca[] = array("external" => $value->isExternal(), "title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
         }
         return $tca;
     }

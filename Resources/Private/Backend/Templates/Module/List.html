@@ -9,44 +9,46 @@
             <f:then>
                 <ul>
                     <f:for each="{properties}" as="property">
-                        <li>
-                            <f:form action="update" controller="DomainProperty" object="{property}" objectName="domainProperty">
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Datebank Feldname:</label>
-                                        <f:form.textfield property="title" value="{property.title}" />
+                        <f:if condition="{property.external} == '0'">
+                            <li>
+                                <f:form action="update" controller="DomainProperty" object="{property}" objectName="domainProperty">
+                                    <div class="row tr">
+                                        <div class="col-sm-3 td">
+                                            <label>Datebank Feldname:</label>
+                                            <f:form.textfield property="title" value="{property.title}" />
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                            <label>Beschriftung:</label>
+                                            <f:form.textfield property="tcaLabel" value="{property.label}" />
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                            <label>TCA Override:</label>
+                                            <f:form.textarea property="tcaOverride" value="{property.tcaOverride}" />
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                            <label>Einstellungen:</label>
+                                            <f:form.textarea property="settings" value="{property.settings}" />
+                                        </div>
                                     </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Beschriftung:</label>
-                                        <f:form.textfield property="tcaLabel" value="{property.label}" />
+                                    <div class="row tr">
+                                        <div class="col-sm-3 td">
+                                            <label>Teil des Labels:</label>
+                                            <f:form.checkbox property="isListLabel" value="{f:if(condition: '{property.isListLabel} == true', then: 1, else: 0)}" />
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                            <label>Feld Typ:</label>
+                                            <f:form.select property="type" value="{property.type.title}" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
+                                        </div>
+                                        <div class="col-sm-3 td">
+                                            <f:form.submit class="btn btn-success" value="Save" />
+                                            <f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-3 td">
-                                        <label>TCA Override:</label>
-                                        <f:form.textarea property="tcaOverride" value="{property.tcaOverride}" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Einstellungen:</label>
-                                        <f:form.textarea property="settings" value="{property.settings}" />
-                                    </div>
-                                </div>
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Teil des Labels:</label>
-                                        <f:form.checkbox property="isListLabel" value="{f:if(condition: '{property.isListLabel} == true', then: 1, else: 0)}" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Feld Typ:</label>
-                                        <f:form.select property="type" value="{property.type.title}" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <f:form.submit class="btn btn-success" value="Save" />
-                                        <f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action>
-                                    </div>
-                                </div>
-                            </f:form>
-                        </li>
+                                </f:form>
+                            </li>
+                        </f:if>
                     </f:for>
                 </ul>
                 <div class="row tr">

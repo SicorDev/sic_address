@@ -31,7 +31,6 @@ class Tca {
 
     public function addressTitle(&$parameters, $parentObject) {
         $addressRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameters['table'], $parameters['row']['uid']);
-
         $extbaseObjectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $domainPropertyRepository = $extbaseObjectManager->get('SICOR\\SicAddress\\Domain\\Repository\\DomainPropertyRepository');
 

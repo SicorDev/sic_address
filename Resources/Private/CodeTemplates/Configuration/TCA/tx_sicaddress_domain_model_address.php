@@ -3,7 +3,6 @@
 return array(
     'ctrl' => array(
         'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address',
-        'label' => 'categories',
         'label_userFunc' => "SICOR\\SicAddress\\Userfuncs\\Tca->addressTitle",
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',

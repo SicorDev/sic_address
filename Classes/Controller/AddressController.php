@@ -208,9 +208,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         // Get config
         $field = $this->settings['atozField'];
         if($field === "none") return null;
+        $addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Query Database
-        $res = $this->addressRepository->findAtoz($field);
+        $res = $this->addressRepository->findAtoz($field, $addresstable);
 
         // Build two dimensional result array
         $atoz = array();

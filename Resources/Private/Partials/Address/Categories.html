@@ -1,6 +1,4 @@
-<f:debug>{categories}</f:debug>
 <f:switch expression="{settings.categoryType}">
-
     <f:case value="2">
         <f:form.select name="category" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
                        prependOptionValue="-1" class="tx_nicosdirectory-pi1-small" size="5" additionalAttributes="{onchange: 'submitCategory();'}"
@@ -19,5 +17,4 @@
         </f:if>
     </f:case>
     <f:case default="1"></f:case>
-
 </f:switch>

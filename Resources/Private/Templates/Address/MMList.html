@@ -42,9 +42,9 @@
 			</div>
 			<div class="row">
 				<div class="category col-xs-5 col-xs-offset-1">
-					<f:render partial="Categories" arguments="{categories},{settings.categoryType}"/>
-
-
+					<f:if condition="{categories}">
+						<f:render partial="Address/Categories" arguments="{categories:categories, settings:settings}" />
+					</f:if>
 				</div>
 				<div class="search col-xs-5">
 					<f:if condition="{queryactive}">

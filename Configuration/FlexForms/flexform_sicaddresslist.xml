@@ -54,6 +54,34 @@
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.sortField>
+            <settings.categoryType>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_categoryType</label>
+                    <config>
+                        <type>select</type>
+                        <items type="array">
+                            <numIndex index="1" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_none</numIndex>
+                                <numIndex index="1">none</numIndex>
+                            </numIndex>
+                            <numIndex index="2" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_breadcrumbs</numIndex>
+                                <numIndex index="1">breadcrumbs</numIndex>
+                            </numIndex>
+                            <numIndex index="3" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_dropdown</numIndex>
+                                <numIndex index="1">dropdown</numIndex>
+                            </numIndex>
+                            <numIndex index="4" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_selectbox</numIndex>
+                                <numIndex index="1">selectbox</numIndex>
+                            </numIndex>
+                        </items>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                </TCEforms>
+            </settings.categoryType>
 		</el>
 	</ROOT>
 </T3DataStructure> 

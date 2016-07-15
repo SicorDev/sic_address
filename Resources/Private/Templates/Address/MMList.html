@@ -136,19 +136,44 @@
 		<f:for each="{addresses}" as="address">
 
 			<dt class="vcard">
-			<div class="vcard">
-				<span class="ttaddress_org">{address.company}</span>
-			</div>
+				<f:if condition="{address.company}">
+					<div class="vcard">
+						<strong>
+							<span class="ttaddress_org">{address.company}</span>
+						</strong>
+					</div>
+				</f:if>
 			<dd class="vcard">
 				<div class="contact">
-					{address.first-name} {address.middle_name} {address.last_name} {address.name}<br/>
-					{address.building} {address.room}<br/>
-					{address.address}<br/>
-					{address.zip} {address.city}<br/>
+					{address.first_name} {address.middle_name} {address.last_name} {address.name}
+					<f:if condition="{address.last_name} != ''">
+						<f:then>
+							<br/>
+						</f:then>
+						<f:else>
+							<f:if condition="{address.name}">
+								<br/>
+							</f:if>
+						</f:else>
+					</f:if>
+					{address.building} {address.room}
+					<f:if condition="{address.building} != ''">
+						<br/>
+					</f:if>
+					<f:if condition="{address.address} != ''">
+						{address.address}<br/><br/>
+					</f:if>
+
+					{address.zip} {address.city}
+					<f:if condition="{address.city} != ''">
+						<f:if condition="{address.zip} != ''">
+							{address.zip} {address.city}<br/><br/>
+						</f:if>
+					</f:if>
 
 
 					<f:if condition="{address.region} != ''">
-						<br/>{address.region}<br/>
+						{address.region}<br/>
 					</f:if>
 					<f:if condition="{address.country} != ''">
 						{address.country}<br/>

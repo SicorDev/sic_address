@@ -1,13 +1,14 @@
 <f:switch expression="{settings.categoryType}">
+
     <f:case value="breadcrumbs">
         <f:form.select name="category" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
                        prependOptionValue="-1" class="tx_nicosdirectory-pi1-small" size="5" additionalAttributes="{onchange: 'submitCategory();'}"
                        prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
     </f:case>
     <f:case value="dropdown">
-        <f:form.select name="category" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       prependOptionValue="-1" class="tx_nicosdirectory-pi1-small" size="5" additionalAttributes="{onchange: 'submitCategory();'}"
-                       prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
+            <f:form.select property="category" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}" prependOptionValue="-1"
+                           prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}"
+            />
     </f:case>
     <f:case value="selectbox">
         <f:if condition="{categories}">
@@ -16,4 +17,5 @@
                            prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
         </f:if>
     </f:case>
+
 </f:switch>

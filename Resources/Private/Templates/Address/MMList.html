@@ -13,9 +13,6 @@
 		}
 	</script>
 
-
-
-
 	<div class="address_searchoptions">
 		<f:form id="sic_address_search_form" action="search">
 			<div class="abisz">
@@ -56,9 +53,7 @@
 		</f:form>
 	</div>
 	<dl class="vcard">
-
 		<f:for each="{addresses}" as="address">
-
 			<dt class="vcard">
 				<f:if condition="{address.company}">
 					<div class="vcard">
@@ -87,21 +82,18 @@
 					<f:if condition="{address.address} != ''">
 						{address.address}<br/><br/>
 					</f:if>
-
 					{address.zip} {address.city}
 					<f:if condition="{address.city} != ''">
 						<f:if condition="{address.zip} != ''">
 							<br/><br/>
 						</f:if>
 					</f:if>
-
 					<f:if condition="{address.region} != ''">
 						{address.region}<br/>
 					</f:if>
 					<f:if condition="{address.country} != ''">
 						{address.country}<br/><br/>
 					</f:if>
-
 					<f:if condition="{address.phone} != ''">
 						<br/>Tel. {address.phone}
 					</f:if>
@@ -111,7 +103,6 @@
 					<f:if condition="{address.fax} != ''">
 						<br/>Fax. {address.fax}
 					</f:if>
-
 					<f:if condition="{address.www} != ''">
 						<br/><f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external>
 					</f:if>
@@ -120,13 +111,15 @@
 					</f:if>
 
 					<br/>###GROUPLIST###
-					{address.tx_ttaddresshandicappedinfo_distance}
+					<f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
+						<br/>{address.tx_ttaddresshandicappedinfo_distance}
+					</f:if>
 				</div>
 				<div class="col-xs-7 address_description">
 					###IMAGE###
 					{address.description}
 					<f:if condition="{address.tx_cronmmaddress_openinghours} != ''">
-						{address.tx_cronmmaddress_openinghours} Hurz
+						{address.tx_cronmmaddress_openinghours}
 					</f:if>
 				</div>
 

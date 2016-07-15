@@ -108,8 +108,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('queryvalue', $queryvalue);
 
         $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalue, $queryvalue, $queryField);
-
         $this->view->assign('addresses', $addresses);
+
+        $this->view->assign('settings', $this->settings);
 
         $this->setConfiguredTemplate();
     }

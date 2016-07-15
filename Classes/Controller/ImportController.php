@@ -122,6 +122,7 @@ class ImportController extends ModuleController {
 
         //Set tx_extbase_type for old tt_address entries
         $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tt_address", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
+        $GLOBALS['TYPO3_DB']->exec_UPDATEquery("sys_category", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
 
         if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
             $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');

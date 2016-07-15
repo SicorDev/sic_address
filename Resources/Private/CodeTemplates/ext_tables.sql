@@ -3,7 +3,7 @@
 # Table structure for table 'tt_address'
 #
 CREATE TABLE tt_address (
-  tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
+  tx_extbase_type varchar(255) DEFAULT 'Tx_SicAddress_Address' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
 
 	<f:for each="{properties}" as="field">
@@ -89,5 +89,5 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 # Table structure for table 'sys_category'
 #
 CREATE TABLE sys_category (
-	tx_extbase_type varchar(255) DEFAULT '0' NOT NULL,
+	tx_extbase_type varchar(255) DEFAULT 'Tx_SicAddress_Address' NOT NULL,
 );

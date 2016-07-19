@@ -18,13 +18,18 @@
 		.activelinkcolor { color: #CC0000;}
 		.deadlinkcolor { color: #999999;}
 	</style>
+
 	<script>
 		function submitAtoz (choice) {
 			$('#atoz').val(choice);
 			$('#sic_address_search_form').submit();
 			return false;
 		}
-		function submitCategory () {
+		function submitCategorySel () {
+			$('#sic_address_search_form').submit();
+		}
+		function submitCategoryBread (choice) {
+			$('#category').val(choice);
 			$('#sic_address_search_form').submit();
 		}
 	</script>

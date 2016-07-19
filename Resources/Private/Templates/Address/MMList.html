@@ -13,8 +13,13 @@
 			$('#sic_address_search_form').submit();
 			return false;
 		}
-		function submitCategory () {
+		function submitCategorySel () {
 			$('#sic_address_search_form').submit();
+		}
+		function submitCategoryBread (choice) {
+			$('#category').val(choice);
+			$('#sic_address_search_form').submit();
+			return false;
 		}
 	</script>
 
@@ -45,7 +50,10 @@
 			<div class="row">
 				<div class="category col-xs-5 col-xs-offset-1">
 					<f:if condition="{categories}">
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+						<div class="address_searchoptions address_category"><b>
+							Rubriken:
+							<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+						</b></div>
 					</f:if>
 				</div>
 				<div class="search col-xs-5">

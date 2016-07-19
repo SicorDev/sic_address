@@ -52,7 +52,7 @@
 				<source>Selectbox</source>
 			</trans-unit>
 			<trans-unit id="noselect_category_label">
-				<source>Kategorie</source>
+				<source>Alle</source>
 			</trans-unit>
 			<trans-unit id="search_no_hits_message">
 				<source>Leider wurde kein Treffer zu Ihrer Suche gefunden.</source>

@@ -24,7 +24,7 @@
 			$('#sic_address_search_form').submit();
 			return false;
 		}
-		function submitCategory (choice) {
+		function submitCategory () {
 			$('#sic_address_search_form').submit();
 		}
 	</script>
@@ -56,7 +56,7 @@
 			<div class="row">
 				<div class="category col-xs-5 col-xs-offset-1">
 					<f:if condition="{categories}">
-						<f:render partial="Address/Categories" arguments="{categories:categories, settings:settings}" />
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
 					</f:if>
 				</div>
 				<div class="search col-xs-5">

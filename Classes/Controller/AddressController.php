@@ -55,6 +55,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     protected $extensionConfiguration = NULL;
 
+    protected $categoryParentUid = '';
+
     /**
      * Called before any action
      */
@@ -98,21 +100,50 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('atoz', $this->getAtoz());
         $this->view->assign('atozvalue', $atozvalue);
 
-        $categories = $this->categoryRepository->findAll();
+        $categories = $this->findByTTContent($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $categories);
         $this->view->assign('categoryvalue', $categoryvalue);
+        $this->view->assign('categoryparentuid', $this->categoryParentUid);
 
         $queryField = $this->settings['queryField'];
         $queryactive = !($queryField === "none");
         $this->view->assign('queryactive', $queryactive);
         $this->view->assign('queryvalue', $queryvalue);
 
-        $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalue, $queryvalue, $queryField);
+        // Default search everywhere
+        $categoryvalues = null;
+        if(($categoryvalue > 0) && ($categoryvalue != $this->categoryParentUid)) {
+            // If a category was already selected, search there
+            $categoryvalues[] = $this->categoryRepository->findOneByUid($categoryvalue);
+        }
+        else if($this->categoryParentUid > 0) {
+            // If no category was selected, search in parentcategory if available
+            $categoryvalues = $categories->toArray();
+        }
+
+        $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalues, $queryvalue, $queryField);
         $this->view->assign('addresses', $addresses);
 
         $this->view->assign('settings', $this->settings);
 
         $this->setConfiguredTemplate();
+    }
+
+    /**
+     * Return categories as configured by the according tt_content element
+     */
+    public function findByTTContent ($uid)
+    {
+        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'sys_category_record_mm', "tablenames = 'tt_content' AND uid_foreign = ".$uid);
+        $count = $GLOBALS['TYPO3_DB']->sql_num_rows($results);
+        if($count == 1) {
+            $this->categoryParentUid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+            return $this->categoryRepository->findByParent($this->categoryParentUid);
+        }
+        else{
+            $this->categoryParentUid = "-1";
+            return $this->categoryRepository->findAll();
+        }
     }
 
     /**

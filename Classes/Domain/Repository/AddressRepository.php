@@ -85,7 +85,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function search($atozvalue, $atozField, $categoryvalue, $queryvalue, $queryField) {
+    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryField) {
 
         $query = $this->createQuery();
 
@@ -94,8 +94,16 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $constraints[] = $query->like($atozField, $atozvalue.'%');
         if ($queryField && !($queryField === "none") && $queryvalue && !($queryvalue === ""))
             $constraints[] = $query->like($queryField, '%'.$queryvalue.'%');
-        if ($categoryvalue && $categoryvalue > 0)
-            $constraints[] = $query->contains("categories", $categoryvalue);
+
+        if ($categories && count($categories > 0))
+        {
+            $catconstraints = array();
+            foreach ($categories as $category) {
+                $catconstraints[] = $query->contains("categories", $category->getUid());
+            }
+
+            $constraints[] = $query->logicalOr($catconstraints);
+        }
 
         if(count($constraints) < 1)
             return $this->findAll();

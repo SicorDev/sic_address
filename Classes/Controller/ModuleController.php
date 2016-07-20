@@ -102,9 +102,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $this->configuration = $this->domainPropertyRepository->findAll();
         foreach($this->configuration as $key => $value) {
-            //Convert fieldTitles to lowerCamelCase
-            $this->configuration[$key]->setTitle(lcfirst($this->configuration[$key]->getTitle()));
-
             // Initialize Type Objects
             $type = $this->configuration[$key]->getType();
             $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
@@ -133,7 +130,13 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $errorMessages = array();
 
         // Model
-        if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $this->configuration))
+        $domainProperties = array();
+        foreach($this->configuration as $key => $value) {
+            $domainProperties [$key] = clone $value;
+            // Convert fieldTitles to lowerCamelCase
+            $domainProperties[$key]->setTitle(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($domainProperties[$key]->getTitle()));
+        }
+        if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $domainProperties))
             $errorMessages[] = "Unable to save Model: Address.php";
         // SQL
         if (!$this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration()))

@@ -4,6 +4,7 @@
 	<f:flashMessages />
 
 	<style>
+		.address_category { float: none !important; }
 		.address_category_dropdown { font-size: 10pt; }
 		.f3-widget-paginator { list-style: none; text-align: left;}
 		.f3-widget-paginator > li { display: inline; margin: 0}
@@ -13,6 +14,12 @@
 		.f3-widget-paginator > li { border: 1px solid silver; padding: 0.25em; background: #eee; text-align: center; display: inline-block; }
 		.f3-widget-paginator > li.current { background: #ddd; font-weight: bold; color: red;}
 		.f3-widget-paginator { margin: -10px 0px 10px 5px }
+		.search-container { border: 1px solid #C0C0C0; margin: 0.25em;  padding: 0.25em;  height: 2em;  background: #EEE none repeat scroll 0% 0%; width: 20em; }
+		.vcard .address_description img { float: right; }
+		.tx-sic-address .vcard{ float: none; }
+		.tx-sic-address .vcard dd { display: inline-block; }
+		.f3-widget-paginator { margin-top: 5px; }
+		.csc-textpic-image img { height: 152px; width: 100px; }
 	</style>
 
 	<div class="address_searchoptions">
@@ -39,29 +46,28 @@
 					</f:for>
 				</f:if>
 			</div>
-			<div class="row">
-				<div class="category col-xs-5 col-xs-offset-1">
-					<f:if condition="{categories}">
-						<div class="address_searchoptions address_category"><b>
-							Rubriken:
-							<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
-						</b></div>
-					</f:if>
+			<f:if condition="{categories}">
+				<f:if condition="{settings.categoryType} != 'none'">
+					<div class="address_searchoptions address_category"><b>
+						Rubriken:
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+					</b></div>
+				</f:if>
+			</f:if>
+			<f:if condition="{queryactive}">
+				<div class="search-container">
+					<span>Suche:</span>
+					<f:form.textfield name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
+					<f:form.submit value="Los!" class="search-submit" />
 				</div>
-				<div class="search col-xs-5">
-					<f:if condition="{queryactive}">
-						<f:form.textfield name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" />
-					</f:if>
-				</div>
-			</div>
+			</f:if>
 		</f:form>
 	</div>
 
 	<f:if condition="{addresses}">
 		<f:then>
 			<div class="paginatehead">
-				<br /><br /><br /><f:count subject="{addresses}" /> Ergebnisse
+				<f:count subject="{addresses}" /> Ergebnisse
 			</div>
 			<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10,
 						insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
@@ -77,7 +83,7 @@
 						</f:if>
 						<dd class="vcard">
 							<div class="contact">
-								{address.first_name} {address.middle_name} {address.last_name} {address.name}
+								{address.firstName}{address.middleName}{address.lastName}{address.name}
 								<f:if condition="{address.last_name} != ''">
 									<f:then>
 										<br/>
@@ -122,21 +128,26 @@
 								<f:if condition="{address.email} != ''">
 									<br/><f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
 								</f:if>
-									<br/>###GROUPLIST###
+								<f:if condition="{address.categories}">
+									<br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+								</f:if>
 								<f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
 									<br/>{address.tx_ttaddresshandicappedinfo_distance}
 								</f:if>
 							</div>
-							<div class="col-xs-7 address_description">
-								###IMAGE###
-								{address.description}
-								<f:if condition="{address.tx_cronmmaddress_openinghours} != ''">
-									{address.tx_cronmmaddress_openinghours}
+							<div class="address_description">
+								<f:if condition="{address.image}">
+									<f:image treatIdAsReference="1" src="{address.image.uid}" width="120c" />
+								</f:if>
+								<f:format.html>{address.description}</f:format.html>
+								<f:if condition="{address.txCronmmaddressOpeninghours}">
+									<b>&Ouml;ffnungszeiten:</b>
+									<f:format.html>{address.txCronmmaddressOpeninghours}</f:format.html>
 								</f:if>
 							</div>
 						</dd>
 					</f:for>
-				</dl><div class="paginatehead" style="margin-bottom: 0px;">&nbsp;</div>
+				</dl><div class="paginatehead" style="margin-bottom: 0px;"></div>
 			</f:widget.paginate>
 		</f:then>
 		<f:else>
@@ -149,13 +160,19 @@
 	</f:if>
 
 	<script>
-		var links = document.getElementsByClassName('previous');
-		if(links[0]) links[0].children[0].innerHTML = 'zur&uuml;ck';
-		if(links[1]) links[1].children[0].innerHTML = 'zur&uuml;ck';
-
-		links = document.getElementsByClassName('next');
-		if(links[0]) links[0].children[0].innerHTML = 'weiter';
-		if(links[1]) links[1].children[0].innerHTML = 'weiter';
+		function documentReadyJsHook () {
+			// Hide right side list boxes when no info is given
+			$('.address_description').each(function() {
+				if($.trim($(this).html()).length < 1)
+					$(this).css('display', 'none');
+			});
+			$('.previous > a').each(function() {
+				$(this).html('zur&uuml;ck');
+			});
+			$('.next > a').each(function() {
+				$(this).html('weiter');
+			});
+		}
 	</script>
 
 </f:section>

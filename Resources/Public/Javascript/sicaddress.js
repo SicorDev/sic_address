@@ -11,3 +11,8 @@ function submitCategoryBread (choice) {
     $('#sic_address_search_form').submit();
     return false;
 }
+
+$(document).ready(function() {
+    if(documentReadyJsHook)
+        documentReadyJsHook();
+});

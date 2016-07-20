@@ -5,23 +5,15 @@
 
 	<style>
 		.address_category_dropdown { font-size: 10pt; }
+		.f3-widget-paginator { list-style: none; text-align: left;}
+		.f3-widget-paginator > li { display: inline; margin: 0}
+		.f3-widget-paginator > li.current { color: #CC0000;}
+		.paginatehead { margin: 1em 0.25em; text-align: left; width: 43.25em; color: gray; }
+		.f3-widget-paginator > li a { text-decoration: none; }
+		.f3-widget-paginator > li { border: 1px solid silver; padding: 0.25em; background: #eee; text-align: center; display: inline-block; }
+		.f3-widget-paginator > li.current { background: #ddd; font-weight: bold; color: red;}
+		.f3-widget-paginator { margin: -10px 0px 10px 5px }
 	</style>
-
-	<script>
-		function submitAtoz (choice) {
-			$('#atoz').val(choice);
-			$('#sic_address_search_form').submit();
-			return false;
-		}
-		function submitCategorySel () {
-			$('#sic_address_search_form').submit();
-		}
-		function submitCategoryBread (choice) {
-			$('#category').val(choice);
-			$('#sic_address_search_form').submit();
-			return false;
-		}
-	</script>
 
 	<div class="address_searchoptions">
 		<f:form id="sic_address_search_form" action="search">
@@ -65,80 +57,105 @@
 			</div>
 		</f:form>
 	</div>
-	<dl class="vcard">
-		<f:for each="{addresses}" as="address">
-			<dt class="vcard">
-				<f:if condition="{address.company}">
-					<div class="vcard">
-						<strong>
-							<span class="ttaddress_org">{address.company}</span>
-						</strong>
-					</div>
-				</f:if>
-			<dd class="vcard">
-				<div class="contact">
-					{address.first_name} {address.middle_name} {address.last_name} {address.name}
-					<f:if condition="{address.last_name} != ''">
-						<f:then>
-							<br/>
-						</f:then>
-						<f:else>
-							<f:if condition="{address.name}">
-								<br/>
-							</f:if>
-						</f:else>
-					</f:if>
-					{address.building} {address.room}
-					<f:if condition="{address.building} != ''">
-						<br/>
-					</f:if>
-					<f:if condition="{address.address} != ''">
-						{address.address}<br/><br/>
-					</f:if>
-					{address.zip} {address.city}
-					<f:if condition="{address.city} != ''">
-						<f:if condition="{address.zip} != ''">
-							<br/><br/>
+
+	<f:if condition="{addresses}">
+		<f:then>
+			<div class="paginatehead">
+				<br /><br /><br /><f:count subject="{addresses}" /> Ergebnisse
+			</div>
+			<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10,
+						insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
+						insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
+				<dl class="vcard">
+					<f:for each="{addresspage}" as="address">
+						<f:if condition="{address.company}">
+							<dt class="vcard">
+								<strong>
+									<span class="ttaddress_org">{address.company}</span>
+								</strong>
+							</dt>
 						</f:if>
-					</f:if>
-					<f:if condition="{address.region} != ''">
-						{address.region}<br/>
-					</f:if>
-					<f:if condition="{address.country} != ''">
-						{address.country}<br/><br/>
-					</f:if>
-					<f:if condition="{address.phone} != ''">
-						<br/>Tel. {address.phone}
-					</f:if>
-					<f:if condition="{address.mobile} != ''">
-						<br/>Mob. {address.mobile}
-					</f:if>
-					<f:if condition="{address.fax} != ''">
-						<br/>Fax. {address.fax}
-					</f:if>
-					<f:if condition="{address.www} != ''">
-						<br/><f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external>
-					</f:if>
-					<f:if condition="{address.email} != ''">
-						<br/><f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
-					</f:if>
-
-					<br/>###GROUPLIST###
-					<f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
-						<br/>{address.tx_ttaddresshandicappedinfo_distance}
-					</f:if>
+						<dd class="vcard">
+							<div class="contact">
+								{address.first_name} {address.middle_name} {address.last_name} {address.name}
+								<f:if condition="{address.last_name} != ''">
+									<f:then>
+										<br/>
+									</f:then>
+									<f:else>
+										<f:if condition="{address.name}">
+											<br/>
+										</f:if>
+									</f:else>
+								</f:if>
+								{address.building} {address.room}
+								<f:if condition="{address.building} != ''">
+									<br/>
+								</f:if>
+								<f:if condition="{address.address} != ''">
+									{address.address}<br/><br/>
+								</f:if>
+								{address.zip} {address.city}
+								<f:if condition="{address.city} != ''">
+									<f:if condition="{address.zip} != ''">
+										<br/><br/>
+									</f:if>
+								</f:if>
+								<f:if condition="{address.region} != ''">
+									{address.region}<br/>
+								</f:if>
+								<f:if condition="{address.country} != ''">
+									{address.country}<br/><br/>
+								</f:if>
+								<f:if condition="{address.phone} != ''">
+									<br/>Tel. {address.phone}
+								</f:if>
+								<f:if condition="{address.mobile} != ''">
+									<br/>Mob. {address.mobile}
+								</f:if>
+								<f:if condition="{address.fax} != ''">
+									<br/>Fax. {address.fax}
+								</f:if>
+								<f:if condition="{address.www} != ''">
+									<br/><f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external>
+								</f:if>
+								<f:if condition="{address.email} != ''">
+									<br/><f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
+								</f:if>
+									<br/>###GROUPLIST###
+								<f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
+									<br/>{address.tx_ttaddresshandicappedinfo_distance}
+								</f:if>
+							</div>
+							<div class="col-xs-7 address_description">
+								###IMAGE###
+								{address.description}
+								<f:if condition="{address.tx_cronmmaddress_openinghours} != ''">
+									{address.tx_cronmmaddress_openinghours}
+								</f:if>
+							</div>
+						</dd>
+					</f:for>
+				</dl><div class="paginatehead" style="margin-bottom: 0px;">&nbsp;</div>
+			</f:widget.paginate>
+		</f:then>
+		<f:else>
+			<div class="list row" style="height: 100px;">
+				<div class="sorry">
+					{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
 				</div>
-				<div class="col-xs-7 address_description">
-					###IMAGE###
-					{address.description}
-					<f:if condition="{address.tx_cronmmaddress_openinghours} != ''">
-						{address.tx_cronmmaddress_openinghours}
-					</f:if>
-				</div>
+			</div>
+		</f:else>
+	</f:if>
 
-			</dd>
-			</dt>
+	<script>
+		var links = document.getElementsByClassName('previous');
+		if(links[0]) links[0].children[0].innerHTML = 'zur&uuml;ck';
+		if(links[1]) links[1].children[0].innerHTML = 'zur&uuml;ck';
 
-		</f:for>
-	</dl>
+		links = document.getElementsByClassName('next');
+		if(links[0]) links[0].children[0].innerHTML = 'weiter';
+		if(links[1]) links[1].children[0].innerHTML = 'weiter';
+	</script>
+
 </f:section>

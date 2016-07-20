@@ -60,7 +60,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * Called before any action
      */
-    public function initializeAction() {
+    public function initializeAction()
+    {
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
 
         $field = $this->settings['sortField'];
@@ -69,6 +70,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $field => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
             ));
         }
+
+        $GLOBALS['TSFE']->additionalHeaderData['tx_sicaddress_sicaddress'] = '<script src="typo3conf/ext/sic_address/Resources/Public/Javascript/sicaddress.js" type="text/javascript"></script>';
     }
 
     /**

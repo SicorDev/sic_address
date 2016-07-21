@@ -85,7 +85,7 @@
 				<div class="search-container">
 					<span>Suche:</span>
 					<f:form.textfield id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
-					<f:form.submit value="Los!" class="search-submit" />
+					<f:form.submit value="Los!" class="search-submit"  additionalAttributes="{onclick: 'submitQuery();'}" />
 				</div>
 			</f:if>
 		</f:form>

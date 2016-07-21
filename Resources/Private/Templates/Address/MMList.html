@@ -9,7 +9,7 @@
 		.f3-widget-paginator { list-style: none; text-align: left;}
 		.f3-widget-paginator > li { display: inline; margin: 0}
 		.f3-widget-paginator > li.current { color: #CC0000;}
-		.paginatehead { margin: 1em 0.25em; text-align: left; width: 43.25em; color: gray; }
+		.paginatehead { margin-top: 1em; text-align: left; width: 43.25em; color: gray; float:none; display: inline-block; }
 		.f3-widget-paginator > li a { text-decoration: none; }
 		.f3-widget-paginator > li { border: 1px solid silver; padding: 0.25em; background: #eee; text-align: center; display: inline-block; }
 		.f3-widget-paginator > li.current { background: #ddd; font-weight: bold; color: red;}
@@ -20,6 +20,8 @@
 		.tx-sic-address .vcard dd { display: inline-block; }
 		.f3-widget-paginator { margin-top: 5px; }
 		.csc-textpic-image img { height: 152px; width: 100px; }
+		.address_category_type_dropdown{ width: 20em; float: left !important; }
+		.search-container { float: left; height: 27px; line-height: 2.2em; }
 	</style>
 
 	<div class="address_searchoptions">
@@ -48,7 +50,7 @@
 			</div>
 			<f:if condition="{categories}">
 				<f:if condition="{settings.categoryType} != 'none'">
-					<div class="address_searchoptions address_category"><b>
+					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}"><b>
 						Rubriken:
 						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
 					</b></div>
@@ -83,16 +85,9 @@
 						</f:if>
 						<dd class="vcard">
 							<div class="contact">
-								{address.firstName}{address.middleName}{address.lastName}{address.name}
-								<f:if condition="{address.last_name} != ''">
-									<f:then>
-										<br/>
-									</f:then>
-									<f:else>
-										<f:if condition="{address.name}">
-											<br/>
-										</f:if>
-									</f:else>
+								<f:if condition="{address.lastName}">
+									<f:then>{address.title} {address.firstName} {address.middleName} {address.lastName}<br/></f:then>
+									<f:else>{address.name}<br/></f:else>
 								</f:if>
 								{address.building} {address.room}
 								<f:if condition="{address.building} != ''">

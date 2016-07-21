@@ -99,10 +99,6 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     public function fillAddressList($atozvalue, $categoryvalue, $queryvalue)
     {
-        $atozField = $this->settings['atozField'];
-        $this->view->assign('atoz', $this->getAtoz());
-        $this->view->assign('atozvalue', $atozvalue);
-
         $categories = $this->findByTTContent($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $categories);
         $this->view->assign('categoryvalue', $categoryvalue);
@@ -124,8 +120,12 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $categoryvalues = $categories->toArray();
         }
 
+        $atozField = $this->settings['atozField'];
         $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalues, $queryvalue, $queryField);
         $this->view->assign('addresses', $addresses);
+
+        $this->view->assign('atozvalue', $atozvalue);
+        $this->view->assign('atoz', $this->getAtoz($addresses));
 
         $this->view->assign('settings', $this->settings);
 
@@ -238,15 +238,26 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      *  Create A-Z Info for Fluid Template
      */
-    private function getAtoz()
+    private function getAtoz($addresses)
     {
+        return null;
+        
         // Get config
         $field = $this->settings['atozField'];
         if($field === "none") return null;
-        $addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
-        // Query Database
-        $res = $this->addressRepository->findAtoz($field, $addresstable);
+        // Find A-Z letters in use
+        $res = array();
+        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', $addresstable, 'deleted = 0 AND hidden = 0');
+        foreach($addresses as $address) {
+            $letter =  trim($address[$field]);
+            if(strlen($letter) < 1)
+                continue;
+
+            $letter = ucfirst(substr($letter, 0, 1));
+
+            $res[] = $result['letter'];
+        }
 
         // Build two dimensional result array
         $atoz = array();

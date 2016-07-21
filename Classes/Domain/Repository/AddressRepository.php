@@ -73,18 +73,6 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz($field, $addresstable) {
-        $res = array();
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', $addresstable, 'deleted = 0 AND hidden = 0');
-        while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
-            $res[] = $result['letter'];
-        }
-        return $res;
-    }
-
-    /**
-     * @return array
-     */
     public function search($atozvalue, $atozField, $categories, $queryvalue, $queryField) {
 
         $query = $this->createQuery();

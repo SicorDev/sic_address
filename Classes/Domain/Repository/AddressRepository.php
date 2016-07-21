@@ -90,7 +90,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query = $this->createQuery();
 
         $constraints = array();
-        if ($atozField && !($atozField === "none") && $atozvalue && !($atozvalue === "alle"))
+        if ($atozField && !($atozField === "none") && $atozvalue && strlen(trim($atozvalue)) === 1)
             $constraints[] = $query->like($atozField, $atozvalue.'%');
         if ($queryField && !($queryField === "none") && $queryvalue && !($queryvalue === ""))
             $constraints[] = $query->like($queryField, '%'.$queryvalue.'%');

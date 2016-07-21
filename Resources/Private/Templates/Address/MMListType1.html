@@ -19,7 +19,8 @@
 		.tx-sic-address .vcard{ float: none; }
 		.tx-sic-address .vcard dd { display: inline-block; }
 		.f3-widget-paginator { margin-top: 5px; }
-		.address_category_type_dropdown{ min-width: 20em; float: left !important; }
+		.csc-textpic-image img { height: 152px; width: 100px; }
+		.address_category_type_dropdown{ width: 20em; float: left !important; }
 		.search-container { float: left; height: 27px; line-height: 2.2em; }
 		.abisz .atoz_text { padding: 0.25em; width: 1.5em; border: 2px outset silver; background: #ddd; margin: 0.25em; float: left; text-align: center; font-weight: bold; text-decoration: none; }
 		.abisz .atoz_all { width: 4.25em; }
@@ -28,7 +29,6 @@
 	</style>
 
 	<div class="address_searchoptions">
-	<span>{codata.pid}</span>
 		<f:form id="sic_address_search_form" action="search">
 			<f:if condition="{atoz}">
 				<div class="abisz">
@@ -84,12 +84,13 @@
 			<f:if condition="{queryactive}">
 				<div class="search-container">
 					<span>Suche:</span>
-					<f:form.textfield  id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
+					<f:form.textfield id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
 					<f:form.submit value="Los!" class="search-submit" additionalAttributes="{onclick: 'submitQuery();'}" />
 				</div>
 			</f:if>
 		</f:form>
 	</div>
+
 	<f:if condition="{addresses}">
 		<f:then>
 			<div class="paginatehead">
@@ -98,73 +99,75 @@
 			<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9,
 						insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
 						insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
-				<table>
-					<thead>
-						<tr>
-							<th id="anschrift">Anschrift</th>
-							<th id="kontaktdaten">Infos für Behinderte</th>
-						</tr>
-					</thead>
-					<tbody>
-						<f:for each="{addresspage}" as="address" iteration="addressIterator">
-							<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
-								<td headers="anschrift">
-									<b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
-									<span>{address.address}</span><br><br>
-									<span>{address.zip} {address.city}</span><br><br>
-									<f:if condition="{address.categories}">
-										<br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
-									</f:if>
-								</td>
-								<td headers="Infos für Behinderte">
-								<b>Haupteingang:</b><br>
-								<f:if condition="{address.txTtaddresshandicappedinfoSteplessEntrance} == 1">
-									<f:then>
-										<span>Stufenloser Zugang</span>
-									</f:then>
-									<f:else>
-										<span>Rampe vorhanden</span>
-										<f:if condition="{address.txTtaddresshandicappedinfoRampInclination}">
-											<span<({address.txTtaddresshandicappedinfoRampInclination} Neigung)</span>
-										</f:if>
-									</f:else>
+				<dl class="vcard">
+					<f:for each="{addresspage}" as="address">
+						<f:if condition="{address.company}">
+							<dt class="vcard">
+								<strong>
+									<span class="ttaddress_org">{address.company}</span>
+								</strong>
+							</dt>
+						</f:if>
+						<dd class="vcard">
+							<div class="contact">
+								<f:if condition="{address.lastName}">
+									<f:then>{address.title} {address.firstName} {address.middleName} {address.lastName}<br/></f:then>
+									<f:else>{address.name}<br/></f:else>
 								</f:if>
-								<br><span>Breite {address.txTtaddresshandicappedinfoMaindoorWidth} cm</span><br><br>
-								<f:if condition="{address.txTtaddresshandicappedinfoElevator} == 1">
-									<b>Aufzug:</b><br>
-									<span>Aufzug vorhanden {f:if(condition: address.txTtaddresshandicappedinfoElevatorSteplessEntrance, then:'(stufenlos erreichbar)')}</span><br>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorDoorWidth}">
-										<span>Türbreite {address.txTtaddresshandicappedinfoElevatorDoorWidth} cm</span><br>
-									</f:if>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorInternalWidth}">
-										<span>Innenmaß {address.txTtaddresshandicappedinfoElevatorInternalWidth} cm</span><br>
-									</f:if>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorControlConsoleHeight}">
-										<span>Höhe Bedienpult {address.txTtaddresshandicappedinfoElevatorControlConsoleHeight} cm</span><br>
+								{address.building} {address.room}
+								<f:if condition="{address.building} != ''">
+									<br/>
+								</f:if>
+								<f:if condition="{address.address} != ''">
+									{address.address}<br/><br/>
+								</f:if>
+								{address.zip} {address.city}
+								<f:if condition="{address.city} != ''">
+									<f:if condition="{address.zip} != ''">
+										<br/><br/>
 									</f:if>
 								</f:if>
-								<br><b>Praxiseingang</b><br>
-								<span>Breite {address.txTtaddresshandicappedinfoEntranceDoorWidth} cm</span><br>
-								<span>Höhe Anmeldetheke {address.txTtaddresshandicappedinfoReceptionDeskHeight} cm</span><br><br>
-								
-								<f:if condition="{address.txTtaddresshandicappedinfoToiletForHandicapped}">
-									<b>Toilette:</b><br>
-									<span>WC-Türbreite {address.txTtaddresshandicappedinfoToiletDoorWidth} cm {f:if(condition:address.txTtaddresshandicappedinfoToiletDoor, then: '(öffnet nach außen)')}</span><br>
-									<f:if condition="{txTtaddresshandicappedinfoToiletDim}">
-										<span>WC Bewegungs-Fläche innen {txTtaddresshandicappedinfoToiletDimtxTtaddresshandicappedinfoToiletDim} cm</span>
-									</f:if>
+								<f:if condition="{address.region} != ''">
+									{address.region}<br/>
 								</f:if>
-								<br><b>Praxis</b>
-								<span>Behandlungsliege Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyTableHeightAdjust, then: '(höhenverstellbar)')}</span>
-								<span>Behandlungsstuhl Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyChairHeightAdjust, then: '(höhenverstellbar)')}</span>
-								<br><br><b>Sontiges</b><br>
-								<span>{address.txTtaddresshandicappedinfoAdditionalInfo}</span>
-								</td>
-							</tr>
-						</f:for>
-					</tbody>
-				</table>
-				<div class="paginatehead" style="margin-bottom: 0px;"></div>
+								<f:if condition="{address.country} != ''">
+									{address.country}<br/><br/>
+								</f:if>
+								<f:if condition="{address.phone} != ''">
+									<br/>Tel. {address.phone}
+								</f:if>
+								<f:if condition="{address.mobile} != ''">
+									<br/>Mob. {address.mobile}
+								</f:if>
+								<f:if condition="{address.fax} != ''">
+									<br/>Fax.{address.fax}
+								</f:if>
+								<f:if condition="{address.www} != ''">
+									<br/><f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external>
+								</f:if>
+								<f:if condition="{address.email} != ''">
+									<br/><f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
+								</f:if>
+								<f:if condition="{address.categories}">
+									<br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+								</f:if>
+								<f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
+									<br/>{address.tx_ttaddresshandicappedinfo_distance}
+								</f:if>
+							</div>
+							<div class="address_description">
+								<f:if condition="{address.image}">
+									<f:image treatIdAsReference="1" src="{address.image.uid}" width="120c" />
+								</f:if>
+								<f:format.html>{address.description}</f:format.html>
+								<f:if condition="{address.txCronmmaddressOpeninghours}">
+									<b>&Ouml;ffnungszeiten:</b>
+									<f:format.html>{address.txCronmmaddressOpeninghours}</f:format.html>
+								</f:if>
+							</div>
+						</dd>
+					</f:for>
+				</dl><div class="paginatehead" style="margin-bottom: 0px;"></div>
 			</f:widget.paginate>
 		</f:then>
 		<f:else>

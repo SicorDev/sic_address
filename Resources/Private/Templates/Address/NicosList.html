@@ -23,7 +23,7 @@
 		<f:form id="sic_address_search_form" action="search">
 			<div class="abisz">
 				<f:if condition="{atoz}">
-					<f:form.hidden id="atoz" name="atoz" value="{atozvalue}" />
+					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
 					<f:for each="{atoz}" as="value">
 						<f:if condition="{value.active}">
 							<f:then>
@@ -51,8 +51,8 @@
 				</div>
 				<div class="search col-xs-5">
 					<f:if condition="{queryactive}">
-						<f:form.textfield name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" />
+						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
 					</f:if>
 				</div>
 			</div>

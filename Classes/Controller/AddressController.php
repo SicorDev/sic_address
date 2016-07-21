@@ -256,7 +256,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         // Add 'alle'
         if(count($res) > 0)
-            $atoz[] =  array ("character" => "alle", "active" => true);
+            $atoz[] =  array ("character" => "Alle", "active" => true);
 
         return $atoz;
     }

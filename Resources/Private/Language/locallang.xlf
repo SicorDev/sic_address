@@ -51,6 +51,18 @@
 			<trans-unit id="label_cattype_selectbox">
 				<source>Selectbox</source>
 			</trans-unit>
+			<trans-unit id="label_listType">
+				<source>Listendarstellung</source>
+			</trans-unit>
+			<trans-unit id="label_cattype_vcard">
+				<source>Visitenkarte</source>
+			</trans-unit>
+			<trans-unit id="label_cattype_2column">
+				<source>2-Spaltig</source>
+			</trans-unit>
+			<trans-unit id="label_cattype_3column">
+				<source>3-Spaltig</source>
+			</trans-unit>
 			<trans-unit id="noselect_category_label">
 				<source>Alle</source>
 			</trans-unit>

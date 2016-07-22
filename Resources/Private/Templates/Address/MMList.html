@@ -22,13 +22,12 @@
 		.address_category_type_dropdown{ min-width: 20em; float: left !important; }
 		.search-container { float: left; height: 27px; line-height: 2.2em; }
 		.abisz .atoz_text { padding: 0.25em; width: 1.5em; border: 2px outset silver; background: #ddd; margin: 0.25em; float: left; text-align: center; font-weight: bold; text-decoration: none; }
-		.abisz .atoz_all { width: 4.25em; }
+		.abisz .atoz_Alle { width: 4.25em; }
 		.abisz .deadlinkcolor { color: #fff; }
 		.abisz { width: 40em; margin-bottom: 40px; padding-bottom: 40px; }
 	</style>
 
 	<div class="address_searchoptions">
-	<span>{codata.pid}</span>
 		<f:form id="sic_address_search_form" action="search">
 			<f:if condition="{atoz}">
 				<div class="abisz">
@@ -38,36 +37,15 @@
 							<f:then>
 								<f:if condition="{value.character} == {atozvalue}">
 									<f:then>
-										<f:if condition="{value.character} == 'alle'">
-											<f:then>
-												<span class="activelinkcolor atoz_text atoz_all">{value.character}</span>
-											</f:then>
-											<f:else>
-												<span class="activelinkcolor atoz_text">{value.character}</span>
-											</f:else>
-										</f:if>
+										<span class="activelinkcolor atoz_text atoz_{value.character}">{value.character}</span>
 									</f:then>
 									<f:else>
-										<f:if condition="{value.character} == 'alle'">
-											<f:then>
-												<a href="#" class="atoz_text atoz_all" onclick="return submitAtoz('{value.character}');">{value.character}</a>
-											</f:then>
-											<f:else>
-												<a href="#" class="atoz_text" onclick="return submitAtoz('{value.character}');">{value.character}</a>
-											</f:else>
-										</f:if>
+										<a href="#" class="atoz_text atoz_{value.character}" onclick="return submitAtoz('{value.character}');">{value.character}</a>
 									</f:else>
 								</f:if>
 							</f:then>
 							<f:else>
-								<f:if condition="{value.character} == 'alle'">
-									<f:then>
-										<span class="deadlinkcolor atoz_text atoz_all">{value.character}</span>
-									</f:then>
-									<f:else>
-										<span class="deadlinkcolor atoz_text">{value.character}</span>
-									</f:else>
-								</f:if>
+								<span class="deadlinkcolor atoz_text">{value.character}</span>
 							</f:else>
 						</f:if>
 					</f:for>
@@ -98,72 +76,7 @@
 			<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9,
 						insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
 						insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
-				<table>
-					<thead>
-						<tr>
-							<th id="anschrift">Anschrift</th>
-							<th id="kontaktdaten">Infos für Behinderte</th>
-						</tr>
-					</thead>
-					<tbody>
-						<f:for each="{addresspage}" as="address" iteration="addressIterator">
-							<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
-								<td headers="anschrift">
-									<b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
-									<span>{address.address}</span><br><br>
-									<span>{address.zip} {address.city}</span><br><br>
-									<f:if condition="{address.categories}">
-										<br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
-									</f:if>
-								</td>
-								<td headers="Infos für Behinderte">
-								<b>Haupteingang:</b><br>
-								<f:if condition="{address.txTtaddresshandicappedinfoSteplessEntrance} == 1">
-									<f:then>
-										<span>Stufenloser Zugang</span>
-									</f:then>
-									<f:else>
-										<span>Rampe vorhanden</span>
-										<f:if condition="{address.txTtaddresshandicappedinfoRampInclination}">
-											<span<({address.txTtaddresshandicappedinfoRampInclination} Neigung)</span>
-										</f:if>
-									</f:else>
-								</f:if>
-								<br><span>Breite {address.txTtaddresshandicappedinfoMaindoorWidth} cm</span><br><br>
-								<f:if condition="{address.txTtaddresshandicappedinfoElevator} == 1">
-									<b>Aufzug:</b><br>
-									<span>Aufzug vorhanden {f:if(condition: address.txTtaddresshandicappedinfoElevatorSteplessEntrance, then:'(stufenlos erreichbar)')}</span><br>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorDoorWidth}">
-										<span>Türbreite {address.txTtaddresshandicappedinfoElevatorDoorWidth} cm</span><br>
-									</f:if>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorInternalWidth}">
-										<span>Innenmaß {address.txTtaddresshandicappedinfoElevatorInternalWidth} cm</span><br>
-									</f:if>
-									<f:if condition="{address.txTtaddresshandicappedinfoElevatorControlConsoleHeight}">
-										<span>Höhe Bedienpult {address.txTtaddresshandicappedinfoElevatorControlConsoleHeight} cm</span><br>
-									</f:if>
-								</f:if>
-								<br><b>Praxiseingang</b><br>
-								<span>Breite {address.txTtaddresshandicappedinfoEntranceDoorWidth} cm</span><br>
-								<span>Höhe Anmeldetheke {address.txTtaddresshandicappedinfoReceptionDeskHeight} cm</span><br><br>
-								
-								<f:if condition="{address.txTtaddresshandicappedinfoToiletForHandicapped}">
-									<b>Toilette:</b><br>
-									<span>WC-Türbreite {address.txTtaddresshandicappedinfoToiletDoorWidth} cm {f:if(condition:address.txTtaddresshandicappedinfoToiletDoor, then: '(öffnet nach außen)')}</span><br>
-									<f:if condition="{txTtaddresshandicappedinfoToiletDim}">
-										<span>WC Bewegungs-Fläche innen {txTtaddresshandicappedinfoToiletDimtxTtaddresshandicappedinfoToiletDim} cm</span>
-									</f:if>
-								</f:if>
-								<br><b>Praxis</b>
-								<span>Behandlungsliege Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyTableHeightAdjust, then: '(höhenverstellbar)')}</span>
-								<span>Behandlungsstuhl Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyChairHeightAdjust, then: '(höhenverstellbar)')}</span>
-								<br><br><b>Sontiges</b><br>
-								<span>{address.txTtaddresshandicappedinfoAdditionalInfo}</span>
-								</td>
-							</tr>
-						</f:for>
-					</tbody>
-				</table>
+				<f:render partial="Address/MMLists" arguments="{settings:settings, addresspage:addresspage}" />
 				<div class="paginatehead" style="margin-bottom: 0px;"></div>
 			</f:widget.paginate>
 		</f:then>

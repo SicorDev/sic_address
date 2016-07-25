@@ -35,13 +35,13 @@
                             {address.country}<br/><br/>
                         </f:if>
                         <f:if condition="{address.phone}">
-                            <br/>Tel. {address.phone}
+                            <br/>Tel.&nbsp;{address.phone}
                         </f:if>
                         <f:if condition="{address.mobile}">
-                            <br/>Mob. {address.mobile}
+                            <br/>Mob.&nbsp;{address.mobile}
                         </f:if>
                         <f:if condition="{address.fax}">
-                            <br/>Fax.{address.fax}
+                            <br/>Fax.&nbsp;{address.fax}
                         </f:if>
                         <f:if condition="{address.www}">
                             <br/><f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external>
@@ -158,7 +158,7 @@
                     </td>
                     <td headers="kontaktdaten">
                         <f:if condition="{address.phone}">
-                            <span>Tel. {address.phone}</span><br>
+                            <span>Tel.&nbsp;{address.phone}</span><br>
                         </f:if>
                         <f:if condition="{address.fax}">
                             <span>Fax&nbsp;{address.fax}</span><br>

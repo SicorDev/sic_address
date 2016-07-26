@@ -99,11 +99,18 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     public function fillAddressList($atozvalue, $categoryvalue, $queryvalue)
     {
+        // Categories
         $categories = $this->findByTTContent($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $categories);
         $this->view->assign('categoryvalue', $categoryvalue);
         $this->view->assign('categoryparentuid', $this->categoryParentUid);
 
+        // Atoz
+        $atozField = $this->settings['atozField'];
+        $this->view->assign('atozvalue', $atozvalue);
+        $this->view->assign('atoz', $this->getAtoz($categories));
+
+        // Query
         $queryField = $this->settings['queryField'];
         $queryactive = !($queryField === "none");
         $this->view->assign('queryactive', $queryactive);
@@ -120,12 +127,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $categoryvalues = $categories->toArray();
         }
 
-        $atozField = $this->settings['atozField'];
+        // Search addresses
         $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalues, $queryvalue, $queryField);
         $this->view->assign('addresses', $addresses);
-
-        $this->view->assign('atozvalue', $atozvalue);
-        $this->view->assign('atoz', $this->getAtoz($addresses));
 
         $this->view->assign('settings', $this->settings);
 
@@ -238,26 +242,15 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      *  Create A-Z Info for Fluid Template
      */
-    private function getAtoz($addresses)
+    private function getAtoz($categories)
     {
-        return null;
-        
         // Get config
         $field = $this->settings['atozField'];
         if($field === "none") return null;
+        $addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
-        // Find A-Z letters in use
-        $res = array();
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.' , 1)) as letter', $addresstable, 'deleted = 0 AND hidden = 0');
-        foreach($addresses as $address) {
-            $letter =  trim($address[$field]);
-            if(strlen($letter) < 1)
-                continue;
-
-            $letter = ucfirst(substr($letter, 0, 1));
-
-            $res[] = $result['letter'];
-        }
+        // Query Database
+        $res = $this->addressRepository->findAtoz($field, $addresstable, ($this->categoryParentUid > 0) ? $categories : null);
 
         // Build two dimensional result array
         $atoz = array();

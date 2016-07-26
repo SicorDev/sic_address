@@ -25,6 +25,8 @@
 		.abisz .atoz_Alle { width: 4.25em; }
 		.abisz .deadlinkcolor { color: #fff; }
 		.abisz { width: 40em; margin-bottom: 40px; padding-bottom: 40px; }
+		.sorry { float:none; display: inline-block; margin: 10px; }
+
 	</style>
 
 	<div class="address_searchoptions">
@@ -53,15 +55,15 @@
 			</f:if>
 			<f:if condition="{categories}">
 				<f:if condition="{settings.categoryType} != 'none'">
-					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}"><b>
-						Rubriken:
+					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
+						<b>Rubriken:</b>
 						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
 					</b></div>
 				</f:if>
 			</f:if>
 			<f:if condition="{queryactive}">
 				<div class="search-container">
-					<span>Suche:</span>
+					<b>Suche:</b>
 					<f:form.textfield  id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
 					<f:form.submit value="Los!" class="search-submit" additionalAttributes="{onclick: 'submitQuery();'}" />
 				</div>
@@ -81,10 +83,8 @@
 			</f:widget.paginate>
 		</f:then>
 		<f:else>
-			<div class="list row" style="height: 100px;">
-				<div class="sorry">
-					{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
-				</div>
+			<div class="sorry">
+				{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
 			</div>
 		</f:else>
 	</f:if>

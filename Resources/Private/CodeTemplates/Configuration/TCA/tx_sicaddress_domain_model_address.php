@@ -2,14 +2,14 @@
 
 return array(
     'ctrl' => array(
-        'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address',
+        'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:tx_sicaddress_domain_model_address_title',
+        'label' => 'company',
         'label_userFunc' => "SICOR\\SicAddress\\Userfuncs\\Tca->addressTitle",
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
-        'sortby' => 'sorting',
-
+        'sortby' => 'company',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',

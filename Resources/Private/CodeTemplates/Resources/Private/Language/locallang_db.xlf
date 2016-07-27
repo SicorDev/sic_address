@@ -3,12 +3,6 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-23T16:33:08Z" product-name="sic_address">
 		<header/>
 		<body>
-			<trans-unit id="tx_sicaddress_domain_model_address">
-				<source>Address</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_address.categories">
-				<source>Categories</source>
-			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>

@@ -4,8 +4,11 @@ if (!isset($GLOBALS['TCA']['sys_category']['ctrl']['type'])) {
 	if (file_exists($GLOBALS['TCA']['sys_category']['ctrl']['dynamicConfigFile'])) {
 		require_once($GLOBALS['TCA']['sys_category']['ctrl']['dynamicConfigFile']);
 	}
-	// no type field defined, so we define it here. This will only happen the first time the extension is installed!!
+
+	// Override sys_category tca fields
 	$GLOBALS['TCA']['sys_category']['ctrl']['type'] = 'tx_extbase_type';
+	$GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = 'title';
+
 	$tempColumnstx_sicaddress_sys_category = array();
 	$tempColumnstx_sicaddress_sys_category[$GLOBALS['TCA']['sys_category']['ctrl']['type']] = array(
 		'exclude' => 1,

@@ -75,7 +75,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findAtoz($field, $addresstable, $categories)
     {
-        $where = "deleted=0 AND pid<>-1 AND t3ver_state<=0 AND hidden=0 ";
+        $where = "deleted=0 AND pid<>-1 AND hidden=0 ";
         if ($categories && count($categories > 0)) {
             $where .= "AND (";
             foreach ($categories as $category) {

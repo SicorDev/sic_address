@@ -59,7 +59,8 @@
 		</f:form>
 		<f:if condition="{addresses}">
 			<f:then>
-				<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1}">
+				<f:widget.paginate objects="{addresses}" as="addresspage"
+								   configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
 					<f:for each="{addresspage}" as="address">
 						<div class="list row">
 							<div class="col-xs-4">

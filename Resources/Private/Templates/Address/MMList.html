@@ -24,6 +24,7 @@
 		.abisz .atoz_text { padding: 0.25em; width: 1.5em; border: 2px outset silver; background: #ddd; margin: 0.25em; float: left; text-align: center; font-weight: bold; text-decoration: none; }
 		.abisz .atoz_Alle { width: 4.25em; }
 		.abisz .deadlinkcolor { color: #fff; }
+		.activelinkcolor { color: red !important; border: 2px inset silver !important;}
 		.abisz { width: 40em; margin-bottom: 40px; padding-bottom: 40px; }
 		.sorry { float:none; display: inline-block; margin: 10px; }
 
@@ -57,7 +58,7 @@
 				<f:if condition="{settings.categoryType} != 'none'">
 					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
 						<b>Rubriken:</b>
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, settings:settings}" />
 					</b></div>
 				</f:if>
 			</f:if>
@@ -75,9 +76,10 @@
 			<div class="paginatehead">
 				<f:count subject="{addresses}" /> Ergebnisse
 			</div>
-			<f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9,
-						insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
-						insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
+			<f:widget.paginate objects="{addresses}" as="addresspage"
+							   configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9, addQueryStringMethod: 'POST,GET',
+							   insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
+						       insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
 				<f:render partial="Address/MMLists" arguments="{settings:settings, addresspage:addresspage}" />
 				<div class="paginatehead" style="margin-bottom: 0px;"></div>
 			</f:widget.paginate>

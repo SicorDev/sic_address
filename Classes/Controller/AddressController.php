@@ -55,7 +55,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     protected $extensionConfiguration = NULL;
 
-    protected $categoryParentUid = '';
+    // Other variables
+    protected $displayCategoryList = null;
+    protected $searchCategoryList = null;
 
     /**
      * Called before any action
@@ -81,7 +83,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
-        $this->fillAddressList('alle', '', '');
+        $this->fillAddressList('Alle', '', '');
     }
 
     /**
@@ -91,44 +93,47 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function searchAction()
     {
-        $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'alle';
+        $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue);
     }
 
-    public function fillAddressList($atozvalue, $categoryvalue, $queryvalue)
+    public function fillAddressList($atozValue, $categoryValue, $queryValue)
     {
         // Categories
-        $categories = $this->findByTTContent($this->configurationManager->getContentObject()->data['uid']);
-        $this->view->assign('categories', $categories);
-        $this->view->assign('categoryvalue', $categoryvalue);
-        $this->view->assign('categoryparentuid', $this->categoryParentUid);
+        $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('categories', $this->displayCategoryList);
+        $this->view->assign('categoryvalue', $categoryValue);
 
         // Atoz
         $atozField = $this->settings['atozField'];
-        $this->view->assign('atozvalue', $atozvalue);
-        $this->view->assign('atoz', $this->getAtoz($categories));
+        $this->view->assign('atozvalue', $atozValue);
+        $this->view->assign('atoz', $this->getAtoz($this->searchCategoryList));
 
         // Query
         $queryField = $this->settings['queryField'];
         $queryactive = !($queryField === "none");
         $this->view->assign('queryactive', $queryactive);
-        $this->view->assign('queryvalue', $queryvalue);
+        $this->view->assign('queryvalue', $queryValue);
 
-        // Default search everywhere
-        $categoryvalues = null;
-        if(($categoryvalue > 0) && ($categoryvalue != $this->categoryParentUid)) {
-            // If a category was already selected, search there
-            $categoryvalues[] = $this->categoryRepository->findOneByUid($categoryvalue);
-        }
-        else if($this->categoryParentUid > 0) {
-            // If no category was selected, search in parentcategory if available
-            $categoryvalues = $categories->toArray();
+        // Default: Search in configured places
+        $currentSearchCategories = $this->searchCategoryList;
+        if($categoryValue > 0)
+        {
+            // If a category was selected, search there instead...
+            $currentSearchCategories = array();
+            $category = $this->categoryRepository->findByUid($categoryValue);
+            $currentSearchCategories[] = clone $category;
+
+            // and its children
+            if($category->getParent() == null) {
+                $currentSearchCategories = array_merge($currentSearchCategories, $this->categoryRepository->findByParent($categoryValue)->toArray());
+            }
         }
 
         // Search addresses
-        $addresses = $this->addressRepository->search($atozvalue, $atozField, $categoryvalues, $queryvalue, $queryField);
+        $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $queryField);
         $this->view->assign('addresses', $addresses);
 
         $this->view->assign('settings', $this->settings);
@@ -138,19 +143,50 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Return categories as configured by the according tt_content element
+     * @param $uid of the content element
      */
-    public function findByTTContent ($uid)
+    public function fillCategoryLists ($uid)
     {
+        $this->displayCategoryList = null;
+        $this->searchCategoryList = null;
+
         $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'sys_category_record_mm', "tablenames = 'tt_content' AND uid_foreign = ".$uid);
         $count = $GLOBALS['TYPO3_DB']->sql_num_rows($results);
+
         if($count == 1) {
-            $this->categoryParentUid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
-            return $this->categoryRepository->findByParent($this->categoryParentUid);
+            // Display children of selected category
+            $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+            $this->displayCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
+
+            // Search children of selected category
+            $this->searchCategoryList = $this->displayCategoryList;
         }
-        else{
-            $this->categoryParentUid = "-1";
-            return $this->categoryRepository->findAll();
+        elseif($count > 1) {
+            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)) {
+                $uid = $row['uid_local'];
+                $category = $this->categoryRepository->findByUid($uid);
+
+                // Display selected categories
+                $this->displayCategoryList[] = clone $category;
+
+                // Search selected categories...
+                $this->searchCategoryList[] = clone $category;
+
+                // ...and their children
+                if($category->getParent() == null) {
+                    $this->searchCategoryList = array_merge($this->searchCategoryList, $this->categoryRepository->findByParent($uid)->toArray());
+                }
+            }
         }
+        else {
+            // Display all categories
+            $this->displayCategoryList = $this->categoryRepository->findAll()->toArray();
+        }
+
+        // Alphasort categories
+        usort($this->displayCategoryList, function($cat1, $cat2) {
+            return strcasecmp($cat1->getTitle(), $cat2->getTitle());
+        });
     }
 
     /**
@@ -250,7 +286,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Query Database
-        $res = $this->addressRepository->findAtoz($field, $addresstable, ($this->categoryParentUid > 0) ? $categories : null);
+        $res = $this->addressRepository->findAtoz($field, $addresstable, $categories);
 
         // Build two dimensional result array
         $atoz = array();
@@ -258,7 +294,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $atoz[] =  array ("character" => $char, "active" => (array_search($char, $res) !== false));
         }
 
-        // Add 'alle'
+        // Add 'Alle'
         if(count($res) > 0)
             $atoz[] =  array ("character" => "Alle", "active" => true);
 

@@ -1,17 +1,17 @@
 <f:form.hidden id="sic_address_category" name="category" value="{categoryvalue}" />
 <f:switch expression="{settings.categoryType}">
     <f:case value="breadcrumbs">
-        <a href="#" onclick="return submitCategory('{categoryparentuid}');">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}</a>
+        <a href="#" onclick="return submitCategory('-1');">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}</a>
         <f:for each="{categories}" as="category">| <a href="#" onclick="return submitCategory('{category.uid}');">{category.title}</a>&nbsp;</f:for>
     </f:case>
     <f:case value="dropdown">
         <f:form.select class="address_category_dropdown" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="{categoryparentuid}"
+                       additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="-1"
                        prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
     </f:case>
     <f:case value="selectbox">
         <f:form.select class="address_category_selectbox" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       size="5" additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="{categoryparentuid}"
+                       size="5" additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="-1"
                        prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
     </f:case>
 </f:switch>

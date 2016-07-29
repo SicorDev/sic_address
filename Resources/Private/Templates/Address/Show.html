@@ -1,44 +1,35 @@
-<f:layout name="Default" />
+<f:layout name="Default"/>
 <f:section name="main">
 
-  <f:flashMessages />
+    <f:flashMessages/>
 
-  <dl class="vcard">
-    <dd class="vcard">
-      <f:if condition="{addresses.0.image}">
-        <img src="{addresses.0.image}><br>
-			</f:if>
-			<f:if condition="{addresses.0.company}">
-        <span><b>{addresses.0.company}</b></span><br>
-      </f:if>
-      <f:if condition="{addresses.0.building}">
-        <span>{addresses.0.building}</span>
-      </f:if>
-      <f:if condition="{addresses.0.building}">
-        <span>{addresses.0.building}</span>
-      </f:if>
-      <f:if condition="{addresses.0.room}">
-        <span>, {addresses.0.room}</span>
-      </f:if>
-      <f:if condition="{addresses.0.address}">
-        <br><span>{addresses.0.address}</span>
-      </f:if>
-      <f:if condition="{addresses.0.zip}">
-        <br><br><span>{addresses.0.zip}</span>
-      </f:if>
-      <f:if condition="{addresses.0.city}">
-        <span> {addresses.0.city}</span>
-      </f:if>
-      <f:if condition="{addresses.0.phone}">
-        <br><br><span>{addresses.0.phone}</span><br>
-      </f:if>
-      <f:if condition="{addresses.0.fax}">
-        <br><span>{addresses.0.fax}</span>
-      </f:if>
-      <f:if condition="{addresses.0.email}">
-        <br><br><a href="mailto:{addresses.0.email}">{addresses.0.email}</a>
-      </f:if>
-    </dd>
-  </dl>
+    <dl class="vcard">
+        <dd class="vcard">
+            <f:if condition="{address.image}">
+                <f:image treatIdAsReference="1" src="{address.image.uid}" width="120c" /><br />
+            </f:if>
+			<f:if condition=" {address.company}">
+                <b>{address.company}</b><br /><br />
+            </f:if>
+            <f:if condition="{address.address}">
+                {address.address}<br>
+            </f:if>
+            <f:if condition="{address.zip}">
+                {address.zip}
+            </f:if>
+            <f:if condition="{address.city}">
+                 {address.city}<br /><br />
+            </f:if>
+            <f:if condition="{address.phone}">
+                Tel.:&nbsp;{address.phone}<br />
+            </f:if>
+            <f:if condition="{address.fax}">
+                Fax:&nbsp;{address.fax}<br /><br />
+            </f:if>
+            <f:if condition="{address.email}">
+                <a href="mailto:{address.email}">{address.email}</a>
+            </f:if>
+        </dd>
+    </dl>
 
 </f:section>

@@ -6,6 +6,9 @@
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
 				<source>Adressen</source>
 			</trans-unit>
+			<trans-unit id="label_single_address">
+				<source>Adresse</source>
+			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>

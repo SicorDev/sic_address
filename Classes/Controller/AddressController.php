@@ -195,8 +195,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @param \SICOR\SicAddress\Domain\Model\Address $address
      * @return void
      */
-    public function showAction(\SICOR\SicAddress\Domain\Model\Address $address)
+    public function showAction()
     {
+        $address = $this->addressRepository->findByUid($this->settings['singleAddress']);
         $this->view->assign('address', $address);
     }
 

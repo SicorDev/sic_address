@@ -90,48 +90,9 @@
                         </f:if>
                     </td>
                     <td headers="Infos für Behinderte">
-                        <b>Haupteingang:</b><br>
-                        <f:if condition="{address.txTtaddresshandicappedinfoSteplessEntrance} == 1">
-                            <f:then>
-                                <span>Stufenloser Zugang</span>
-                            </f:then>
-                            <f:else>
-                                <span>Rampe vorhanden</span>
-                                <f:if condition="{address.txTtaddresshandicappedinfoRampInclination}">
-                                    <span>({address.txTtaddresshandicappedinfoRampInclination} Neigung)</span>
-                                </f:if>
-                            </f:else>
+                        <f:if condition="{address.txTtaddresshandicappedinfoAdditionalInfo}">
+                            <f:format.html>{address.txTtaddresshandicappedinfoAdditionalInfo}</f:format.html>
                         </f:if>
-                        <br><span>Breite {address.txTtaddresshandicappedinfoMaindoorWidth} cm</span><br><br>
-                        <f:if condition="{address.txTtaddresshandicappedinfoElevator} == 1">
-                            <b>Aufzug:</b><br>
-                            <span>Aufzug vorhanden {f:if(condition: address.txTtaddresshandicappedinfoElevatorSteplessEntrance, then:'(stufenlos erreichbar)')}</span><br>
-                            <f:if condition="{address.txTtaddresshandicappedinfoElevatorDoorWidth}">
-                                <span>Türbreite {address.txTtaddresshandicappedinfoElevatorDoorWidth} cm</span><br>
-                            </f:if>
-                            <f:if condition="{address.txTtaddresshandicappedinfoElevatorInternalWidth}">
-                                <span>Innenmaß {address.txTtaddresshandicappedinfoElevatorInternalWidth} cm</span><br>
-                            </f:if>
-                            <f:if condition="{address.txTtaddresshandicappedinfoElevatorControlConsoleHeight}">
-                                <span>Höhe Bedienpult {address.txTtaddresshandicappedinfoElevatorControlConsoleHeight} cm</span><br>
-                            </f:if>
-                        </f:if>
-                        <br><b>Praxiseingang</b><br>
-                        <span>Breite {address.txTtaddresshandicappedinfoEntranceDoorWidth} cm</span><br>
-                        <span>Höhe Anmeldetheke {address.txTtaddresshandicappedinfoReceptionDeskHeight} cm</span><br><br>
-
-                        <f:if condition="{address.txTtaddresshandicappedinfoToiletForHandicapped}">
-                            <b>Toilette:</b><br>
-                            <span>WC-Türbreite {address.txTtaddresshandicappedinfoToiletDoorWidth} cm {f:if(condition:address.txTtaddresshandicappedinfoToiletDoor, then: '(öffnet nach außen)')}</span><br>
-                            <f:if condition="{txTtaddresshandicappedinfoToiletDim}">
-                                <span>WC Bewegungs-Fläche innen {txTtaddresshandicappedinfoToiletDimtxTtaddresshandicappedinfoToiletDim} cm</span>
-                            </f:if>
-                        </f:if>
-                        <br><b>Praxis</b>
-                        <span>Behandlungsliege Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyTableHeightAdjust, then: '(höhenverstellbar)')}</span>
-                        <span>Behandlungsstuhl Höhe {address.txTtaddresshandicappedinfoTherapyTableHeight} cm {f:if(condition: address.txTtaddresshandicappedinfoTherapyChairHeightAdjust, then: '(höhenverstellbar)')}</span>
-                        <br><br><b>Sontiges</b><br>
-                        <span>{address.txTtaddresshandicappedinfoAdditionalInfo}</span>
                     </td>
                 </tr>
             </f:for>

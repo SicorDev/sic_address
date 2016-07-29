@@ -69,7 +69,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @var array
      */
-    protected $fieldTypes = array("string", "integer", "select", "image");
+    protected $fieldTypes = array("string", "integer", "select", "image", "rich");
 
     /**
      * Holds the Typoscript configuration
@@ -220,7 +220,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $config = $customView->render();
             }
 
-            $tca[] = array("external" => $value->isExternal(), "title" => $value->getTitle(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
+            $tca[] = array("external" => $value->isExternal(), "title" => $value->getTitle(), "type" => $value->getType(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
         }
         return $tca;
     }

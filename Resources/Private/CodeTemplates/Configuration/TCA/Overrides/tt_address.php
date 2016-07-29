@@ -33,6 +33,7 @@ $tmp_sic_address_columns = array(
     '{field.title}' => array(
         'exclude' => 1,
         'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.{field.title}',
+        <f:if condition="{field.type.title} == 'rich'">'defaultExtras' => 'richtext[*]',</f:if>
         'config' => {field.config}
     ),
      </f:format.htmlentitiesDecode>
@@ -53,7 +54,7 @@ if(isset($GLOBALS['TCA']['tt_address']['types']['0']['showitem'])) {
 } else {
     $GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] = '';
 }
-$GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address,';
+$GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:sic_address_tca_tab_label,';
 $GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] .= '<f:for each="{properties}" as="field"><f:if condition="{field.external} == '0'"> {field.title},</f:if></f:for>';
 
 $GLOBALS['TCA']['tt_address']['columns'][$GLOBALS['TCA']['tt_address']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tt_address.tx_extbase_type.Tx_SicAddress_Address','Tx_SicAddress_Address');

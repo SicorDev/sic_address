@@ -1,32 +1,5 @@
 <?php
 
-if (!isset($GLOBALS['TCA']['sys_category']['ctrl']['type'])) {
-	if (file_exists($GLOBALS['TCA']['sys_category']['ctrl']['dynamicConfigFile'])) {
-		require_once($GLOBALS['TCA']['sys_category']['ctrl']['dynamicConfigFile']);
-	}
-
-	// Override sys_category tca fields
-	$GLOBALS['TCA']['sys_category']['ctrl']['type'] = 'tx_extbase_type';
-	$GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = 'title';
-
-	$tempColumnstx_sicaddress_sys_category = array();
-	$tempColumnstx_sicaddress_sys_category[$GLOBALS['TCA']['sys_category']['ctrl']['type']] = array(
-		'exclude' => 1,
-		'label'   => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress.tx_extbase_type',
-		'config' => array(
-			'type' => 'select',
-			'renderType' => 'selectSingle',
-			'items' => array(
-				array('Category','Tx_SicAddress_Category')
-			),
-			'default' => 'Tx_SicAddress_Category',
-			'size' => 1,
-			'maxitems' => 1,
-		)
-	);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_category', $tempColumnstx_sicaddress_sys_category, 1);
-}
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
 	'sys_category',
 	$GLOBALS['TCA']['sys_category']['ctrl']['type'],
@@ -47,8 +20,6 @@ if(isset($GLOBALS['TCA']['sys_category']['types']['1']['showitem'])) {
 }
 $GLOBALS['TCA']['sys_category']['types']['Tx_SicAddress_Category']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_category,';
 $GLOBALS['TCA']['sys_category']['types']['Tx_SicAddress_Category']['showitem'] .= '';
-
-$GLOBALS['TCA']['sys_category']['columns'][$GLOBALS['TCA']['sys_category']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:sys_category.tx_extbase_type.Tx_SicAddress_Category','Tx_SicAddress_Category');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'',

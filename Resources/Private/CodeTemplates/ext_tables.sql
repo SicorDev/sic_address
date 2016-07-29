@@ -84,10 +84,3 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 	KEY language (l10n_parent,sys_language_uid)
 
 );
-
-#
-# Table structure for table 'sys_category'
-#
-CREATE TABLE sys_category (
-	tx_extbase_type varchar(255) DEFAULT 'Tx_SicAddress_Address' NOT NULL,
-);

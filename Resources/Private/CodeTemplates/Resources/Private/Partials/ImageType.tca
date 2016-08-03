@@ -1,5 +1,5 @@
         array(
-                'maxitems' => 1,
+                'maxitems' => 5,
                 'type' => 'inline',
                 'foreign_table' => 'sys_file_reference',
                 'foreign_field' => 'uid_foreign',

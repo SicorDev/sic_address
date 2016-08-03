@@ -83,7 +83,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
-        $this->fillAddressList('Alle', '', '');
+        $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
+        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '');
     }
 
     /**
@@ -96,15 +97,17 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
-        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue);
+        $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
+        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $checkall);
     }
 
-    public function fillAddressList($atozValue, $categoryValue, $queryValue)
+    public function fillAddressList($atozValue, $categoryValue, $queryValue, $checkall)
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
+        $this->view->assign('checkall', $checkall);
 
         // Atoz
         $atozField = $this->settings['atozField'];
@@ -121,14 +124,25 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $currentSearchCategories = $this->searchCategoryList;
         if($categoryValue > 0)
         {
-            // If a category was selected, search there instead...
             $currentSearchCategories = array();
-            $category = $this->categoryRepository->findByUid($categoryValue);
-            $currentSearchCategories[] = clone $category;
 
-            // and its children
-            if($category->getParent() == null) {
-                $currentSearchCategories = array_merge($currentSearchCategories, $this->categoryRepository->findByParent($categoryValue)->toArray());
+            if(strpos($categoryValue, ',') !== true) {
+                // If checkboxes where clicked, search in selected ones
+                $uids = explode(",", $categoryValue);
+                foreach ($uids as $uid) {
+                    $category = $this->categoryRepository->findByUid($uid);
+                    $currentSearchCategories[] = clone $category;
+                }
+            }
+            else {
+                // If a category was selected, search there instead...
+                $category = $this->categoryRepository->findByUid($categoryValue);
+                $currentSearchCategories[] = clone $category;
+
+                // and its children
+                if ($category->getParent() == null) {
+                    $currentSearchCategories = array_merge($currentSearchCategories, $this->categoryRepository->findByParent($categoryValue)->toArray());
+                }
             }
         }
 

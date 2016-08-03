@@ -6,6 +6,9 @@
 	<style>
 		.address_category { float: none !important; }
 		.address_category_dropdown { font-size: 10pt; }
+		.address_category_checkbox_all,
+		.address_category_checkbox { margin: 5px; }
+		.address_category_type_dropdown{ min-width: 20em; float: left !important; }
 		.f3-widget-paginator { list-style: none; text-align: left;}
 		.f3-widget-paginator > li { display: inline; margin: 0}
 		.f3-widget-paginator > li.current { color: #CC0000;}
@@ -19,7 +22,6 @@
 		.tx-sic-address .vcard{ float: none; }
 		.tx-sic-address .vcard dd { display: inline-block; }
 		.f3-widget-paginator { margin-top: 5px; }
-		.address_category_type_dropdown{ min-width: 20em; float: left !important; }
 		.search-container { float: left; height: 27px; line-height: 2.2em; }
 		.abisz .atoz_text { padding: 0.25em; width: 1.5em; border: 2px outset silver; background: #ddd; margin: 0.25em; float: left; text-align: center; font-weight: bold; text-decoration: none; }
 		.abisz .atoz_Alle { width: 4.25em; }
@@ -58,7 +60,7 @@
 				<f:if condition="{settings.categoryType} != 'none'">
 					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
 						<b>Rubriken:</b>
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, settings:settings}" />
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, checkall:checkall, settings:settings}" />
 					</b></div>
 				</f:if>
 			</f:if>

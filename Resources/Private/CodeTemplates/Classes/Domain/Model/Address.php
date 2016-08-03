@@ -29,8 +29,7 @@ namespace SICOR\SicAddress\Domain\Model;
 /**
 * Address
 */
-class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
-{
+class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
     * categories
@@ -40,34 +39,26 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $categories = null;
 
     <f:for each="{properties}" as="property">
+    <f:format.htmlentitiesDecode>
     /**
-    * {property.title}
-    *
-    * @var {property.type.modelType}
-    */
+     * {property.title}
+     *
+     * @var {property.type.modelType}
+     */
     protected ${property.title};
+    </f:format.htmlentitiesDecode>
     </f:for>
 
     /**
     * __construct
     */
-    public function __construct()
-    {
-    //Do not remove the next line: It would break the functionality
-        $this->initStorageObjects();
-    }
-
-    /**
-    * Initializes all ObjectStorage properties
-    * Do not modify this method!
-    * It will be rewritten on each save in the extension builder
-    * You may modify the constructor of this class instead
-    *
-    * @return void
-    */
-    protected function initStorageObjects()
-    {
+    public function __construct() {
         $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        <f:for each="{properties}" as="property">
+            <f:if condition="{property.title} == 'image'">
+            $this->{property.title} = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+            </f:if>
+            </f:for>
     }
 
     /**
@@ -76,8 +67,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     * @param \SICOR\SicAddress\Domain\Model\Category $category
     * @return void
     */
-    public function addCategory(\SICOR\SicAddress\Domain\Model\Category $category)
-    {
+    public function addCategory(\SICOR\SicAddress\Domain\Model\Category $category) {
         $this->categories->attach($category);
     }
 
@@ -87,8 +77,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     * @param \SICOR\SicAddress\Domain\Model\Category $categoryToRemove The Category to be removed
     * @return void
     */
-    public function removeCategory(\SICOR\SicAddress\Domain\Model\Category $categoryToRemove)
-    {
+    public function removeCategory(\SICOR\SicAddress\Domain\Model\Category $categoryToRemove) {
         $this->categories->detach($categoryToRemove);
     }
 
@@ -97,8 +86,7 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     *
     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\Category> $categories
     */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->categories;
     }
 
@@ -108,30 +96,24 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\Category> $categories
     * @return void
     */
-    public function setCategories(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories)
-    {
+    public function setCategories(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $categories) {
         $this->categories = $categories;
     }
 
     <f:for each="{properties}" as="property">
     /**
-    * Returns the {property.title}
-    *
-    * @return {property.type.modelType}
-    */
+     * @return {property.type.modelType}
+     */
     public function get<sic:format.case case="capital">{property.title}</sic:format.case>() {
         return $this->{property.title};
     }
 
     /**
-    * Sets the {property.title}
-    *
-    * @param {property.type.modelType} ${property.title}
-    * @return void
-    */
+     * @param {property.type.modelType} ${property.title}
+     * @return void
+     */
     public function set<sic:format.case case="capital">{property.title}</sic:format.case>(${property.title}) {
         $this->{property.title} = ${property.title};
     }
     </f:for>
-
 }

@@ -33,7 +33,7 @@ class StringType extends AbstractFieldType
 {
 
     /**
-     * return string
+     * @return string
      */
     public function getTitle() {
         return "string";

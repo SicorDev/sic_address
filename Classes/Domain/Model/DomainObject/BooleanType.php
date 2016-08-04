@@ -27,23 +27,23 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
      ***************************************************************/
 
 /**
- * ImageType
+ * BooleanType
  */
-class ImageType extends AbstractFieldType
+class BooleanType extends AbstractFieldType
 {
 
     /**
      * @return string
      */
     public function getTitle() {
-        return "image";
+        return "boolean";
     }
 
     /**
      * @return string
      */
     public function getModelType() {
-        return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference>";
+        return "boolean";
     }
 
     /**
@@ -52,6 +52,6 @@ class ImageType extends AbstractFieldType
      * @return string
      */
     public function getSQLDefinition($fieldName) {
-        return $fieldName . " int(11) unsigned DEFAULT '0' NOT NULL";
+        return $fieldName . " tinyint(3) unsigned DEFAULT '0' NOT NULL";
     }
 }

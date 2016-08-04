@@ -69,7 +69,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @var array
      */
-    protected $fieldTypes = array("string", "integer", "select", "image", "rich");
+    protected $fieldTypes = array("string", "integer", "select", "image", "rich", "boolean");
 
     /**
      * Holds the Typoscript configuration

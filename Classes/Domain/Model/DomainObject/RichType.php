@@ -33,7 +33,7 @@ class RichType extends AbstractFieldType
 {
 
     /**
-     * return string
+     * @return string
      */
     public function getTitle() {
         return "rich";

@@ -33,7 +33,7 @@ class IntegerType extends AbstractFieldType
 {
 
     /**
-     * return string
+     * @return string
      */
     public function getTitle() {
         return "integer";

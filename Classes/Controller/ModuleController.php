@@ -119,6 +119,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function listAction() {
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
+        $this->view->assign("address", $this->addressRepository->findAll());
     }
 
     /**

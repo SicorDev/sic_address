@@ -5,6 +5,9 @@ enableDirectoryBrowsing = 0
   # cat=basic/enable/20; type=boolean; label=Developer Mode: Enables the backend module with the field configurator.
 developerMode = 0
 
+  # cat=basic/enable/25; type=boolean; label=Address Export: Enables the backend address export module.
+addressExport = 0
+
   # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
 ttAddressMapping = 0
 

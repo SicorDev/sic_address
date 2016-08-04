@@ -1,0 +1,14 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="content">
+    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/bootstrap/css/bootstrap.min.css" media="all">
+
+    <h2>Address Export</h2>
+    <hr />
+
+    <f:for each="{address}" as="address">
+        <f:debug>{address}</f:debug>
+    </f:for>
+
+</f:section>

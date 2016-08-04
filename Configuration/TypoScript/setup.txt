@@ -23,6 +23,19 @@ module.tx_sicaddress_web_sicaddresssicaddress {
 	}
 }
 
+ # Export Module configuration
+module.tx_sicaddress_web_sicaddresssicaddressexport {
+	persistence {
+		storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
+	}
+	view {
+		templateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.layoutRootPath}
+		codeTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.codeTemplateRootPaths}
+	}
+}
+
 #page.includeCSS.tx_sicaddress = EXT:sicagencylist/Resources/Public/Css/styles_agencylist.css
 #page.includeJSFooter.tx_sicagencylist = EXT:sicagencylist/Resources/Public/Js/sicagencylist.js
 

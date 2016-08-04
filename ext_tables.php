@@ -38,6 +38,25 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"])
 	);
 }
 
+if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"])
+{
+    // Registers Backend Module
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'SICOR.' . $_EXTKEY,
+        'web',	 // Make module a submodule of 'web'
+        'sicaddressexport',	// Submodule key
+        '',						// Position
+        array(
+            'Export' => 'export',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddressexport.xlf',
+        )
+    );
+}
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');

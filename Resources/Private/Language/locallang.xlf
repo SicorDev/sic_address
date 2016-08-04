@@ -39,6 +39,9 @@
 			<trans-unit id="label_categoryType">
 				<source>Kategoriedarstellung</source>
 			</trans-unit>
+			<trans-unit id="label_mainCategoryType">
+				<source>Vorgeschaltete Hauptkategorie</source>
+			</trans-unit>
 			<trans-unit id="label_cattype_none">
 				<source>Ausblenden</source>
 			</trans-unit>

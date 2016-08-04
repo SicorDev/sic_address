@@ -56,12 +56,23 @@
 					</f:for>
 				</div>
 			</f:if>
+			<f:if condition="{settings.mainCategoryType} != 'none'">
+				<f:if condition="{maincategories}">
+					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />
+					<div class="address_searchoptions address_category">
+						<b>Kategorien:</b>
+						<f:form.select class="address_category_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
+									   additionalAttributes="{onchange: 'submitMainCategory($(this).val());'}" prependOptionValue="-1"
+									   prependOptionLabel="Bitte auswählen" />
+					</div>
+				</f:if>
+			</f:if>
 			<f:if condition="{categories}">
 				<f:if condition="{settings.categoryType} != 'none'">
 					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
 						<b>Rubriken:</b>
 						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, checkall:checkall, settings:settings}" />
-					</b></div>
+					</div>
 				</f:if>
 			</f:if>
 			<f:if condition="{queryactive}">

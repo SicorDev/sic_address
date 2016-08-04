@@ -57,7 +57,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     // Other variables
     protected $displayCategoryList = null;
+    protected $mainCategoryList = null;
+    protected $maincategoryvalue = '';
     protected $searchCategoryList = null;
+
 
     /**
      * Called before any action
@@ -83,6 +86,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
+        $this->maincategoryvalue = '';
         $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
         $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '');
     }
@@ -96,6 +100,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
+        $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
         $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $checkall);
@@ -107,6 +112,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
+        $this->view->assign('maincategories', $this->mainCategoryList);
+        $this->view->assign('maincategoryvalue', $this->maincategoryvalue);
         $this->view->assign('checkall', $checkall);
 
         // Atoz
@@ -146,10 +153,16 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
         }
 
-        // Search addresses
-        $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $queryField);
-        $this->view->assign('addresses', $addresses);
+        if (($this->settings['mainCategoryType'] !== "none") && ($this->maincategoryvalue < 1)) {
+            // No search until a main category is chosen
+            $addresses = null;
+        }
+        else {
+            // Search addresses
+            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $queryField);
+        }
 
+        $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
 
         $this->setConfiguredTemplate();
@@ -161,6 +174,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function fillCategoryLists ($uid)
     {
+        $this->mainCategoryList = null;
         $this->displayCategoryList = null;
         $this->searchCategoryList = null;
 
@@ -168,12 +182,27 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $count = $GLOBALS['TYPO3_DB']->sql_num_rows($results);
 
         if($count == 1) {
-            // Display children of selected category
-            $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
-            $this->displayCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
+            if($this->settings['mainCategoryType'] !== "none") {
+                // Fill main category list
+                $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+                $this->mainCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
 
-            // Search children of selected category
-            $this->searchCategoryList = $this->displayCategoryList;
+                // Display children of main category
+                if($this->maincategoryvalue != '') {
+                    $this->displayCategoryList = $this->categoryRepository->findByParent($this->maincategoryvalue)->toArray();
+                }
+
+                // Search children of selected category
+                $this->searchCategoryList = $this->displayCategoryList;
+            }
+            else {
+                // Display children of selected category
+                $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+                $this->displayCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
+
+                // Search children of selected category
+                $this->searchCategoryList = $this->displayCategoryList;
+            }
         }
         elseif($count > 1) {
             while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)) {
@@ -197,10 +226,17 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $this->displayCategoryList = $this->categoryRepository->findAll()->toArray();
         }
 
-        // Alphasort categories
-        usort($this->displayCategoryList, function($cat1, $cat2) {
-            return strcasecmp($cat1->getTitle(), $cat2->getTitle());
-        });
+        // Alphasort displayed lists
+        if($this->displayCategoryList) {
+            usort($this->displayCategoryList, function ($cat1, $cat2) {
+                return strcasecmp($cat1->getTitle(), $cat2->getTitle());
+            });
+        }
+        if($this->mainCategoryList) {
+            usort($this->mainCategoryList, function($cat1, $cat2) {
+                return strcasecmp($cat1->getTitle(), $cat2->getTitle());
+            });
+        }
     }
 
     /**

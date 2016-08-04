@@ -20,6 +20,18 @@ function submitCategory (choice) {
     return false;
 }
 
+function submitMainCategory (choice) {
+    // Reset other selections
+    $('#sic_address_atoz').val('alle');
+    $('#sic_address_query').val('');
+    $('#sic_address_category').val('-1');
+
+    // Submit Category choice
+    $('#sic_address_main_category').val(choice);
+    $('#sic_address_search_form').submit();
+    return false;
+}
+
 function submitQuery () {
     // Reset other selections
     $('#sic_address_atoz').val('alle');

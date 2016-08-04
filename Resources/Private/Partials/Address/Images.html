@@ -1,0 +1,14 @@
+<f:if condition="{address.image}">
+    <f:for each="{address.image}" as="image">
+        <f:if condition="{address.clickenlarge}">
+            <f:then>
+                <a href="{image.originalResource.publicUrl}" class="lightbox">
+                    <f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
+                </a>
+            </f:then>
+            <f:else>
+                <f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
+            </f:else>
+        </f:if>
+    </f:for>
+</f:if>

@@ -57,11 +57,7 @@
                         </f:if>
                     </div>
                     <div class="address_description">
-                        <f:if condition="{address.image}">
-                            <f:for each="{address.image}" as="image">
-                                <f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
-                            </f:for>
-                        </f:if>
+                        <f:render partial="Address/Images" arguments="{address:address}" />
                         <f:format.html>{address.description}</f:format.html>
                         <f:if condition="{address.txCronmmaddressOpeninghours}">
                             <b>&Ouml;ffnungszeiten:</b>

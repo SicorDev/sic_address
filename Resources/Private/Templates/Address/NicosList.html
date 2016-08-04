@@ -75,11 +75,7 @@
 								{address.fax}
 							</div>
 							<div class="col-xs-4 image">
-								<f:if condition="{address.image}">
-									<f:for each="{address.image}" as="image">
-										<f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
-									</f:for>
-								</f:if>
+								<f:render partial="Address/Images" arguments="{address:address}" />
 							</div>
 						</div>
 					</f:for>

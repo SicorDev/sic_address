@@ -74,7 +74,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findByCategories($categories) {
         $result = array();
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $result[] = $this->getParents($category);
         }
 

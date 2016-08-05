@@ -1,6 +1,6 @@
-/* ***************** */
-/* Backend */
-/* ***************** */
+/* ************** */
+/* Backend Module */
+/* ************** */
 input[type="text"], textarea {width: 100%;}
 input[type="text"], textarea {padding: 10px;border: none;border-bottom: solid 2px #c9c9c9;transition: border 0.3s;}
 input[type="text"]:focus,textarea:focus {border-bottom: solid 2px #969696;box-shadow: none;}
@@ -10,3 +10,9 @@ input[type="text"]:focus,textarea:focus {border-bottom: solid 2px #969696;box-sh
 .table .tr {padding: 10px 0;}
 .table .td {padding: 5px;}
 .table ul li {background: #efefef;list-style: none;padding: 5px;margin-bottom: 10px;}
+
+
+/* ********************* */
+/* Backend Export Module */
+/* ********************* */
+.export li {list-style: none;}

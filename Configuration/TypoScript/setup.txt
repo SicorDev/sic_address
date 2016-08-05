@@ -32,7 +32,8 @@ module.tx_sicaddress_web_sicaddresssicaddressexport {
 		templateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.templateRootPath}
 		partialRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.partialRootPath}
 		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.layoutRootPath}
-		codeTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.codeTemplateRootPaths}
+
+		exportTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.exportTemplateRootPaths}
 	}
 }
 

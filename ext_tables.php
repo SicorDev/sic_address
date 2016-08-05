@@ -47,7 +47,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"])
         'sicaddressexport',	// Submodule key
         '',						// Position
         array(
-            'Export' => 'export',
+            'Export' => 'export, exportToFile',
         ),
         array(
             'access' => 'user,group',

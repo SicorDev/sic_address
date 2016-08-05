@@ -242,7 +242,6 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action show
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address $address
      * @return void
      */
     public function showAction()

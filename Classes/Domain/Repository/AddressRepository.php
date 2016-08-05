@@ -31,7 +31,14 @@ namespace SICOR\SicAddress\Domain\Repository;
  */
 class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    
+    /**
+     * categoryRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
+     * @inject
+     */
+    protected $categoryRepository = NULL;
+
     /**
      * @var array
      */
@@ -59,6 +66,49 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
         $this->setDefaultQuerySettings($querySettings);
+    }
+
+    /**
+     * @param $categories
+     * @return mixed
+     */
+    public function findByCategories($categories) {
+        $result = array();
+        foreach($categories as $category) {
+            $result[] = $this->getParents($category);
+        }
+
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalOr(
+                $query->contains("categories", 2),
+                $query->contains("categories", 3),
+                $query->contains("categories", 4),
+                $query->contains("categories", 5)
+            )
+        );
+        return $query->execute();
+    }
+
+    /**
+     * @param $category
+     * @param $categoryList
+     *
+     * @return array
+     */
+    private function getParents($category, &$categoryList = array()) {
+        $category = $this->categoryRepository->findByUid($category);
+        $categoryList[] = $category;
+
+        if(!$category->getParent() || ($category->getParent() && $this->categoryRepository->findByParent($category)->count()) > 0) {
+            $children = $this->categoryRepository->findByParent($category);
+
+            foreach($children as $child) {
+                $this->getParents($child->getUid(), $categoryList);
+            }
+        }
+
+        return $categoryList;
     }
 
     /**
@@ -105,7 +155,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($queryField && !($queryField === "none") && $queryvalue && !($queryvalue === ""))
             $constraints[] = $query->like($queryField, '%'.$queryvalue.'%');
 
-        if ($categories && count($categories > 0))
+        if ($categories && count($categories) > 0)
         {
             $catconstraints = array();
             foreach ($categories as $category) {

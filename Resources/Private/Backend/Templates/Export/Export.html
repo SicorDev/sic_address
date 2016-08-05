@@ -2,13 +2,68 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-    <link rel="stylesheet" type="text/css" href="/fileadmin/templates/bootstrap/css/bootstrap.min.css" media="all">
+    <div class="export">
+        <link rel="stylesheet" type="text/css" href="/fileadmin/templates/bootstrap/css/bootstrap.min.css" media="all">
 
-    <h2>Address Export</h2>
-    <hr />
+        <h2>Kategorien für den Adressexport</h2>
+        <hr />
 
-    <f:for each="{address}" as="address">
-        <f:debug>{address}</f:debug>
-    </f:for>
+        <f:form action="exportToFile" >
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul>
+                        <f:for each="{categories}" as="category" key="key">
+                            <li>
+                                <f:form.checkbox name="categories" multiple="true" value="{category.uid}"/>
+                                <label>{key}</label>
+                                <f:if condition="{category}">
+                                    <ul>
+                                        <f:if condition="{category -> f:count()} > 0">
+                                            <f:for each="{category}" as="secondaryCategory" key="secondaryKey">
+                                                <li>
+                                                <f:form.checkbox name="categories"  multiple="true" value="{secondaryCategory.uid}"/>
+                                                <label>{secondaryKey}</label>
+                                                <ul>
+                                                    <f:if condition="{secondaryCategory -> f:count()} > 0">
+                                                        <f:for each="{secondaryCategory}" as="thirdCategory" key="thirdKey">
+                                                            <li>
+                                                                <f:form.checkbox name="categories"  multiple="true" value="{thirdCategory.uid}"/>
+                                                                <label>{thirdKey}</label>
+                                                            </li>
+                                                        </f:for>
+                                                    </f:if>
+                                                </ul>
+                                                </li>
+                                            </f:for>
+                                        </f:if>
+                                    </ul>
+                                </f:if>
+                            </li>
+                        </f:for>
+                    </ul>
+                    <button class="btn btn-default" onclick="checkAll();return false;">Alle Kategorien auswählen</button>
+                </div>
+            </div>
 
+            <h2>Einstellungen</h2>
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Templates:</label>
+                    <f:form.select options="{templates}" name="template" optionValueField="key" optionLabelField="value" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Export</h2>
+                    <hr />
+                    <f:form.hidden id="type" name="type" value="HTML" />
+                    <f:form.submit class="btn btn-default" value="CSV Export" onclick="TYPO3.jQuery('#type').val('CSV');"/>
+                    <f:form.submit class="btn btn-default" value="HTML Export" onclick="TYPO3.jQuery('#type').val('HTML');"/>
+                </div>
+            </div>
+        </f:form>
+    </div>
 </f:section>

@@ -68,6 +68,12 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         //$this->setDefaultQuerySettings($querySettings);
     }
 
+    public function findByPid($pid) {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setStoragePageIds(array($pid));
+        return $query->execute();
+    }
+
     /**
      * @param $categories
      * @return mixed
@@ -156,6 +162,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function search($atozvalue, $atozField, $categories, $queryvalue, $queryField) {
 
         $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
         $constraints = array();
         if ($atozField && !($atozField === "none") && $atozvalue && strlen(trim($atozvalue)) === 1)

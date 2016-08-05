@@ -83,7 +83,8 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Display export page
      */
     public function exportAction() {
-        $addresses = $this->addressRepository->findAll();
+        $pid = \t3lib_div::_GP('id');
+        $addresses = $this->addressRepository->findByPid($pid);
         $categories = $this->getCurrentCategories($addresses);
 
         $this->view->assign("categories", $categories);
@@ -173,17 +174,6 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
-        // Second Level arrays
-        $keys = array_keys($categories);
-        if(count($keys) > 1) {
-            $main = $categories[$keys[0]]["entries"];
-            $sub = array($keys[1] => $categories[$keys[1]]);
-
-            $result[$keys[0]]['entries'] = array_replace_recursive($main, $sub);
-            $result[$keys[0]]['value'] = $categories[$keys[0]]["value"];
-
-            return $result;
-        }
         return $categories;
     }
 

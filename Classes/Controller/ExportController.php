@@ -48,6 +48,14 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $categoryRepository = NULL;
 
     /**
+     * domainPropertyRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
+     * @inject
+     */
+    protected $domainPropertyRepository = NULL;
+
+    /**
      * Holds the Typoscript configuration
      *
      * @var \TYPO3\CMS\Extbase\Configuration
@@ -77,8 +85,10 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function exportAction() {
         $addresses = $this->addressRepository->findAll();
         $categories = $this->getCurrentCategories($addresses);
+
         $this->view->assign("categories", $categories);
         $this->view->assign("templates", $this->getTemplates());
+        $this->view->assign("sorting", $this->domainPropertyRepository->findByType("string"));
     }
 
     /**
@@ -91,7 +101,9 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $categories = $arguments["categories"];
         $type = $arguments["type"];
         $template = $arguments["template"];
+        $sorting = $arguments["sorting"];
 
+        $this->addressRepository->setDefaultOrderings(array($sorting => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
         $addresses = $this->addressRepository->findByCategories($categories);
 
         if ($type == "CSV") {
@@ -112,7 +124,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $templatePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['templateRootPaths'][0]) . "Export/csv.html";
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPath($templatePathAndFilename);
-        $customView->assign("addresses", $addresses);
+        $customView->assign("addresses", $this->parseCSV($addresses));
         $content = $customView->render();
 
         header("Content-type: text/csv");
@@ -188,5 +200,22 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $templates[] = $template;
         }
         return $templates;
+    }
+
+    /**
+     * @param array $values
+     * @return string
+     */
+    public function parseCSV($values) {
+        $domainProperties = $this->domainPropertyRepository->findAll();
+        foreach($values->toArray() as $key => $domainObject) {
+            foreach($domainProperties as $property) {
+                $propertyTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
+                $value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($domainObject, $propertyTitle);
+                $parseValue = "\"" . str_replace("\"", "\"\"", $value) . "\"";
+                \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
+            }
+        }
+        return $values;
     }
 }

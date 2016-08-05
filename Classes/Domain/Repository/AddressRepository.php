@@ -63,9 +63,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     public function initializeObject() {
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-        $querySettings->setRespectStoragePage(FALSE);
-        $this->setDefaultQuerySettings($querySettings);
+        //$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        //$querySettings->setRespectStoragePage(FALSE);
+        //$this->setDefaultQuerySettings($querySettings);
     }
 
     /**
@@ -73,20 +73,28 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @return mixed
      */
     public function findByCategories($categories) {
+        //No Categories given -> return all
+        if(!$categories) {
+            return $this->findAll();
+        }
+
         $result = array();
         foreach ($categories as $category) {
-            $result[] = $this->getParents($category);
+            $parents = $this->getParents($category);
+            foreach($parents as $parent) {
+                if(!in_array($parent, $result))
+                    $result[] = $parent;
+            }
         }
 
         $query = $this->createQuery();
-        $query->matching(
-            $query->logicalOr(
-                $query->contains("categories", 2),
-                $query->contains("categories", 3),
-                $query->contains("categories", 4),
-                $query->contains("categories", 5)
-            )
-        );
+        $constraints = array();
+        foreach($result as $item) {
+            $constraints[] = $query->contains("categories", $item->getUid());
+        }
+        $con = $query->logicalOr($constraints);
+        $query->matching($query->logicalAnd($con));
+
         return $query->execute();
     }
 

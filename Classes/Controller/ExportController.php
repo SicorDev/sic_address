@@ -71,6 +71,8 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     /**
      * exportAction
+     *
+     * Display export page
      */
     public function exportAction() {
         $addresses = $this->addressRepository->findAll();
@@ -80,6 +82,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
+     * exportToFileAction
      *
      * @return void
      */
@@ -98,6 +101,11 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
     }
 
+    /**
+     * exportToCSVAction
+     *
+     * @param $addresses
+     */
     private function exportToCSV($addresses) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
@@ -113,6 +121,13 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         exit;
     }
 
+
+    /**
+     * exportToHTMLAction
+     *
+     * @param $addresses
+     * @param $template
+     */
     private function exportToHTML($addresses, $template) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 

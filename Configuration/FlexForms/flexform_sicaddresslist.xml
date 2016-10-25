@@ -43,7 +43,16 @@
                     <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_queryField</label>
                     <config>
                         <type>select</type>
-                        <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
+                        <items type="array">
+                            <numIndex index="1" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_queryFieldOff</numIndex>
+                                <numIndex index="1">off</numIndex>
+                            </numIndex>
+                            <numIndex index="2" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_queryFieldOn</numIndex>
+                                <numIndex index="1">on</numIndex>
+                            </numIndex>
+                        </items>
                     </config>
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>

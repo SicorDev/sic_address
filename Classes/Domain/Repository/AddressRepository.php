@@ -63,9 +63,6 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     public function initializeObject() {
-        //$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-        //$querySettings->setRespectStoragePage(FALSE);
-        //$this->setDefaultQuerySettings($querySettings);
     }
 
     public function findByPid($pid) {
@@ -137,9 +134,17 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz($field, $addresstable, $categories)
+    public function findAtoz($field, $addresstable, $categories, $pages)
     {
-        $where = "deleted=0 AND pid<>-1 AND hidden=0 ";
+        // Make A-Z respect configured pages if there are some
+        $where = "pid<>-1 ";
+        if(strlen($pages) > 0)
+            $where = "pid IN (".$pages.") ";
+
+        // Standard constraints
+        $where .= "AND deleted=0 AND hidden=0 ";
+
+        // Respect categories
         if ($categories && count($categories > 0)) {
             $where .= "AND (";
             foreach ($categories as $category) {
@@ -159,29 +164,38 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryField) {
+    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryFields) {
 
         $query = $this->createQuery();
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
+        // Build A to Z constraint
         $constraints = array();
         if ($atozField && !($atozField === "none") && $atozvalue && strlen(trim($atozvalue)) === 1)
             $constraints[] = $query->like($atozField, $atozvalue.'%');
-        if ($queryField && !($queryField === "none") && $queryvalue && !($queryvalue === ""))
-            $constraints[] = $query->like($queryField, '%'.$queryvalue.'%');
 
+        // Build query constraints
+        if ($queryFields && count($queryFields) > 0 && $queryvalue && !($queryvalue === ""))
+        {
+            $queryconstraints = array();
+            foreach ($queryFields as $field) {
+                $queryconstraints[] = $query->like($field, '%'.$queryvalue.'%');
+            }
+            $constraints[] = $query->logicalOr($queryconstraints);
+        }
+
+        // Build category constraints
         if ($categories && count($categories) > 0)
         {
             $catconstraints = array();
             foreach ($categories as $category) {
                 $catconstraints[] = $query->contains("categories", $category->getUid());
             }
-
             $constraints[] = $query->logicalOr($catconstraints);
         }
 
-        if(count($constraints) < 1)
+        if(count($constraints) < 1) {
             return $this->findAll();
+        }
 
         $query->matching($query->logicalAnd($constraints));
         return $query->execute();

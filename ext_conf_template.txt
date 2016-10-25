@@ -1,6 +1,6 @@
 
-  # cat=basic/enable/10; type=boolean; label=Directory Browsing: Check to enable directory browsing, so categories will be defined from the page tree structure.
-enableDirectoryBrowsing = 0
+  # cat=basic/enable/10; type=string; label=Search Fields: Comma separated list of database fields used for searching
+searchFields = company
 
   # cat=basic/enable/20; type=boolean; label=Developer Mode: Enables the backend module with the field configurator.
 developerMode = 0

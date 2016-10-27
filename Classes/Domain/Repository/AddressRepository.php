@@ -174,7 +174,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $constraints[] = $query->like($atozField, $atozvalue.'%');
 
         // Build distance constraint
-        if (strlen($distanceValue) > 0) {
+        if ($distanceField && !($distanceField === "none") && strlen($distanceValue) > 0) {
             $constraints[] = $query->logicalAnd($query->lessThanOrEqual($distanceField, (int)$distanceValue));
         }
 

@@ -43,7 +43,7 @@
                     <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_distanceField</label>
                     <config>
                         <type>select</type>
-                        <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
+                        <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexIntFields</itemsProcFunc>
                     </config>
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>

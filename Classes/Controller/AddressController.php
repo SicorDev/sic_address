@@ -104,7 +104,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $this->maincategoryvalue = '';
         $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
-        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '');
+        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '');
     }
 
     /**
@@ -117,12 +117,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
+        $distanceValue = $this->request->hasArgument('distance') ? $this->request->getArgument('distance') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
-        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $checkall);
+        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $distanceValue, $checkall);
     }
 
-    public function fillAddressList($atozValue, $categoryValue, $queryValue, $checkall)
+    public function fillAddressList($atozValue, $categoryValue, $queryValue, $distanceValue, $checkall)
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
@@ -137,9 +138,11 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('atozvalue', $atozValue);
         $this->view->assign('atoz', $this->getAtoz($this->searchCategoryList));
 
+        // Distance
+        $distanceField = $this->settings['distanceField'];
+        $this->view->assign('distancevalue', $distanceValue);
+
         // Query
-        $queryactive = !($this->settings['queryField'] === "off");
-        $this->view->assign('queryactive', $queryactive);
         $this->view->assign('queryvalue', $queryValue);
 
         // Default: Search in configured places
@@ -172,7 +175,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
-            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields);
+            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField);
         }
 
         $this->view->assign('addresses', $addresses);

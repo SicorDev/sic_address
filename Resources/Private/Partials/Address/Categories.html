@@ -16,8 +16,7 @@
     </f:case>
     <f:case value="checkboxes">
         <br /><input onchange="toggleCategories($(this).prop('checked'));" class="address_category_checkbox_all" name="tx_sicaddress_sicaddress[checkall]"
-                     id="checkall" value="checkall" type="checkbox" />
-        {f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}
+                     id="checkall" value="checkall" type="checkbox" />{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}
         <f:for each="{categories}" as="category">
             <br /><f:form.checkbox id="sic_address_checkbox" class="address_category_checkbox" value="{category.uid}" additionalAttributes="{onchange: 'submitCategories();'}"/>{category.title}
         </f:for>

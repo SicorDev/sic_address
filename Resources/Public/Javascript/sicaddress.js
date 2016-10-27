@@ -20,6 +20,13 @@ function submitCategory (choice) {
     return false;
 }
 
+function submitDistance (choice) {
+    // Submit Category choice
+    $('#sic_address_distance').val(choice);
+    $('#sic_address_search_form').submit();
+    return false;
+}
+
 function submitMainCategory (choice) {
     // Reset other selections
     $('#sic_address_atoz').val('alle');

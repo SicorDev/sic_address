@@ -37,6 +37,17 @@
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.atozField>
+            <settings.distanceField>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_distanceField</label>
+                    <config>
+                        <type>select</type>
+                        <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                </TCEforms>
+            </settings.distanceField>
             <settings.queryField>
                 <TCEforms>
                     <exclude>1</exclude>

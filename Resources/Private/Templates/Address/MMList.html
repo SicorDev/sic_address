@@ -17,19 +17,17 @@
 		.f3-widget-paginator > li { border: 1px solid silver; padding: 0.25em; background: #eee; text-align: center; display: inline-block; }
 		.f3-widget-paginator > li.current { background: #ddd; font-weight: bold; color: red;}
 		.f3-widget-paginator { margin: -10px 0px 10px 5px }
-		.search-container { border: 1px solid #C0C0C0; margin: 0.25em;  padding: 0.25em;  height: 2em;  background: #EEE none repeat scroll 0% 0%; width: 20em; }
+		.search-container { float: left; border: 1px solid #C0C0C0; margin: 0.25em; padding: 0.25em; height: 27px; background: #EEE none repeat scroll 0% 0%; line-height: 2.2em; width: 20em;}
 		.vcard .address_description img { float: right; }
 		.tx-sic-address .vcard{ float: none; }
 		.tx-sic-address .vcard dd { display: inline-block; }
 		.f3-widget-paginator { margin-top: 5px; }
-		.search-container { float: left; height: 27px; line-height: 2.2em; }
 		.abisz .atoz_text { padding: 0.25em; width: 1.5em; border: 2px outset silver; background: #ddd; margin: 0.25em; float: left; text-align: center; font-weight: bold; text-decoration: none; }
 		.abisz .atoz_Alle { width: 4.25em; }
 		.abisz .deadlinkcolor { color: #fff; }
 		.activelinkcolor { color: red !important; border: 2px inset silver !important;}
 		.abisz { width: 40em; margin-bottom: 40px; padding-bottom: 40px; }
 		.sorry { float:none; display: inline-block; margin: 10px; }
-
 	</style>
 
 	<div class="address_searchoptions">
@@ -75,7 +73,20 @@
 					</div>
 				</f:if>
 			</f:if>
-			<f:if condition="{queryactive}">
+			<f:if condition="{settings.distanceField} != 'none'">
+				<f:form.hidden id="sic_address_distance" name="distance" value="{distancevalue}" />
+				<div class="search-container">
+					<b>Umkreissuche:</b>
+					<select id="distance" class="address_category_dropdown" onchange="submitDistance($(this).val());">
+						<option value="">Alle Einträge</option>
+						<option value="0">im Stadtgebiet</option>
+						<option value="5">bis 5km Umkreis</option>
+						<option value="10">bis 10km Umkreis</option>
+						<option value="15">bis 15km Umkreis</option>
+					</select>
+				</div>
+			</f:if>
+			<f:if condition="{settings.queryField} != 'off'">
 				<div class="search-container">
 					<b>Suche:</b>
 					<f:form.textfield  id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
@@ -111,12 +122,15 @@
 				if($.trim($(this).html()).length < 1)
 					$(this).css('display', 'none');
 			});
+			// Translate pagination
 			$('.previous > a').each(function() {
 				$(this).html('zur&uuml;ck');
 			});
 			$('.next > a').each(function() {
 				$(this).html('weiter');
 			});
+			// Distance selection
+			$('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
 		}
 	</script>
 

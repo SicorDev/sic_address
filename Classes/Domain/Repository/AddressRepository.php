@@ -164,7 +164,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryFields) {
+    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryFields, $distanceValue, $distanceField) {
 
         $query = $this->createQuery();
 
@@ -172,6 +172,11 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $constraints = array();
         if ($atozField && !($atozField === "none") && $atozvalue && strlen(trim($atozvalue)) === 1)
             $constraints[] = $query->like($atozField, $atozvalue.'%');
+
+        // Build distance constraint
+        if (strlen($distanceValue) > 0) {
+            $constraints[] = $query->logicalAnd($query->lessThanOrEqual($distanceField, (int)$distanceValue));
+        }
 
         // Build query constraints
         if ($queryFields && count($queryFields) > 0 && $queryvalue && !($queryvalue === ""))

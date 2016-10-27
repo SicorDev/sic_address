@@ -50,7 +50,7 @@
 					</f:if>
 				</div>
 				<div class="search col-xs-5">
-					<f:if condition="{queryactive}">
+					<f:if condition="{settings.queryField} != 'off'">
 						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
 						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
 					</f:if>

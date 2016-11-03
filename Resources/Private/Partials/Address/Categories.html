@@ -6,16 +6,16 @@
     </f:case>
     <f:case value="dropdown">
         <f:form.select class="address_category_dropdown" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="-1"
+                       additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
                        prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
     </f:case>
     <f:case value="selectbox">
         <f:form.select class="address_category_selectbox" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       size="5" additionalAttributes="{onchange: 'submitCategory($(this).val());'}" prependOptionValue="-1"
+                       size="5" additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
                        prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}" />
     </f:case>
     <f:case value="checkboxes">
-        <br /><input onchange="toggleCategories($(this).prop('checked'));" class="address_category_checkbox_all" name="tx_sicaddress_sicaddress[checkall]"
+        <br /><input onchange="toggleCategories(jQuery(this).prop('checked'));" class="address_category_checkbox_all" name="tx_sicaddress_sicaddress[checkall]"
                      id="checkall" value="checkall" type="checkbox" />{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_category_label')}
         <f:for each="{categories}" as="category">
             <br /><f:form.checkbox id="sic_address_checkbox" class="address_category_checkbox" value="{category.uid}" additionalAttributes="{onchange: 'submitCategories();'}"/>{category.title}
@@ -23,11 +23,11 @@
         <script>
             var bCheckAll = '{checkall}' == 'checkall';
             function fillCheckBoxes () {
-                var cats = $('#sic_address_category').val().split(',');
+                var cats = jQuery('#sic_address_category').val().split(',');
                 for(var i=0; i<cats.length; i++){
-                    $("input[value='" + cats[i] + "']" ).prop('checked', true);
+                    jQuery("input[value='" + cats[i] + "']" ).prop('checked', true);
                 }
-                $('#checkall').prop('checked', bCheckAll);
+                jQuery('#checkall').prop('checked', bCheckAll);
             }
         </script>
     </f:case>

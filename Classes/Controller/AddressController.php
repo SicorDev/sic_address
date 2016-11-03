@@ -324,7 +324,6 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->redirect('list');
     }
 
-
     /**
      *  Switch templates based on config
      */
@@ -343,8 +342,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             case 'mmdir':
                 $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/MMList.html'));
                 break;
-            case 'company':
-                $this->view->setTemplatePathAndFilename('Not Implemented');
+            case 'obgdir':
+                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/OBGList.html'));
                 break;
         }
     }

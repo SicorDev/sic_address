@@ -34,7 +34,7 @@ use SICOR\SicAddress\Utility\Service;
 class ImportController extends ModuleController {
 
     /**
-     * Migrate from NicosDirectory
+     * Migrate from nicos_directory
      *
      * @return void
      */
@@ -106,6 +106,70 @@ class ImportController extends ModuleController {
         // Migrate images to FAL
         $wizard = new \SICOR\SicAddress\Utility\FALImageWizard();
         $wizard->migrateNicosImages();
+
+        $this->redirect("list", "Module");
+    }
+
+    /**
+     * Migrate OBG data from fe_user + sic_mm
+     *
+     * @return void
+     */
+    public function migrateOBGAction()
+    {
+        // Persistance manager
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+
+        // Clear database
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_address");
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("sys_category");
+
+        // Move legacy category data to sys_category
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('branche as title, pid', 'tx_sicmm_branche', 'deleted = 0 AND hidden = 0 AND ( pid = 52 OR pid = 391 )', '');
+        while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
+            $category['pid'] = ($category['pid'] == 52) ? 104 : 105;
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+        }
+
+        // Retrieve legacy address data
+        $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'pid, company, tx_sicmm_street as streetuid, tx_sicmm_street_number as housenumber, telephone, fax, email, zip, city, '.
+            'www, tx_sicmm_company_logo as image, tx_sicmm_open_times as freetext, tx_sicmm_manager_mobile as mobile, tx_sicmm_company_manager as companymanager',
+            'fe_users',
+            'deleted = 0 AND disable = 0 AND ( pid = 52 OR pid = 391 )',
+            '');
+
+        // Add required fields to DomainProperty table
+        $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
+
+        foreach($address as $key => $value) {
+            if($key == "pid")
+                continue;
+
+            $domainProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
+            $domainProperty->setProperties($key, "string", $key, "", "", "", false);
+            $this->domainPropertyRepository->add($domainProperty);
+        }
+
+        // Enhance everything for new fields (sql, model, tca, ...)
+        $persistenceManager->persistAll();
+        $this->initializeAction();
+        $this->createAction();
+
+        do
+        {
+            // Insert address data into sic_address
+            $address['pid'] = ($address['pid'] == 52) ? 104 : 105;
+            $sicAddress = $this->getSicAddrfromLegacyAddr($address);
+            $this->addressRepository->add($sicAddress);
+            $persistenceManager->persistAll();
+        }
+        while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
+
+        // Migrate images to FAL
+        $wizard = new \SICOR\SicAddress\Utility\FALImageWizard();
+        $wizard->migrateOBGImages();
 
         $this->redirect("list", "Module");
     }

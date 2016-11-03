@@ -3,11 +3,11 @@
         <f:if condition="{address.clickenlarge}">
             <f:then>
                 <a href="{image.originalResource.publicUrl}" class="lightbox">
-                    <f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
+                    <f:image treatIdAsReference="1" src="{image.uid}" width="{f:if(condition:'{imageSize}',then:'{imageSize}',else:'120')}c" />
                 </a>
             </f:then>
             <f:else>
-                <f:image treatIdAsReference="1" src="{image.uid}" width="120c" />
+                <f:image treatIdAsReference="1" src="{image.uid}" width="{f:if(condition:'{imageSize}',then:'{imageSize}',else:'120')}c" />
             </f:else>
         </f:if>
     </f:for>

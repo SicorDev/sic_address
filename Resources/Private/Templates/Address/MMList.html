@@ -60,7 +60,7 @@
 					<div class="address_searchoptions address_category">
 						<b>Kategorien:</b>
 						<f:form.select class="address_category_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
-									   additionalAttributes="{onchange: 'submitMainCategory($(this).val());'}" prependOptionValue="-1"
+									   additionalAttributes="{onchange: 'submitMainCategory(jQuery(this).val());'}" prependOptionValue="-1"
 									   prependOptionLabel="Bitte auswählen" />
 					</div>
 				</f:if>
@@ -77,7 +77,7 @@
 				<f:form.hidden id="sic_address_distance" name="distance" value="{distancevalue}" />
 				<div class="search-container">
 					<b>Umkreissuche:</b>
-					<select id="distance" class="address_category_dropdown" onchange="submitDistance($(this).val());">
+					<select id="distance" class="address_category_dropdown" onchange="submitDistance(jQuery(this).val());">
 						<option value="">Alle Einträge</option>
 						<option value="0">im Stadtgebiet</option>
 						<option value="5">bis 5km Umkreis</option>
@@ -118,19 +118,19 @@
 	<script>
 		function documentReadyJsHook () {
 			// Hide right side list boxes when no info is given
-			$('.address_description').each(function() {
-				if($.trim($(this).html()).length < 1)
-					$(this).css('display', 'none');
+			jQuery('.address_description').each(function() {
+				if($.trim(jQuery(this).html()).length < 1)
+					jQuery(this).css('display', 'none');
 			});
 			// Translate pagination
-			$('.previous > a').each(function() {
-				$(this).html('zur&uuml;ck');
+			jQuery('.previous > a').each(function() {
+				jQuery(this).html('zur&uuml;ck');
 			});
-			$('.next > a').each(function() {
-				$(this).html('weiter');
+			jQuery('.next > a').each(function() {
+				jQuery(this).html('weiter');
 			});
 			// Distance selection
-			$('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
+			jQuery('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
 		}
 	</script>
 

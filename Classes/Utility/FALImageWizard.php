@@ -31,14 +31,14 @@ namespace SICOR\SicAddress\Utility;
  */
 class FALImageWizard extends \TYPO3\CMS\Install\Updates\TceformsUpdateWizard
 {
-    public function migrateNicosImages()
+    public function migrateImages($path)
     {
         $dummy = array();
         $this->versionNumber = 6000001;
         $this->tables = array(
             'tx_sicaddress_domain_model_address' => array(
                 'image' => array(
-                    'sourcePath' => 'uploads/tx_nicosdirectory/',
+                    'sourcePath' => $path,
                     'targetPath' => '_migrated/sic_address/'
                 )
             )
@@ -46,4 +46,15 @@ class FALImageWizard extends \TYPO3\CMS\Install\Updates\TceformsUpdateWizard
 
         $this->performUpdate($dummy, $dummy);
     }
+
+    public function migrateOBGImages()
+    {
+        $this->migrateImages("uploads/tx_sicmm/");
+    }
+
+    public function migrateNicosImages()
+    {
+        $this->migrateImages("uploads/tx_nicosdirectory/");
+    }
+
 }

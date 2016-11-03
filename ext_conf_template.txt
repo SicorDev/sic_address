@@ -11,8 +11,5 @@ addressExport = 0
   # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
 ttAddressMapping = 0
 
-  # cat=basic/enable/40; type=options[Vianovis,Google]; label=Map Type: Choose either Vianovis or Google.
-mapType = Vianovis
-
-  # cat=basic/enable/50; type=options[nicosdir,spdir,wtdir,mmdir,company]; label=TemplateSet: Choose one of the preset template sets.
+  # cat=basic/enable/50; type=options[nicosdir,spdir,wtdir,mmdir,obgdir]; label=TemplateSet: Choose one of the preset template sets.
 templateSet = nicosdir

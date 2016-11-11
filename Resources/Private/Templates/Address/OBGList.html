@@ -91,7 +91,7 @@
 							</div>
 							<div class="col-xs-4 image">
 								<f:render partial="Address/Images" arguments="{address:address,imageSize:250}" />
-								<a href="https://maps.google.com/?q=Unterer+Markt+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
+								<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
 							</div>
 						</div>
 					</f:for>

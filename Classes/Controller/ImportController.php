@@ -134,10 +134,10 @@ class ImportController extends ModuleController {
 
         // Retrieve legacy address data
         $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'pid, company, tx_sicmm_street as streetuid, tx_sicmm_street_number as housenumber, telephone, fax, email, zip, city, '.
+            'feu.pid, company, street, tx_sicmm_street_number as housenumber, telephone, fax, email, zip, city, '.
             'www, tx_sicmm_company_logo as image, tx_sicmm_open_times as freetext, tx_sicmm_manager_mobile as mobile, tx_sicmm_company_manager as companymanager',
-            'fe_users',
-            'deleted = 0 AND disable = 0 AND ( pid = 52 OR pid = 391 )',
+            'fe_users as feu, tx_sicmm_streets as str',
+            'tx_sicmm_street = str.uid AND feu.deleted = 0 AND disable = 0 AND (feu.pid = 52 OR feu.pid = 391)',
             '');
 
         // Add required fields to DomainProperty table

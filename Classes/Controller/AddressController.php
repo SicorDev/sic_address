@@ -104,7 +104,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $this->maincategoryvalue = '';
         $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
-        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '');
+        $emptyList = $this->settings['noListStartup'];
+
+        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', $emptyList);
     }
 
     /**
@@ -123,7 +125,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $distanceValue, $checkall);
     }
 
-    public function fillAddressList($atozValue, $categoryValue, $queryValue, $distanceValue, $checkall)
+    public function fillAddressList($atozValue, $categoryValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
@@ -169,7 +171,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
         }
 
-        if (($this->settings['mainCategoryType'] !== "none") && ($this->maincategoryvalue < 1)) {
+        if ((($this->settings['mainCategoryType'] !== "none") && ($this->maincategoryvalue < 1)) || $emptyList) {
             // No search until a main category is chosen
             $addresses = null;
         } else {

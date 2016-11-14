@@ -171,6 +171,16 @@
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.listType>
+            <settings.noListStartup>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_noListStartup</label>
+                    <config>
+                        <type>check</type>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                </TCEforms>
+            </settings.noListStartup>
             <settings.singleAddress>
                 <TCEforms>
                     <exclude>1</exclude>

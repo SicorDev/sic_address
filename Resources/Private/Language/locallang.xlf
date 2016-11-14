@@ -81,6 +81,9 @@
 			<trans-unit id="label_cattype_3column">
 				<source>3-Spaltig</source>
 			</trans-unit>
+			<trans-unit id="label_noListStartup">
+				<source>Liste beim Start nicht anzeigen</source>
+			</trans-unit>
 			<trans-unit id="noselect_category_label">
 				<source>Alle</source>
 			</trans-unit>

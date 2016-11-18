@@ -88,7 +88,7 @@
 				<source>Alle</source>
 			</trans-unit>
 			<trans-unit id="search_no_hits_message">
-				<source>Leider wurde kein Treffer zu Ihrer Suche gefunden.</source>
+				<source>Leider wurden keine Treffer zu Ihrer Suche gefunden oder es wurde noch keine Rubrik ausgewählt.</source>
 			</trans-unit>
 		</body>
 	</file>

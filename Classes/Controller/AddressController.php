@@ -217,6 +217,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
                 $this->displayCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
 
+                // If there's no children just use the category defined by uid
+                if(count($this->displayCategoryList) == 0)
+                    $this->displayCategoryList[] = $this->categoryRepository->findByUid($uid);
+
                 // Search children of selected category
                 $this->searchCategoryList = $this->displayCategoryList;
             }

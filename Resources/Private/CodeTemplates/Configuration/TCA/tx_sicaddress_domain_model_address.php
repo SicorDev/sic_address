@@ -9,7 +9,7 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
-        'sortby' => 'company',
+        'default_sortby' => 'ORDER BY company',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',

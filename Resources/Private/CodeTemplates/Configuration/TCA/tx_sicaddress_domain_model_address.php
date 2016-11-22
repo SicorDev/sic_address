@@ -106,51 +106,6 @@ return array(
                 ),
             ),
         ),
-        'categories' => array(
-            'exclude' => 1,
-            'label' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_address.categories',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectMultipleSideBySide',
-                'foreign_table' => 'sys_category',
-                'MM' => 'sys_category_record_mm',
-                'MM_match_fields' => array(
-                    'fieldname' => 'categories',
-                    'tablenames' => 'tx_sicaddress_domain_model_address',
-                ),
-                'size' => 10,
-                'autoSizeMax' => 30,
-                'maxitems' => 9999,
-                'multiple' => 0,
-                'wizards' => array(
-                    '_PADDING' => 1,
-                    '_VERTICAL' => 1,
-                    'edit' => array(
-                        'module' => array(
-                            'name' => 'wizard_edit',
-                        ),
-                        'type' => 'popup',
-                        'title' => 'Edit',
-                        'icon' => 'edit2.gif',
-                        'popup_onlyOpenIfSelected' => 1,
-                        'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
-                    ),
-                    'add' => Array(
-                        'module' => array(
-                            'name' => 'wizard_add',
-                        ),
-                        'type' => 'script',
-                        'title' => 'Create new',
-                        'icon' => 'add.gif',
-                        'params' => array(
-                            'table' => 'sys_category',
-                            'pid' => '###CURRENT_PID###',
-                            'setValue' => 'prepend'
-                        ),
-                    ),
-                ),
-            ),
-        ),
     <f:for each="{properties}" as="field">
         <f:format.htmlentitiesDecode>
     '{field.title}' => array(

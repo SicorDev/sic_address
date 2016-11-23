@@ -225,7 +225,13 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             foreach($domainProperties as $property) {
                 $propertyTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
                 $value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($domainObject, $propertyTitle);
-                $parseValue = "\"" . str_replace("\"", "\"\"", "".$value) . "\"";
+
+                try {
+                    $parseValue = "\"".str_replace("\"", "\"\"", $value)."\"";
+                } catch (Exception $e) {
+                    continue;
+                }
+
                 \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
             }
         }

@@ -76,7 +76,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function initializeAction() {
         $this->setBackendModuleTemplates();
-        
+
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['exportTemplateRootPaths'][0]);
     }

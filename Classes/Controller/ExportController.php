@@ -226,7 +226,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $propertyTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
 
                 $value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($domainObject, $propertyTitle);
-                if(!$value instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
+                if($value instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
                     continue;
 
                 $parseValue = "\"" . str_replace("\"", "\"\"", $value) . "\"";

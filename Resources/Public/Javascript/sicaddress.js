@@ -1,5 +1,6 @@
 function submitAtoz (choice) {
     // Reset other selections
+    jQuery('#sic_address_main_category').val('-1');
     jQuery('#sic_address_category').val('-1');
     jQuery('#sic_address_query').val('');
 

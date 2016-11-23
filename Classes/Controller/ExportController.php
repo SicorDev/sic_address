@@ -224,14 +224,12 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         foreach($values->toArray() as $key => $domainObject) {
             foreach($domainProperties as $property) {
                 $propertyTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
+
                 $value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($domainObject, $propertyTitle);
-
-                try {
-                    $parseValue = "\"".str_replace("\"", "\"\"", $value)."\"";
-                } catch (Exception $e) {
+                if(!$value instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
                     continue;
-                }
 
+                $parseValue = "\"" . str_replace("\"", "\"\"", $value) . "\"";
                 \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
             }
         }

@@ -171,8 +171,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
         }
 
-        if ((($this->settings['mainCategoryType'] !== "none") && ($this->maincategoryvalue < 1)) || $emptyList) {
-            // No search until a main category is chosen
+        if ($emptyList) {
+            // No search on startup
             $addresses = null;
         } else {
             // Search addresses

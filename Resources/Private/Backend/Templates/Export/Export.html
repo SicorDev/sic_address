@@ -16,26 +16,26 @@
                             <li>
                                 <f:if condition="{category -> f:count()} > 0">
                                     <f:then>
-                                        <f:form.checkbox name="categories" multiple="true" value="{category.value.uid}"/>
+                                        <f:form.checkbox name="categories[]" multiple="true" value="{category.value.uid}"/>
                                         <label>{key}</label>
                                         <ul>
                                             <f:for each="{category.entries}" as="secondaryCategory" key="secondaryKey">
                                                 <li>
                                                     <f:if condition="{secondaryCategory -> f:count()} > 0">
                                                         <f:then>
-                                                            <f:form.checkbox name="categories" multiple="true" value="{secondaryCategory.value.uid}"/>
+                                                            <f:form.checkbox name="categories[]" multiple="true" value="{secondaryCategory.value.uid}"/>
                                                             <label>{secondaryKey}</label>
                                                             <ul>
                                                                 <f:for each="{secondaryCategory.entries}" as="thirdCategory" key="thirdKey">
                                                                     <li>
-                                                                        <f:form.checkbox name="categories"  multiple="true" value="{thirdCategory.uid}"/>
+                                                                        <f:form.checkbox name="categories[]"  multiple="true" value="{thirdCategory.uid}"/>
                                                                         <label>{thirdKey}</label>
                                                                     </li>
                                                                 </f:for>
                                                             </ul>
                                                         </f:then>
                                                         <f:else>
-                                                            <f:form.checkbox name="categories" multiple="true" value="{secondaryCategory.uid}"/>
+                                                            <f:form.checkbox name="categories[]" multiple="true" value="{secondaryCategory.uid}"/>
                                                             <label>{secondaryKey}</label>
                                                         </f:else>
                                                     </f:if>
@@ -44,7 +44,7 @@
                                         </ul>
                                     </f:then>
                                     <f:else>
-                                        <f:form.checkbox name="categories" multiple="true" value="{category.uid}"/>
+                                        <f:form.checkbox name="categories[]" multiple="true" value="{category.uid}"/>
                                         <label>{key}</label>
                                     </f:else>
                                 </f:if>
@@ -76,8 +76,8 @@
                     <h2>Export</h2>
                     <hr />
                     <f:form.hidden id="type" name="type" value="HTML" />
-                    <f:form.submit class="btn btn-default" value="CSV Export" onclick="TYPO3.jQuery('#type').val('CSV');"/>
-                    <f:form.submit class="btn btn-default" value="HTML Export" onclick="TYPO3.jQuery('#type').val('HTML');"/>
+                    <f:form.submit class="btn btn-default" value="CSV Export" onclick="jQuery('#type').val('CSV');"/>
+                    <f:form.submit class="btn btn-default" value="HTML Export" onclick="jQuery('#type').val('HTML');"/>
                 </div>
             </div>
         </f:form>

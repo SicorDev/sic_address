@@ -109,6 +109,24 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
             $this->configuration[$key]->setType($objectManager->get($class));
         }
+
+        $this->setBackendModuleTemplates();
+    }
+
+    /**
+     * Set Backend Module Templates
+     * @return void
+     */
+    private function setBackendModuleTemplates(){
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $viewConfiguration = array(
+            'view' => array(
+                'templateRootPath' => 'EXT:sic_address/Resources/Private/Backend/Templates/',
+                'partialRootPath' => 'EXT:sic_address/Resources/Private/Backend/Partials/',
+                'layoutRootPath' => 'EXT:sic_address/Resources/Private/Backend/Layouts/',
+            )
+        );
+        $this->configurationManager->setConfiguration(array_merge($frameworkConfiguration, $viewConfiguration));
     }
 
     /**

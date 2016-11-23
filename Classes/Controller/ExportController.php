@@ -25,6 +25,8 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Metaseo\Metaseo\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * ExportController
@@ -73,8 +75,27 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Called before any action
      */
     public function initializeAction() {
+        $this->setBackendModuleTemplates();
+        
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['exportTemplateRootPaths'][0]);
+    }
+
+    /**
+     * Set Backend Module Templates
+     * @return void
+     */
+    private function setBackendModuleTemplates(){
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $customConfiguration = array(
+            'view' => array(
+                'templateRootPath' => 'EXT:sic_address/Resources/Private/Backend/Templates/',
+                'partialRootPath' => 'EXT:sic_address/Resources/Private/Backend/Partials/',
+                'layoutRootPath' => 'EXT:sic_address/Resources/Private/Backend/Layouts/',
+                'exportTemplateRootPaths' => array('EXT:sic_address/Resources/Private/Templates/Export/')
+            )
+        );
+        $this->configurationManager->setConfiguration(array_merge($frameworkConfiguration, $customConfiguration));
     }
 
     /**
@@ -83,7 +104,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Display export page
      */
     public function exportAction() {
-        $pid = \t3lib_div::_GP('id');
+        $pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
         $addresses = $this->addressRepository->findByPid($pid);
         $categories = $this->getCurrentCategories($addresses);
 
@@ -108,7 +129,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $addresses = $this->addressRepository->findByCategories($categories);
 
         if ($type == "CSV") {
-            $this->exportToCSV($addresses);
+            $this->exportToCSV($addresses, "csv.tmpl");
         } else {
             $this->exportToHTML($addresses, $template);
         }
@@ -118,11 +139,12 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * exportToCSVAction
      *
      * @param $addresses
+     * @param $template
      */
-    private function exportToCSV($addresses) {
+    private function exportToCSV($addresses, $template) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $templatePathAndFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['templateRootPaths'][0]) . "Export/csv.html";
+        $templatePathAndFilename = $this->templateRootPath . $template;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPath($templatePathAndFilename);
         $customView->assign("addresses", $this->parseCSV($addresses));
@@ -152,7 +174,6 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         header("Content-type: text/html");
         header("Content-Disposition: attachment; filename=Export.html");
-
         echo $content;
         exit;
     }
@@ -184,10 +205,12 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $templates = array();
         $entries = array_diff(scandir($this->templateRootPath), array('.', '..'));
         foreach ($entries as $entry) {
-            $template = new \stdClass();
-            $template->key = $entry;
-            $template->value = $entry;
-            $templates[] = $template;
+            if(!strpos($entry, ".tmpl")) {
+                $template = new \stdClass();
+                $template->key = $entry;
+                $template->value = $entry;
+                $templates[] = $template;
+            }
         }
         return $templates;
     }

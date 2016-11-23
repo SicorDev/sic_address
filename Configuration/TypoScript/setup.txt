@@ -1,4 +1,3 @@
-
 plugin.tx_sicaddress_sicaddress {
 	view {
 		templateRootPaths.0 = {$plugin.tx_sicaddress_sicaddress.view.templateRootPath}
@@ -6,14 +5,14 @@ plugin.tx_sicaddress_sicaddress {
 		layoutRootPaths.0 = {$plugin.tx_sicaddress_sicaddress.view.layoutRootPath}
 	}
 	persistence {
-		storagePid = {$plugin.tx_sicaddress_sicaddress.persistence.storagePid}
+		#storagePid = {$plugin.tx_sicaddress_sicaddress.persistence.storagePid}
 	}
 }
 
  # Module configuration
 module.tx_sicaddress_web_sicaddresssicaddress {
 	persistence {
-		storagePid = {$module.tx_sicaddress_sicaddress.persistence.storagePid}
+		#storagePid = {$module.tx_sicaddress_sicaddress.persistence.storagePid}
 	}
 	view {
 		templateRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.templateRootPath}
@@ -26,7 +25,7 @@ module.tx_sicaddress_web_sicaddresssicaddress {
  # Export Module configuration
 module.tx_sicaddress_web_sicaddresssicaddressexport {
 	persistence {
-		storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
+		#storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
 	}
 	view {
 		templateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.templateRootPath}

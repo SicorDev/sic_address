@@ -64,8 +64,25 @@ $GLOBALS['TCA']['tt_address']['columns'][$GLOBALS['TCA']['tt_address']['ctrl']['
     'EXT:/Resources/Private/Language/locallang_csh_.xlf'
 );
 
-// Edit description field to RTE Field
-$GLOBALS['TCA']['tt_address']['types']['1']['showitem'] = str_replace(', description,',', description;;;richtext[*]:rte_transdorm[mode=ts];1-1-1,',$TCA['tt_address']['types']['1']['showitem']);
+// Upgrade Description to an RTE field
+$GLOBALS['TCA']['tt_address']['columns']['description']['defaultExtras'] = 'richtext[*]';
+$GLOBALS['TCA']['tt_address']['columns']['description']['config']['wizards'] = array(
+    'RTE' => array(
+        'icon' => 'wizard_rte2.gif',
+        'notNewRecords'=> 1,
+        'RTEonly' => 1,
+        'module' => array(
+            'name' => 'wizard_rich_text_editor',
+            'urlParameters' => array(
+                'mode' => 'wizard',
+                'act' => 'wizard_rte.php'
+            )
+        ),
+        'title' => 'LLL:EXT:cms/locallang_ttc.xlf:bodytext.W.RTE',
+        'type' => 'script'
+    )
+);
+
 // Set company field as label, name and email as alternative label, ordering by company
 $GLOBALS['TCA']['tt_address']['ctrl']['label'] = 'company';
 $GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';

@@ -246,16 +246,41 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         }
 
         // Alphasort displayed lists
-        if ($this->displayCategoryList) {
-            usort($this->displayCategoryList, function ($cat1, $cat2) {
-                return strcasecmp($cat1->getTitle(), $cat2->getTitle());
+        $this->sortCategories($this->displayCategoryList);
+        $this->sortCategories($this->mainCategoryList);
+    }
+
+    /**
+     * Sort Helper
+     *
+     * @return sorted list of categories
+     */
+    public function sortCategories(&$categoryList)
+    {
+        if ($categoryList) {
+            usort($categoryList, function ($cat1, $cat2) {
+                $str1 = $this->normalize($cat1->getTitle());
+                $str2 = $this->normalize($cat2->getTitle());
+                return strcmp($str1, $str2);
             });
         }
-        if ($this->mainCategoryList) {
-            usort($this->mainCategoryList, function ($cat1, $cat2) {
-                return strcasecmp($cat1->getTitle(), $cat2->getTitle());
-            });
-        }
+    }
+
+    /**
+     * Sort Helper
+     *
+     * @return string
+     */
+    public static function normalize($str)
+    {
+        $str = str_replace( 'ß', "ss", $str);
+        $str = str_replace( 'ä', "ae", $str);
+        $str = str_replace( 'ö', "oe", $str);
+        $str = str_replace( 'ü', "ue", $str);
+        $str = str_replace( 'Ä', "Ae", $str);
+        $str = str_replace( 'Ö', "Oe", $str);
+        $str = str_replace( 'Ü', "Ue", $str);
+        return $str;
     }
 
     /**

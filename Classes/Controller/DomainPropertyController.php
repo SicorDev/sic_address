@@ -88,6 +88,15 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     }
 
     /**
+     * Sortable Wrapper
+     * @return config
+     */
+    public function getFlexSortableFields($config)
+    {
+        return $this->getFlexFields($config, "integer,string");
+    }
+
+    /**
      * String Wrapper
      * @return config
      */
@@ -108,10 +117,17 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     /**
      * @return config
      */
-    public function getFlexFields($config, $type)
+    public function getFlexFields($config, $types)
     {
+        $where = 'deleted = 0 AND hidden = 0 AND (';
+        $typeList = explode(',', $types);
+        foreach ($typeList as $type) {
+            $where .= '(type = "'.$type.'") OR ';
+        }
+        $where .= '1=0 )';
+
         // Query Database
-        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, tca_label', 'tx_sicaddress_domain_model_domainproperty', 'type = "'.$type.'" AND deleted = 0 AND hidden = 0', 'tca_label');
+        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, tca_label', 'tx_sicaddress_domain_model_domainproperty', $where, 'tca_label');
 
         $optionList = array();
         $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');

@@ -87,6 +87,39 @@
 			<trans-unit id="noselect_category_label">
 				<source>Alle</source>
 			</trans-unit>
+			<trans-unit id="frontend_main_category_filter">
+				<source>Kategorien:</source>
+			</trans-unit>
+			<trans-unit id="frontend_category_filter">
+				<source>Rubriken:</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_filter">
+				<source>Umkreissuche:</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option1">
+				<source>Alle Einträge</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option2">
+				<source>Zentrum / Innenstadt</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option3">
+				<source>bis 5km Umkreis</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option4">
+				<source>bis 10km Umkreis</source>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option5">
+				<source>bis 15km Umkreis</source>
+			</trans-unit>
+			<trans-unit id="frontend_query_filter">
+				<source>Suche:</source>
+			</trans-unit>
+			<trans-unit id="frontend_query_button">
+				<source>Los!</source>
+			</trans-unit>
+			<trans-unit id="frontend_results">
+				<source>Ergebnisse</source>
+			</trans-unit>
 			<trans-unit id="search_no_hits_message">
 				<source>Leider wurden keine Treffer zu Ihrer Suche gefunden oder es wurde noch keine Rubrik ausgewählt.</source>
 			</trans-unit>

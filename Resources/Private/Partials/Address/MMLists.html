@@ -52,16 +52,13 @@
                         <f:if condition="{address.categories}">
                             <br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
                         </f:if>
-                        <f:if condition="{address.tx_ttaddresshandicappedinfo_distance}">
-                            <br/>{address.tx_ttaddresshandicappedinfo_distance}
-                        </f:if>
                     </div>
                     <div class="address_description">
                         <f:render partial="Address/Images" arguments="{address:address}" />
                         <f:format.html>{address.description}</f:format.html>
-                        <f:if condition="{address.txCronmmaddressOpeninghours}">
+                        <f:if condition="{address.openinghours}">
                             <b>&Ouml;ffnungszeiten:</b>
-                            <f:format.html>{address.txCronmmaddressOpeninghours}</f:format.html>
+                            <f:format.html>{address.openinghours}</f:format.html>
                         </f:if>
                     </div>
                 </dd>
@@ -131,9 +128,9 @@
                     </td>
                     <td headers="bemerkungen">
                         <f:format.html>{address.description}</f:format.html>
-                        <f:if condition="{address.txCronmmaddressOpeninghours}">
+                        <f:if condition="{address.openinghours}">
                             <b>&Ouml;ffnungszeiten:</b>
-                            <f:format.html>{address.txCronmmaddressOpeninghours}</f:format.html>
+                            <f:format.html>{address.openinghours}</f:format.html>
                         </f:if>
                         <f:if condition="{address.categories}">
                             <br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>

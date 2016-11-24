@@ -5,10 +5,8 @@
 
     <dl class="vcard">
         <dd class="vcard">
-            <f:if condition="{address.image}">
-                <f:image treatIdAsReference="1" src="{address.image.uid}" width="120c" /><br />
-            </f:if>
-			<f:if condition=" {address.company}">
+            <f:render partial="Address/Images" arguments="{address:address}" />
+			<f:if condition="{address.company}">
                 <b>{address.company}</b><br /><br />
             </f:if>
             <f:if condition="{address.address}">

@@ -93,7 +93,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function getFlexSortableFields($config)
     {
-        return $this->getFlexFields($config, "integer,float, string");
+        return $this->getFlexFields($config, "integer,float,string");
     }
 
     /**
@@ -109,9 +109,9 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      * Integer Wrapper
      * @return config
      */
-    public function getFlexIntFields($config)
+    public function getFlexDistanceFields($config)
     {
-        return $this->getFlexFields($config, "integer");
+        return $this->getFlexFields($config, "integer,float");
     }
 
     /**

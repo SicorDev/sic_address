@@ -93,7 +93,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function getFlexSortableFields($config)
     {
-        return $this->getFlexFields($config, "integer,string");
+        return $this->getFlexFields($config, "integer,float, string");
     }
 
     /**

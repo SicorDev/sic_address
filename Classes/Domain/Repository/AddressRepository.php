@@ -81,19 +81,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return $this->findAll();
         }
 
-        $result = array();
-        foreach ($categories as $category) {
-            $parents = $this->getParents($category);
-            foreach($parents as $parent) {
-                if(!in_array($parent, $result))
-                    $result[] = $parent;
-            }
-        }
-
         $query = $this->createQuery();
         $constraints = array();
-        foreach($result as $item) {
-            $constraints[] = $query->contains("categories", $item->getUid());
+        foreach($categories as $item) {
+            $constraints[] = $query->contains("categories", $item);
         }
         $con = $query->logicalOr($constraints);
         $query->matching($query->logicalAnd($con));
@@ -123,7 +114,8 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * @param string $sql
+     * @param $sql
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
     public function runUpdate($sql) {
         $query = $this->createQuery();

@@ -1,0 +1,24 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+
+<f:if condition="{currentLevel} < {stopRecursionOnLevel}">
+    <f:alias map="{nextLevel : '{sic:Increment(i : currentLevel)}'}">
+        <f:if condition="{sic:ArrayKeyExists(key : currentCategory.uid, array : categoryTree, level : nextLevel)}">
+            <ul class="level{nextLevel}">
+                <f:for each="{sic:ArrayValue(key : currentCategory.uid, array : categoryTree, level : nextLevel)}" as="childCategory">
+                    <li class="{f:if(condition:'{sic:InArrayExplode(needle : childCategory.uid, haystack : selectedCategories)}', then : 'selected', else : 'no')}">
+                        <f:form.checkbox name="categories[]"  multiple="true" value="{childCategory.uid}"/>
+                        <label>{childCategory.title}</label>
+                        <f:render partial="Export/ChildCategoryRecursion" arguments="{
+							categoryTree : categoryTree,
+							selectedCategories : selectedCategories,
+							currentCategory : childCategory,
+							currentLevel : nextLevel,
+							stopRecursionOnLevel : stopRecursionOnLevel}"
+                        />
+                    </li>
+                </f:for>
+            </ul>
+        </f:if>
+
+    </f:alias>
+</f:if>

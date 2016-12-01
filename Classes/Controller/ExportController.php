@@ -98,7 +98,8 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $typoscriptConfiguration = array_merge_recursive($typoscriptConfiguration, $TSparserObject->setup);
             }
         }
-        $frameworkConfiguration["view"]["exportTemplateRootPaths"]["0"] = $typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1];
+        if($typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1])
+            $frameworkConfiguration["view"]["exportTemplateRootPaths"]["0"] = $typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1];
         $this->configurationManager->setConfiguration($frameworkConfiguration);
     }
 
@@ -110,12 +111,59 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function exportAction() {
         $pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-        $addresses = $this->addressRepository->findByPid($pid);
-        $categories = $this->getCurrentCategories($addresses);
+        $categories = $this->categoryRepository->findByPid($pid)->toArray();
+        $categoryUids = $this->getCategoryParents($categories);
 
-        $this->view->assign("categories", $categories);
         $this->view->assign("templates", $this->getTemplates());
         $this->view->assign("sorting", $this->domainPropertyRepository->findByType("string"));
+        $this->view->assign('categoryTree', $this->buildCategoryTree($categoryUids));
+    }
+
+    /**
+     * @param $categories
+     * @return array
+     */
+    private function getCategoryParents($categories) {
+        $cats = array();
+        foreach($categories as $value) {
+            if(!$value->getParent()) {
+                $cats[] = $value->getUid();
+            }
+        }
+
+        return $cats;
+    }
+
+    /**
+     * @param $levelCategoryUids
+     * @return array
+     */
+    private function buildCategoryTree($levelCategoryUids) {
+        $categoryTree = array();
+        // builds the category tree as two dimensional array - the keys represent the level of recursion, the values are
+        // arrays of child categories per level bound together by the uid of their parent
+        for ($i = 0; $i <= 8; $i++) {
+            if ($i === 0) {
+                foreach ($levelCategoryUids as $currentCategoryUid) {
+                    $parent = $this->categoryRepository->findByUid($currentCategoryUid);
+                    $categoryTree[$i][] = $parent;
+                }
+            } else {
+                $newLevelCategoryUids = array();
+                foreach ($levelCategoryUids as $currentCategoryUid) {
+                    $parent = $this->categoryRepository->findByUid($currentCategoryUid);
+                    $children = $this->categoryRepository->findByParent($currentCategoryUid);
+                    if ($children->count() > 0) {
+                        $categoryTree[$i][$parent->getUid()] = $children;
+                        foreach ($children as $child) {
+                            $newLevelCategoryUids[] = $child->getUid();
+                        }
+                    }
+                }
+                $levelCategoryUids = $newLevelCategoryUids;
+            }
+        }
+        return $categoryTree;
     }
 
     /**
@@ -129,6 +177,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $type = $arguments["type"];
         $template = $arguments["template"];
         $sorting = $arguments["sorting"];
+
 
         $this->addressRepository->setDefaultOrderings(array($sorting => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
         $addresses = $this->addressRepository->findByCategories($categories);

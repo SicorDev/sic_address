@@ -11,46 +11,13 @@
         <f:form action="exportToFile" >
             <div class="row">
                 <div class="col-sm-12">
-                    <ul>
-                        <f:for each="{categories}" as="category" key="key">
-                            <li>
-                                <f:if condition="{category -> f:count()} > 0">
-                                    <f:then>
-                                        <f:form.checkbox name="categories[]" multiple="true" value="{category.value.uid}"/>
-                                        <label>{key}</label>
-                                        <ul>
-                                            <f:for each="{category.entries}" as="secondaryCategory" key="secondaryKey">
-                                                <li>
-                                                    <f:if condition="{secondaryCategory -> f:count()} > 0">
-                                                        <f:then>
-                                                            <f:form.checkbox name="categories[]" multiple="true" value="{secondaryCategory.value.uid}"/>
-                                                            <label>{secondaryKey}</label>
-                                                            <ul>
-                                                                <f:for each="{secondaryCategory.entries}" as="thirdCategory" key="thirdKey">
-                                                                    <li>
-                                                                        <f:form.checkbox name="categories[]"  multiple="true" value="{thirdCategory.uid}"/>
-                                                                        <label>{thirdKey}</label>
-                                                                    </li>
-                                                                </f:for>
-                                                            </ul>
-                                                        </f:then>
-                                                        <f:else>
-                                                            <f:form.checkbox name="categories[]" multiple="true" value="{secondaryCategory.uid}"/>
-                                                            <label>{secondaryKey}</label>
-                                                        </f:else>
-                                                    </f:if>
-                                                </li>
-                                            </f:for>
-                                        </ul>
-                                    </f:then>
-                                    <f:else>
-                                        <f:form.checkbox name="categories[]" multiple="true" value="{category.uid}"/>
-                                        <label>{key}</label>
-                                    </f:else>
-                                </f:if>
-                            </li>
-                        </f:for>
-                    </ul>
+                    <f:for each="{categoryTree.0}" as="currentCategory">
+                        <li class="{f:if(condition:'{sic:InArrayExplode(needle : currentCategory.uid, haystack : selectedCategories)}', then : 'selected', else : 'no')}">
+                            <f:form.checkbox name="categories[]"  multiple="true" value="{currentCategory.uid}"/>
+                            <label>{currentCategory.title}</label>
+                            <f:render partial="Export/ChildCategoryRecursion" arguments="{categoryTree : categoryTree, selectedCategories : selectedCategories, currentCategory : currentCategory,	currentLevel : 0, stopRecursionOnLevel : 8}"/>
+                        </li>
+                    </f:for>
                     <button class="btn btn-default" onclick="checkAll();return false;">Alle Kategorien auswählen</button>
                 </div>
             </div>

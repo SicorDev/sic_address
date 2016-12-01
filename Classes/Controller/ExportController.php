@@ -25,13 +25,19 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use Metaseo\Metaseo\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
  * ExportController
  */
-class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class ExportController extends ActionController {
 
     /**
      * addressRepository
@@ -77,8 +83,8 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function initializeAction() {
         $this->setBackendModuleTemplates();
 
-        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['exportTemplateRootPaths'][0]);
+        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['exportTemplateRootPaths'][0]);
     }
 
     /**
@@ -86,21 +92,22 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * @return void
      */
     private function setBackendModuleTemplates(){
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $typoscriptConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $typoscriptConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
         $templates = $GLOBALS['TYPO3_DB']->exec_SELECTquery('config,constants', "sys_template", 'deleted = 0 AND hidden = 0', '');
         while ($template = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($templates)) {
             if(strpos($template['config'], "module.tx_sicaddress_web_sicaddresssicaddressexport") >= 0) {
-                $TSparserObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+                $TSparserObject = GeneralUtility::makeInstance(TypoScriptParser::class);
                 $TSparserObject->parse($template['config']);
 
                 $typoscriptConfiguration = array_merge_recursive($typoscriptConfiguration, $TSparserObject->setup);
             }
         }
-        if($typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1])
+        if($typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1]) {
             $frameworkConfiguration["view"]["exportTemplateRootPaths"]["0"] = $typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1];
-        $this->configurationManager->setConfiguration($frameworkConfiguration);
+            $this->configurationManager->setConfiguration($frameworkConfiguration);
+        }
     }
 
 
@@ -110,7 +117,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Display export page
      */
     public function exportAction() {
-        $pid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+        $pid = GeneralUtility::_GP('id');
         $categories = $this->categoryRepository->findByPid($pid)->toArray();
         $categoryUids = $this->getCategoryParents($categories);
 
@@ -179,7 +186,7 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $sorting = $arguments["sorting"];
 
 
-        $this->addressRepository->setDefaultOrderings(array($sorting => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+        $this->addressRepository->setDefaultOrderings(array($sorting => QueryInterface::ORDER_ASCENDING));
         $addresses = $this->addressRepository->findByCategories($categories);
 
         if ($type == "CSV") {
@@ -233,26 +240,6 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * @param array $addresses
-     *
-     * @return array
-    */
-    private function getCurrentCategories($addresses) {
-        $categories = array();
-        foreach($addresses as $address) {
-            $category = $address->getCategories();
-            foreach ($category as $entry) {
-                if (!in_array($entry, $categories) && $entry->getParent()) {
-                    $categories[$entry->getParent()->getTitle()]["value"] = $entry->getParent();
-                    $categories[$entry->getParent()->getTitle()]["entries"][$entry->getTitle()] = $entry;
-                }
-            }
-        }
-
-        return $categories;
-    }
-
-    /**
      * @return array
      */
     private function getTemplates() {
@@ -277,14 +264,14 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $domainProperties = $this->domainPropertyRepository->findAll();
         foreach($values->toArray() as $key => $domainObject) {
             foreach($domainProperties as $property) {
-                $propertyTitle = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
+                $propertyTitle = GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
 
-                $value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($domainObject, $propertyTitle);
-                if($value instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage)
+                $value = ObjectAccess::getProperty($domainObject, $propertyTitle);
+                if($value instanceof ObjectStorage)
                     continue;
 
                 $parseValue = "\"" . str_replace("\"", "\"\"", $value) . "\"";
-                \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
+                ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
             }
         }
         return $values;

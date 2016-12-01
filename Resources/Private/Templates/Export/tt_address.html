@@ -1,26 +1,46 @@
-<!Doctype html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-    </head>
-    <body>
-        <table>
-            <thead>
-                <tr>
-                    <th>Vorname</th>
-                    <th>Nachname</th>
-                    <th>Firma</th>
-                </tr>
-            </thead>
-            <tbody>
-                <f:for each="{addresses}" as="address">
-                    <tr>
-                        <td>{address.firstName}</td>
-                        <td>{address.lastName}</td>
-                        <td>{address.company}</td>
-                    </tr>
-                </f:for>
-            </tbody>
-        </table>
-    </body>
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>Template Adress-Export kpl. Daten</title>
+</head>
+<body>
+
+<h1>Memminger Wegweiser / Adressbuch (alle Daten)</h1>
+
+<table style="width:100%; border:1px solid black;" cellpadding="3" cellspacing="3">
+    <thead>
+    <tr>
+        <th style="background:black; color:white; width:30%;" id="anschrift">Anschrift</th>
+        <th style="background:black; color:white; width:30%;" id="kontaktdaten">Kontaktdaten</th>
+        <th style="background:black; color:white; width:40%;" id="bemerkungen">Bemerkungen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <f:for each="{addresses}" as="address">
+        <tr>
+            <td style="background:#eeeeee;" valign="top" headers="anschrift">
+                <strong>{address.company}</strong><br />
+                {address.title}<br />
+                {address.firstName}<br />
+                {address.middleName}<br />
+                {address.lastName}<br />
+                {address.address}<br />
+                <nobr>{address.zip} {address.city}</nobr>
+            </td>
+            <td style="background:#eeeeee;" valign="top" headers="kontaktdaten">
+                Tel. {address.phone}<br />
+                Mob. {address.mobile}<br />
+                Fax: {address.fax}<br />
+                <nobr>{address.email}</nobr><br />
+                <nobr>{address.www}</nobr>
+            </td>
+            <td style="background:#eeeeee;" valign="top" headers="bemerkungen">
+
+            </td>
+        </tr>
+    </f:for>
+    </tbody>
+</table>
+
+</body>
 </html>

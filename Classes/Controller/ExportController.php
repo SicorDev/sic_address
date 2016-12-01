@@ -87,16 +87,21 @@ class ExportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     private function setBackendModuleTemplates(){
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $customConfiguration = array(
-            'view' => array(
-                'templateRootPath' => 'EXT:sic_address/Resources/Private/Backend/Templates/',
-                'partialRootPath' => 'EXT:sic_address/Resources/Private/Backend/Partials/',
-                'layoutRootPath' => 'EXT:sic_address/Resources/Private/Backend/Layouts/',
-                'exportTemplateRootPaths' => array('EXT:sic_address/Resources/Private/Templates/Export/')
-            )
-        );
-        $this->configurationManager->setConfiguration(array_merge($frameworkConfiguration, $customConfiguration));
+        $typoscriptConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+
+        $templates = $GLOBALS['TYPO3_DB']->exec_SELECTquery('config,constants', "sys_template", 'deleted = 0 AND hidden = 0', '');
+        while ($template = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($templates)) {
+            if(strpos($template['config'], "module.tx_sicaddress_web_sicaddresssicaddressexport") >= 0) {
+                $TSparserObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
+                $TSparserObject->parse($template['config']);
+
+                $typoscriptConfiguration = array_merge_recursive($typoscriptConfiguration, $TSparserObject->setup);
+            }
+        }
+        $frameworkConfiguration["view"]["exportTemplateRootPaths"]["0"] = $typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1];
+        $this->configurationManager->setConfiguration($frameworkConfiguration);
     }
+
 
     /**
      * exportAction

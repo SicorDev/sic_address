@@ -2,6 +2,7 @@
 namespace SICOR\SicAddress\Controller;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /***************************************************************
  *
@@ -69,7 +70,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @var array
      */
-    protected $fieldTypes = array("string", "integer", "select", "image", "rich", "boolean", "float");
+    protected $fieldTypes = array("string", "integer", "select", "image", "rich", "boolean", "float", "checklist");
 
     /**
      * Holds the Typoscript configuration
@@ -227,16 +228,25 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
 
             // TCA Settings
-            // @TODO -> Allgemeines Konfigurationsformat festlegen
             if ($value->getSettings()) {
-                $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-                $customView->setTemplatePathAndFilename($templatePathAndFilename);
+                if(strpos($config, "###OPTIONS###") > -1) {
+                    $insert = "";
+                    $options = explode("\n", $value->getSettings());
+                    for ($i=0; $i<count($options); $i++) {
+                        $insert .= "array('".trim($options[$i])."', ".($i+1)."),";
+                    }
+                    $config = str_replace("###OPTIONS###", $insert, $config);
+                }
+                else {
+                    $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+                    $customView->setTemplatePathAndFilename($templatePathAndFilename);
 
-                $settings = array();
-                parse_str($value->getSettings(), $settings);
-                $customView->assign("properties", $settings);
+                    $settings = array();
+                    parse_str($value->getSettings(), $settings);
+                    $customView->assign("properties", $settings);
 
-                $config = $customView->render();
+                    $config = $customView->render();
+                }
             }
 
             $tca[] = array("external" => $value->isExternal(), "title" => $value->getTitle(), "type" => $value->getType(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);

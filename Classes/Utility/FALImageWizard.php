@@ -57,4 +57,8 @@ class FALImageWizard extends \TYPO3\CMS\Install\Updates\TceformsUpdateWizard
         $this->migrateImages("uploads/tx_nicosdirectory/");
     }
 
+    public function migrateBezugsquelleImages()
+    {
+        $this->migrateImages("uploads/tx_scbezugsquelle/");
+    }
 }

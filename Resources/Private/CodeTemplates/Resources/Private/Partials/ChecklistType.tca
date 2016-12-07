@@ -1,10 +1,8 @@
             array(
                 'type' => 'select',
-                'renderType' => 'selectSingle',
+                'renderType' => 'selectCheckBox',
                 'items' => array(
                     ###OPTIONS###
                 ),
-                'size' => 1,
-                'maxitems' => 1,
                 'eval' => ''
             ),

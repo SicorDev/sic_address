@@ -1,7 +1,12 @@
 <?php
 namespace SICOR\SicAddress\Controller;
+use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
+use SICOR\SicAddress\Utility\FALImageWizard;
 use SICOR\SicAddress\Utility\Service;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /***************************************************************
  *
@@ -44,7 +49,7 @@ class ImportController extends ModuleController {
         $pid = $this->extbaseFrameworkConfiguration['persistence']['storagePid'];
 
         // Persistance manager
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+        $persistenceManager = GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
 
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
@@ -71,8 +76,8 @@ class ImportController extends ModuleController {
            if($key == "pid" || $key == "tstamp" || $key == "crdate" || $key == "cruser_id" || $key == "category")
                continue;
 
-            $domainProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
-            $domainProperty->setProperties($key, "string", $key, "", "", "", false);
+            $domainProperty = new DomainProperty();
+            $domainProperty->setProperties($key, "string", $key, "", "", false);
             $this->domainPropertyRepository->add($domainProperty);
         }
 
@@ -104,7 +109,7 @@ class ImportController extends ModuleController {
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
         // Migrate images to FAL
-        $wizard = new \SICOR\SicAddress\Utility\FALImageWizard();
+        $wizard = new FALImageWizard();
         $wizard->migrateNicosImages();
 
         $this->redirect("list", "Module");
@@ -118,7 +123,7 @@ class ImportController extends ModuleController {
     public function migrateOBGAction()
     {
         // Persistance manager
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+        $persistenceManager = GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
 
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
@@ -147,8 +152,8 @@ class ImportController extends ModuleController {
             if($key == "pid")
                 continue;
 
-            $domainProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
-            $domainProperty->setProperties($key, "string", $key, "", "", "", false);
+            $domainProperty = new DomainProperty();
+            $domainProperty->setProperties($key, "string", $key, "", "", false);
             $this->domainPropertyRepository->add($domainProperty);
         }
 
@@ -168,8 +173,100 @@ class ImportController extends ModuleController {
         while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
 
         // Migrate images to FAL
-        $wizard = new \SICOR\SicAddress\Utility\FALImageWizard();
+        $wizard = new FALImageWizard();
         $wizard->migrateOBGImages();
+
+        $this->redirect("list", "Module");
+    }
+
+    /**
+     * Migrate from sc_bezugsquelle
+     *
+     * @return void
+     */
+    public function migrateBezugsquelleAction()
+    {
+        // Persistance manager
+        $persistenceManager = GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+
+        // Clear database
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
+        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_address");
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = 445");
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category_record_mm", "tablenames = '".tx_sicaddress_domain_model_address."'");
+
+        // Move legacy category data to sys_category
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid as t3_origuid, bezeichnung as title, pid, "Tx_SicAddress_Category" as tx_extbase_type',
+            'tx_scbezugsquelle_kategorie', 'deleted = 0 AND hidden = 0 AND pid = 445 AND sys_language_uid = 0', 'bezeichnung');
+        while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories))
+        {
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+
+            // Move translation to sys_category as well
+            $translation = $GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung as title, pid, "Tx_SicAddress_Category" as tx_extbase_type, sys_language_uid, "'.$GLOBALS['TYPO3_DB']->sql_insert_id().'" as l10n_parent',
+                'tx_scbezugsquelle_kategorie', 'deleted = 0 AND hidden = 0 AND pid = 445 AND l18n_parent = '.$category['t3_origuid'], '');
+
+            if ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($translation))
+                $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+        }
+
+        // Retrieve legacy address data
+        $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+            'uid as t3_origuid, pid, firmenname as company, firmenzusatz, strasse, plz, ort, postfach, postfach_plz, postfach_ort, telefon, fax, email_url as email, link_text, link_url, CAST(logo AS CHAR(10000)) as image, kategorie as category, objekt',
+            'tx_scbezugsquelle_bezugsquelle',
+            'deleted = 0 AND hidden = 0 AND pid = 445',
+            '');
+
+        // Add required fields to DomainProperty table
+        $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
+        foreach($address as $key => $value) {
+            if($key == "pid" || $key == "category" || $key == "t3_origuid")
+                continue;
+
+            $domainProperty = new DomainProperty();
+            $domainProperty->setProperties($key, "string", $key, "", "", false);
+            $this->domainPropertyRepository->add($domainProperty);
+        }
+
+        // Enhance everything for new fields (sql, model, tca, ...)
+        $persistenceManager->persistAll();
+        $this->initializeAction();
+        $this->createAction();
+
+        do
+        {
+            // Inject comma separated objekt data
+            $objekts = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_scbezugsquelle_bezugsquelle_objekt_mm', 'uid_local = '.$address['t3_origuid'], '', 'uid_foreign');
+            if ($uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($objekts)) {
+                $address['objekt'] = $uid['uid_foreign'];
+                while ($uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($objekts))
+                    $address['objekt'] .= ",".$uid['uid_foreign'];
+            }
+
+            // Insert address data into sic_address
+            $sicAddress = $this->getSicAddrfromLegacyAddr($address);
+            $this->addressRepository->add($sicAddress);
+            $persistenceManager->persistAll();
+
+            // Insert entry in sys_category_mm
+            $uids = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_scbezugsquelle_bezugsquelle_kategorie_mm', 'uid_local = '.$address['t3_origuid'], '');
+            while ($uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($uids))
+            {
+                $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung', 'tx_scbezugsquelle_kategorie', 'uid = '.$uid['uid_foreign'], ''))["bezeichnung"];
+                $localId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_category', 'title = \''.$title.'\'', '', '', 1))["uid"];
+
+                $mapping = array("uid_local" => $localId,
+                    "uid_foreign" => $sicAddress->getUid(),
+                    "tablenames" => "tx_sicaddress_domain_model_address",
+                    "fieldname" => "categories");
+                $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category_record_mm', $mapping);
+            }
+        }
+        while ($address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses));
+
+        // Migrate images to FAL
+        $wizard = new FALImageWizard();
+        $wizard->migrateBezugsquelleImages();
 
         $this->redirect("list", "Module");
     }
@@ -186,7 +283,7 @@ class ImportController extends ModuleController {
 
         //Set tx_extbase_type for old tt_address entries
         $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tt_address", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery("sys_category", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
+        $GLOBALS['TYPO3_DB']->exec_UPDATEquery("sys_category", "", array("tx_extbase_type" => "Tx_SicAddress_Category"));
 
         if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
             $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
@@ -210,13 +307,14 @@ class ImportController extends ModuleController {
      * Transform key/value array into sic_address entries
      *
      * @param  array $address
-     * @return \SICOR\SicAddress\Domain\Model\Address
+     * @return Address
      */
     public function getSicAddrfromLegacyAddr($address)
     {
-        $sicaddress = new \SICOR\SicAddress\Domain\Model\Address();
-        foreach($address as $key => $value)
-            \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($sicaddress, $key, $value);
+        $sicaddress = new Address();
+        foreach($address as $key => $value) {
+            ObjectAccess::setProperty($sicaddress, GeneralUtility::underscoredToLowerCamelCase($key), $value);
+        }
         return $sicaddress;
     }
 }

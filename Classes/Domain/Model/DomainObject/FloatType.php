@@ -40,9 +40,10 @@ class FloatType extends AbstractFieldType
     }
 
     /**
+     * @param string $className
      * @return string
      */
-    public function getModelType() {
+    public function getModelType($className = "") {
         return "float";
     }
 
@@ -51,7 +52,7 @@ class FloatType extends AbstractFieldType
      *
      * @return string
      */
-    public function getSQLDefinition($fieldName) {
+    public function getSQLDefinition($fieldName = "") {
         return $fieldName . " float DEFAULT '0' NOT NULL";
     }
 }

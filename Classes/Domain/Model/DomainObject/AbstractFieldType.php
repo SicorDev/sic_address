@@ -42,9 +42,10 @@ abstract class AbstractFieldType
     /**
      * Definition of the PHP Model Type e.g. string
      *
+     * @param string $className
      * @return string
      */
-    abstract function getModelType();
+    abstract function getModelType($className = "");
 
     /**
      * Definition of the Database Fields e.g. $fieldName varchar(255) DEFAULT '' NOT NULL,
@@ -52,5 +53,5 @@ abstract class AbstractFieldType
      * @param string $fieldName
      * @return string
      */
-    abstract function getSQLDefinition($fieldName);
+    abstract function getSQLDefinition($fieldName = "");
 }

@@ -40,9 +40,10 @@ class IntegerType extends AbstractFieldType
     }
 
     /**
+     * @param string $className
      * @return string
      */
-    public function getModelType() {
+    public function getModelType($className = "") {
         return "integer";
     }
 
@@ -51,7 +52,7 @@ class IntegerType extends AbstractFieldType
      *
      * @return string
      */
-    public function getSQLDefinition($fieldName) {
+    public function getSQLDefinition($fieldName = "") {
         return $fieldName . " int(11) DEFAULT '0' NOT NULL";
     }
 }

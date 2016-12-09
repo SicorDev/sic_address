@@ -40,9 +40,10 @@ class ImageType extends AbstractFieldType
     }
 
     /**
+     * @param string $className
      * @return string
      */
-    public function getModelType() {
+    public function getModelType($className = "") {
         return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference>";
     }
 
@@ -51,7 +52,7 @@ class ImageType extends AbstractFieldType
      *
      * @return string
      */
-    public function getSQLDefinition($fieldName) {
+    public function getSQLDefinition($fieldName = "") {
         return $fieldName . " int(11) unsigned DEFAULT '0' NOT NULL";
     }
 }

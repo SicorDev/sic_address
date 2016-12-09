@@ -40,9 +40,10 @@ class StringType extends AbstractFieldType
     }
 
     /**
+     * @param string $className
      * @return string
      */
-    public function getModelType() {
+    public function getModelType($className = "") {
         return "string";
     }
 
@@ -51,7 +52,7 @@ class StringType extends AbstractFieldType
      *
      * @return string
      */
-    public function getSQLDefinition($fieldName) {
+    public function getSQLDefinition($fieldName = "") {
         return $fieldName . " varchar(255) DEFAULT '' NOT NULL";
     }
 }

@@ -1,6 +1,5 @@
 <?php
 namespace SICOR\SicAddress\Domain\Model\DomainObject;
-
     /***************************************************************
      *
      *  Copyright notice
@@ -25,18 +24,19 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
      *
      *  This copyright notice MUST APPEAR in all copies of the script!
      ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ChecklistType
+ * MmtableType
  */
-class ChecklistType extends AbstractFieldType
+class MmtableType extends AbstractFieldType
 {
 
     /**
      * @return string
      */
     public function getTitle() {
-        return "checklist";
+        return "mmtable";
     }
 
     /**
@@ -44,7 +44,7 @@ class ChecklistType extends AbstractFieldType
      * @return string
      */
     public function getModelType($className = "") {
-        return "string";
+        return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\SICOR\\SicAddress\\Domain\\Model\\". GeneralUtility::underscoredToLowerCamelCase($className). ">";
     }
 
     /**
@@ -53,6 +53,6 @@ class ChecklistType extends AbstractFieldType
      * @return string
      */
     public function getSQLDefinition($fieldName = "") {
-        return $fieldName . " varchar(255) DEFAULT '' NOT NULL";
+        return "";
     }
 }

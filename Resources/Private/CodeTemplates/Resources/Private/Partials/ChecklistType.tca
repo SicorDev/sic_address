@@ -2,7 +2,7 @@
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'items' => array(
-                    ###OPTIONS###
+                    {options}
                 ),
                 'eval' => ''
             ),

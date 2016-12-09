@@ -2,7 +2,7 @@
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => array(
-                    ###OPTIONS###
+                    {options}
                 ),
                 'size' => 1,
                 'maxitems' => 1,

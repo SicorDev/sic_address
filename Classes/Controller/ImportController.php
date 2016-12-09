@@ -198,8 +198,8 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_file_reference", "tablenames = 'tx_sicaddress_domain_model_address'");
 
         // Rename category mm tables
+        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_scbezugsquelle_kategorie CHANGE COLUMN "bezeichnung" "title" VARCHAR(255) NOT NULL DEFAULT ""');
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_kategorie TO tx_sicaddress_domain_model_produkt');
-        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_sicaddress_domain_model_produkt CHANGE COLUMN "bezeichnung" "title" VARCHAR(255) NOT NULL DEFAULT ""');
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_bezugsquelle_kategorie_mm TO tx_sicaddress_domain_model_address_produkt_mm');
 
         // Create Parent category

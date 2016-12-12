@@ -25,6 +25,7 @@ namespace SICOR\SicAddress\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * The repository for Addresses
@@ -140,7 +141,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($categories && count($categories > 0)) {
             $where .= "AND (";
             foreach ($categories as $category) {
-                $where .= "uid IN (SELECT uid_foreign FROM sys_category_record_mm WHERE uid_local='".$category->getUid()."' AND sys_category_record_mm.tablenames = 'tt_address' AND sys_category_record_mm.fieldname = 'categories') OR ";
+                $where .= "uid IN (SELECT uid_foreign FROM sys_category_record_mm ".
+                                                     "WHERE uid_local='".$category->getUid()."' AND sys_category_record_mm.tablenames = '".$addresstable."' ".
+                                                     "AND sys_category_record_mm.fieldname = 'categories') OR ";
             }
             $where .= "1=0 )";
         }

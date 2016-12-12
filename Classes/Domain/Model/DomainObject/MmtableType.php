@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MmtableType extends AbstractFieldType
 {
-
     /**
      * @return string
      */
@@ -40,11 +39,10 @@ class MmtableType extends AbstractFieldType
     }
 
     /**
-     * @param string $className
      * @return string
      */
-    public function getModelType($className = "") {
-        return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\SICOR\\SicAddress\\Domain\\Model\\". GeneralUtility::underscoredToLowerCamelCase($className). ">";
+    public function getModelType() {
+        return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\SICOR\\SicAddress\\Domain\\Model\\".ucfirst($this->className).">";
     }
 
     /**

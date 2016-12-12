@@ -152,18 +152,19 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         // Model
         $domainProperties = array();
-        foreach($this->configuration as $key => $value) {
-            $domainProperties[$key] = clone $value;
-            // Convert fieldTitles to lowerCamelCase
-            $domainProperties[$key]->setTitle(GeneralUtility::underscoredToLowerCamelCase($domainProperties[$key]->getTitle()));
+        foreach($this->configuration as $key => $value)
+        {
+            $value->setTitle(GeneralUtility::underscoredToLowerCamelCase($value->getTitle()));
+            $value->getType()->setClassName($value->getTitle());
 
             if($value->getType()->getTitle() === "mmtable") {
-                $title =  ucfirst(GeneralUtility::underscoredToLowerCamelCase($value->getTitle()));
-                if (!$this->saveTemplate("Classes/Domain/Model/".$title.".php", $value, "Classes/Domain/Model/Table.php"))
-                    $errorMessages[] = "Unable to save Model: ".$title.".php";
+                if (!$this->saveTemplate("Classes/Domain/Model/".$value->getTitle().".php", $value, "Classes/Domain/Model/Table.php"))
+                    $errorMessages[] = "Unable to save Model: ".$value->getTitle().".php";
                 if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($value->getTitle()) . '.php', $this->getSingleTCAConfiguration($value), "Configuration/TCA/tx_sicaddress_domain_model_table.php"))
                     $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
             }
+
+            $domainProperties[$key] = clone $value;
         }
 
         if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $domainProperties))

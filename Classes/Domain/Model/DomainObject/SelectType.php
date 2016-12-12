@@ -31,7 +31,6 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
  */
 class SelectType extends AbstractFieldType
 {
-
     /**
      * @return string
      */
@@ -40,10 +39,9 @@ class SelectType extends AbstractFieldType
     }
 
     /**
-     * @param string $className
      * @return string
      */
-    public function getModelType($className = "") {
+    public function getModelType() {
         return "integer";
     }
 

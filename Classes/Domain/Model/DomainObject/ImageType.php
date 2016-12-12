@@ -31,7 +31,6 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
  */
 class ImageType extends AbstractFieldType
 {
-
     /**
      * @return string
      */
@@ -40,10 +39,9 @@ class ImageType extends AbstractFieldType
     }
 
     /**
-     * @param string $className
      * @return string
      */
-    public function getModelType($className = "") {
+    public function getModelType() {
         return "\\TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage<\\TYPO3\\CMS\\Extbase\\Domain\\Model\\FileReference>";
     }
 

@@ -31,6 +31,7 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
  */
 abstract class AbstractFieldType
 {
+    protected $className = "";
 
     /**
      * Returns the fieldName
@@ -42,10 +43,9 @@ abstract class AbstractFieldType
     /**
      * Definition of the PHP Model Type e.g. string
      *
-     * @param string $className
      * @return string
      */
-    abstract function getModelType($className = "");
+    abstract function getModelType();
 
     /**
      * Definition of the Database Fields e.g. $fieldName varchar(255) DEFAULT '' NOT NULL,
@@ -54,4 +54,20 @@ abstract class AbstractFieldType
      * @return string
      */
     abstract function getSQLDefinition($fieldName = "");
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @param string $className
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+    }
 }

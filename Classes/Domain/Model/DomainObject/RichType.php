@@ -31,7 +31,6 @@ namespace SICOR\SicAddress\Domain\Model\DomainObject;
  */
 class RichType extends AbstractFieldType
 {
-
     /**
      * @return string
      */
@@ -40,10 +39,9 @@ class RichType extends AbstractFieldType
     }
 
     /**
-     * @param string $className
      * @return string
      */
-    public function getModelType($className = "") {
+    public function getModelType() {
         return "string";
     }
 

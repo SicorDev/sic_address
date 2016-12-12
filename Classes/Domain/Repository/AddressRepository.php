@@ -138,7 +138,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $where .= "AND deleted=0 AND hidden=0 ";
 
         // Respect categories
-        if ($categories && count($categories > 0)) {
+        if ($categories && count($categories) > 0) {
             $where .= "AND (";
             foreach ($categories as $category) {
                 $where .= "uid IN (SELECT uid_foreign FROM sys_category_record_mm ".

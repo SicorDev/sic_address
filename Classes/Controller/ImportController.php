@@ -313,6 +313,7 @@ class ImportController extends ModuleController {
         foreach($address as $key => $value) {
             ObjectAccess::setProperty($sicaddress, GeneralUtility::underscoredToLowerCamelCase($key), $value);
         }
+
         return $sicaddress;
     }
 }

@@ -9,12 +9,6 @@
 		.list { border: solid lightgrey 1px; margin: 5px;}
 		.sorry { text-align: center; margin-top: 45px;}
 		.image > img { float: right; padding: 5px; }
-		.f3-widget-paginator { list-style: none; text-align: center;}
-		.f3-widget-paginator > li { display: inline; }
-		.f3-widget-paginator > li.current { color: #CC0000;}
-		.f3-widget-paginator > li.previous,
-		.f3-widget-paginator > li.next  { display:none; }
-		.f3-widget-paginator::before { content: 'Seite'; }
 		.activelinkcolor { color: #CC0000;}
 		.deadlinkcolor { color: #999999;}
 		.tx-sic-address .listview > .list.row { position: relative; }
@@ -62,40 +56,37 @@
 		</f:form>
 		<f:if condition="{addresses}">
 			<f:then>
-				<f:widget.paginate objects="{addresses}" as="addresspage"
-								   configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
-					<f:for each="{addresspage}" as="address">
-						<div class="list row">
-							<div class="col-xs-4">
-								<strong>{address.company}</strong><br><br>
-								<f:if condition="{address.companymanager}">
-								{address.companymanager}<br /><br />
-								</f:if>
-								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
-							</div>
-							<div class="col-xs-4">
-								{address.street}<br>
-								{address.zip} {address.city}<br>
-								Tel.: {address.telephone}<br>
-								<f:if condition="{address.fax}">
-									Fax.: {address.fax}
-								</f:if>
-								<f:if condition="{address.mobile}">
-									Mobil: {address.mobile}
-								</f:if>
-								<f:if condition="{address.freetext}">
-									<br /><br />
-									<f:format.html>{address.freetext}</f:format.html>
-								</f:if>
-							</div>
-							<div class="col-xs-4 image">
-								<f:render partial="Address/Images" arguments="{address:address,imageSize:250}" />
-								<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
-							</div>
+				<f:for each="{addresses}" as="address">
+					<div class="list row">
+						<div class="col-xs-4">
+							<strong>{address.company}</strong><br><br>
+							<f:if condition="{address.companymanager}">
+							{address.companymanager}<br /><br />
+							</f:if>
+							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
 						</div>
-					</f:for>
-				</f:widget.paginate>
+						<div class="col-xs-4">
+							{address.street}<br>
+							{address.zip} {address.city}<br>
+							Tel.: {address.telephone}<br>
+							<f:if condition="{address.fax}">
+								Fax.: {address.fax}
+							</f:if>
+							<f:if condition="{address.mobile}">
+								Mobil: {address.mobile}
+							</f:if>
+							<f:if condition="{address.freetext}">
+								<br /><br />
+								<f:format.html>{address.freetext}</f:format.html>
+							</f:if>
+						</div>
+						<div class="col-xs-4 image">
+							<f:render partial="Address/Images" arguments="{address:address,imageSize:250}" />
+							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
+						</div>
+					</div>
+				</f:for>
 			</f:then>
 			<f:else>
 				<div class="list row" style="height: 100px;">

@@ -82,7 +82,16 @@
 							</f:if>
 						</div>
 						<div class="col-xs-4 image">
-							<f:render partial="Address/Images" arguments="{address:address,imageWidth:'250', imageHeight:'250m'}" />
+							<f:if condition="{address.www}">
+								<f:then>
+									<f:link.external uri="{address.www}">
+										<f:render partial="Address/Images" arguments="{address:address,imageWidth:'250', imageHeight:'250m'}" />
+									</f:link.external>
+								</f:then>
+								<f:else>
+									<f:render partial="Address/Images" arguments="{address:address,imageWidth:'250', imageHeight:'250m'}" />
+								</f:else>
+							</f:if>
 							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
 						</div>
 					</div>

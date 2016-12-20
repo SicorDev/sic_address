@@ -97,6 +97,15 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     }
 
     /**
+     * Filter Wrapper
+     * @return config
+     */
+    public function getFlexFilterFields($config)
+    {
+        return $this->getFlexFields($config, "mmtable");
+    }
+
+    /**
      * String Wrapper
      * @return config
      */

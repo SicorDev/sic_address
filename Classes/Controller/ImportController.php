@@ -198,7 +198,7 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_file_reference", "tablenames = 'tx_sicaddress_domain_model_address'");
 
         // Rename category mm tables
-        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_scbezugsquelle_kategorie CHANGE COLUMN "bezeichnung" "title" VARCHAR(255) NOT NULL DEFAULT ""');
+        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_scbezugsquelle_kategorie CHANGE COLUMN `bezeichnung` `title` VARCHAR(255) NOT NULL DEFAULT ``');
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_kategorie TO tx_sicaddress_domain_model_produkt');
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_bezugsquelle_kategorie_mm TO tx_sicaddress_domain_model_address_produkt_mm');
 
@@ -215,15 +215,13 @@ class ImportController extends ModuleController {
 
         // Retrieve legacy address data
         $adresses = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-            'uid as t3_origuid, pid, firmenname as company, firmenzusatz, strasse, plz, ort, postfach, postfach_plz, postfach_ort, telefon, fax, email_url as email, link_text, link_url, CAST(logo AS CHAR(10000)) as image, 0 as produkt',
-            'tx_scbezugsquelle_bezugsquelle',
-            'deleted = 0 AND hidden = 0 AND pid = 445',
-            '');
+            'uid, pid, firmenname as company, firmenzusatz, strasse, plz, ort, postfach, postfach_plz, postfach_ort, telefon, fax, email_url as email, link_text, link_url, CAST(logo AS CHAR(10000)) as image, 0 as produkt',
+            'tx_scbezugsquelle_bezugsquelle', 'deleted = 0 AND hidden = 0 AND pid = 445', '', 'uid ASC');
 
         // Add required fields to DomainProperty table
         $address = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($adresses);
         foreach($address as $key => $value) {
-            if($key == "pid" || $key == "t3_origuid")
+            if($key == "uid" || $key == "pid")
                 continue;
 
             $domainProperty = new DomainProperty();
@@ -240,14 +238,12 @@ class ImportController extends ModuleController {
         {
             // Insert address data into sic_address
             $sicAddress = $this->getSicAddrfromLegacyAddr($address);
+            $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_sicaddress_domain_model_address AUTO_INCREMENT = '.$address['uid']);
             $this->addressRepository->add($sicAddress);
             $persistenceManager->persistAll();
 
-            // Update uids in MM table
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tx_sicaddress_domain_model_address_produkt_mm", "uid_local = ".$address['t3_origuid'], array("uid_local" => $sicAddress->getUid()));
-
             // Insert entry in sys_category_mm
-            $uids = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_scbezugsquelle_bezugsquelle_objekt_mm', 'uid_local = '.$address['t3_origuid'], '');
+            $uids = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_foreign', 'tx_scbezugsquelle_bezugsquelle_objekt_mm', 'uid_local = '.$address['uid'], '');
             while ($uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($uids))
             {
                 $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung', 'tx_scbezugsquelle_objekt', 'uid = '.$uid['uid_foreign'], ''))["bezeichnung"];

@@ -51,6 +51,6 @@ class MmtableType extends AbstractFieldType
      * @return string
      */
     public function getSQLDefinition($fieldName = "") {
-        return "";
+        return $fieldName . " int(11) unsigned DEFAULT '0' NOT NULL";
     }
 }

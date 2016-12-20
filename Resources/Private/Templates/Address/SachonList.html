@@ -6,7 +6,7 @@
 		.abisz { height: 22px; text-align: center; }
 		.category { margin-top: 10px; margin-bottom: 10px; }
 		.search { margin-top: 10px; margin-bottom: 10px; }
-		.list { border: solid lightgrey 1px; margin: 5px;}
+		.list { border: solid lightgrey 1px; margin: 0px;}
 		.sorry { text-align: center; margin-top: 45px;}
 		.image > img { float: right; padding: 5px; }
 		.f3-widget-paginator { list-style: none; text-align: center;}
@@ -44,9 +44,10 @@
 				</f:if>
 			</div>
 			<div class="row">
-				<div class="category col-xs-5 col-xs-offset-1">
-					<f:if condition="{categories}">
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+				<div class="category col-xs-7">
+					Gesuchtes Produkt:&nbsp;
+					<f:if condition="{filter}">
+						<f:render partial="Address/Filter" arguments="{filter:filter, filtervalue:filtervalue}" />
 					</f:if>
 				</div>
 				<div class="search col-xs-5">

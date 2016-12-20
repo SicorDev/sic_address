@@ -25,6 +25,9 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * AddressController
@@ -106,7 +109,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
         $emptyList = $this->settings['noListStartup'];
 
-        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', $emptyList);
+        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
     }
 
     /**
@@ -118,14 +121,15 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
+        $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
         $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
         $distanceValue = $this->request->hasArgument('distance') ? $this->request->getArgument('distance') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
-        $this->fillAddressList($atozvalue, $categoryvalue, $queryvalue, $distanceValue, $checkall);
+        $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
     }
 
-    public function fillAddressList($atozValue, $categoryValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
+    public function fillAddressList($atozValue, $categoryValue, $filtervalue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
@@ -134,6 +138,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('maincategories', $this->mainCategoryList);
         $this->view->assign('maincategoryvalue', $this->maincategoryvalue);
         $this->view->assign('checkall', $checkall);
+
+        // Filter
+        $this->view->assign('filter', $this->getFilterList($this->searchCategoryList));
+        $this->view->assign('filtervalue', $filtervalue);
 
         // Atoz
         $atozField = $this->settings['atozField'];
@@ -407,5 +415,35 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $atoz[] = array("character" => "Alle", "active" => true);
 
         return $atoz;
+    }
+
+    /**
+     *  Create filter Info for Fluid Template
+     */
+    private function getFilterList($categories)
+    {
+        // Get config
+        $field = $this->settings['filterField'];
+        if ($field == null) return null;
+
+        // Query Database
+        $filterList = array();
+        $res = $this->addressRepository->search('', '', $categories, '', '', '', '');
+
+        // Build filter list
+        foreach ($res as $address) {
+            $filters = ObjectAccess::getProperty($address, GeneralUtility::underscoredToLowerCamelCase($field));
+            foreach ($filters as $filter) {
+                $filterList[] = $filter->getTitle();
+            }
+        }
+
+        // Cleanup & sort list
+        $filterList = array_unique($filterList);
+        usort($filterList, function ($str1, $str2) {
+            return strcmp($this->normalize($str1), $this->normalize($str2));
+        });
+
+        return $filterList;
     }
 }

@@ -5,7 +5,7 @@
 
 	<style>
 		.address_category { float: none !important; }
-		.address_category_dropdown { font-size: 10pt; }
+		.address_dropdown { font-size: 10pt; }
 		.address_category_checkbox_all,
 		.address_category_checkbox { margin: 5px; }
 		.address_category_type_dropdown{ min-width: 20em; float: left !important; }
@@ -60,7 +60,7 @@
 					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />
 					<div class="address_searchoptions address_category">
 						<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_main_category_filter')}</b>
-						<f:form.select class="address_category_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
+						<f:form.select class="address_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
 									   additionalAttributes="{onchange: 'submitMainCategory(jQuery(this).val());'}" prependOptionValue="-1"
 									   prependOptionLabel="Bitte auswählen" />
 					</div>
@@ -78,7 +78,7 @@
 				<f:form.hidden id="sic_address_distance" name="distance" value="{distancevalue}" />
 				<div class="search-container distance-container">
 					<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_filter')}</b>
-					<select id="distance" class="address_category_dropdown" onchange="submitDistance(jQuery(this).val());">
+					<select id="distance" class="address_dropdown" onchange="submitDistance(jQuery(this).val());">
 						<option value="">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option1')}</option>
 						<option value="1">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option2')}</option>
 						<option value="5">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option3')}</option>

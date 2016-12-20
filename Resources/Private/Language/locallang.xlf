@@ -45,6 +45,9 @@
 			<trans-unit id="label_sortField">
 				<source>Sortierfeld</source>
 			</trans-unit>
+			<trans-unit id="label_filterField">
+				<source>Filterfeld</source>
+			</trans-unit>
 			<trans-unit id="label_categoryType">
 				<source>Kategoriedarstellung</source>
 			</trans-unit>
@@ -84,7 +87,7 @@
 			<trans-unit id="label_noListStartup">
 				<source>Liste beim Start nicht anzeigen</source>
 			</trans-unit>
-			<trans-unit id="noselect_category_label">
+			<trans-unit id="noselect_label">
 				<source>Alle</source>
 			</trans-unit>
 			<trans-unit id="frontend_main_category_filter">

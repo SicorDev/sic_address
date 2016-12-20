@@ -7,9 +7,7 @@ CREATE TABLE tt_address (
   sorting int(11) DEFAULT '0' NOT NULL,
 
 	<f:for each="{properties}" as="field">
-     <f:if condition="{0: '{field.type.title}'} != {0: 'mmtable'}">
 	{field.definition},
-     </f:if>
 	</f:for>
 );
 </f:if>
@@ -40,9 +38,7 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 
 <f:if condition="{settings.ttAddressMapping} == 0">
 	<f:for each="{properties}" as="field">
-     <f:if condition="{0: '{field.type.title}'} != {0: 'mmtable'}">
 	{field.definition},
-     </f:if>
 	</f:for>
 </f:if>
 

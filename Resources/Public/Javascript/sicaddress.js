@@ -2,6 +2,7 @@ function submitAtoz (choice) {
     // Reset other selections
     jQuery('#sic_address_main_category').val('-1');
     jQuery('#sic_address_category').val('-1');
+    jQuery('#sic_address_filter').val('-1');
     jQuery('#sic_address_query').val('');
 
     // Submit Atoz choice
@@ -16,13 +17,24 @@ function submitCategory (choice) {
     jQuery('#sic_address_query').val('');
 
     // Submit Category choice
-    jQuery('#sic_address_category').val(choice);
+    jQuery('#sic_address_filter').val(choice);
+    jQuery('#sic_address_search_form').submit();
+    return false;
+}
+
+function submitFilter (choice) {
+    // Reset other selections
+    jQuery('#sic_address_atoz').val('alle');
+    jQuery('#sic_address_query').val('');
+
+    // Submit Filter choice
+    jQuery('#sic_address_filter').val(choice);
     jQuery('#sic_address_search_form').submit();
     return false;
 }
 
 function submitDistance (choice) {
-    // Submit Category choice
+    // Submit Distance choice
     jQuery('#sic_address_distance').val(choice);
     jQuery('#sic_address_search_form').submit();
     return false;
@@ -33,8 +45,9 @@ function submitMainCategory (choice) {
     jQuery('#sic_address_atoz').val('alle');
     jQuery('#sic_address_query').val('');
     jQuery('#sic_address_category').val('-1');
+    jQuery('#sic_address_filter').val('-1');
 
-    // Submit Category choice
+    // Submit Main Category choice
     jQuery('#sic_address_main_category').val(choice);
     jQuery('#sic_address_search_form').submit();
     return false;
@@ -44,6 +57,7 @@ function submitQuery () {
     // Reset other selections
     jQuery('#sic_address_atoz').val('alle');
     jQuery('#sic_address_category').val('-1');
+    jQuery('#sic_address_filter').val('-1');
 
     return false;
 }

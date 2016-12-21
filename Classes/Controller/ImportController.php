@@ -208,7 +208,7 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_bezugsquelle_kategorie_mm TO tx_sicaddress_domain_model_address_produkt_mm');
 
         // Create Parent category
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => Bezugsquellen, "pid" => 445, "tx_extbase_type" => "Tx_SicAddress_Category"));
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Objekte", "pid" => 445, "tx_extbase_type" => "Tx_SicAddress_Category"));
         $persistenceManager->persistAll();
         $parentID=$GLOBALS['TYPO3_DB']->sql_insert_id();
 

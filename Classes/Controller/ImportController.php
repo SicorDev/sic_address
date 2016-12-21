@@ -192,10 +192,15 @@ class ImportController extends ModuleController {
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_address");
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category_record_mm", "tablenames = 'tx_sicaddress_domain_model_address'");
+
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = 445");
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category_record_mm", "tablenames = 'tx_sicaddress_domain_model_address'");
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category_record_mm", "tablenames = 'tx_sicaddress_domain_model_address'");
+        $maxuid = $GLOBALS['TYPO3_DB']->exec_SELECTquery('max(uid)', 'sys_category', '');
+        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE sys_category AUTO_INCREMENT = '.($maxuid+1));
+
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_file_reference", "tablenames = 'tx_sicaddress_domain_model_address'");
+        $maxuid = $GLOBALS['TYPO3_DB']->exec_SELECTquery('max(uid)', 'sys_file_reference', '');
+        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE sys_file_reference AUTO_INCREMENT = '.($maxuid+1));
 
         // Rename category mm tables
         $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE tx_scbezugsquelle_kategorie CHANGE COLUMN `bezeichnung` `title` VARCHAR(255) NOT NULL DEFAULT ``');

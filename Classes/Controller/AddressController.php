@@ -129,7 +129,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
     }
 
-    public function fillAddressList($atozValue, $categoryValue, $filtervalue, $queryValue, $distanceValue, $checkall, $emptyList = false)
+    public function fillAddressList($atozValue, $categoryValue, $filterValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
@@ -140,8 +140,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->view->assign('checkall', $checkall);
 
         // Filter
+        $filterField = $this->settings['filterField'];
+        $this->view->assign('filtervalue', $filterValue);
         $this->view->assign('filter', $this->getFilterList($this->searchCategoryList));
-        $this->view->assign('filtervalue', $filtervalue);
 
         // Atoz
         $atozField = $this->settings['atozField'];
@@ -185,7 +186,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
-            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField);
+            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
         }
 
         $this->view->assign('addresses', $addresses);
@@ -424,26 +425,21 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Get config
         $field = $this->settings['filterField'];
-        if ($field == null) return null;
+        if ($field === "none") return null;
 
         // Query Database
         $filterList = array();
-        $res = $this->addressRepository->search('', '', $categories, '', '', '', '');
+        $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
 
         // Build filter list
         foreach ($res as $address) {
             $filters = ObjectAccess::getProperty($address, GeneralUtility::underscoredToLowerCamelCase($field));
             foreach ($filters as $filter) {
-                $filterList[] = $filter->getTitle();
+                $filterList[] = $filter;
             }
         }
 
-        // Cleanup & sort list
-        $filterList = array_unique($filterList);
-        usort($filterList, function ($str1, $str2) {
-            return strcmp($this->normalize($str1), $this->normalize($str2));
-        });
-
+        $this->sortCategories($filterList);
         return $filterList;
     }
 }

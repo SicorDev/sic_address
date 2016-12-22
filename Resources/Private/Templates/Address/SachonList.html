@@ -65,17 +65,24 @@
 					<f:for each="{addresspage}" as="address">
 						<div class="list row">
 							<div class="col-xs-4">
-								<strong>{address.company}</strong><br><br>
+								<strong>{address.company}</strong><br>
+								<f:format.html>{address.firmenzusatz}</f:format.html><br><br>
+
 								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+								<f:link.external uri="{address.linkUrl}" target="_blank">{address.linkText}</f:link.external>
 							</div>
 							<div class="col-xs-4">
-								{address.street}<br>
-								{address.city}<br>
-								{address.tel}<br>
+								{address.strasse}<br>
+								{address.plz} {address.ort}<br>
+								{address.postfach}<br>
+								{address.postfachPlz} {address.postfachOrt}<br>
+								{address.telefon}<br>
 								{address.fax}
 							</div>
 							<div class="col-xs-4 image">
+								<f:for each="{address.produkt}" as="produkt">
+									{produkt.title}<br>
+								</f:for>
 								<f:render partial="Address/Images" arguments="{address:address}" />
 							</div>
 						</div>

@@ -10,8 +10,8 @@
             </f:then>
             <f:else>
                 <f:image treatIdAsReference="1" src="{image.uid}"
-                         width="{f:if(condition:'{imageWidth}',then:'{imageWidth}',else:'120c')}"
-                         height="{f:if(condition:'{imageHeight}',then:'{imageHeight}',else:'')}" />
+                         width="{f:if(condition:'{imageWidth} != 0',then:'{imageWidth}',else:'120c')}"
+                         height="{f:if(condition:'{imageHeight} !=0',then:'{imageHeight}',else:'')}" />
             </f:else>
         </f:if>
     </f:for>

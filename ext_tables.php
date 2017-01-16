@@ -27,7 +27,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"])
 		'',						// Position
 		array(
 			'Module' => 'list, create, removeAllDomainProperties, help',
-			'Import' => 'migrateNicosDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
+			'Import' => 'migrateNicosDirectory, migrateSPDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
 			'DomainProperty' => 'create, update, delete',
 		),
 		array(

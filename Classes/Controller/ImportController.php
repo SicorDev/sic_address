@@ -116,6 +116,47 @@ class ImportController extends ModuleController {
     }
 
     /**
+     * Migrate from sp_dir
+     *
+     * @return void
+     */
+    public function migrateSPDirectoryAction()
+    {
+        // Persistance manager
+        $persistenceManager = GeneralUtility::makeInstance("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+
+        // Clear database
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category_record_mm", "tablenames = 'tx_sicaddress_domain_model_address'");
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = 797");
+        $maxuid = $GLOBALS['TYPO3_DB']->exec_SELECTquery('max(uid)', 'sys_category', '');
+        $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE sys_category AUTO_INCREMENT = '.($maxuid+1));
+
+        // Create Master category
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Adressen", "pid" => 797, "tx_extbase_type" => "Tx_SicAddress_Category"));
+        $persistenceManager->persistAll();
+        $masterID=$GLOBALS['TYPO3_DB']->sql_insert_id();
+
+        // Move legacy parent categories to sys_category
+        $parents = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, "Tx_SicAddress_Category" as tx_extbase_type, '.$masterID.' as parent',
+            'tx_spdirectory_cat', 'deleted = 0 AND hidden = 0 AND tx_msitespdhier_parent = 0');
+        while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($parents))
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+
+        // Move legacy child categories to sys_category
+        $childs = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, "Tx_SicAddress_Category" as tx_extbase_type, tx_msitespdhier_parent as parent',
+            'tx_spdirectory_cat', 'deleted = 0 AND hidden = 0 AND tx_msitespdhier_parent > 0');
+        while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($childs))
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
+
+        // Move relations to sys_category_mm
+        $mms = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local as uid_foreign, uid_foreign as uid_local, "tt_address" as tablenames, "categories" as fieldname, sorting', 'tx_spdirectory_cat_mm', '1=1');
+        while ($mm = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mms))
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category_record_mm', $mm);
+
+        $this->redirect("list", "Module");
+    }
+
+    /**
      * Migrate OBG data from fe_user + sic_mm
      *
      * @return void

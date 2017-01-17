@@ -75,7 +75,7 @@
 							<div class="tx_spdirectory-pi1-row"></div>
 							<div class="row">
 								<div class="col-md-4">
-									<a href="#" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
+									<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
 									{address.address}<br>
 									{address.zip} {address.city}
 								</div>
@@ -91,14 +91,14 @@
 									</f:if>
 								</div>
 								<div class="col-md-4">
-										<a href="http://maps.poing.de/#SOURCE=gemeinde-poing&FID={address.uid}" target="ortsplan">
+										<a style="outline: none;" href="http://maps.poing.de/#SOURCE=gemeinde-poing&FID={address.uid}" target="ortsplan">
 											<img src="/fileadmin/templates/img/ortsplan_anzeigen.gif" border=0>
 										</a><br>
 										<f:if condition="{address.www}">
-											<f:link.external uri="{address.www}" target="_blank">Webauftritt</f:link.external><br>
+											<f:link.external style="outline: none;" uri="{address.www}" target="_blank">Webauftritt</f:link.external><br>
 										</f:if>
 										<f:if condition="{address.description}">
-											<a href="#" onclick="toggleDescription({address.uid}); return false;">Details</a>
+											<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">Details</a>&nbsp;<span style="font-size: 11px;" class="glyphicon glyphicon-chevron-down"></span>
 										</f:if>
 								</div>
 								<div class="col-md-12">

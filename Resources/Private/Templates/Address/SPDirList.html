@@ -75,7 +75,14 @@
 							<div class="tx_spdirectory-pi1-row"></div>
 							<div class="row">
 								<div class="col-md-4">
-									<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
+									<f:if condition="{address.description}">
+										<f:then>
+											<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
+										</f:then>
+										<f:else>
+											{address.company}<br>
+										</f:else>
+									</f:if>
 									{address.address}<br>
 									{address.zip} {address.city}
 								</div>

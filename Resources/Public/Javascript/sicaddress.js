@@ -17,7 +17,7 @@ function submitCategory (choice) {
     jQuery('#sic_address_query').val('');
 
     // Submit Category choice
-    jQuery('#sic_address_filter').val(choice);
+    jQuery('#sic_address_category').val(choice);
     jQuery('#sic_address_search_form').submit();
     return false;
 }

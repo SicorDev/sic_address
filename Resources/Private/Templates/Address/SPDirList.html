@@ -3,24 +3,28 @@
 	<f:flashMessages />
 	<style>
 		.listview { width: 100%;}
-		.abisz { height: 22px; text-align: center; }
-		.category { margin-top: 10px; margin-bottom: 10px; }
-		.search { margin-top: 10px; margin-bottom: 10px; }
-		.list { border: solid lightgrey 1px; margin: 5px;}
-		.sorry { text-align: center; margin-top: 45px;}
+		.abisz { text-align: center; padding: 10px; border: 1px solid #ddd; font-size: 1.2em;}
+		.searchform { background-color: #F4F4F4; }
+		.searchbutton { padding: 4px; padding-bottom: 5px; margin-left: 20px; border: none; background: #0171BB; color: #fff; }
+		.searchinput { height: 10px; height: 28px; font-size: 17px; }
+		.category { margin-top: 10px; margin-bottom: 10px; float:left; margin-right: 20px; color: #6F6F6F;}
+		.search { margin-top: 8px; margin-bottom: 10px; }
+		.list { border-bottom: solid lightgrey 1px; margin: 5px; }
+		.sorry { text-align: center; margin-top: 45px; }
 		.image > img { float: right; padding: 5px; }
-		.f3-widget-paginator { list-style: none; text-align: center;}
-		.f3-widget-paginator > li { display: inline; }
-		.f3-widget-paginator > li.current { color: #CC0000;}
+		.f3-widget-paginator { list-style: none; text-align: center; }
+		.f3-widget-paginator > li { display: inline; margin-left: 0px; }
+		.f3-widget-paginator > li.current { color: #CC0000; }
 		.f3-widget-paginator > li.previous,
 		.f3-widget-paginator > li.next  { display:none; }
 		.f3-widget-paginator::before { content: 'Seite'; }
-		.activelinkcolor { color: #CC0000;}
-		.deadlinkcolor { color: #999999;}
+		.activelink { margin-right: 14px; outline: none;}
+		.deadlink { color: #999999; margin-right: 14px;}
+		.tx_spdirectory-pi1-element { color: #6F6F6F; }
 	</style>
 
 	<div class="listview">
-		<f:form id="sic_address_search_form" action="search">
+		<f:form id="sic_address_search_form" class="searchform" action="search">
 			<div class="abisz">
 				<f:if condition="{atoz}">
 					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
@@ -29,53 +33,77 @@
 							<f:then>
 								<f:if condition="{value.character} == {atozvalue}">
 									<f:then>
-										<span class="activelinkcolor">{value.character}</span>
+										<span class="deadlink">{value.character}</span>
 									</f:then>
 									<f:else>
-										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+										<a class="activelink" href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
 									</f:else>
 								</f:if>
 							</f:then>
 							<f:else>
-								<span class="deadlinkcolor">{value.character}</span>
+								<span class="deadlink">{value.character}</span>
 							</f:else>
 						</f:if>
 					</f:for>
 				</f:if>
 			</div>
 			<div class="row">
-				<div class="category col-xs-5 col-xs-offset-1">
-					<f:if condition="{categories}">
+				<div class="category col-xs-1">&nbsp;</div>
+				<f:if condition="{categories}">
+					<f:if condition="{settings.categoryType} != 'none'">
+					<div class="category">
+						Kategorie:&nbsp;
 						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+					</div>
 					</f:if>
-				</div>
-				<div class="search col-xs-5">
-					<f:if condition="{settings.queryField} != 'off'">
-						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
-					</f:if>
-				</div>
+				</f:if>
+				<f:if condition="{settings.queryField} != 'off'">
+					<div class="search">
+						<f:form.textfield id="sic_address_query" name="query" placeholder="Suchbegriff" class="searchinput" value="{queryvalue}" />
+						<f:form.submit value="Suche" class="searchbutton" additionalAttributes="{onclick: 'submitQuery();'}" />
+					</div>
+				</f:if>
 			</div>
 		</f:form>
 		<f:if condition="{addresses}">
 			<f:then>
 				<f:widget.paginate objects="{addresses}" as="addresspage"
-								   configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
+								   configuration="{itemsPerPage: 5, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
 					<f:for each="{addresspage}" as="address">
-						<div class="list row">
-							<div class="col-xs-4">
-								<strong>{address.company}</strong><br><br>
-								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
-							</div>
-							<div class="col-xs-4">
-								{address.street}<br>
-								{address.city}<br>
-								{address.tel}<br>
-								{address.fax}
-							</div>
-							<div class="col-xs-4 image">
-								<f:render partial="Address/Images" arguments="{address:address}" />
+						<div class="tx_spdirectory-pi1-element">
+							<div class="tx_spdirectory-pi1-row"></div>
+							<div class="tx_spdirectory-pi1-row"></div>
+							<div class="row">
+								<div class="col-md-4">
+									<a href="#" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
+									{address.address}<br>
+									{address.zip} {address.city}
+								</div>
+								<div class="col-md-4">
+									<f:if condition="{address.phone}">
+										TEL: {address.phone}<br>
+									</f:if>
+									<f:if condition="{address.email}">
+										Mail: <f:link.email email="{address.email}">{address.email}</f:link.email><br>
+									</f:if>
+									<f:if condition="{address.fax}">
+										FAX: {address.fax}
+									</f:if>
+								</div>
+								<div class="col-md-4">
+										<a href="http://maps.poing.de/#SOURCE=gemeinde-poing&FID={address.uid}" target="ortsplan">
+											<img src="/fileadmin/templates/img/ortsplan_anzeigen.gif" border=0>
+										</a><br>
+										<f:if condition="{address.www}">
+											<f:link.external uri="{address.www}" target="_blank">Webauftritt</f:link.external><br>
+										</f:if>
+										<f:if condition="{address.description}">
+											<a href="#" onclick="toggleDescription({address.uid}); return false;">Details</a>
+										</f:if>
+								</div>
+								<div class="col-md-12">
+									<div id="sic_address_description_{address.uid}" style="display: none;" class="tx_spdirectory-pi1-row"><f:format.html>{address.description}</f:format.html></div>
+								</div>
 							</div>
 						</div>
 					</f:for>
@@ -90,5 +118,12 @@
 			</f:else>
 		</f:if>
 	</div>
+
+	<script>
+		function toggleDescription(uid) {
+			var current = jQuery('#sic_address_description_' + uid);
+			current.css('display', current.css('display') == 'none'  ? 'block' : 'none');
+		}
+	</script>
 
 </f:section>

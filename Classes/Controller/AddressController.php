@@ -34,7 +34,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
  */
 class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
-
     /**
      * addressRepository
      *

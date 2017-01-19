@@ -9,7 +9,7 @@ plugin.tx_sicaddress_sicaddress {
 	}
 }
 
- # Module configuration
+# Module configuration
 module.tx_sicaddress_web_sicaddresssicaddress {
 	persistence {
 		#storagePid = {$module.tx_sicaddress_sicaddress.persistence.storagePid}
@@ -22,7 +22,7 @@ module.tx_sicaddress_web_sicaddresssicaddress {
 	}
 }
 
- # Export Module configuration
+# Export Module configuration
 module.tx_sicaddress_web_sicaddresssicaddressexport {
 	persistence {
 		#storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
@@ -36,6 +36,25 @@ module.tx_sicaddress_web_sicaddresssicaddressexport {
 	}
 }
 
-#page.includeCSS.tx_sicaddress = EXT:sicagencylist/Resources/Public/Css/styles_agencylist.css
-#page.includeJSFooter.tx_sicagencylist = EXT:sicagencylist/Resources/Public/Js/sicagencylist.js
-
+# Vianovis XML Export
+vianovis = PAGE
+vianovis {
+    typeNum = 24853077
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = SicAddress
+        pluginName = SicaddressVianovisExport
+        vendorName = SICOR
+        view < module.tx_sicaddress_web_sicaddresssicaddressexport.view
+        persistence < module.tx_sicaddress_web_sicaddresssicaddressexport.persistence
+        settings < module.tx_sicaddress_web_sicaddresssicaddressexport.settings
+    }
+    config {
+        disableAllHeaderCode = 1
+        additionalHeaders = Content-type:application/xml
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+    }
+}

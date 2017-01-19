@@ -127,6 +127,25 @@ class ExportController extends ActionController {
     }
 
     /**
+     * exportVianovisAction
+     *
+     * return Vianovis XML
+     */
+    public function exportVianovisAction() 
+    {
+        // Set template
+        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $customView->setTemplatePathAndFilename($this->templateRootPath.'ExportVianovis.html');
+        $customView->setPartialRootPath($this->templateRootPath.'ExportVianovis.html');
+
+        // Fetch data
+        $adresses = $this->addressRepository->findForVianovis()->toArray();
+        $customView->assign("addresses", $adresses);
+
+        return $customView->render();
+    }
+
+    /**
      * @param $categories
      * @return array
      */

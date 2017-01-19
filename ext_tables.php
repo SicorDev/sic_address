@@ -57,6 +57,13 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"])
     );
 }
 
+// Inject vianovis XML into realurl
+if($extensionManagerSettings["vianovisExport"] && TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl'))
+{
+	if(isset($TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['fileName']['index']))
+		$TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['fileName']['index']['vianovis.xml'] = array ('keyValues' => array('type' => 24853077));
+}
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');

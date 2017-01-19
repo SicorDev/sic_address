@@ -8,6 +8,9 @@ developerMode = 0
   # cat=basic/enable/25; type=boolean; label=Address Export: Enables the backend address export module.
 addressExport = 0
 
+  # cat=basic/enable/27; type=boolean; label=Vianovis Export: Enables http://domain/vianovis.xml
+vianovisExport = 0
+
   # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
 ttAddressMapping = 0
 

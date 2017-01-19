@@ -17,6 +17,17 @@ if (!defined('TYPO3_MODE')) {
 	)
 );
 
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'SICOR.' . $_EXTKEY,
+	'SicaddressVianovisExport',
+	array(
+		'Export' => 'exportVianovis',
+	),
+	// non-cacheable actions
+	array(
+	)
+);
+
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 
 $signalSlotDispatcher->connect(

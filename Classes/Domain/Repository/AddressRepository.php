@@ -72,6 +72,12 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return $query->execute();
     }
 
+    public function findForVianovis() {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        return $query->execute();
+    }
+
     /**
      * @param $categories
      * @return mixed

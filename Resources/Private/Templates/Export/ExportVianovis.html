@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xsi:noNamespaceSchemaLocation="eSuchWasV4.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:georss="http://www.georss.org/georss"
+     xmlns:ec="urn:schemas-econtent:rss" xmlns:tv="http://www.vianovis.de">
+    <channel sumsymbols="0">
+        <title>touvia GeoRSS - Export typo3</title>
+        <link>http://www.vianovis.de</link>
+        <language>de-DE</language>
+        <generator>touvia</generator>
+        <copyright>vianovis neue medien GmbH</copyright>
+        <managingEditor>support@vianovis.de (vianovis Support-Team)</managingEditor>
+        <webMaster>webmaster@vianovis.de (vianovis Webmaster)</webMaster>
+        <f:if condition="{addresses}">
+            <f:for each="{addresses}" as="address">
+        <item>
+            <f:format.htmlentitiesDecode>
+            <f:if condition="{address.categories}">
+                <f:for each="{address.categories}" as="category">
+                    <category>&lt;![CDATA[{category.title}]]&gt;</category>
+                    <tv:cat_source_id>{category.uid}</tv:cat_source_id>
+                </f:for>
+            </f:if>
+            <title>&lt;![CDATA[{address.company}]]&gt;</title>
+            <ec:source_id>{address.uid}</ec:source_id>
+            <ec:street>&lt;![CDATA[{address.uid}]]&gt;</ec:street>
+            <ec:plz>{address.zip}</ec:plz>
+            <ec:city>&lt;![CDATA[{address.city}]]&gt;</ec:city>
+            <ec:tel>&lt;![CDATA[{address.phone}]]&gt;</ec:tel>
+            <ec:fax>&lt;![CDATA[{address.fax}]]&gt;</ec:fax>
+            <ec:email>&lt;![CDATA[{address.email}]]&gt;</ec:email>
+            <ec:link>&lt;![CDATA[{address.www}]]&gt;</ec:link>
+            <f:if condition="{address.image}">
+                <f:for each="{address.image}" as="image">
+                    <enclosure url="{f:uri.page(pageUid:'1', absolute:'1')}{image.originalResource.publicUrl}"/>
+                </f:for>
+            </f:if>            <ec:contact_name>&lt;![CDATA[{address.name}]]&gt;</ec:contact_name>
+            <ec:contact_title>&lt;![CDATA[{address.title}]]&gt;</ec:contact_title>
+            <description>&lt;![CDATA[{address.description}]]&gt;</description>
+            <tv:mobile>&lt;![CDATA[{address.mobile}]]&gt;</tv:mobile>
+            </f:format.htmlentitiesDecode>
+        </item>
+            </f:for>
+        </f:if>
+    </channel>
+</rss>

@@ -95,6 +95,9 @@ function reloadResults (ajaxUrl, href) {
     jQuery.post(ajaxUrl, form.serialize(), function(response) {
         list = jQuery(response).find('#sic_address_search_list');
         jQuery('#sic_address_search_list').html(list);
+        if (typeof ajaxReadyJsHook === "function") {
+            ajaxReadyJsHook();
+        }
     });
     return false;
 }

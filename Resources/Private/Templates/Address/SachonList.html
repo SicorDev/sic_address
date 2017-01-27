@@ -113,11 +113,15 @@
 			jQuery(document).on('submit', '#sic_address_search_form', function () {reloadResults(ajaxUrl); return false;});
 			jQuery(document).on('click', '.tx-sic-address .f3-widget-paginator li a', function () {
 				reloadResults(ajaxUrl, jQuery(this).attr('href'));
-				masonry();
-				jumpScroll('.tx-sic-address:parent');
 				return false;
 			});
 		}
+
+		function ajaxReadyJsHook() {
+			masonry();
+			jumpScroll('.tx-sic-address:parent');
+		}
+
 	</script>
 
 </f:section>

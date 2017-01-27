@@ -93,7 +93,7 @@ function reloadResults (ajaxUrl, href) {
         ajaxUrl += '&tx_sicaddress_sicaddress[@widget_0][currentPage]=' + page;
 
     jQuery.post(ajaxUrl, form.serialize(), function(response) {
-        list = jQuery(response).find('#sic_address_search_list');
+        list = jQuery(response).find('#sic_address_search_list').contents();
         jQuery('#sic_address_search_list').html(list);
         if (typeof ajaxReadyJsHook === "function") {
             ajaxReadyJsHook();

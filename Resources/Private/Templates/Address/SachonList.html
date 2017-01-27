@@ -107,7 +107,7 @@
 	<script>
 		function documentReadyJsHook () {
 
-			var ajaxUrl = '<f:uri.action noCacheHash="1" action="search" controller="Address" pageType="24853078" />';
+			var ajaxUrl = '<f:uri.action noCacheHash="1" noCache="1" action="search" controller="Address" pageType="24853078" />';
 
 			// Hijack submit and launch ajax call instead
 			jQuery(document).on('submit', '#sic_address_search_form', function () {reloadResults(ajaxUrl); return false;});
@@ -118,8 +118,8 @@
 		}
 
 		function ajaxReadyJsHook() {
-			masonry();
 			jumpScroll('.tx-sic-address:parent');
+			masonry();
 		}
 
 	</script>

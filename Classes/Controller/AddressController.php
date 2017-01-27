@@ -74,7 +74,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         // Init sorting
         $field = $this->settings['sortField'];
-        if (!($field === "none")) {
+        if ($field && !($field === "none")) {
             $this->addressRepository->setDefaultOrderings(array(
                 $field => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
             ));
@@ -424,7 +424,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Get config
         $field = $this->settings['filterField'];
-        if ($field === "none") return null;
+        if ($field && $field === "none") return null;
 
         // Query Database
         $filterList = array();

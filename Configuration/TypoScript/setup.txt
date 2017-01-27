@@ -58,3 +58,25 @@ vianovis {
         debug = 0
     }
 }
+
+ajax = PAGE
+ajax {
+	typeNum = 24853078
+    10 = CONTENT
+    10 {
+        table = tt_content
+        select {
+            languageField = sys_language_uid
+            pidInList.field = uid
+            where = colPos = 0 AND list_type = 'sicaddress_sicaddress'
+            max = 1
+        }
+    }
+
+	config {
+		disableAllHeaderCode = 1
+		xhtml_cleaning = 0
+		admPanel = 0
+        debug = 0
+	}
+}

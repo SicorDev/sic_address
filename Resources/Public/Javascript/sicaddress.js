@@ -85,6 +85,35 @@ function submitCategories () {
     return false;
 }
 
+function reloadResults (ajaxUrl, href) {
+    var form = jQuery('#sic_address_search_form');
+
+    page = getUrlParameter('tx_sicaddress_sicaddress[@widget_0][currentPage]', href);
+    if(page !== undefined)
+        ajaxUrl += '&tx_sicaddress_sicaddress[@widget_0][currentPage]=' + page;
+
+    jQuery.post(ajaxUrl, form.serialize(), function(response) {
+        list = jQuery(response).find('#sic_address_search_list');
+        jQuery('#sic_address_search_list').html(list);
+    });
+    return false;
+}
+
+function getUrlParameter(sParam, href) {
+    var sPageURL = decodeURIComponent(href);
+    var sURLVariables = sPageURL.split('&');
+    var sParameterName;
+    var i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
 jQuery(document).ready(function() {
     if (typeof documentReadyJsHook === "function") {
         documentReadyJsHook();

@@ -31,7 +31,7 @@
                 <ec:link>&lt;![CDATA[{address.www}]]&gt;</ec:link>
                 <f:if condition="{address.image}">
                     <f:for each="{address.image}" as="image">
-                        <enclosure url="{domain}/{image.originalResource.publicUrl}"/>
+                        <enclosure url="{domain}{image.originalResource.publicUrl}"/>
                     </f:for>
                 </f:if>
                 <ec:contact_name>&lt;![CDATA[{address.name}]]&gt;</ec:contact_name>

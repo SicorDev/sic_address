@@ -106,6 +106,7 @@
             <tbody>
             <f:for each="{addresspage}" as="address" iteration="addressIterator">
                 <tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+
                     <td headers="anschrift">
                         <b>{address.company}</b><br>
                         <span>{address.title} {address.name}</span><br>

@@ -143,7 +143,7 @@ class ExportController extends ActionController {
         $customView->assign("addresses", $adresses);
 
         // Domain
-        $domain = $GLOBALS['TSFE']->baseURL;
+        $domain = $GLOBALS['TSFE']->tmpl->setup['config.']['baseURL'];
         $customView->assign("domain", $domain);
 
         return $customView->render();

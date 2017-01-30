@@ -142,6 +142,10 @@ class ExportController extends ActionController {
         $adresses = $this->addressRepository->findForVianovis()->toArray();
         $customView->assign("addresses", $adresses);
 
+        // Domain
+        $domain = $GLOBALS['TSFE']->baseURL;
+        $customView->assign("domain", $domain);
+
         return $customView->render();
     }
 

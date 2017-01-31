@@ -105,6 +105,10 @@ function reloadResults (ajaxUrl, href) {
 function getUrlParameter(sParam, href) {
     var sPageURL = decodeURIComponent(href);
     var sParams = sPageURL.split('?');
+    
+    if(sParams[1] === undefined)
+        return undefined;
+
     var sURLVariables = sParams[1].split('&');
     var sParameterName;
     var i;

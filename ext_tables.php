@@ -71,7 +71,6 @@ if ($extensionManagerSettings["ttAddressMapping"]) {
 }
 
 $GLOBALS['TCA']['tx_sicaddress_domain_model_address']['columns']['categories']['config']['foreign_table_where'] = ' AND sys_language_uid=###REC_FIELD_sys_language_uid### AND tx_extbase_type = "Tx_SicAddress_Category" ORDER BY sys_category.title';
-$GLOBALS['TCA']['tx_news_domain_model_news']['columns']['categories']['config']['foreign_table_where'] = " AND tx_extbase_type = ''".$GLOBALS['TCA']['tx_news_domain_model_news']['columns']['categories']['config']['foreign_table_where'];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_sicaddress_domain_model_domainproperty', 'EXT:sic_address/Resources/Private/Language/locallang_csh_tx_sicaddress_domain_model_domainproperty.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_sicaddress_domain_model_domainproperty');

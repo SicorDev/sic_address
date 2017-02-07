@@ -105,7 +105,7 @@ function reloadResults (ajaxUrl, href) {
 function getUrlParameter(sParam, href) {
     var sPageURL = decodeURIComponent(href);
     var sParams = sPageURL.split('?');
-    
+
     if(sParams[1] === undefined)
         return undefined;
 
@@ -120,7 +120,7 @@ function getUrlParameter(sParam, href) {
             return sParameterName[1] === undefined ? true : sParameterName[1];
         }
     }
-};
+}
 
 jQuery(document).ready(function() {
     if (typeof documentReadyJsHook === "function") {

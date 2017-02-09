@@ -1,0 +1,111 @@
+<f:layout name="Default" />
+<f:section name="main">
+	<f:flashMessages />
+	<style>
+		.listview { width: 100%;}
+		.abisz { height: 22px; text-align: center; }
+		.category { margin-top: 10px; margin-bottom: 10px; }
+		.search { margin-top: 10px; margin-bottom: 10px; }
+		.list { border: solid lightgrey 1px; margin: 5px;}
+		.sorry { text-align: center; margin-top: 45px;}
+		.image > img { float: right; padding: 5px; }
+		.activelinkcolor { color: #CC0000;}
+		.deadlinkcolor { color: #999999;}
+		.tx-sic-address .listview > .list.row { position: relative; }
+		.tx-sic-address .listview > .list.row > .image { position: static; padding-bottom: 20px; }
+		.tx-sic-address .listview > .list.row > .image > a:last-child { position: absolute; bottom: 0; }
+	</style>
+
+	<div class="listview">
+		<f:form id="sic_address_search_form" action="search">
+			<div class="abisz">
+				<f:if condition="{atoz}">
+					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
+					<f:for each="{atoz}" as="value">
+						<f:if condition="{value.active}">
+							<f:then>
+								<f:if condition="{value.character} == {atozvalue}">
+									<f:then>
+										<span class="activelinkcolor">{value.character}</span>
+									</f:then>
+									<f:else>
+										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+									</f:else>
+								</f:if>
+							</f:then>
+							<f:else>
+								<span class="deadlinkcolor">{value.character}</span>
+							</f:else>
+						</f:if>
+					</f:for>
+				</f:if>
+			</div>
+			<div class="row">
+				<div class="category col-xs-5 col-xs-offset-1">
+					<f:if condition="{categories}">
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+					</f:if>
+				</div>
+				<div class="search col-xs-5">
+					<f:if condition="{settings.queryField} != 'off'">
+						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
+					</f:if>
+				</div>
+			</div>
+		</f:form>
+		<f:if condition="{addresses}">
+			<f:then>
+				<f:for each="{addresses}" as="address">
+					<div class="list row">
+						<div class="col-xs-4">
+							<strong>{address.company}</strong><br><br>
+							<f:if condition="{address.companymanager}">
+							{address.companymanager}<br /><br />
+							</f:if>
+							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+						</div>
+						<div class="col-xs-4">
+							{address.street} {address.housenumber}<br>
+							{address.zip} {address.city}<br>
+							Tel.: {address.telephone}<br>
+							<f:if condition="{address.fax}">
+								Fax.: {address.fax}
+							</f:if>
+							<f:if condition="{address.mobile}">
+								Mobil: {address.mobile}
+							</f:if>
+							<f:if condition="{address.freetext}">
+								<br /><br />
+								<f:format.html>{address.freetext}</f:format.html>
+							</f:if>
+						</div>
+						<div class="col-xs-4 image">
+							<f:if condition="{address.www}">
+								<f:then>
+									<f:link.external uri="{address.www}">
+										<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+									</f:link.external>
+								</f:then>
+								<f:else>
+									<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+								</f:else>
+							</f:if>
+							<br />
+							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
+						</div>
+					</div>
+				</f:for>
+			</f:then>
+			<f:else>
+				<div class="list row" style="height: 100px;">
+					<div class="sorry">
+						{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+					</div>
+				</div>
+			</f:else>
+		</f:if>
+	</div>
+
+</f:section>

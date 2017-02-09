@@ -379,6 +379,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             case 'wtdir':
                 $this->view->setTemplatePathAndFilename('Not Implemented');
                 break;
+            case 'irsee':
+                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/IrseeList.html'));
+                break;
             case 'mmdir':
                 $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/MMList.html'));
                 break;

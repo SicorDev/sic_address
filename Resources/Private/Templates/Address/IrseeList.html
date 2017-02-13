@@ -5,15 +5,12 @@
 		.listview { width: 100%;}
 		.abisz { height: 22px; text-align: center; }
 		.category { margin-top: 10px; margin-bottom: 10px; }
-		.search { margin-top: 10px; margin-bottom: 10px; }
-		.list { border: solid lightgrey 1px; margin: 5px;}
+		.sic_address_search { margin-top: 10px; margin-bottom: 10px; }
+		.sic_address_list { border: solid lightgrey 1px; margin: 5px;}
 		.sorry { text-align: center; margin-top: 45px;}
-		.image > img { float: right; padding: 5px; }
 		.activelinkcolor { color: #CC0000;}
 		.deadlinkcolor { color: #999999;}
 		.tx-sic-address .listview > .list.row { position: relative; }
-		.tx-sic-address .listview > .list.row > .image { position: static; padding-bottom: 20px; }
-		.tx-sic-address .listview > .list.row > .image > a:last-child { position: absolute; bottom: 0; }
 	</style>
 
 	<div class="listview">
@@ -46,7 +43,7 @@
 						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
 					</f:if>
 				</div>
-				<div class="search col-xs-5">
+				<div class="sic_address_search col-xs-5">
 					<f:if condition="{settings.queryField} != 'off'">
 						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
 						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
@@ -57,16 +54,17 @@
 		<f:if condition="{addresses}">
 			<f:then>
 				<f:for each="{addresses}" as="address">
-					<div class="list row">
-						<div class="col-xs-4">
+					<div class="sic_address_list row">
+						<div class="col-xs-12 col-sm-6">
 							<strong>{address.company}</strong><br><br>
 							<f:if condition="{address.companymanager}">
 							{address.companymanager}<br /><br />
 							</f:if>
 							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
 							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-12 col-sm-6">
 							{address.street} {address.housenumber}<br>
 							{address.zip} {address.city}<br>
 							Tel.: {address.telephone}<br>
@@ -81,25 +79,11 @@
 								<f:format.html>{address.freetext}</f:format.html>
 							</f:if>
 						</div>
-						<div class="col-xs-4 image">
-							<f:if condition="{address.www}">
-								<f:then>
-									<f:link.external uri="{address.www}">
-										<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
-									</f:link.external>
-								</f:then>
-								<f:else>
-									<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
-								</f:else>
-							</f:if>
-							<br />
-							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
-						</div>
 					</div>
 				</f:for>
 			</f:then>
 			<f:else>
-				<div class="list row" style="height: 100px;">
+				<div class="sic_address_list row" style="height: 100px;">
 					<div class="sorry">
 						{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
 					</div>

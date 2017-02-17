@@ -56,42 +56,39 @@
 		<div id="sic_address_search_list">
 			<f:if condition="{addresses}">
 				<f:then>
-					<f:widget.paginate objects="{addresses}" as="addresspage"
-									   configuration="{itemsPerPage: 12, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
-						<div class="list row">
-							<f:for each="{addresspage}" as="address">
-								<div class="address col-xs-12 col-sm-4">
-									<div class="address-wrap">
-										<f:for each="{address.produkt}" as="produkt">
-											<h4>{produkt.title}</h4>
-										</f:for>
-										<div class="address-block">
-											<div class="address-image">
-												<f:render partial="Address/Images" arguments="{address:address, imageWidth:'150c'}" />
-											</div>
-											<strong>{address.company}</strong><br>
-											<f:format.html>{address.firmenzusatz}</f:format.html>
-											<p>{address.strasse}<br>
-												{address.plz} {address.ort}
-												<f:if condition="{address.postfach}">
-													{address.postfach}<br>
-												</f:if>
-												{address.postfachPlz} {address.postfachOrt}</p>
-											<p>{address.telefon}<br>
-												{address.fax}</p>
-											<p>
-												<f:if condition="{address.email}">
-													<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-												</f:if>
-												<f:if condition="{address.linkUrl}">
-													<f:link.external uri="{address.linkUrl}" target="_blank">{address.linkText}</f:link.external>
-												</f:if></p>
+					<div class="list row">
+						<f:for each="{addresses}" as="address">
+							<div class="address col-xs-12 col-sm-4">
+								<div class="address-wrap">
+									<f:for each="{address.produkt}" as="produkt">
+										<h4>{produkt.title}</h4>
+									</f:for>
+									<div class="address-block">
+										<div class="address-image">
+											<f:render partial="Address/Images" arguments="{address:address, imageWidth:'150c'}" />
 										</div>
+										<strong>{address.company}</strong><br>
+										<f:format.html>{address.firmenzusatz}</f:format.html>
+										<p>{address.strasse}<br>
+											{address.plz} {address.ort}
+											<f:if condition="{address.postfach}">
+												{address.postfach}<br>
+											</f:if>
+											{address.postfachPlz} {address.postfachOrt}</p>
+										<p>{address.telefon}<br>
+											{address.fax}</p>
+										<p>
+											<f:if condition="{address.email}">
+												<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+											</f:if>
+											<f:if condition="{address.linkUrl}">
+												<f:link.external uri="{address.linkUrl}" target="_blank">{address.linkText}</f:link.external>
+											</f:if></p>
 									</div>
 								</div>
-							</f:for>
-						</div>
-					</f:widget.paginate>
+							</div>
+						</f:for>
+					</div>
 				</f:then>
 				<f:else>
 					<div class="list row" style="height: 100px;">

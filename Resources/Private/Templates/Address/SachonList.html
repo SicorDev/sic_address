@@ -60,9 +60,7 @@
 						<f:for each="{addresses}" as="address">
 							<div class="address col-xs-12 col-sm-4">
 								<div class="address-wrap">
-									<f:for each="{address.produkt}" as="produkt">
-										<h4>{produkt.title}</h4>
-									</f:for>
+									<h4>{address.produkt.0.title}</h4>
 									<div class="address-block">
 										<div class="address-image">
 											<f:render partial="Address/Images" arguments="{address:address, imageWidth:'150c'}" />

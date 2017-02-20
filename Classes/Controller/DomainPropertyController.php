@@ -93,7 +93,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function getFlexSortableFields($config)
     {
-        return $this->getFlexFields($config, "integer,float,string");
+        return $this->getFlexFields($config, "integer,float,string,mmtable");
     }
 
     /**
@@ -136,12 +136,13 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
         $where .= '1=0 )';
 
         // Query Database
-        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, tca_label', 'tx_sicaddress_domain_model_domainproperty', $where, 'tca_label');
+        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, type, tca_label', 'tx_sicaddress_domain_model_domainproperty', $where, 'tca_label');
 
         $optionList = array();
         $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');
         foreach ($types as $type) {
-            $optionList[] = array(0 => $type["tca_label"], 1 => $type["title"]);
+            $value = ($type["type"] == "mmtable") ? $type["title"].".title" : $type["title"];
+            $optionList[] = array(0 => $type["tca_label"], 1 => $value);
         }
 
         $config['items'] = array_merge($config['items'], $optionList);

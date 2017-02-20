@@ -201,7 +201,12 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         // Build filter constraint
         if ($filterField && !($filterField === "none") && $filterValue > 0)
+        {
+            // Correction for mmtable
+            $filterField = substr($filterField, 0, strpos($filterField, '.'));
+
             $constraints[] = $query->contains($filterField, $filterValue);
+        }
 
         if(count($constraints) < 1) {
             return $this->findAll();

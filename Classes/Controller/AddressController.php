@@ -129,6 +129,16 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
     }
 
+    /**
+     * @param $atozValue
+     * @param $categoryValue
+     * @param $filterValue
+     * @param $queryValue
+     * @param $distanceValue
+     * @param $checkall
+     * @param bool $emptyList
+     * @throws \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
+     */
     public function fillAddressList($atozValue, $categoryValue, $filterValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
@@ -187,6 +197,48 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
+
+            // mmtable resolver
+            $field = $this->settings['filterField'];
+            if ($field && !is_bool(strpos($field, ".title")))
+            {
+                $addressPlus = null;
+                $field = GeneralUtility::underscoredToLowerCamelCase(substr($field, 0, strpos($field, '.')));
+
+                foreach ($addresses as $address)
+                {
+                    // Get object representing our mm target
+                    $mmObject = ObjectAccess::getProperty($address, $field)->toArray();
+                    $iCount = count($mmObject);
+
+                    // Instead of one entry with three filters we create three entries with one filter...
+                    for ($i=0; $i<$iCount;  $i++) {
+                        // Clone is required, else original is destroyed
+                        $addressClone = clone $address;
+
+                        // Same here
+                        $storageClone = clone ObjectAccess::getProperty($address, $field);
+
+                        // Silly workaround, as remove all is buggy...
+                        while($storageClone->count() > 0)
+                            $storageClone->removeAll($storageClone);
+
+                        // Replace mm target with single entry
+                        $storageClone->attach($mmObject[$i]);
+                        ObjectAccess::setProperty($addressClone, $field, $storageClone);
+
+                        // Set sort string for upcoming usort
+                        $addressClone->setSortField($this->normalize($mmObject[$i]->getTitle()));
+                        $addressPlus [] = $addressClone;
+                    }
+                }
+                $addresses = $addressPlus;
+
+                // Sort everything once again
+                usort($addresses, function ($adr1, $adr2) {
+                    return strcmp($adr1->getSortField(), $adr2->getSortField());
+                });
+            }
         }
 
         $this->view->assign('addresses', $addresses);
@@ -429,6 +481,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         // Get config
         $field = $this->settings['filterField'];
         if ($field && $field === "none") return null;
+
+        // Correction for mmtable
+       $field = substr($field, 0, strpos($field, '.'));
 
         // Query Database
         $filterList = array();

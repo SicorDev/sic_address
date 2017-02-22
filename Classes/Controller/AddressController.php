@@ -420,28 +420,18 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function setConfiguredTemplate()
     {
-        switch ($this->extensionConfiguration["templateSet"]) {
-            case 'nicosdir':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/NicosList.html'));
-                break;
-            case 'spdir':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/SPDirList.html'));
-                break;
-            case 'wtdir':
-                $this->view->setTemplatePathAndFilename('Not Implemented');
-                break;
-            case 'irsee':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/IrseeList.html'));
-                break;
-            case 'mmdir':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/MMList.html'));
-                break;
-            case 'obgdir':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/OBGList.html'));
-                break;
-            case 'sachon':
-                $this->view->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:sic_address/Resources/Private/Templates/Address/SachonList.html'));
-                break;
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $templateRoot = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPaths'][0]);
+
+        switch ($this->extensionConfiguration["templateSet"])
+        {
+            case 'nicosdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/NicosList.html'); break;
+            case 'spdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SPDirList.html'); break;
+            case 'wtdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
+            case 'irsee': $this->view->setTemplatePathAndFilename($templateRoot.'Address/IrseeList.html'); break;
+            case 'mmdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/MMList.html'); break;
+            case 'obgdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/OBGList.html'); break;
+            case 'sachon': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SachonList.html'); break;
         }
     }
 

@@ -215,4 +215,21 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query->matching($query->logicalAnd($constraints));
         return $query->execute();
     }
+
+    /**
+     * Find all records with missing coordinates.
+     * This method is used in the task.
+     */
+    public function findGeoLessEntries()
+    {
+        $query = $this->createQuery();
+        $query->setLimit(10);
+
+        $constraints = [
+            $query->equals('latitude', null),
+            $query->equals('longitude', null)
+        ];
+
+        return $query->matching($query->logicalOr($constraints))->execute();
+    }
 }

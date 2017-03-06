@@ -57,6 +57,15 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"])
     );
 }
 
+if ($extensionManagerSettings["ttAddressMapping"]) {
+	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\SICOR\SicAddress\Task\AddGeoLocationTask::class] = array(
+		'extension' => $_EXTKEY,
+		'title' => 'GeoLocation für tt_address',
+		'description' => 'Geht durch alle vorhandenen Address Einträge und führt die Verortung durch.',
+		'additionalFields' => NULL
+	);
+}
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');

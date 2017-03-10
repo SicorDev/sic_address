@@ -36,15 +36,4 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface
         // search backwards starting from haystack length characters from the end
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
-
-    public static function getDistance($origin, $target){
-
-        $theta = $origin->getLongitude() - $target->getLongitude();
-        $dist = sin(deg2rad($origin->getLatitude())) * sin(deg2rad($target->getLatitude())) +  cos(deg2rad($origin->getLatitude())) * cos(deg2rad($target->getLatitude())) * cos(deg2rad($theta));
-        $dist = acos($dist);
-        $dist = rad2deg($dist);
-        $distance = $dist * 60 * 1.1515* 1.609344;
-
-        return $distance;
-    }
 }

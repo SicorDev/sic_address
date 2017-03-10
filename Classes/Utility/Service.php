@@ -37,7 +37,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 
-    public function getDistance($origin, $target){
+    public static function getDistance($origin, $target){
 
         $theta = $origin->getLongitude() - $target->getLongitude();
         $dist = sin(deg2rad($origin->getLatitude())) * sin(deg2rad($target->getLatitude())) +  cos(deg2rad($origin->getLatitude())) * cos(deg2rad($target->getLatitude())) * cos(deg2rad($theta));

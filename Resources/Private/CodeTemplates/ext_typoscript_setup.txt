@@ -1,6 +1,11 @@
-config.tx_extbase{
-    persistence{
-        classes{
+config.tx_extbase {
+    persistence {
+        classes {
+             SICOR\SicAddress\Domain\Model\FileReference {
+                 mapping {
+                     tableName = sys_file_reference
+                 }
+             }
 
             SICOR\SicAddress\Domain\Model\Category {
                 mapping {
@@ -14,6 +19,7 @@ config.tx_extbase{
                 }
              }
         </f:if>
+            updateReferenceIndex = 1
         }
     }
 }

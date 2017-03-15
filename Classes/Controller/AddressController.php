@@ -372,9 +372,14 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $arguments = $this->request->getArguments();
+        if($arguments['image']) {
+            $fileReference = FALService::uploadFalFile($arguments['image'], 'avatars/test/test/', "tx_sicasyl_domain_model_personaldata", "image");
+            $newAddress->getPersonalData()->setImage($fileReference);
+        }
+        $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->add($newAddress);
-        $this->redirect('list');
+        $this->redirect('new');
     }
 
     /**

@@ -22,6 +22,10 @@
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_detail</numIndex>
                                 <numIndex index="1">Address->show</numIndex>
                             </numIndex>
+                            <numIndex index="3" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_new</numIndex>
+                                <numIndex index="1">Address->new;Address->create</numIndex>
+                            </numIndex>
                         </items>
                     </config>
                 </TCEforms>

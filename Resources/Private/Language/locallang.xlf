@@ -27,6 +27,9 @@
 			<trans-unit id="label_detail">
 				<source>Detail</source>
 			</trans-unit>
+			<trans-unit id="label_new">
+				<source>Eingabe</source>
+			</trans-unit>
 			<trans-unit id="label_atozField">
 				<source>A-Z Feld</source>
 			</trans-unit>

@@ -1,0 +1,71 @@
+<div id="event_location">
+    <fieldset>
+        <table>
+            <tr>
+                <td>Adresstyp</td>
+                <td>
+                    <f:form.radio class="sic_address_radio" property="txSicvcalAddressType" value="1" checked="1" />Veranstaltungsort
+                    <f:form.radio class="sic_address_radio" property="txSicvcalAddressType" value="2" />Ticketverkaufsstelle
+                </td>
+            </tr>
+            <tr>
+                <td class="td_0">Bezeichnung*</td>
+                <td class="event_location_name"><f:form.textfield property="company" value="" /></td>
+            </tr>
+            <tr>
+                <td>Straße*</td>
+                <td><f:form.textfield property="address" value="" /></td>
+            </tr>
+            <tr>
+                <td>PLZ*</td>
+                <td><f:form.textfield class="location_zip" property="zip" value="" /></td>
+            </tr>
+            <tr>
+                <td>Ort*</td>
+                <td><f:form.textfield property="city" value="" /></td>
+            </tr>
+            <tr>
+                <td>Telefon</td>
+                <td>
+                    <f:form.textfield property="phone" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Webadresse</td>
+                <td><label>
+                    <f:form.textfield property="www" value="" />
+                </label>
+                </td>
+            </tr>
+            <tr>
+                <td>E-Mail</td>
+                <td><label>
+                    <f:form.textfield property="email" value="" />
+                </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Bilder der Adresse</td>
+                <td>
+
+                    <input type="file" name="image1" size="25" /><br />
+                    <input type="file" name="image2" size="25" /><br />
+                    <input type="file" name="image3" size="25" /><br />
+                </td>
+            </tr>
+            <tr>
+                <td />
+                <td>
+                    <div class="label_text">
+                        <input type="checkbox" id="acceptEventLocationImageCopyright" name="acceptEventLocationImageCopyright" required="required" />
+                        &nbsp;Hiermit best&auml;tige ich, dass Ich das geltende Urheberrecht ber&uuml;cksichtige &nbsp;und die Freigabe des Urhebers habe.
+                    </div>
+                    <div class="label_text"><br>Wichtig: Die Breite der Bilder muß mindestens 200 Pixel betragen. Um die Upload-Zeit gering zu halten, sind die Bild-Dateigrößen möglichst gering zu halten. Es können nur Bilder bis zu einer Dateigröße von 500kb in den Bildformaten .jpg, .gif und .png übertragen werden.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="spacer_topic" /></td>
+            </tr>
+        </table>
+    </fieldset>
+</div>

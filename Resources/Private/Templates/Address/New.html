@@ -7,7 +7,7 @@
     #event_location td { padding: 2px; }
 </style>
 
-<f:form action="create"  name="newAddress" object="{newAddress}">
+<f:form action="create"  name="newAddress" object="{newAddress}" enctype="multipart/form-data">
     <f:render partial="Address/OALFields" />
 	<f:form.submit value="Adresse Speichern" />
 </f:form>

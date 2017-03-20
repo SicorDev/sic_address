@@ -28,6 +28,7 @@ namespace SICOR\SicAddress\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use SICOR\SicAddress\Domain\Service\FALService;
 
 /**
  * AddressController
@@ -62,7 +63,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $mainCategoryList = null;
     protected $maincategoryvalue = '';
     protected $searchCategoryList = null;
-
+    protected $addresstable = '';
 
     /**
      * Called before any action
@@ -71,6 +72,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Init config
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting
         $field = $this->settings['sortField'];
@@ -373,10 +375,18 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
     {
         $arguments = $this->request->getArguments();
-        if($arguments['image']) {
-            $fileReference = FALService::uploadFalFile($arguments['image'], 'avatars/test/test/', "tx_sicasyl_domain_model_personaldata", "image");
-            $newAddress->getPersonalData()->setImage($fileReference);
+
+        // Build image array
+        $images = array();
+        if($arguments['image1']) $images[] = $arguments['image1'];
+        if($arguments['image2']) $images[] = $arguments['image2'];
+        if($arguments['image3']) $images[] = $arguments['image3'];
+
+        foreach ($images as $image) {
+            $fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
+            $newAddress->getImage()->attach($fileReference);
         }
+
         $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->add($newAddress);
         $this->redirect('new');
@@ -448,11 +458,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         // Get config
         $field = $this->settings['atozField'];
         if ($field === "none") return null;
-        $addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
         $pages = $this->configurationManager->getContentObject()->data['pages'];
 
         // Query Database
-        $res = $this->addressRepository->findAtoz($field, $addresstable, $categories, $pages);
+        $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);
 
         // Build two dimensional result array
         $atoz = array();

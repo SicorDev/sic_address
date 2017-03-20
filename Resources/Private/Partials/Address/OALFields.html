@@ -1,5 +1,6 @@
 <div id="event_location">
     <fieldset>
+        <f:form.hidden property="pid" value="18"></f:form.hidden>
         <table>
             <tr>
                 <td>Adresstyp</td>
@@ -47,10 +48,9 @@
             <tr>
                 <td>Bilder der Adresse</td>
                 <td>
-
-                    <input type="file" name="image1" size="25" /><br />
-                    <input type="file" name="image2" size="25" /><br />
-                    <input type="file" name="image3" size="25" /><br />
+                    <f:form.upload name="image1" /><br />
+                    <f:form.upload name="image2" /><br />
+                    <f:form.upload name="image3" /><br />
                 </td>
             </tr>
             <tr>

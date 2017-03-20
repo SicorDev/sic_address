@@ -1,5 +1,4 @@
 <?php
-
 namespace SICOR\SicAddress\Domain\Service;
 
 /*

@@ -11,7 +11,7 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'sic_address',
+	'title' => 'Adressverwaltung',
 	'description' => 'Adressverwaltung',
 	'category' => 'plugin',
 	'author' => 'SICOR DEVTEAM',

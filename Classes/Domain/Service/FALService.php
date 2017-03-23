@@ -80,4 +80,20 @@ class FALService {
 
         return (in_array($fileExtension, self::$allowedFileExtensions[$type]) && $fileType == $type);
     }
+
+   /**
+     * action delete
+     *
+     * @param \TYPO3\EventManagement\Domain\Model\Events $events
+     * @return void
+     */
+    public static function deleteAction(\TYPO3\EventManagement\Domain\Model\Events $events) {
+        if(!empty($events->getImage())){
+            $resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+            $fileReferenceObject = $resourceFactory->getFileReferenceObject($events->getImage()->getUid());
+            $fileWasDeleted = $fileReferenceObject->getOriginalFile()->delete();
+        }
+        $this->eventsRepository->remove($events);
+        $this->redirect('list');
+    }
 }

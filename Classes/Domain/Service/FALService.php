@@ -81,19 +81,21 @@ class FALService {
         return (in_array($fileExtension, self::$allowedFileExtensions[$type]) && $fileType == $type);
     }
 
-   /**
-     * action delete
+    /**
+     * Remove FileReference, also remove File if requested
      *
-     * @param \TYPO3\EventManagement\Domain\Model\Events $events
-     * @return void
+     * @param \SICOR\SicAddress\Domain\Model\FileReference $fileReference
+     * @param bool $deleteFile
+     * @return bool
      */
-    public static function deleteAction(\TYPO3\EventManagement\Domain\Model\Events $events) {
-        if(!empty($events->getImage())){
-            $resourceFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-            $fileReferenceObject = $resourceFactory->getFileReferenceObject($events->getImage()->getUid());
-            $fileWasDeleted = $fileReferenceObject->getOriginalFile()->delete();
-        }
-        $this->eventsRepository->remove($events);
-        $this->redirect('list');
+    public static function deleteFalFile(\SICOR\SicAddress\Domain\Model\FileReference $fileReference, $deleteFile = false) {
+        $success = true;
+
+        if($deleteFile)
+            $success = $success && $fileReference->getOriginalFile()->delete();
+
+        $success = $success && $fileReference->delete();
+
+        return $success;
     }
 }

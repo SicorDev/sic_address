@@ -80,22 +80,4 @@ class FALService {
 
         return (in_array($fileExtension, self::$allowedFileExtensions[$type]) && $fileType == $type);
     }
-
-    /**
-     * Remove FileReference, also remove File if requested
-     *
-     * @param \SICOR\SicAddress\Domain\Model\FileReference $fileReference
-     * @param bool $deleteFile
-     * @return bool
-     */
-    public static function deleteFalFile(\SICOR\SicAddress\Domain\Model\FileReference $fileReference, $deleteFile = false) {
-        $success = true;
-
-        if($deleteFile)
-            $success = $success && $fileReference->getOriginalFile()->delete();
-
-        $success = $success && $fileReference->delete();
-
-        return $success;
-    }
 }

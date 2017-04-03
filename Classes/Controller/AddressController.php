@@ -375,18 +375,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
     {
         $arguments = $this->request->getArguments();
-
-        // Build image array
-        $images = array();
-        if($arguments['image1']) $images[] = $arguments['image1'];
-        if($arguments['image2']) $images[] = $arguments['image2'];
-        if($arguments['image3']) $images[] = $arguments['image3'];
-
-        foreach ($images as $image) {
-            $fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
-            if($fileReference)
-                $newAddress->addImage($fileReference);
-        }
+	if($arguments["images"]) {
+		foreach ($arguments["images"] as $image) {
+			$fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
+			if($fileReference)
+				$newAddress->addImage($fileReference);
+		}
+	}
 
         $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->add($newAddress);

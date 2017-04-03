@@ -1,486 +1,71 @@
-<f:if condition="{create}">
-    <label>
-        <f:translate key="tx_siccalender_domain_model_event.mainCategory" />:
-    </label>
-    <div class="formField">
-        <f:form.select id="mainCategory" property="mainCategory" class="multiselect" multiple="multiple" name="maincategory" options="{maincategories}" optionValueField="uid" sortByOptionLabel="1" optionLabelField="name" data="{mapping:C_MC_Mapping}"/>
-    </div>
-</f:if>
-
-<label for="editCategory">
-    <f:translate key="tx_siccalender_domain_model_event.category" />:
-</label>
-<div class="formField">
-    <f:render partial="Event/Categories" arguments="{categories:categories}" />
-</div>
-
-<label for="editName">
-    <f:translate key="tx_siccalender_domain_model_event.name" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editName" property="name" required="true"/>
-</div>
-
-<label for="editLink">
-    <f:translate key="tx_siccalender_domain_model_event.link" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editLink" property="link" />
-</div>
-
-<label for="editImage">
-    <f:translate key="tx_siccalender_domain_model_event.image" />:
-</label>
-<div id="uploadFormField" class="formField">
-    <f:form.hidden name="deleteImages" value="" />
-    <f:for each="{event.image}" as="thisImage">
-        <div class="eventImage">
-            <div class="eventImagePreview">
-                <f:image image="{thisImage}" maxWidth="200m" maxHeight="100m"/>
-                <div class="eventImageCaption">
-                    <label>
-                        <f:translate key="tx_siccalender_domain_model_event.imageName" />:
-                    </label>
-                    <label class="imageName">{thisImage.originalResource.originalFile.name}</label>
-                </div>
-                <div class="eventImageCaption">
-                    <label>
-                        <f:translate key="tx_siccalender_domain_model_event.imageCaption" />:
-                    </label>
-                    <f:form.textfield name="imageCaptions[{thisImage.uid}]" value="{thisImage.originalResource.description}" />
-                </div>
-                <div class="eventImageSource">
-                    <label>
-                        <f:translate key="tx_siccalender_domain_model_event.imageSource" />:
-                    </label>
-                    <f:form.textfield name="imageSources[{thisImage.uid}]" value="{thisImage.originalResource.title}" />
-                </div>
-                <span class="eventImageDelete" data-uid="{thisImage.uid}"><i class="fa fa-2x fa-trash-o"></i></span>
-            </div>
-        </div>
-    </f:for>
-    <div class="uploadTags">
-        <f:for each="{1:1,2:2,3:3}" as="thisNumber">
-            <div class="uploadBox">
-                <f:form.upload name="image{thisNumber}"/>
-                <div class="eventUploadPreview" style="display:none;">
-                    <img src="#"/>
-                    <div class="eventImageName">
-                        <label>
-                            <f:translate key="tx_siccalender_domain_model_event.imageName" />:
-                        </label>
-                        <label class="imageName"></label>
+<div id="event_location">
+    <fieldset>
+        <f:form.hidden property="pid" value="18"></f:form.hidden>
+        <table>
+            <tr>
+                <td>Adresstyp</td>
+                <td>
+                    <f:form.radio class="sic_address_radio" property="txSicvcalAddressType" value="1" checked="1" />Veranstaltungsort
+                    <f:form.radio class="sic_address_radio" property="txSicvcalAddressType" value="2" />Ticketverkaufsstelle
+                </td>
+            </tr>
+            <tr>
+                <td class="td_0">Bezeichnung*</td>
+                <td class="event_location_name"><f:form.textfield property="company" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Straße*</td>
+                <td><f:form.textfield property="address" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td>PLZ*</td>
+                <td><f:form.textfield class="location_zip" property="zip" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Ort*</td>
+                <td><f:form.textfield property="city" value="" required="required" /></td>
+            </tr>
+            <tr>
+                <td>Telefon</td>
+                <td>
+                    <f:form.textfield property="phone" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Webadresse</td>
+                <td><label>
+                    <f:form.textfield property="www" value="" />
+                </label>
+                </td>
+            </tr>
+            <tr>
+                <td>E-Mail</td>
+                <td><label>
+                    <f:form.textfield property="email" value="" />
+                </label>
+                </td>
+            </tr>
+            <tr>
+                <td>Bilder der Adresse</td>
+                <td>
+                    <f:form.upload name="image1" /><br />
+                    <f:form.upload name="image2" /><br />
+                    <f:form.upload name="image3" /><br />
+                </td>
+            </tr>
+            <tr>
+                <td />
+                <td>
+                    <div class="label_text">
+                        <input type="checkbox" id="acceptEventLocationImageCopyright" name="acceptEventLocationImageCopyright" required="required" />
+                        &nbsp;Hiermit best&auml;tige ich, dass Ich das geltende Urheberrecht ber&uuml;cksichtige &nbsp;und die Freigabe des Urhebers habe.
                     </div>
-                    <div class="eventImageCaption">
-                        <label>
-                            <f:translate key="tx_siccalender_domain_model_event.imageCaption" />:
-                        </label>
-                        <f:form.textfield name="newImageCaptions[]" value="" />
-                    </div>
-                    <div class="eventImageSource">
-                        <label>
-                            <f:translate key="tx_siccalender_domain_model_event.imageSource" />:
-                        </label>
-                        <f:form.textfield name="newImageSources[]" value="" />
-                    </div>
-                    <span class="eventUploadRemove" data-id="image{thisNumber}"><i class="fa fa-2x fa-trash-o"></i></span>
-                </div>
-            </div>
-        </f:for>
-    </div>
-    <div class="imageUploadCounter">
-        <span class="counter">{event.image -> f:count()}</span>/3
-    </div>
-    <span class="label-text"><br>Wichtig: Die Breite der Bilder muß mindestens 200 Pixel betragen. Um die Upload-Zeit gering zu halten, sind die Bild-Dateigrößen möglichst gering zu halten. Es können nur Bilder bis zu einer Dateigröße von 500kb in den Bildformaten .jpg, .gif und .png übertragen werden.</span>
+                    <div class="label_text"><br>Wichtig: Die Breite der Bilder muß mindestens 200 Pixel betragen. Um die Upload-Zeit gering zu halten, sind die Bild-Dateigrößen möglichst gering zu halten. Es können nur Bilder bis zu einer Dateigröße von 500kb in den Bildformaten .jpg, .gif und .png übertragen werden.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr class="spacer_topic" /></td>
+            </tr>
+        </table>
+    </fieldset>
 </div>
-
-<label for="editDownload">
-    <f:translate key="tx_siccalender_domain_model_event.download" />:
-</label>
-<div class="formField" id="pdfUpload">
-    <f:form.hidden name="deletePDF" value="" />
-    <f:if condition="{create}">
-        <f:else>
-            <f:for each="{event.downloadfile}" as="thisPDF">
-                <div class="eventCurrentPDF">
-                    <i class="fa fa-file-pdf-o"></i>
-                    <label class="PDFName" title="{thisPDF.originalResource.originalFile.name}">
-                        <f:format.crop maxCharacters="30" append="...">{thisPDF.originalResource.originalFile.name}</f:format.crop>
-                    </label>
-                    <span class="eventPDFDelete" data-uid="{thisPDF.uid}"><i class="fa fa-2x fa-trash-o"></i></span>
-                </div>
-            </f:for>
-        </f:else>
-    </f:if>
-    <div class="eventNewPdf">
-        <f:form.upload id="editDownload" name="pdfUpload"/><div class="removePdfUpload"><i class="fa fa-minus-circle"></i></div><br />
-        <label class="pdfUpload">Die hochgeladene PDF Datei wird in der Detailansicht zum Download angeboten. Um die Upload-Zeit gering zu halten, ist die Dateigröße möglichst gering zu halten. Es können nur Dateien bis zu einer Größe von 500kb übertragen werden.</label>
-        <div class="pdfDisclaimer"><f:form.checkbox name="disclaimer" additionalAttributes="{required: 'required', disabled:'disabled'}" value="0" />Hiermit bestätige ich, dass Ich das geltende Urheberrecht berücksichtige  und die Freigabe des Urhebers habe.</div>
-    </div>
-</div>
-
-<hr>
-
-<label for="editEventstart">
-    <f:translate key="tx_siccalender_domain_model_event.eventstart" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editEventstart" name="startdate"  value="{event.eventstart->f:format.date(format:'d-m-Y H:i')}" required="true" />
-</div>
-
-<label for="editEventend">
-    <f:translate key="tx_siccalender_domain_model_event.eventend" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editEventend" name="enddate"  value="{event.eventend->f:format.date(format:'d-m-Y H:i')}" required="true" />
-</div>
-
-<label for="editRepeattype">
-    <f:translate key="tx_siccalender_domain_model_event.repeattype" />:
-</label>
-<div class="formField">
-    <select id="editRepeattype" property="repeattype">
-        <f:for each="{0:'keine Wiederholung',1:'täglich',2:'wöchentlich (an den folgenden Wochentagen)',3:'monatlich'}" as="description" iteration="repeattypeOptionIterator">
-            <f:if condition="{repeattypeOptionIterator.index}=={event.repeattype}">
-                <f:then>
-                    <option value="{repeattypeOptionIterator.index}" selected>{description}</option>
-                </f:then>
-                <f:else>
-                    <option value="{repeattypeOptionIterator.index}">{description}</option>
-                </f:else>
-            </f:if>
-        </f:for>
-    </select>
-</div>
-
-<label for="editRecurTypeWeekDays">
-    <f:translate key="tx_siccalender_domain_model_event.recurTypeWeekDays" />:
-</label>
-<div class="formField">
-    <f:form.hidden property="recurTypeWeekDays" id="weekDayField" value="{eventRecurTypeWeekDays}" />
-    <f:form.checkbox class="weekDayFieldPart" value="1" checked="{f:if(condition:'{event.recurTypeWeekDays.0}==1',then:'true',else:'false')}" /><span>Montag</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="2" checked="{f:if(condition:'{event.recurTypeWeekDays.1}==1',then:'true',else:'false')}" /><span>Dienstag</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="4" checked="{f:if(condition:'{event.recurTypeWeekDays.2}==1',then:'true',else:'false')}" /><span>Mittwoch</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="8" checked="{f:if(condition:'{event.recurTypeWeekDays.3}==1',then:'true',else:'false')}" /><span>Donnerstag</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="16" checked="{f:if(condition:'{event.recurTypeWeekDays.4}==1',then:'true',else:'false')}" /><span>Freitag</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="32" checked="{f:if(condition:'{event.recurTypeWeekDays.5}==1',then:'true',else:'false')}" /><span>Samstag</span><br />
-    <f:form.checkbox class="weekDayFieldPart" value="64" checked="{f:if(condition:'{event.recurTypeWeekDays.6}==1',then:'true',else:'false')}" /><span>Sonntag</span>
-</div>
-
-<label for="editFinaldate">
-    <f:translate key="tx_siccalender_domain_model_event.finaldate" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editFinaldate" name="finaldate"  value="{f:if(condition:'{event.finaldate}>0',then:'{event.finaldate->f:format.date()}',else:'')}" required="true" />
-</div>
-
-<hr>
-
-<label for="editDescription">
-    <f:translate key="tx_siccalender_domain_model_event.description" />:
-</label>
-<div class="formField">
-    <f:form.textarea id="editDescription" property="description" cols="25" rows="5" />
-</div>
-
-<label for="editEventTimesDescription">
-    <f:translate key="tx_siccalender_domain_model_event.eventTimesDescription" />:
-</label>
-<div class="formField">
-    <f:form.textarea id="editEventTimesDescription" property="eventTimesDescription" cols="25" rows="5" />
-</div>
-
-<hr>
-
-<label for="editLocation">
-    <f:translate key="tx_siccalender_domain_model_event.location" />:
-</label>
-<div class="formField">
-    <f:form.select id="editLocation" name="editLocation" property="location" options="{eventLocations}" optionValueField="uid" sortByOptionLabel="1" optionLabelField="company" prependOptionLabel="" prependOptionValue="" /><br />
-    <br />
-    <f:link.action id="newLocationLink" class="siccalAjaxLink" action="new" controller="Address" extensionName="SicAddress"
-                   data="{ajaxURL:'{f:uri.action(action:\'new\',controller:\'Address\',extensionName:\'SicAddress\',pageType:\'1174605\')}',
-        		target:'#editLocation',
-        		type:'eventLocation',
-        		submitURL:'{f:uri.action(action:\'create\',controller:\'Address\',extensionName:\'SicAddress\',pageType:\'1174605\')}'}">
-        <i class="fa fa-map-marker"></i>
-        <span><f:translate key="tx_siccalender_domain_model_event.newLocation" /></span>
-    </f:link.action>
-</div>
-
-<hr>
-
-<label for="editRegion">
-    <f:translate key="tx_siccalender_domain_model_event.region" />:
-</label>
-<div class="formField">
-    <f:form.select id="editRegion" property="region" options="{regions}" optionValueField="uid" optionLabelField="name" />
-</div>
-
-<label for="editRegionType">
-    <f:translate key="tx_siccalender_domain_model_event.regionType" />:
-</label>
-<div class="formField">
-    <f:form.select id="editRegionType" property="regionType" optionValueField="uid" optionLabelField="name"
-                   options="{0:{uid:1,name:'{f:translate(key:\'tx_siccalender_regionType.1\')}'},
-                   		     1:{uid:2,name:'{f:translate(key:\'tx_siccalender_regionType.2\')}'},
-                   		     2:{uid:3,name:'{f:translate(key:\'tx_siccalender_regionType.3\')}'}}"/>
-</div>
-
-<hr>
-
-<label>
-    <f:translate key="tx_siccalender_domain_model_event.ticketInfoLocation" />:
-</label>
-<div class="formField" id="ticketInfoLocationFormField">
-    <f:if condition="{event.ticketInfoLocation -> f:count()} == 0">
-        <div class="noTicketInfoLocations"><f:translate key="tx_siccalender_domain_model_event.ticketInfoLocation_none" /></div>
-    </f:if>
-    <div class="TILSelectPrototype">
-        <div class="singleTILSelect">
-            <f:form.select class="editTicketInfoLocations" name="ticketInfoLocation[]" options="{ticketlocations}" optionValueField="uid" sortByOptionLabel="1" optionLabelField="company" prependOptionLabel="" prependOptionValue="" disabled="true" />
-            <span class="removeTILSelect"><i class="fa fa-minus-circle"></i></span>
-            <br />
-        </div>
-    </div>
-    <div class="ticketInfoLocationSelects">
-        <f:for each="{event.ticketInfoLocation}" as="thisLocation" iteration="ticketInfoLocationIterator">
-            <div class="singleTILSelect">
-                <f:form.select class="editTicketInfoLocations" name="ticketInfoLocation[]" options="{ticketlocations}" optionValueField="uid" sortByOptionLabel="1" optionLabelField="company" prependOptionLabel="" prependOptionValue="" value="{thisLocation.uid}" />
-                <span class="removeTILSelect"><i class="fa fa-minus-circle"></i></span>
-                <br />
-            </div>
-        </f:for>
-    </div>
-    <div class="newTILSelect">
-        <i class="fa fa-plus-circle"></i><span><f:translate key="tx_siccalender_domain_model_event.ticketInfoLocation_add"/></span>
-    </div>
-    <div class="addTicketInfoLocation">
-        <br />
-        <f:link.action class="siccalAjaxLink" action="new" controller="Address" extensionName="SicAddress"
-                       data="{ajaxURL:'{f:uri.action(action:\'new\',controller:\'Address\',extensionName:\'SicAddress\',pageType:\'1174605\')}',
-									target:'.editTicketInfoLocations',
-									type:'ticketInfoLocation',
-									submitURL:'{f:uri.action(action:\'create\',controller:\'Address\',extensionName:\'SicAddress\',pageType:\'1174605\')}'}">
-            <i class="fa fa-map-marker"></i>
-            <span><f:translate key="tx_siccalender_domain_model_event.newLocation" /></span>
-        </f:link.action>
-    </div>
-</div>
-
-<hr>
-
-<label for="editTicketprice">
-    <f:translate key="tx_siccalender_domain_model_event.ticketprice" />:
-</label>
-<div class="formField">
-    <f:form.textarea id="editTicketprice" property="ticketprice" cols="35" rows="5" />
-</div>
-
-<label for="editTicketlink">
-    <f:translate key="tx_siccalender_domain_model_event.ticketlink" />:
-</label>
-<div class="formField">
-    <f:form.textfield id="editTicketlink" property="ticketlink" />
-</div>
-
-
-
-
-
-
-<!--
-Folgende Felder werden ab jetzt von FAL übernommen, müssen aber erst im EventController eingerichtet werden.
-
-<label for="editCaption">
-	<f:translate key="tx_siccalender_domain_model_event.caption" />:
-</label>
-<div class="formField">
-	<f:form.textfield id="editCaption" property="caption" />
-</div>
-
-<label for="editSources">
-	<f:translate key="tx_siccalender_domain_model_event.sources" />:
-</label>
-<div class="formField">
-	<f:form.textfield id="editSources" property="sources" />
-</div>
--->
-
-
-
-
-<!--
-Dieses Feld konnte ich nicht zuordnen
-
-<label for="editTicketinfo">
-	<f:translate key="tx_siccalender_domain_model_event.ticketinfo" />:
-</label>
-<div class="formField">
-	<f:form.textfield id="editTicketinfo" property="ticketinfo" />
-</div>
--->
-
-
-
-<script>
-
-    jQuery(document).ready(function(){
-        jQuery("#MainCategory,#editCategory,#editLocation").prop("required",true);
-        siccalAjaxLink();
-    });
-
-    function documentReadyJsHook () {
-        jQuery("#mainCategory").multiselect({
-            checkAllText: 'Alle markieren',
-            uncheckAllText: 'Alle entfernen',
-            noneSelectedText: 'zur Auswahl hier klicken',
-            selectedText: function(numChecked, numTotal, checkedInputs){
-                return (numChecked <= 5) ? checkedInputs.map(function(element){ return element.title; }).join(', ') : numChecked + " checked";
-            },
-            beforeclose: function(e){
-                s_checkedInputs = jQuery(e.target).val();
-                updateCategories(s_checkedInputs);
-            }
-        });
-    }
-
-    function updateCategories(checkedInputs)
-    {
-        // Get Uids
-        var mainCatUids = checkedInputs.join(',');
-
-        // Fire on change only
-        if(mainCatUids == this.lastMainCatUids) return;
-        this.lastMainCatUids = mainCatUids;
-
-        var ajaxUrl = '<f:uri.action action="categories" controller="Event" pageType="1174604" />';
-        jQuery.post(ajaxUrl, {'tx_siccalender_siccal[mainCategories]':mainCatUids}, function(response) {
-            fillSelectBox(response,"#editCategory");
-        });
-    }
-
-    function fillSelectBox(data,s_target) {
-
-        s_target = s_target || "#category";
-
-        //jQueryfy and use content of select
-        var jQdata = jQuery(data).eq(0).html();
-
-
-        var $target = jQuery(''+s_target);
-        $target.each(function(){
-            var s_currentlySelected = jQuery(this).find(":selected").val();
-            var b_isRequired = jQuery(this).prop("required");
-
-            jQuery(this).html(jQdata);
-
-            var $itemToSelect = jQuery(this).prop("required",b_isRequired);
-
-            if(s_currentlySelected > "")
-                $itemToSelect = $itemToSelect.find("[value="+s_currentlySelected+"]");
-            else
-                $itemToSelect = $itemToSelect.children().eq(0);
-
-            if($itemToSelect.length)
-                $itemToSelect[0].selected = true;
-        });
-    }
-
-    function siccalAjaxLink(){
-        var $links = jQuery(".siccalAjaxLink");
-        if(!$links.length)
-            return;
-
-        prepareAjaxBox();
-        var $ajaxBox = jQuery("#sic_AjaxBox");
-        var $ajaxBoxOverlay = jQuery("#sic_AjaxBoxOverlay");
-
-        jQuery(".tx_siccalender_form").on('click','.siccalAjaxLink',function(e){
-            e.preventDefault();
-            var s_ajaxURL = jQuery(this).attr("data-ajaxURL");
-            var s_submitURL = jQuery(this).attr("data-submitURL");
-            var s_targetSelector = jQuery(this).attr("data-target");
-            var b_locationType = jQuery(this).data("type") != "eventLocation";
-            jQuery.ajax({
-                url: s_ajaxURL,
-                datatype: "HTML",
-                beforeSend: function(){
-                    $ajaxBoxOverlay.fadeIn(500);
-                    $ajaxBox.fadeIn(500);
-                },
-                success: function(response){
-                    var i_scrollHeight = document.body.scrollTop;
-                    $ajaxBox.html(response).show();
-                    var i_offsetTopBottom = ( jQuery(window).height() - $ajaxBox.height() )/2;
-                    var i_offsetLeftRight = ( jQuery(window).width() - $ajaxBox.width() )/2;
-
-                    $ajaxBox.css({
-                        top: i_scrollHeight+i_offsetTopBottom,
-                        bottom: i_offsetTopBottom,
-                        left: i_offsetLeftRight,
-                        right: i_offsetLeftRight
-                    });
-
-                    var submitFunction = function(e){
-                        e.preventDefault();
-                        jQuery.ajax({
-                            url: s_submitURL,
-                            data: new FormData($(this)[0]),
-                            method: 'POST',
-                            contentType: false,
-                            processData: false,
-                            success: function(){
-                                fadeOutAjaxBox();
-                                refreshSelect(''+s_targetSelector,b_locationType);
-                            }
-                        })
-                    };
-
-                    $ajaxBox.on('submit','form',submitFunction);
-                }
-
-            });
-        });
-    }
-
-    function prepareAjaxBox(){
-        var $body = jQuery("body");
-        var $ajaxBox = jQuery("#sic_AjaxBox");
-        if(!$ajaxBox.length)
-        {
-            $body.append("<div id='sic_AjaxBoxClose'>").append("<div id='sic_AjaxBox'>").append("<div id='sic_AjaxBoxOverlay'>");
-        }
-
-        $body.on('click','#sic_AjaxBoxOverlay,#sic_AjaxBoxClose',function(){
-            fadeOutAjaxBox();
-        });
-    }
-
-    function fadeOutAjaxBox(i_time){
-        var $ajaxBox = jQuery("#sic_AjaxBox");
-        var $ajaxBoxOverlay = jQuery("#sic_AjaxBoxOverlay");
-        var $ajaxBoxClose = jQuery("#sic_AjaxBoxClose");
-
-        i_time = i_time || 500;
-        i_time = parseInt(i_time);
-        $ajaxBox.fadeOut(i_time).html("");
-        $ajaxBoxOverlay.fadeOut(i_time);
-        $ajaxBoxClose.fadeOut(i_time);
-        $ajaxBox.off('submit','form');
-    }
-
-    function refreshSelect(s_selector,b_isTicketLocation){
-        s_selector = s_selector || '';
-        b_isTicketLocation = b_isTicketLocation || false;
-
-        var i_locationTypeToLookFor = b_isTicketLocation ? 2 : 1;
-
-        var ajaxUrl = '<f:uri.action action="newlocation" controller="Event" pageType="1174604" />';
-        jQuery.post(ajaxUrl, {'tx_siccalender_siccal[locationTypeToLookFor]':i_locationTypeToLookFor}, function(response) {
-            fillSelectBox(response,s_selector);
-        });
-    }
-
-
-</script>

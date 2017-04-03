@@ -122,6 +122,18 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     public function set<sic:format.case case="capital">{property.title}</sic:format.case>(${property.title}) {
         $this->{property.title} = ${property.title};
     }
+
+    <f:if condition="{property.title} == 'image'">
+    /**
+     * Adds a file to the storage
+     *
+     * @param \SICOR\SicAddress\Domain\Model\FileReference $image
+     * @return void
+     */
+    public function addImage(\SICOR\SicAddress\Domain\Model\FileReference $image) {
+        $this->image->attach($image);
+    }
+    </f:if>
     </f:for>
 
     /**

@@ -384,7 +384,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         foreach ($images as $image) {
             $fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
-            $newAddress->getImage()->attach($fileReference);
+            if($fileReference)
+                $newAddress->addImage($fileReference);
         }
 
         $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);

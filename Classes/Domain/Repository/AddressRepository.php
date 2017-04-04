@@ -232,4 +232,13 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         return $query->matching($query->logicalOr($constraints))->execute();
     }
+
+    /**
+     * Allow third parties like sic_calender to submit their own queries
+     */
+    public function findByConstraints($constraints)
+    {
+        $query = $this->createQuery();
+        return $query->matching($constraints)->execute();
+    }
 }

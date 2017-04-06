@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 /**
  * ExportController
  */
-class ExportController extends ActionController {
+class ExportController extends ModuleController {
 
     /**
      * addressRepository
@@ -64,52 +64,17 @@ class ExportController extends ActionController {
     protected $domainPropertyRepository = NULL;
 
     /**
-     * Holds the Typoscript configuration
-     *
-     * @var \TYPO3\CMS\Extbase\Configuration
-     */
-    protected $extbaseFrameworkConfiguration = NULL;
-
-    /**
-     * Template Root Path
-     *
-     * @var string
-     */
-    protected $templateRootPath = "";
-
-    /**
      * Called before any action
      */
     public function initializeAction() {
-        $this->setBackendModuleTemplates();
+        // Call base
+        parent::initializeAction();
 
-        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['exportTemplateRootPaths'][0]);
-    }
-
-    /**
-     * Set Backend Module Templates
-     * @return void
-     */
-    private function setBackendModuleTemplates(){
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $typoscriptConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-
-        $templates = $GLOBALS['TYPO3_DB']->exec_SELECTquery('config,constants', "sys_template", 'deleted = 0 AND hidden = 0', '');
-        while ($template = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($templates)) {
-            if(strpos($template['config'], "module.tx_sicaddress_web_sicaddresssicaddressexport") >= 0) {
-                $TSparserObject = GeneralUtility::makeInstance(TypoScriptParser::class);
-                $TSparserObject->parse($template['config']);
-
-                $typoscriptConfiguration = array_merge_recursive($typoscriptConfiguration, $TSparserObject->setup);
-            }
-        }
-        if($typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1]) {
-            $frameworkConfiguration["view"]["exportTemplateRootPaths"]["0"] = $typoscriptConfiguration["module."]["tx_sicaddress_web_sicaddresssicaddressexport."]["view."]["exportTemplateRootPaths."][1];
-            $this->configurationManager->setConfiguration($frameworkConfiguration);
+        // Override path with extension config
+        if(count($this->extensionConfiguration["exportTemplatesPath"]) > 0) {
+            $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration["exportTemplatesPath"]);
         }
     }
-
 
     /**
      * exportAction

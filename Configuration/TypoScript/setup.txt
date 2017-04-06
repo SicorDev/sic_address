@@ -22,20 +22,6 @@ module.tx_sicaddress_web_sicaddresssicaddress {
 	}
 }
 
-# Export Module configuration
-module.tx_sicaddress_web_sicaddresssicaddressexport {
-	persistence {
-		#storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
-	}
-	view {
-		templateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.templateRootPath}
-		partialRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.partialRootPath}
-		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.layoutRootPath}
-
-		exportTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.exportTemplateRootPaths}
-	}
-}
-
 # Vianovis XML Export
 vianovis = PAGE
 vianovis {

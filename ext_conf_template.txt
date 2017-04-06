@@ -8,6 +8,9 @@ developerMode = 0
   # cat=basic/enable/25; type=boolean; label=Address Export: Enables the backend address export module.
 addressExport = 0
 
+  # cat=basic/enable/27; type=string; label=Address Export Templates: Set an alternate path for export templates
+exportTemplatesPath = EXT:sic_address/Resources/Private/Templates/Export/
+
   # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
 ttAddressMapping = 0
 

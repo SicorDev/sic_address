@@ -119,7 +119,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Set Backend Module Templates
      * @return void
      */
-    private function setBackendModuleTemplates(){
+    protected function setBackendModuleTemplates(){
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $viewConfiguration = array(
             'view' => array(

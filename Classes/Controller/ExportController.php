@@ -258,6 +258,14 @@ class ExportController extends ModuleController {
                 if($value instanceof ObjectStorage)
                     continue;
 
+                $charset =  mb_detect_encoding(
+                    $value,
+                    "UTF-8, ISO-8859-1, ISO-8859-15",
+                    true
+                );
+
+                $value =  mb_convert_encoding($value, "Windows-1252", $charset);
+
                 $parseValue = "\"" . str_replace("\"", "\"\"", $value) . "\"";
                 ObjectAccess::setProperty($domainObject, $propertyTitle, $parseValue);
             }

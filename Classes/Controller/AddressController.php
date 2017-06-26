@@ -443,6 +443,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             case 'mmdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/MMList.html'); break;
             case 'obgdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/OBGList.html'); break;
             case 'sachon': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SachonList.html'); break;
+            case 'sicor': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SicorList.html'); break;
         }
     }
 

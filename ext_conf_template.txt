@@ -8,11 +8,11 @@ developerMode = 0
   # cat=basic/enable/25; type=boolean; label=Address Export: Enables the backend address export module.
 addressExport = 0
 
-  # cat=basic/enable/27; type=string; label=Address Export Templates: Set an alternate path for export templates
-exportTemplatesPath = EXT:sic_address/Resources/Private/Templates/Export/
+  # cat=basic/enable/27; type=string; label=Address Export Templates: Set an alternate path for export render templates
+exportRenderTemplates = EXT:sic_address/Resources/Private/Templates/Export/
 
   # cat=basic/enable/30; type=boolean; label=tt_address Mapping: Enables mapping of sic_address on tt_address
 ttAddressMapping = 0
 
-  # cat=basic/enable/50; type=options[nicosdir,spdir,wtdir,irsee,mmdir,obgdir,sachon]; label=TemplateSet: Choose one of the preset template sets.
+  # cat=basic/enable/50; type=options[nicosdir,spdir,wtdir,irsee,mmdir,obgdir,sachon,sicor]; label=TemplateSet: Choose one of the preset template sets.
 templateSet = nicosdir

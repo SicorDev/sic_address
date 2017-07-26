@@ -180,7 +180,6 @@ class ExportController extends ModuleController {
         $template = $arguments["template"];
         $sorting = $arguments["sorting"];
 
-
         $this->addressRepository->setDefaultOrderings(array($sorting => QueryInterface::ORDER_ASCENDING));
         $addresses = $this->addressRepository->findByCategories($categories);
 

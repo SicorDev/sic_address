@@ -108,7 +108,7 @@ class ExportController extends ModuleController {
         // Set template
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $customView->setTemplatePathAndFilename($this->$renderTemplatesPath.'ExportVianovis.html');
-        $customView->setPartialRootPath($this->$renderTemplatesPath.'ExportVianovis.html');
+        $customView->setPartialRootPaths([$this->$renderTemplatesPath.'ExportVianovis.html']);
 
         // Fetch data
         $adresses = $this->addressRepository->findForVianovis()->toArray();
@@ -201,7 +201,7 @@ class ExportController extends ModuleController {
 
         $templatePathAndFilename = $this->$renderTemplatesPath . $template;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
-        $customView->setPartialRootPath($templatePathAndFilename);
+        $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $this->parseCSV($addresses));
         $content = $customView->render();
 
@@ -223,7 +223,7 @@ class ExportController extends ModuleController {
 
         $templatePathAndFilename = $this->$renderTemplatesPath . $template;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
-        $customView->setPartialRootPath($templatePathAndFilename);
+        $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $addresses);
         $content = $customView->render();
 

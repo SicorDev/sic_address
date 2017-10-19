@@ -1,14 +1,14 @@
-jQuery(function() {
+TYPO3.jQuery(function() {
     checkboxListener();
 });
 
 var checkboxListener = function() {
-    jQuery('.export input:checkbox').change(function() {
-        jQuery(this).next().next().find('input:checkbox').prop('checked', jQuery(this).prop("checked"));
+    TYPO3.jQuery('.export input:checkbox').change(function() {
+        TYPO3.jQuery(this).next().next().find('input:checkbox').prop('checked', TYPO3.jQuery(this).prop("checked"));
     });
 };
 
 var checkAll = function() {
-    jQuery('.export input:checkbox').prop('checked', 'true')
+    TYPO3.jQuery('.export input:checkbox').prop('checked', 'true')
 };
 

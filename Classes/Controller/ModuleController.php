@@ -294,7 +294,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $templatePathAndFilename = !$templatePath ? $this->templateRootPath . $filename : $this->templateRootPath . $templatePath;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
-        $customView->setPartialRootPath($templatePathAndFilename);
+        $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("settings", $this->extensionConfiguration);
         $customView->assign("properties", $properties);
         $content = $customView->render();

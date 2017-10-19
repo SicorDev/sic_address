@@ -22,26 +22,6 @@ $GLOBALS['TCA']['sys_category']['types']['Tx_SicAddress_Category']['showitem'] .
 $GLOBALS['TCA']['sys_category']['ctrl']['default_sortby'] = 'ORDER BY title';
 $GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = '';
 
-
-// no type field defined, so we define it here. This will only happen the first time the extension is installed!!
-$GLOBALS['TCA']['sys_category']['ctrl']['type'] = 'tx_extbase_type';
-$tempTypeArray = array();
-$tempTypeArray[$GLOBALS['TCA']['sys_category']['ctrl']['type']] = array(
-	'exclude' => 1,
-	'label'   => 'Kategorietyp',
-	'config' => array(
-		'type' => 'select',
-		'items' => array(
-			array('Standard',''),
-			array('Adresse','Tx_SicAddress_Category')
-		)
-	)
-);
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_category', $tempTypeArray, 1);
-
-$GLOBALS['TCA']['sys_category']['types'][1]["showitem"] = 'tx_extbase_type,'.$GLOBALS['TCA']['sys_category']['types'][1]["showitem"];
-$GLOBALS['TCA']['sys_category']['types']["Tx_SicAddress_Category"]["showitem"] = 'tx_extbase_type,'.$GLOBALS['TCA']['sys_category']['types']["Tx_SicAddress_Category"]["showitem"];
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
 	'',
 	'EXT:/Resources/Private/Language/locallang_csh_.xlf'

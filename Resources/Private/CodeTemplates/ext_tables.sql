@@ -3,11 +3,9 @@
 # Table structure for table 'tt_address'
 #
 CREATE TABLE tt_address (
-  tx_extbase_type varchar(255) DEFAULT 'Tx_SicAddress_Address' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
 
-	<f:for each="{properties}" as="field">
-	{field.definition},
+	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>
 );
 </f:if>
@@ -121,11 +119,4 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 
 	KEY language (l10n_parent,sys_language_uid)
 
-);
-
-#
-# Table structure for table 'sys_category'
-#
-CREATE TABLE sys_category (
-	tx_extbase_type varchar(255) DEFAULT '' NOT NULL,
 );

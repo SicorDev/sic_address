@@ -33,7 +33,7 @@
                                     <div class="row tr">
                                         <div class="col-sm-3 td">
                                             <label>Teil des Labels:</label>
-                                            <f:form.checkbox property="isListLabel" value="{f:if(condition: '{property.isListLabel} == true', then: 1, else: 0)}" />
+                                            <f:form.checkbox property="isListLabel" value="property.isListLabel" />
                                         </div>
                                         <div class="col-sm-3 td">
                                         </div>
@@ -51,92 +51,49 @@
                         </f:if>
                     </f:for>
                 </ul>
-                <div class="row tr">
-                    <ul>
-                        <li>
-                            <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Datebank Feldname:</label>
-                                        <f:form.textfield property="title" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Beschriftung:</label>
-                                        <f:form.textfield property="tcaLabel" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>TCA Override:</label>
-                                        <f:form.textarea property="tcaOverride" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Einstellungen:</label>
-                                        <f:form.textarea property="settings" />
-                                    </div>
-                                </div>
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Teil des Labels:</label>
-                                        <f:form.checkbox property="isListLabel" value="" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Feld Typ:</label>
-                                        <f:form.select property="type" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <f:form.submit class="btn btn-success" value="Save" />
-                                    </div>
-                                </div>
-                            </f:form>
-                        </li>
-                    </ul>
-                </div>
             </f:then>
-            <f:else>
-                <div class="row tr">
-                    <ul>
-                        <li>
-                            <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Datebank Feldname:</label>
-                                        <f:form.textfield property="title" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Beschriftung:</label>
-                                        <f:form.textfield property="tcaLabel" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>TCA Override:</label>
-                                        <f:form.textarea property="tcaOverride" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Einstellungen:</label>
-                                        <f:form.textarea property="settings" />
-                                    </div>
-                                </div>
-                                <div class="row tr">
-                                    <div class="col-sm-3 td">
-                                        <label>Teil des Labels:</label>
-                                        <f:form.checkbox property="isListLabel" value="" />
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <label>Feld Typ:</label>
-                                        <f:form.select property="type" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
-                                    </div>
-                                    <div class="col-sm-3 td">
-                                        <f:form.submit class="btn btn-success" value="Save" />
-                                    </div>
-                                </div>
-                            </f:form>
-                        </li>
-                    </ul>
-                </div>
-            </f:else>
         </f:if>
+        <div class="row tr">
+            <ul>
+                <li>
+                    <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
+                        <div class="row tr">
+                            <div class="col-sm-3 td">
+                                <label>Datebank Feldname:</label>
+                                <f:form.textfield property="title" />
+                            </div>
+                            <div class="col-sm-3 td">
+                                <label>Beschriftung:</label>
+                                <f:form.textfield property="tcaLabel" />
+                            </div>
+                            <div class="col-sm-3 td">
+                                <label>TCA Override:</label>
+                                <f:form.textarea property="tcaOverride" />
+                            </div>
+                            <div class="col-sm-3 td">
+                                <label>Einstellungen:</label>
+                                <f:form.textarea property="settings" />
+                            </div>
+                        </div>
+                        <div class="row tr">
+                            <div class="col-sm-3 td">
+                                <label>Teil des Labels:</label>
+                                <f:form.checkbox property="isListLabel" value="" />
+                            </div>
+                            <div class="col-sm-3 td">
+                            </div>
+                            <div class="col-sm-3 td">
+                                <label>Feld Typ:</label>
+                                <f:form.select property="type" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
+                            </div>
+                            <div class="col-sm-3 td">
+                                <f:form.submit class="btn btn-success" value="Save" />
+                            </div>
+                        </div>
+                    </f:form>
+                </li>
+            </ul>
+        </div>
     </div>
     <hr />
 

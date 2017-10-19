@@ -5,18 +5,6 @@ if (!isset($GLOBALS['TCA']['tt_address']['ctrl']['type'])) {
     if (file_exists($GLOBALS['TCA']['tt_address']['ctrl']['dynamicConfigFile'])) {
         require_once($GLOBALS['TCA']['tt_address']['ctrl']['dynamicConfigFile']);
     }
-    // no type field defined, so we define it here. This will only happen the first time the extension is installed!!
-    $GLOBALS['TCA']['tt_address']['ctrl']['type'] = 'tx_extbase_type';
-    $tempColumnstx_sicaddress_tt_address = array();
-    $tempColumnstx_sicaddress_tt_address[$GLOBALS['TCA']['tt_address']['ctrl']['type']] = array(
-        'exclude' => 1,
-        'label'   => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress.tx_extbase_type',
-        'config' => array(
-            'type' => 'passthrough',
-            'default' => 'Tx_SicAddress_Address',
-        )
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumnstx_sicaddress_tt_address, 1);
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
@@ -56,8 +44,6 @@ if(isset($GLOBALS['TCA']['tt_address']['types']['0']['showitem'])) {
 }
 $GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:sic_address_tca_tab_label,';
 $GLOBALS['TCA']['tt_address']['types']['Tx_SicAddress_Address']['showitem'] .= '<f:for each="{properties}" as="field"><f:if condition="{field.external} == '0'"> {field.title},</f:if></f:for>';
-
-$GLOBALS['TCA']['tt_address']['columns'][$GLOBALS['TCA']['tt_address']['ctrl']['type']]['config']['items'][] = array('LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tt_address.tx_extbase_type.Tx_SicAddress_Address','Tx_SicAddress_Address');
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
     '',

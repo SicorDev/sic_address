@@ -57,7 +57,7 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->exec_DELETEquery("sys_category", "pid = ".$pid);
 
         // Move legacy category data to sys_category
-        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name as title, '.$pid.' as pid, "Tx_SicAddress_Category" as tx_extbase_type', 'tx_nicosdirectory_category', 'deleted = 0 AND hidden = 0', '');
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('name as title, '.$pid.' as pid', 'tx_nicosdirectory_category', 'deleted = 0 AND hidden = 0', '');
         while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
         }
@@ -132,18 +132,18 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->sql_query('ALTER TABLE sys_category AUTO_INCREMENT = '.($maxuid+1));
 
         // Create Master category
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Adressen", "pid" => 797, "tx_extbase_type" => "Tx_SicAddress_Category"));
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Adressen", "pid" => 797));
         $persistenceManager->persistAll();
         $masterID=$GLOBALS['TYPO3_DB']->sql_insert_id();
 
         // Move legacy parent categories to sys_category
-        $parents = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, "Tx_SicAddress_Category" as tx_extbase_type, '.$masterID.' as parent',
+        $parents = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, '.$masterID.' as parent',
             'tx_spdirectory_cat', 'deleted = 0 AND hidden = 0 AND tx_msitespdhier_parent = 0');
         while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($parents))
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
 
         // Move legacy child categories to sys_category
-        $childs = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, "Tx_SicAddress_Category" as tx_extbase_type, tx_msitespdhier_parent as parent',
+        $childs = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, catname as title, 797 as pid, tx_msitespdhier_parent as parent',
             'tx_spdirectory_cat', 'deleted = 0 AND hidden = 0 AND tx_msitespdhier_parent > 0');
         while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($childs))
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
@@ -249,12 +249,12 @@ class ImportController extends ModuleController {
         $GLOBALS['TYPO3_DB']->sql_query('RENAME TABLE tx_scbezugsquelle_bezugsquelle_kategorie_mm TO tx_sicaddress_domain_model_address_produkt_mm');
 
         // Create Parent category
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Objekte", "pid" => 445, "tx_extbase_type" => "Tx_SicAddress_Category"));
+        $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', array("title" => "Objekte", "pid" => 445));
         $persistenceManager->persistAll();
         $parentID=$GLOBALS['TYPO3_DB']->sql_insert_id();
 
         // Move legacy category data to sys_category
-        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung as title, pid, "Tx_SicAddress_Category" as tx_extbase_type, '.$parentID.' as parent',
+        $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung as title, pid, '.$parentID.' as parent',
             'tx_scbezugsquelle_objekt', 'deleted = 0 AND hidden = 0 AND pid = 445');
         while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories))
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_category', $category);
@@ -293,7 +293,7 @@ class ImportController extends ModuleController {
             while ($uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($uids))
             {
                 $title = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('bezeichnung', 'tx_scbezugsquelle_objekt', 'uid = '.$uid['uid_foreign'], ''))["bezeichnung"];
-                $localId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_category', 'title = \''.$title.'\' AND tx_extbase_type = \'Tx_SicAddress_Category\'', '', '', 1))["uid"];
+                $localId = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_category', 'title = \''.$title.'\'', '', '', 1))["uid"];
 
                 $mapping = array("uid_local" => $localId,
                     "uid_foreign" => $sicAddress->getUid(),
@@ -321,14 +321,10 @@ class ImportController extends ModuleController {
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
 
-        //Set tx_extbase_type for old tt_address entries
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery("tt_address", "", array("tx_extbase_type" => "Tx_SicAddress_Address"));
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery("sys_category", "", array("tx_extbase_type" => "Tx_SicAddress_Category"));
-
         if($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
             $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
             while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
-                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|tx_extbase_type|sorting)$/", $category["COLUMN_NAME"]) === 0) {
+                if(preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $category["COLUMN_NAME"]) === 0) {
                     $domainProperty = new DomainProperty();
                     $domainProperty->setTitle($category["COLUMN_NAME"]);
                     $domainProperty->setTcaLabel($category["COLUMN_NAME"]);

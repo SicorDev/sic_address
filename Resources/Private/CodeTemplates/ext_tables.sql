@@ -1,4 +1,5 @@
 <f:if condition="{settings.ttAddressMapping}">
+<f:then>
 #
 # Table structure for table 'tt_address'
 #
@@ -8,13 +9,12 @@ CREATE TABLE tt_address (
 	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>
 );
-</f:if>
-
+</f:then>
+<f:else>
 #
 # Table structure for table 'tx_sicaddress_domain_model_address'
 #
 CREATE TABLE tx_sicaddress_domain_model_address (
-
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
@@ -34,21 +34,18 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
 
-<f:if condition="{settings.ttAddressMapping} == 0">
-	<f:for each="{properties}" as="field">
-	{field.definition},
+	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>
-</f:if>
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-
- KEY language (l10n_parent,sys_language_uid)
-
+  KEY language (l10n_parent,sys_language_uid)
 );
+</f:else>
+</f:if>
 
 <f:for each="{properties}" as="field">
-     <f:if condition="{0: '{field.type.title}'} == {0: 'mmtable'}">
+<f:if condition="{0: '{field.type.title}'} == {0: 'mmtable'}">
 #
 # Table structure for table 'tx_sicaddress_domain_model_{field.title}'
 #
@@ -79,17 +76,17 @@ CREATE TABLE tx_sicaddress_domain_model_address_{field.title}_mm (
   uid_foreign int(11) DEFAULT '0' NOT NULL,
   tablenames varchar(30) DEFAULT '' NOT NULL,
   sorting int(11) DEFAULT '0' NOT NULL,
+
   KEY uid_local (uid_local),
   KEY uid_foreign (uid_foreign)
 );
-   </f:if>
+</f:if>
 </f:for>
 
 #
 # Table structure for table 'tx_sicaddress_domain_model_domainproperty'
 #
 CREATE TABLE tx_sicaddress_domain_model_domainproperty (
-
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
@@ -116,7 +113,5 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-
 	KEY language (l10n_parent,sys_language_uid)
-
 );

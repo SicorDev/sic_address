@@ -48,9 +48,6 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface{
       // SQL
       if (!$this->saveTemplate('ext_tables.sql', array()))
          $errorMessages[] = "Unable to save SQL: ext_tables.sql";
-      // TCA
-      if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array()))
-         $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
       // Language
       if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array()))
          $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";

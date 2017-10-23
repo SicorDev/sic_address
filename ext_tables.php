@@ -68,7 +68,7 @@ if ($extensionManagerSettings["ttAddressMapping"]) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'sic_address');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Adressverwaltung');
 
 if ($extensionManagerSettings["ttAddressMapping"]) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($_EXTKEY, 'tt_address');
@@ -76,7 +76,7 @@ if ($extensionManagerSettings["ttAddressMapping"]) {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_sicaddress_domain_model_address', 'EXT:sic_address/Resources/Private/Language/locallang_csh_tx_sicaddress_domain_model_address.xlf');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_sicaddress_domain_model_address');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($_EXTKEY, 'tx_sicaddress_domain_model_address');
-    $GLOBALS['TCA']['tx_sicaddress_domain_model_address']['columns']['categories']['config']['foreign_table_where'] = ' AND sys_language_uid=###REC_FIELD_sys_language_uid### ORDER BY sys_category.title';
+	$GLOBALS['TCA']['tx_sicaddress_domain_model_address']['columns']['categories']['config']['foreign_table_where'] = ' AND sys_language_uid=###REC_FIELD_sys_language_uid### ORDER BY sys_category.title';
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_sicaddress_domain_model_domainproperty', 'EXT:sic_address/Resources/Private/Language/locallang_csh_tx_sicaddress_domain_model_domainproperty.xlf');

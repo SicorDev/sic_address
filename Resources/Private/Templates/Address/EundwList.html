@@ -105,7 +105,27 @@
 							   configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9, addQueryStringMethod: 'POST,GET',
 							   insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
 						       insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
-				<f:render partial="Address/MMLists" arguments="{settings:settings, addresspage:addresspage}" />
+				<table>
+					<tbody>
+					<f:for each="{addresspage}" as="address" iteration="addressIterator">
+						<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+							<td headers="anschrift">
+								<b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
+								<span>{address.address}</span><br><br>
+								<span>{address.zip} {address.city}</span><br><br>
+								<f:if condition="{address.categories}">
+									<br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+								</f:if>
+							</td>
+							<td headers="Infos für Behinderte">
+								<f:if condition="{address.txTtaddresshandicappedinfoAdditionalInfo}">
+									<f:format.html>{address.txTtaddresshandicappedinfoAdditionalInfo}</f:format.html>
+								</f:if>
+							</td>
+						</tr>
+					</f:for>
+					</tbody>
+				</table>
 				<div class="paginatehead" style="margin-bottom: 0px;"></div>
 			</f:widget.paginate>
 		</f:then>
@@ -118,20 +138,6 @@
 
 	<script>
 		function documentReadyJsHook () {
-			// Hide right side list boxes when no info is given
-			jQuery('.address_description').each(function() {
-				if($.trim(jQuery(this).html()).length < 1)
-					jQuery(this).css('display', 'none');
-			});
-			// Translate pagination
-			jQuery('.previous > a').each(function() {
-				jQuery(this).html('zur&uuml;ck');
-			});
-			jQuery('.next > a').each(function() {
-				jQuery(this).html('weiter');
-			});
-			// Distance selection
-			jQuery('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
 		}
 	</script>
 

@@ -29,6 +29,7 @@
 		.activelinkcolor { color: red !important; border: 2px inset silver !important;}
 		.abisz { width: 40em; margin-bottom: 40px; padding-bottom: 40px; }
 		.sorry { float:none; display: inline-block; margin: 10px; }
+		.address_td { padding: 20px;}
 	</style>
 
 	<div class="address_searchoptions">
@@ -98,36 +99,51 @@
 	</div>
 	<f:if condition="{addresses}">
 		<f:then>
-			<div class="paginatehead">
-				<f:count subject="{addresses}" /> {f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_results')}
-			</div>
-			<f:widget.paginate objects="{addresses}" as="addresspage"
-							   configuration="{itemsPerPage: 10, maximumNumberOfLinks: 9, addQueryStringMethod: 'POST,GET',
-							   insertAbove: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}',
-						       insertBelow: '{f:if(condition:\'{addresses -> f:count()} > 10\',then:1,else:0)}'}">
-				<table>
-					<tbody>
-					<f:for each="{addresspage}" as="address" iteration="addressIterator">
-						<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
-							<td headers="anschrift">
-								<b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
-								<span>{address.address}</span><br><br>
-								<span>{address.zip} {address.city}</span><br><br>
-								<f:if condition="{address.categories}">
-									<br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
-								</f:if>
-							</td>
-							<td headers="Infos für Behinderte">
-								<f:if condition="{address.txTtaddresshandicappedinfoAdditionalInfo}">
-									<f:format.html>{address.txTtaddresshandicappedinfoAdditionalInfo}</f:format.html>
-								</f:if>
-							</td>
-						</tr>
-					</f:for>
-					</tbody>
-				</table>
-				<div class="paginatehead" style="margin-bottom: 0px;"></div>
-			</f:widget.paginate>
+			<div class="paginatehead"></div>
+			<table>
+				<tbody>
+				<f:for each="{addresses}" as="address" iteration="addressIterator">
+					<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+						<td class="address_td">
+							<f:if condition="{address.www}">
+								<f:then>
+									<f:link.external uri="{address.www}">
+										<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+									</f:link.external>
+								</f:then>
+								<f:else>
+									<f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+								</f:else>
+							</f:if>
+						</td>
+						<td class="address_td">
+							<b><f:format.raw>{address.company}</f:format.raw></b><br>
+							<span>{address.street}</span><br>
+							<span>{address.zip} {address.city}</span><br><br>
+							<f:if condition="{address.contacperson}">
+								<i class="fa fa-user" aria-hidden="true"></i> {address.contacperson}<br/>
+							</f:if>
+							<f:if condition="{address.phone}">
+								<i class="fa fa-phone" aria-hidden="true"></i> {address.phone}<br/>
+							</f:if>
+							<f:if condition="{address.contacperson}">
+								<i class="fa fa-mobile" aria-hidden="true"></i> {address.mobile}<br/>
+							</f:if>
+							<f:if condition="{address.fax}">
+								<i class="fa fa-fax" aria-hidden="true"></i> {address.fax}<br/>
+							</f:if>
+							<f:if condition="{address.mail}">
+								<i class="fa fa-envelope" aria-hidden="true"></i><f:link.email email="{address.mail}" > {address.mail}</f:link.email><br/>
+							</f:if>
+							<f:if condition="{address.www}">
+								<i class="fa fa-globe" aria-hidden="true"></i><f:link.external uri="{address.www}" target="_blank"> {address.www}</f:link.external>
+							</f:if>
+						</td>
+					</tr>
+				</f:for>
+				</tbody>
+			</table>
+			<div class="paginatehead" style="margin-bottom: 0px;"></div>
 		</f:then>
 		<f:else>
 			<div class="sorry">

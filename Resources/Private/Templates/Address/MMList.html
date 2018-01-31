@@ -1,0 +1,123 @@
+<f:layout name="Default" />
+<f:section name="main">
+
+	<f:flashMessages />
+
+	<style>
+		.tx-sic-address .sic_address_search { padding:20px; padding:1.25rem; background:#f2f2f2 }
+		.tx-sic-address .sic_address_search .sic_address_charsearch { display:flex; justify-content:space-between }
+		.tx-sic-address .sic_address_search .sic_address_charsearch a,.tx-sic-address .sic_address_search .sic_address_charsearch span { padding:7px 12px; padding:0.4375rem 0.75rem; background:#fff; display:block }
+		.tx-sic-address .sic_address_search .sic_address_charsearch a:hover,.tx-sic-address .sic_address_search .sic_address_charsearch span:hover,.tx-sic-address .sic_address_search .sic_address_charsearch a.activelinkcolor,.tx-sic-address .sic_address_search .sic_address_charsearch span.activelinkcolor { background:#002c5a; color:#fff; display:block }
+		.tx-sic-address .sic_address_resultcount { padding:5px 20px; padding:0.3125rem 1.25rem; margin-top:3px; margin-top:0.1875rem; background:#f2f2f2; font-style:italic }
+		.tx-sic-address #sic_address_results .card { border:none }
+		.tx-sic-address #sic_address_results .card .card-header { padding:0; border-radius:0; border-bottom:1px solid rgba(0, 0, 0, 0.3); background:transparent }
+		.tx-sic-address #sic_address_results .card .card-header a { padding:10px 45px 10px 20px; padding:0.625rem 2.8125rem 0.625rem 1.25rem; display:block; font-weight:700; position:relative }
+		.tx-sic-address #sic_address_results .card .card-header a:before { content:"\f106"; font:normal normal normal 21px/1 'FontAwesome'; position:absolute; top:50%; right:20px; transform:translateY(-50%) }
+		.tx-sic-address #sic_address_results .card .card-header a.collapsed:before { content:"\f107"; font:normal normal normal 21px/1 'FontAwesome' }
+	</style>
+
+	<div class="sic_address_search">
+		<f:form id="sic_address_search_form" action="search">
+
+			<f:if condition="{atoz}">
+				<div class="sic_address_charsearch">
+					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
+					<f:for each="{atoz}" as="value">
+						<f:if condition="{value.active}">
+							<f:then>
+								<f:if condition="{value.character} == {atozvalue}">
+									<f:then>
+										<div class="sic_address_char sic_address_all">
+											<span class="activelinkcolor atoz_text atoz_{value.character}">{value.character}</span>
+										</div>
+									</f:then>
+									<f:else>
+										<div class="sic_address_char">
+											<a href="#" class="sic_address_char_{value.character}" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+										</div>
+									</f:else>
+								</f:if>
+							</f:then>
+						</f:if>
+					</f:for>
+				</div>
+			</f:if>
+
+			<f:if condition="{settings.mainCategoryType} != 'none'">
+				<f:if condition="{maincategories}">
+					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />
+					<div class="address_searchoptions address_category">
+						<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_main_category_filter')}</b>
+						<f:form.select class="address_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
+									   additionalAttributes="{onchange: 'submitMainCategory(jQuery(this).val());'}" prependOptionValue="-1"
+									   prependOptionLabel="Bitte auswählen" />
+					</div>
+				</f:if>
+			</f:if>
+			<f:if condition="{categories}">
+				<f:if condition="{settings.categoryType} != 'none'">
+					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
+						<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_category_filter')}</b>
+						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, checkall:checkall, settings:settings}" />
+					</div>
+				</f:if>
+			</f:if>
+			<f:if condition="{settings.distanceField} != 'none'">
+				<f:form.hidden id="sic_address_distance" name="distance" value="{distancevalue}" />
+				<div class="search-container distance-container">
+					<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_filter')}</b>
+					<select id="distance" class="address_dropdown" onchange="submitDistance(jQuery(this).val());">
+						<option value="">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option1')}</option>
+						<option value="1">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option2')}</option>
+						<option value="5">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option3')}</option>
+						<option value="10">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option4')}</option>
+						<option value="15">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option5')}</option>
+					</select>
+				</div>
+			</f:if>
+			<f:if condition="{settings.queryField} != 'off'">
+				<div class="search-container">
+					<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_query_filter')}</b>
+					<f:form.textfield  id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
+					<f:form.submit value="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_query_button')}" class="search-submit" additionalAttributes="{onclick: 'submitQuery();'}" />
+				</div>
+			</f:if>
+		</f:form>
+	</div>
+	<f:if condition="{addresses}">
+		<f:then>
+			<div class="sic_address_resultcount">
+				<f:count subject="{addresses}" /> {f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_results')}
+			</div>
+			<f:widget.paginate objects="{addresses}" as="addresspage"
+							   configuration="{itemsPerPage: 20, maximumNumberOfLinks: 9, addQueryStringMethod: 'POST,GET', insertAbove: 0,insertBelow: 1}">
+				<f:render partial="Address/MMLists" arguments="{settings:settings, addresspage:addresspage}" />
+			</f:widget.paginate>
+		</f:then>
+		<f:else>
+			<div class="sorry">
+				{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+			</div>
+		</f:else>
+	</f:if>
+
+	<script>
+		function documentReadyJsHook () {
+			// Hide right side list boxes when no info is given
+			jQuery('.address_description').each(function() {
+				if($.trim(jQuery(this).html()).length < 1)
+					jQuery(this).css('display', 'none');
+			});
+			// Translate pagination
+			jQuery('.previous > a').each(function() {
+				jQuery(this).html('zur&uuml;ck');
+			});
+			jQuery('.next > a').each(function() {
+				jQuery(this).html('weiter');
+			});
+			// Distance selection
+			jQuery('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
+		}
+	</script>
+
+</f:section>

@@ -441,6 +441,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             case 'wtdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
             case 'eundw': $this->view->setTemplatePathAndFilename($templateRoot.'Address/EundwList.html'); break;
             case 'irsee': $this->view->setTemplatePathAndFilename($templateRoot.'Address/IrseeList.html'); break;
+            case 'mmdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/MMList.html'); break;
             case 'muniges': $this->view->setTemplatePathAndFilename($templateRoot.'Address/UnigesList.html'); break;
             case 'obgdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/OBGList.html'); break;
             case 'sachon': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SachonList.html'); break;

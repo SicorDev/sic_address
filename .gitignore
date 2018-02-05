@@ -1,0 +1,10 @@
+# phpstorm folder
+.idea/
+*.zip
+
+# dynamic generater files
+Classes/Domain/Model/Address.php
+Configuration/TCA/Overrides/tt_address.php
+Resources/Private/Language/locallang_db.xlf
+ext_tables.sql
+ext_typoscript_setup.txt

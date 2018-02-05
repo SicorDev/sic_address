@@ -26,6 +26,7 @@ namespace SICOR\SicAddress\Controller;
      *
      *  This copyright notice MUST APPEAR in all copies of the script!
      ***************************************************************/
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DomainPropertyController
@@ -50,8 +51,14 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     public function createAction(\SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty)
     {
         if (TYPO3_MODE == 'BE') {
-            $this->domainPropertyRepository->add($newDomainProperty);
-            $this->redirect('list', 'Module');
+            $errorMessages = [];
+            $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
+            if ($existingObjectWithSameName->count() < 1) {
+                $this->domainPropertyRepository->add($newDomainProperty);
+            } else {
+                $errorMessages[] = "A field named '" . $newDomainProperty->getTitle() . "' already exists. Please choose a unique name.";
+            }
+            $this->redirect('list', 'Module',null,['errorMessages'=>$errorMessages]);
         }
     }
 

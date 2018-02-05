@@ -4,6 +4,14 @@
 <f:section name="content">
     <h2><f:translate key="BackendListTitle" /></h2>
 
+    <f:if condition="{errorMessages}">
+        <f:then>
+            <f:for each="{errorMessages}" as="message">
+                <div class="alert alert-danger">{message}</div>
+            </f:for>
+        </f:then>
+    </f:if>
+
     <div class="container-fluid table">
         <f:if condition="{properties}">
             <f:then>
@@ -15,7 +23,7 @@
                                     <div class="row tr">
                                         <div class="col-sm-3 td">
                                             <label>Datebank Feldname:</label>
-                                            <f:form.textfield property="title" value="{property.title}" />
+                                            <f:form.textfield disabled="true" property="title" value="{property.title}" />
                                         </div>
                                         <div class="col-sm-3 td">
                                             <label>Beschriftung:</label>

@@ -62,10 +62,10 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     public function __construct() {
         $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         <f:for each="{properties}" as="property">
-            <f:if condition="{property.title} == 'image'">
+            <f:if condition="{property.type.title} == 'image'">
             $this->{property.title} = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
             </f:if>
-            </f:for>
+        </f:for>
     }
 
     /**
@@ -109,29 +109,35 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     <f:for each="{properties}" as="property">
     /**
-     * @return {property.type.modelType}
+     * @return <f:format.htmlentitiesDecode>{property.type.modelType}</f:format.htmlentitiesDecode>
      */
     public function get<sic:format.case case="capital">{property.title}</sic:format.case>() {
         return $this->{property.title};
     }
 
     /**
-     * @param {property.type.modelType} ${property.title}
+     * @param <f:format.htmlentitiesDecode>{property.type.modelType}</f:format.htmlentitiesDecode> ${property.title}
      * @return void
      */
     public function set<sic:format.case case="capital">{property.title}</sic:format.case>(${property.title}) {
         $this->{property.title} = ${property.title};
     }
 
-    <f:if condition="{property.title} == 'image'">
+    <f:if condition="{property.type.title} == 'image'">
     /**
-     * Adds a file to the storage
-     *
-     * @param \SICOR\SicAddress\Domain\Model\FileReference $image
+     * @param \SICOR\SicAddress\Domain\Model\FileReference ${property.title}
      * @return void
      */
-    public function addImage(\SICOR\SicAddress\Domain\Model\FileReference $image) {
-        $this->image->attach($image);
+    public function add<sic:format.case case="capital">{property.title}</sic:format.case>(\SICOR\SicAddress\Domain\Model\FileReference ${property.title}) {
+        $this->{property.title}->attach(${property.title});
+    }
+
+    /**
+     * @param \SICOR\SicAddress\Domain\Model\FileReference ${property.title}
+     * @return void
+     */
+    public function remove<sic:format.case case="capital">{property.title}</sic:format.case>(\SICOR\SicAddress\Domain\Model\FileReference ${property.title}) {
+        $this->{property.title}->detach(${property.title});
     }
     </f:if>
     </f:for>
@@ -150,5 +156,4 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     public function setSortField($sortField) {
         $this->sortField = $sortField;
     }
-
 }

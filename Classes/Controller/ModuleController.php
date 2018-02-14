@@ -1,5 +1,7 @@
 <?php
+
 namespace SICOR\SicAddress\Controller;
+
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,7 +35,8 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /**
  * ModuleController
  */
-class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
 
     /**
      * addressRepository
@@ -97,13 +100,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * Called before any action
      */
-    public function initializeAction() {
+    public function initializeAction()
+    {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
         $this->configuration = $this->domainPropertyRepository->findAll();
-        foreach($this->configuration as $key => $value) {
+        foreach ($this->configuration as $key => $value) {
             // Initialize Type Objects
             $type = $this->configuration[$key]->getType();
             $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
@@ -119,7 +123,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * Set Backend Module Templates
      * @return void
      */
-    protected function setBackendModuleTemplates(){
+    protected function setBackendModuleTemplates()
+    {
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $viewConfiguration = array(
             'view' => array(
@@ -136,7 +141,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function listAction() {
+    public function listAction()
+    {
         if ($this->request->hasArgument('errorMessages')) {
             $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));
         }
@@ -150,19 +156,19 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return void
      */
-    public function createAction() {
+    public function createAction()
+    {
         $errorMessages = array();
 
         // Model
         $domainProperties = array();
-        foreach($this->configuration as $key => $value)
-        {
+        foreach ($this->configuration as $key => $value) {
             $title = GeneralUtility::underscoredToLowerCamelCase($value->getTitle());
             $value->getType()->setClassName($title);
 
-            if($value->getType()->getTitle() === "mmtable") {
-                if (!$this->saveTemplate("Classes/Domain/Model/".$title.".php", $value, "Classes/Domain/Model/Table.php"))
-                    $errorMessages[] = "Unable to save Model: ".$title.".php";
+            if ($value->getType()->getTitle() === "mmtable") {
+                if (!$this->saveTemplate("Classes/Domain/Model/" . $title . ".php", $value, "Classes/Domain/Model/Table.php"))
+                    $errorMessages[] = "Unable to save Model: " . $title . ".php";
                 if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($title) . '.php', $this->getSingleTCAConfiguration($value), "Configuration/TCA/tx_sicaddress_domain_model_table.php"))
                     $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
             }
@@ -183,10 +189,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
         // Table Mapping
-        if(!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
+        if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
         // Table Mapping Override
-        if(!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
+        if (!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
             $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
 
         $this->updateExtension();
@@ -196,14 +202,16 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * @return void
      */
-    public function helpAction() {
+    public function helpAction()
+    {
 
     }
 
     /**
      * Clear DomainProperties
      */
-    public function removeAllDomainPropertiesAction() {
+    public function removeAllDomainPropertiesAction()
+    {
         $this->domainPropertyRepository->removeAll();
 
         $this->redirect("list");
@@ -214,10 +222,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return array
      */
-    private function getSQLConfiguration() {
+    private function getSQLConfiguration()
+    {
         $sql = array();
-        foreach($this->configuration as $key => $value) {
-            if(!$value->isExternal()) {
+        foreach ($this->configuration as $key => $value) {
+            if (!$value->isExternal()) {
                 $sql[$key]["definition"] = $value->getType()->getSQLDefinition($value->getTitle());
                 $sql[$key]["title"] = $value->getTitle();
                 $sql[$key]["type"] = $value->getType($value->getTitle());
@@ -231,9 +240,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return array
      */
-    private function getTCAConfiguration() {
+    private function getTCAConfiguration()
+    {
         $tca = array();
-        foreach($this->configuration as $key => $value) {
+        foreach ($this->configuration as $key => $value) {
             $tca[] = $this->getSingleTCAConfiguration($value);
         }
         return $tca;
@@ -247,16 +257,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     private function getSingleTCAConfiguration($value)
     {
-        //If not a default column
-        $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
-
-        $config = file_get_contents($templatePathAndFilename);
-
-        // TCA Override
-        if ($value->getTcaOverride()) {
-            $config = $value->getTcaOverride();
-        }
-
+        // Build options for dropdowns or checklists
         $options = "";
         $settings = array();
         if ($value->getType()->getTitle() === "select" || $value->getType()->getTitle() === "checklist") {
@@ -270,6 +271,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             parse_str($value->getSettings(), $settings);
         }
 
+        // Render the TCA snippets
+        $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
 
@@ -277,6 +280,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $customView->assign("options", $options);
         $customView->assign("title", $value->getTitle());
         $config = $customView->render();
+
+        // Eventually override TCA
+        if ($value->getTcaOverride()) {
+            $config = $value->getTcaOverride();
+        }
 
         $tca = array("external" => $value->isExternal(), "title" => $value->getTitle(), "tcaLabel" => $value->getTcaLabel(), "type" => $value->getType(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
         return $tca;
@@ -292,7 +300,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return bool
      */
-    private function saveTemplate($filename, $properties, $templatePath = "") {
+    private function saveTemplate($filename, $properties, $templatePath = "")
+    {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         $templatePathAndFilename = !$templatePath ? $this->templateRootPath . $filename : $this->templateRootPath . $templatePath;
@@ -312,9 +321,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return array
      */
-    private function getFieldTypeList() {
+    private function getFieldTypeList()
+    {
         $result = array();
-        foreach($this->fieldTypes as $fieldType) {
+        foreach ($this->fieldTypes as $fieldType) {
             $field = new \StdClass();
             $field->key = $fieldType;
             $field->value = ucfirst($fieldType);
@@ -327,7 +337,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     /**
      * Clear Cache
      */
-    private function updateExtension() {
+    private function updateExtension()
+    {
         $service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
         $service->install($this->request->getControllerExtensionKey());
     }

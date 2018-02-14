@@ -1,5 +1,5 @@
             \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-                '{properties.fieldName}',
+                '{title}',
                 array(
                     'maxitems' => 6,
                     'minitems' => 0,

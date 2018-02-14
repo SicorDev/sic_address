@@ -5,7 +5,7 @@ namespace SICOR\SicAddress\Domain\Service;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
-
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 
 /***************************************************************
  *
@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
  */
 class SignalService implements \TYPO3\CMS\Core\SingletonInterface
 {
-
     /**
      * Called after installation
      * Create default generated files
@@ -98,5 +97,19 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface
         $content = $customView->render();
 
         return (file_put_contents($filename, $content) !== false);
+    }
+
+    /**
+     * Called after saving extension configuration
+     * Refresh module list when backend module is activated
+     *
+     * @param string $extensionKey
+     * @param array $newConfiguration
+     */
+    public function refreshModuleList($extensionKey, $newConfiguration)
+    {
+        if ($extensionKey === 'sic_address') {
+            BackendUtility::setUpdateSignal('updateModuleMenu');
+        }
     }
 }

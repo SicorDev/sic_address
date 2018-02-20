@@ -9,9 +9,6 @@
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="tt_address.tx_extbase_type.Tx_SicAddress_Address">
-                <source>sic_address tt_address</source>
-            </trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_domainproperty">
 				<source>Domain Property</source>
 			</trans-unit>

@@ -169,8 +169,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if ($value->getType()->getTitle() === "mmtable") {
                 if (!$this->saveTemplate("Classes/Domain/Model/" . $title . ".php", $value, "Classes/Domain/Model/Table.php"))
                     $errorMessages[] = "Unable to save Model: " . $title . ".php";
-                if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($title) . '.php', $this->getSingleTCAConfiguration($value), "Configuration/TCA/tx_sicaddress_domain_model_table.php"))
-                    $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
+                if (!$this->saveTemplate("Configuration/TCA/tx_sicaddress_domain_model_" . strtolower($title) . ".php", $this->getSingleTCAConfiguration($value), "Configuration/TCA/tx_sicaddress_domain_model_table.php"))
+                    $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_" . strtolower($title) . ".php";
             }
 
             $domainProperties[$key] = clone $value;
@@ -179,21 +179,35 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $domainProperties))
             $errorMessages[] = "Unable to save Model: Address.php";
+
         // SQL
         if (!$this->saveTemplate('ext_tables.sql', $this->getSQLConfiguration()))
             $errorMessages[] = "Unable to save SQL: ext_tables.sql";
+
         // TCA
-        if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
-            $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
+        $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");
+        if($this->extensionConfiguration["ttAddressMapping"]) {
+            // tt_address override
+            if (!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
+                $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
+            $delFile = $extPath.'Configuration/TCA/tx_sicaddress_domain_model_address.php';
+            if(is_file($delFile)) unlink($delFile);
+        }
+        else {
+            // tx_sicaddress_domain_model_address
+            if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
+                $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
+            $delFile = $extPath.'Configuration/TCA/Overrides/tt_address.php';
+            if(is_file($delFile)) unlink($delFile);
+        }
+
         // Language
         if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
+
         // Table Mapping
         if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
-        // Table Mapping Override
-        if (!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
-            $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
 
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
@@ -286,7 +300,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $config = $value->getTcaOverride();
         }
 
-        $tca = array("external" => $value->isExternal(), "title" => $value->getTitle(), "tcaLabel" => $value->getTcaLabel(), "type" => $value->getType(), "config" => $config, "ttAddressMapping" => $this->extensionConfiguration["ttAddressMapping"]);
+        $tca = array("external" => $value->isExternal(), "title" => $value->getTitle(), "tcaLabel" => $value->getTcaLabel(), "type" => $value->getType(), "config" => $config);
         return $tca;
     }
 

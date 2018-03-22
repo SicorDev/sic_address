@@ -43,4 +43,15 @@ $GLOBALS['TCA']['tt_address']['columns']['description']['config']['wizards'] = a
 $GLOBALS['TCA']['tt_address']['ctrl']['label'] = 'company';
 $GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';
 $GLOBALS['TCA']['tt_address']['ctrl']['default_sortby'] = 'ORDER BY company';
-$GLOBALS['TCA']['tt_address']['ctrl']['searchFields'] = '{settings.searchFields}';
+
+// Add company to backend search
+$GLOBALS['TCA']['tt_address']['ctrl']['searchFields'] .= ', company';
+
+// Fix tt_address bug: https://github.com/FriendsOfTYPO3/tt_address/issues/55
+$GLOBALS['TCA']['tt_address']['columns']['birthday']['config'] = array(
+    'type' => 'input',
+    'renderType' => 'inputDateTime',
+    'eval' => 'date',
+    'size' => '8',
+    'default' => 0
+);

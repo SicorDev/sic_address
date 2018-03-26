@@ -18,7 +18,7 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'categories,',
+        'searchFields' => 'title,',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sic_address') . 'Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(
@@ -105,13 +105,13 @@ return array(
                 ),
             ),
         ),
-        "title" => Array (
-            "exclude" => 1,
-            "label" => "{properties.tcaLabel}",
-            "config" => Array (
-                "type" => "input",
-                "size" => "30",
-                "eval" => "required,trim",
+        'title' => Array (
+            'exclude' => 1,
+            'label' => '{properties.tcaLabel}',
+            'config' => Array (
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'required,trim',
             )
         )
     )

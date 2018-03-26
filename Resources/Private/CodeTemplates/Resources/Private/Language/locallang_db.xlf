@@ -21,9 +21,6 @@
 			<trans-unit id="tx_sicaddress_domain_model_domainproperty.tca_override">
 				<source>Tca Override</source>
 			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.db_override">
-				<source>Db Override</source>
-			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_domainproperty.settings">
 				<source>Settings</source>
 			</trans-unit>

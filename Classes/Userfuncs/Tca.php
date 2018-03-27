@@ -43,5 +43,10 @@ class Tca {
                 }
             }
         }
+
+        // Default: A helpful message...
+        if(empty($parameters['title'])) {
+            $parameters['title'] = '[Please use sic_address backend module to choose fields for the label.]';
+        }
     }
 }

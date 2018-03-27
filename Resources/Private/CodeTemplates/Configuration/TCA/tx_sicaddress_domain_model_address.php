@@ -3,13 +3,13 @@
 return array(
     'ctrl' => array(
         'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:tx_sicaddress_domain_model_address_title',
-        'label' => 'company',
+        'label' => '',
         'label_userFunc' => "SICOR\\SicAddress\\Userfuncs\\Tca->addressTitle",
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
-        'default_sortby' => 'ORDER BY company',
+        'default_sortby' => 'ORDER BY<f:for each="{properties}" as="field"><f:if condition="{field.isListLabel} == 1"><f:then> {field.title},</f:then></f:if></f:for>',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -19,7 +19,7 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'categories,',
+        'searchFields' => '<f:for each="{properties}" as="field">{field.title}, </f:for>',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sic_address') . 'Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(

@@ -300,7 +300,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $config = $value->getTcaOverride();
         }
 
-        $tca = array("external" => $value->isExternal(), "title" => $value->getTitle(), "tcaLabel" => $value->getTcaLabel(), "type" => $value->getType(), "config" => $config);
+        $tca = array("external" => $value->isExternal(), "title" => $value->getTitle(), "tcaLabel" => $value->getTcaLabel(), "type" => $value->getType(), "isListLabel" => $value->getIsListLabel(), "config" => $config);
         return $tca;
     }
 

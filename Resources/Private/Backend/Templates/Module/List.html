@@ -117,12 +117,9 @@
 
     <f:form action="importTTAddress" controller="Import">
         <div class="row">
-            <div class="col-sm-2"><f:form.textfield id="schemaName" name="schema" value="" placeholder="Name der Datenbank"/></div>
-            <div class="col-sm-2"><f:form.submit class="btn btn-primary" value="Import tt_address Field Definition" /></div>
+            <div class="col-sm-2"><f:form.submit class="btn btn-primary" value="<f:translate key='BackendImporterButtonLabel'/>" /></div>
         </div>
     </f:form>
-
-    <hr />
 
     <f:form action="migrateNicosDirectory" controller="Import">
         <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />

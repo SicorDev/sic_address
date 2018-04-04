@@ -321,15 +321,15 @@ class ImportController extends ModuleController {
         // Clear database
         $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
 
-        if ($this->request->hasArgument("schema") && $this->extensionConfiguration["ttAddressMapping"]) {
-            $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery('COLUMN_NAME', '`INFORMATION_SCHEMA`.`COLUMNS`', 'TABLE_SCHEMA="' . $this->request->getArgument("schema") . '" and TABLE_NAME="tt_address"');
-            while ($category = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($categories)) {
-                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $category["COLUMN_NAME"]) === 0) {
+        if ($this->extensionConfiguration["ttAddressMapping"]) {
+            $categories = mysqli_fetch_fields($GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_address', '', '', '', 1));
+            foreach ($categories as $category) {
+                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $category->name) === 0) {
                     $domainProperty = new DomainProperty();
-                    $domainProperty->setTitle($category["COLUMN_NAME"]);
-                    $domainProperty->setTcaLabel($category["COLUMN_NAME"]);
-                    $domainProperty->setType(($category["COLUMN_NAME"] === 'image') ? 'image' : 'string');
-                    $domainProperty->setExternal(!Service::startsWith($category["COLUMN_NAME"], 'tx_'));
+                    $domainProperty->setTitle($category->name);
+                    $domainProperty->setTcaLabel($category->name);
+                    $domainProperty->setType(($category->name === 'image') ? 'image' : 'string');
+                    $domainProperty->setExternal(!Service::startsWith($category->name, 'tx_'));
 
                     $this->domainPropertyRepository->add($domainProperty);
                 }

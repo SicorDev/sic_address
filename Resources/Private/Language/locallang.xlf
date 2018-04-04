@@ -18,6 +18,9 @@
 			<trans-unit id="BackendImporterListTitle">
 				<source>Importer</source>
 			</trans-unit>
+			<trans-unit id="BackendImporterButtonLabel">
+				<source>Import tt_address Field Definition</source>
+			</trans-unit>
 			<trans-unit id="label_switchAction">
 				<source>Ansicht</source>
 			</trans-unit>

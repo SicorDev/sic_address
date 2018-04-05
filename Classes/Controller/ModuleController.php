@@ -214,14 +214,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * @return void
-     */
-    public function helpAction()
-    {
-
-    }
-
-    /**
      * Clear DomainProperties
      */
     public function removeAllDomainPropertiesAction()

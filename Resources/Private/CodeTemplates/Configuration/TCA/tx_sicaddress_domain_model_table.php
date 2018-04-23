@@ -19,13 +19,13 @@ return array(
             'endtime' => 'endtime',
         ),
         'searchFields' => 'title,',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sic_address') . 'Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
+        'iconfile' => 'EXT:sic_address/Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(
         'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title',
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, title, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, --palette--;;1, title, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -79,30 +79,35 @@ return array(
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
+				'renderType' => 'inputDateTime',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ),
+				'behaviour' => array(
+					'allowLanguageSynchronization' => true,
+				),
             ),
         ),
         'endtime' => array(
             'exclude' => 1,
-            'l18n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
+				'renderType' => 'inputDateTime',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ),
+				'behaviour' => array(
+					'allowLanguageSynchronization' => true,
+				),
             ),
         ),
         'title' => Array (

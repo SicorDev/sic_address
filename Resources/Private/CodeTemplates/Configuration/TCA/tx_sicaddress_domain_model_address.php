@@ -3,13 +3,13 @@
 return array(
     'ctrl' => array(
         'title'	=> 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:tx_sicaddress_domain_model_address_title',
-        'label' => '',
+        'label' => '{headline}',
         'label_userFunc' => "SICOR\\SicAddress\\Userfuncs\\Tca->addressTitle",
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
-        'default_sortby' => 'ORDER BY<f:for each="{properties}" as="field"><f:if condition="{field.isListLabel} == 1"><f:then> {field.title},</f:then></f:if></f:for>',
+        'default_sortby' => '{orderbyquery}',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
@@ -26,13 +26,12 @@ return array(
         'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories,<f:for each="{properties}" as="field"> {field.title},</f:for>',
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --palette--;;1, categories,<f:for each="{properties}" as="field"> {field.title},</f:for> --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --palette--;;1, categories,<f:for each="{properties}" as="field"> {field.title},</f:for> --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
-
         'sys_language_uid' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
@@ -66,7 +65,6 @@ return array(
                 'type' => 'passthrough',
             ),
         ),
-
         'hidden' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
@@ -76,38 +74,34 @@ return array(
         ),
         'starttime' => array(
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => array(
                 'type' => 'input',
-				'renderType' => 'inputDateTime',
-				'size' => 13,
+                'size' => 13,
+                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ),
-				'behaviour' => array(
-					'allowLanguageSynchronization' => true,
-				),
             ),
         ),
         'endtime' => array(
             'exclude' => 1,
+            'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => array(
                 'type' => 'input',
-				'renderType' => 'inputDateTime',
                 'size' => 13,
+                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => array(
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
                 ),
-				'behaviour' => array(
-					'allowLanguageSynchronization' => true,
-				),
             ),
         ),
     <f:for each="{properties}" as="field">

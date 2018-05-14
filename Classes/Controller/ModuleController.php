@@ -195,7 +195,21 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
         else {
             // tx_sicaddress_domain_model_address
-            if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration()))
+            $tca= $this->getTCAConfiguration();
+
+            // Create orderby and headline according to config
+            $headline = "";
+            $orderby = [];
+            foreach($tca as $value) {
+                if($value['isListLabel']) {
+                    $orderby[]= $value['title'];
+                    if(empty($headline))
+                        $headline = $value['title'];
+                }
+            }
+            $orderbyquery = empty($orderby) ? '' : "ORDER BY ".implode(',', $orderby);
+
+            if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration(), "", $headline, $orderbyquery))
                 $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
             $delFile = $extPath.'Configuration/TCA/Overrides/tt_address.php';
             if(is_file($delFile)) unlink($delFile);
@@ -268,9 +282,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $settings = array();
         if ($value->getType()->getTitle() === "select" || $value->getType()->getTitle() === "checklist") {
             // Dropdown options
-            $dropdownOptions = explode("\n", $value->getSettings());
-            for ($i = 0; $i < count($dropdownOptions); $i++) {
-                $options .= "array('" . trim($dropdownOptions[$i]) . "', " . ($i + 1) . "),";
+            if (!empty($value->getSettings())) {
+                $dropdownOptions = explode("\n", $value->getSettings());
+                for ($i = 0; $i < count($dropdownOptions); $i++) {
+                    $options .= "array('" . trim($dropdownOptions[$i]) . "', " . ($i + 1) . "),";
+                }
             }
         } else {
             // Settings
@@ -306,7 +322,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return bool
      */
-    private function saveTemplate($filename, $properties, $templatePath = "")
+    private function saveTemplate($filename, $properties, $templatePath = "", $headline = "", $orderbyquery = "")
     {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
@@ -315,8 +331,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("settings", $this->extensionConfiguration);
         $customView->assign("properties", $properties);
-        $content = $customView->render();
+        $customView->assign("headline", $headline);
+        $customView->assign("orderbyquery", $orderbyquery);
 
+        $content = $customView->render();
         $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
 
         return (boolean)file_put_contents($filename, $content);

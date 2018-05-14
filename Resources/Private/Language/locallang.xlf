@@ -36,6 +36,9 @@
 			<trans-unit id="label_new">
 				<source>Eingabe</source>
 			</trans-unit>
+            <trans-unit id="label_detailPageField">
+                <source>Detail Seite</source>
+            </trans-unit>
 			<trans-unit id="label_atozField">
 				<source>A-Z Feld</source>
 			</trans-unit>

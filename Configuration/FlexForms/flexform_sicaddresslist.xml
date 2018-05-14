@@ -30,6 +30,30 @@
                     </config>
                 </TCEforms>
             </switchableControllerActions>
+            <settings.detailPageField>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_detailPageField</label>
+                    <config>
+                        <type>group</type>
+                        <internal_type>db</internal_type>
+                        <allowed>pages</allowed>
+                        <size>1</size>
+                        <maxitems>1</maxitems>
+                        <minitems>0</minitems>
+                        <show_thumbs>1</show_thumbs>
+                        <wizards>
+                            <suggest>
+                                <type>suggest</type>
+                                <default>
+                                    <searchWholePhrase>1</searchWholePhrase>
+                                </default>
+                            </suggest>
+                        </wizards>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                </TCEforms>
+            </settings.detailPageField>
             <settings.atozField>
                 <TCEforms>
                     <exclude>1</exclude>
@@ -203,15 +227,41 @@
                     <config>
                         <type>group</type>
                         <internal_type>db</internal_type>
+                        <allowed>tx_sicaddress_domain_model_address</allowed>
+                        <size>1</size>
+                        <maxitems>1</maxitems>
+                        <minitems>0</minitems>
+                        <show_thumbs>1</show_thumbs>
+                    </config>
+                    <displayCond>
+                        <and>
+                            <value1>FIELD:switchableControllerActions:=:Address->show</value1>
+                            <value2>USER:SICOR\SicAddress\Userfuncs\Flex->useSicAddress</value2>
+                        </and>
+                    </displayCond>
+                </TCEforms>
+            </settings.singleAddress>
+            <settings.singleTtAddress>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_single_address</label>
+                    <config>
+                        <type>group</type>
+                        <internal_type>db</internal_type>
                         <allowed>tt_address</allowed>
                         <size>1</size>
                         <maxitems>1</maxitems>
                         <minitems>0</minitems>
                         <show_thumbs>1</show_thumbs>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->show</displayCond>
+                    <displayCond>
+                        <and>
+                            <value1>FIELD:switchableControllerActions:=:Address->show</value1>
+                            <value2>USER:SICOR\SicAddress\Userfuncs\Flex->useTTAddress</value2>
+                        </and>
+                    </displayCond>
                 </TCEforms>
-            </settings.singleAddress>
-		</el>
+            </settings.singleTtAddress>
+        </el>
 	</ROOT>
-</T3DataStructure> 
+</T3DataStructure>

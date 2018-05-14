@@ -348,11 +348,19 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     /**
      * action show
      *
+     * @param \SICOR\SicAddress\Domain\Model\Address|null $address
      * @return void
      */
-    public function showAction()
+    public function showAction(\SICOR\SicAddress\Domain\Model\Address $address = null)
     {
-        $address = $this->addressRepository->findByUid($this->settings['singleAddress']);
+        if(empty($address)) {
+            $uid = $this->settings['singleAddress'];
+            if(!empty($this->settings['singleTtAddress'])) {
+                $uid = $this->settings['singleTtAddress'];
+            }
+            $address = $this->addressRepository->findByUid($uid);
+        }
+
         $this->view->assign('address', $address);
     }
 
@@ -375,13 +383,13 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
     {
         $arguments = $this->request->getArguments();
-	if($arguments["images"]) {
-		foreach ($arguments["images"] as $image) {
-			$fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
-			if($fileReference)
-				$newAddress->addImage($fileReference);
-		}
-	}
+        if ($arguments["images"]) {
+            foreach ($arguments["images"] as $image) {
+                $fileReference = FALService::uploadFalFile($image, 'sic_address', $this->addresstable, "image");
+                if ($fileReference)
+                    $newAddress->addImage($fileReference);
+            }
+        }
 
         $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->add($newAddress);
@@ -456,7 +464,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Get config
         $field = $this->settings['atozField'];
-        if ($field === "none") return null;
+        if (empty($field) || $field === "none") return null;
         $pages = $this->configurationManager->getContentObject()->data['pages'];
 
         // Query Database
@@ -482,7 +490,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Get config
         $field = $this->settings['filterField'];
-        if ($field && $field === "none") return null;
+        if (empty($field) || $field === "none") return null;
 
         // Correction for mmtable
        $field = substr($field, 0, strpos($field, '.'));

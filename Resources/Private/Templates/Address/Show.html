@@ -25,8 +25,9 @@
                 Fax:&nbsp;{address.fax}<br /><br />
             </f:if>
             <f:if condition="{address.email}">
-                <a href="mailto:{address.email}">{address.email}</a>
+                <a href="mailto:{address.email}">{address.email}</a><br /><br />
             </f:if>
+            <a href="javascript:history.back()">zurück</a>
         </dd>
     </dl>
 

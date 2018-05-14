@@ -3,18 +3,14 @@
 	<f:flashMessages />
 	<style>
 		.listview { width: 100%;}
-		.abisz { height: 22px; text-align: center; }
 		.category { margin-top: 10px; margin-bottom: 10px; }
 		.sic_address_search { margin-top: 10px; margin-bottom: 10px; }
-		.sic_address_list { border: solid lightgrey 1px; margin: 5px;}
 		.sorry { text-align: center; margin-top: 45px;}
-		.activelinkcolor { color: #CC0000;}
-		.deadlinkcolor { color: #999999;}
 		.tx-sic-address .listview > .list.row { position: relative; }
 	</style>
 
 	<div class="listview">
-		<f:form id="sic_address_search_form" action="search">
+		<f:form id="sic_address_search_form" class="sic_search" action="search">
 			<div class="abisz">
 				<f:if condition="{atoz}">
 					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
@@ -23,31 +19,37 @@
 							<f:then>
 								<f:if condition="{value.character} == {atozvalue}">
 									<f:then>
-										<span class="activelinkcolor">{value.character}</span>
+										<span class="activelinkcolor">{value.character}</span><span class="divoc">|</span>
 									</f:then>
 									<f:else>
-										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+										<a class="lifelink" href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a><span class="divoc">|</span>
 									</f:else>
 								</f:if>
 							</f:then>
 							<f:else>
-								<span class="deadlinkcolor">{value.character}</span>
+								<span class="deadlinkcolor">{value.character}</span><span class="divoc">|</span>
 							</f:else>
 						</f:if>
 					</f:for>
 				</f:if>
 			</div>
-			<div class="row">
-				<div class="category col-xs-5 col-xs-offset-1">
-					<f:if condition="{categories}">
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
-					</f:if>
-				</div>
-				<div class="sic_address_search col-xs-5">
-					<f:if condition="{settings.queryField} != 'off'">
-						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
-					</f:if>
+			<div class="abisz_form">
+				<div class="row">
+					<div class="category col-xs-12 col-md-6">
+						<f:if condition="{categories}">
+                            <label>Branchen</label>
+                            <f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+						</f:if>
+					</div>
+					<div class="sic_address_search col-xs-12 col-md-6">
+						<f:if condition="{settings.queryField} != 'off'">
+							<label>Suche</label>
+							<form>
+								<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small sic-address-input" style="font-size: 12px;" value="{queryvalue}" />
+								<f:form.button type="submit" class="tx_nicosdirectory-pi1-small sic-address-search" additionalAttributes="{onclick: 'submitQuery();'}"/>
+							</form>
+						</f:if>
+					</div>
 				</div>
 			</div>
 		</f:form>
@@ -55,29 +57,41 @@
 			<f:then>
 				<f:for each="{addresses}" as="address">
 					<div class="sic_address_list row">
-						<div class="col-xs-12 col-sm-6">
-							<strong>{address.company}</strong><br><br>
-							<f:if condition="{address.companymanager}">
-							{address.companymanager}<br /><br />
-							</f:if>
-							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
-							<a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
-						</div>
-						<div class="col-xs-12 col-sm-6">
-							{address.street} {address.housenumber}<br>
-							{address.zip} {address.city}<br>
-							Tel.: {address.telephone}<br>
-							<f:if condition="{address.fax}">
-								Fax.: {address.fax}
-							</f:if>
-							<f:if condition="{address.mobile}">
-								Mobil: {address.mobile}
-							</f:if>
-							<f:if condition="{address.freetext}">
-								<br /><br />
-								<f:format.html>{address.freetext}</f:format.html>
-							</f:if>
+						<div class="col-xs-12">
+							<h4>{address.company}</h4>
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<f:if condition="{address.companymanager}">
+										<p>	{address.companymanager}<br/>
+												{address.street} {address.housenumber}<br>
+												{address.zip} {address.city}</p>
+									</f:if>
+									<f:if condition="{address.telephone}">
+										<i class="fa fa-phone" aria-hidden="true"></i>{address.telephone}<br/>
+									</f:if>
+									<f:if condition="{address.mobile}">
+										<i class="fa fa-mobile" aria-hidden="true"></i>{address.mobile}<br/>
+									</f:if>
+									<f:if condition="{address.fax}">
+										<i class="fa fa-fax" aria-hidden="true"></i>{address.fax}<br/>
+									</f:if>
+
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<p>
+										<f:if condition="{address.email}">
+											<i class="fa fa-desktop" aria-hidden="true"></i><f:link.email email="{address.email}">{address.email}</f:link.email><br/>
+										</f:if>
+										<f:if condition="{address.www}">
+											<i class="fa fa-paper-plane" aria-hidden="true"></i><f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external><br/>
+										</f:if>
+										<i class="fa fa-map-marker" aria-hidden="true"></i><a href="https://maps.google.com/?q={address.street}+{address.housenumber}+{address.zip}+{address.city}+{address.company}" target="_blank">In Karte anzeigen</a>
+									</p><br/>
+									<f:if condition="{address.freetext}">
+										<f:format.html>{address.freetext}</f:format.html>
+									</f:if>
+								</div>
+							</div>
 						</div>
 					</div>
 				</f:for>

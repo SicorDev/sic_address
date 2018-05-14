@@ -67,12 +67,19 @@
 								<strong>{address.company}</strong><br><br>
 								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
 								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+								<f:if condition="{settings.detailPageField}">
+									<f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address}">
+										Detail
+									</f:link.action>
+								</f:if>
 							</div>
 							<div class="col-xs-4">
-								{address.street}<br>
-								{address.city}<br>
-								{address.tel}<br>
-								{address.fax}
+								<address>
+									{address.street}<br>
+									{address.city}<br>
+									{address.tel}<br>
+									{address.fax}
+								</address>
 							</div>
 							<div class="col-xs-4 image">
 								<f:render partial="Address/Images" arguments="{address:address}" />

@@ -285,7 +285,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             if (!empty($value->getSettings())) {
                 $dropdownOptions = explode("\n", $value->getSettings());
                 for ($i = 0; $i < count($dropdownOptions); $i++) {
-                    $options .= "array('" . trim($dropdownOptions[$i]) . "', " . ($i + 1) . "),";
+                    $options .= 'array("' . trim($dropdownOptions[$i]) . '", ' . ($i + 1) . '),';
                 }
             }
         } else {

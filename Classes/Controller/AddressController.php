@@ -107,7 +107,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function listAction()
     {
         $this->maincategoryvalue = '';
-        $defcat = $this->addressRepository->findByUid($this->settings['categoryDefault']);
+        $defcat = $this->categoryRepository->findByUid($this->settings['categoryDefault']);
         $emptyList = $this->settings['noListStartup'];
 
         $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);

@@ -439,21 +439,26 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function setConfiguredTemplate()
     {
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $templateRoot = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPaths'][0]);
-
+        $template = '';
         switch ($this->extensionConfiguration["templateSet"])
         {
-            case 'nicosdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/NicosList.html'); break;
-            case 'spdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SPDirList.html'); break;
-            case 'wtdir': $this->view->setTemplatePathAndFilename('Not Implemented'); break;
-            case 'eundw': $this->view->setTemplatePathAndFilename($templateRoot.'Address/EundwList.html'); break;
-            case 'irsee': $this->view->setTemplatePathAndFilename($templateRoot.'Address/IrseeList.html'); break;
-            case 'mmdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/MMList.html'); break;
-            case 'muniges': $this->view->setTemplatePathAndFilename($templateRoot.'Address/UnigesList.html'); break;
-            case 'obgdir': $this->view->setTemplatePathAndFilename($templateRoot.'Address/OBGList.html'); break;
-            case 'sachon': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SachonList.html'); break;
-            case 'sicor': $this->view->setTemplatePathAndFilename($templateRoot.'Address/SicorList.html'); break;
+            case 'nicosdir': $template = 'NicosList.html'; break;
+            case 'spdir': $template = 'SPDirList.html'; break;
+            case 'eundw': $template = 'EundwList.html'; break;
+            case 'irsee': $template = 'IrseeList.html'; break;
+            case 'mmdir': $template = 'MMList.html'; break;
+            case 'muniges': $template = 'UnigesList.html'; break;
+            case 'obgdir': $template = 'OBGList.html'; break;
+            case 'sachon': $template = 'SachonList.html'; break;
+            case 'sicor': $template = 'SicorList.html'; break;
+        }
+        if (method_exists($this->view, 'setTemplate')) {
+            // TYPO3 8 specific
+            $this->view->setTemplate($template);
+        } else {
+            // TYPO3 7 specific
+            $action = str_replace('.html','', GeneralUtility::lcfirst($template));
+            $this->request->setControllerActionName($action);
         }
     }
 

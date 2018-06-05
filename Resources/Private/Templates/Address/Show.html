@@ -5,6 +5,14 @@
 
     <dl class="vcard">
         <dd class="vcard">
+            <f:if condition="{address.categories}">
+                Kategorien:<br />
+                <ul>
+                    <f:for each="{address.categories}" as="category">
+                        <li>{category.title}</li>
+                    </f:for>
+                </ul>
+            </f:if>
             <f:render partial="Address/Images" arguments="{address:address}" />
 			<f:if condition="{address.company}">
                 <b>{address.company}</b><br /><br />

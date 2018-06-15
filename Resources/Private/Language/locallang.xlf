@@ -24,6 +24,12 @@
 			<trans-unit id="HelpButtonLabel">
 				<source>Help</source>
 			</trans-unit>
+			<trans-unit id="DeleteCustomFieldsLabel">
+				<source>Remove Custom Field Definitions</source>
+			</trans-unit>
+			<trans-unit id="DeleteTTAddressFieldsLabel">
+				<source>Remove tt_address Field Definitions</source>
+			</trans-unit>
 			<trans-unit id="label_switchAction">
 				<source>Ansicht</source>
 			</trans-unit>

@@ -6,6 +6,7 @@ use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 
 /***************************************************************
  *
@@ -125,7 +126,6 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function setBackendModuleTemplates()
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $viewConfiguration = array(
             'view' => array(
                 'templateRootPath' => 'EXT:sic_address/Resources/Private/Backend/Templates/',
@@ -133,7 +133,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 'layoutRootPath' => 'EXT:sic_address/Resources/Private/Backend/Layouts/',
             )
         );
-        $this->configurationManager->setConfiguration(array_merge($frameworkConfiguration, $viewConfiguration));
+        $this->configurationManager->setConfiguration(array_merge($this->extbaseFrameworkConfiguration, $viewConfiguration));
     }
 
     /**
@@ -143,6 +143,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction()
     {
+        // Bailout if static template is missing
+        if (($this->view instanceof NotFoundView) && (!array_key_exists('templateRootPaths', $this->extbaseFrameworkConfiguration['view']))) {
+            echo "Static typoscript template hasn't been included in this branch.";
+            exit;
+        }
         if ($this->request->hasArgument('errorMessages')) {
             $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));
         }
@@ -186,33 +191,32 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         // TCA
         $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");
-        if($this->extensionConfiguration["ttAddressMapping"]) {
+        if ($this->extensionConfiguration["ttAddressMapping"]) {
             // tt_address override
             if (!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
                 $errorMessages[] = "Unable to save Table Mapping Overrides: tt_address.php";
-            $delFile = $extPath.'Configuration/TCA/tx_sicaddress_domain_model_address.php';
-            if(is_file($delFile)) unlink($delFile);
-        }
-        else {
+            $delFile = $extPath . 'Configuration/TCA/tx_sicaddress_domain_model_address.php';
+            if (is_file($delFile)) unlink($delFile);
+        } else {
             // tx_sicaddress_domain_model_address
-            $tca= $this->getTCAConfiguration();
+            $tca = $this->getTCAConfiguration();
 
             // Create orderby and headline according to config
             $headline = "";
             $orderby = [];
-            foreach($tca as $value) {
-                if($value['isListLabel']) {
-                    $orderby[]= $value['title'];
-                    if(empty($headline))
+            foreach ($tca as $value) {
+                if ($value['isListLabel']) {
+                    $orderby[] = $value['title'];
+                    if (empty($headline))
                         $headline = $value['title'];
                 }
             }
-            $orderbyquery = empty($orderby) ? '' : "ORDER BY ".implode(',', $orderby);
+            $orderbyquery = empty($orderby) ? '' : "ORDER BY " . implode(',', $orderby);
 
             if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', $this->getTCAConfiguration(), "", $headline, $orderbyquery))
                 $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
-            $delFile = $extPath.'Configuration/TCA/Overrides/tt_address.php';
-            if(is_file($delFile)) unlink($delFile);
+            $delFile = $extPath . 'Configuration/TCA/Overrides/tt_address.php';
+            if (is_file($delFile)) unlink($delFile);
         }
 
         // Language
@@ -228,12 +232,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     /**
-     * Clear DomainProperties
+     * Delete DomainProperties
+     * @param string $external
      */
-    public function removeAllDomainPropertiesAction()
+    public function deleteFieldDefinitionsAction($external)
     {
-        $this->domainPropertyRepository->removeAll();
-
+        $this->domainPropertyRepository->deleteFieldDefinitions($external);
         $this->redirect("list");
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace SICOR\SicAddress\Domain\Repository;
 
 /***************************************************************
@@ -31,7 +32,6 @@ namespace SICOR\SicAddress\Domain\Repository;
  */
 class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
     /**
      * @var array
      */
@@ -39,10 +39,28 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
-    public function initializeObject() {
+    public function initializeObject()
+    {
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
         $this->setDefaultQuerySettings($querySettings);
     }
 
+    /**
+     * Delete single definition.
+     * @param string $uid
+     */
+    public function deleteFieldDefinition($uid)
+    {
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "uid = " . $uid);
+    }
+
+    /**
+     * Delete either all custom or all tt_address definitions.
+     * @param string $external
+     */
+    public function deleteFieldDefinitions($external)
+    {
+        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "external = " . $external);
+    }
 }

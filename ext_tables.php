@@ -31,7 +31,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
         'sicaddress',    // Submodule key
         '',                        // Position
         array(
-            'Module' => 'list, create, removeAllDomainProperties',
+            'Module' => 'list, create, deleteFieldDefinitions',
             'Import' => 'migrateNicosDirectory, migrateSPDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
             'DomainProperty' => 'create, update, delete',
         ),

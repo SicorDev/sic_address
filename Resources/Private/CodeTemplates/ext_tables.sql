@@ -33,7 +33,7 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
-	l10n_state text NOT NULL,
+	l10n_state text,
 
 	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>

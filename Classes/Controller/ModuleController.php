@@ -253,7 +253,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $sql = array();
         foreach ($this->configuration as $key => $value) {
             if (!$value->isExternal()) {
-                $sql[$key]["definition"] = $value->getType()->getSQLDefinition($value->getTitle());
+                $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`'.$value->getTitle().'`');
                 $sql[$key]["title"] = $value->getTitle();
                 $sql[$key]["type"] = $value->getType($value->getTitle());
             }

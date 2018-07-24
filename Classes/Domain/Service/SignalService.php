@@ -49,26 +49,13 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface
             return;
         }
 
-        // Model
-        if (!$this->saveTemplate('Classes/Domain/Model/Address.php', array()))
-            $errorMessages[] = "Unable to save Model: Address.php";
-        // SQL
-        if (!$this->saveTemplate('ext_tables.sql', array()))
-            $errorMessages[] = "Unable to save SQL: ext_tables.sql";
-        // Language
-        if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array()))
-            $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
-        // Table Mapping
-        if (!$this->saveTemplate('ext_typoscript_setup.txt', array()))
-            $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
-        // Table Mapping Override
-        if (!$this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array()))
-            $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_address.php";
+        // Create default files
+        $this->saveTemplate('Classes/Domain/Model/Address.php', array());
+        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array());
+        $this->saveTemplate('ext_typoscript_setup.txt', array());
+        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array());
 
-        // Refresh database with above tables and 'autoload' above classes...
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
-        $service = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
-        $service->processExtensionSetup('sic_address');
+        // 'Autoload' above classes...
         ClassLoadingInformation::dumpClassLoadingInformation();
     }
 

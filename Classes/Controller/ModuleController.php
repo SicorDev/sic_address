@@ -144,9 +144,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function listAction()
     {
         // Bailout if static template is missing
-        if (($this->view instanceof NotFoundView) && (!array_key_exists('templateRootPaths', $this->extbaseFrameworkConfiguration['view']))) {
-            echo "Static typoscript template hasn't been included in this branch.";
-            exit;
+        if ($this->view instanceof NotFoundView) {
+            if (!$this->extbaseFrameworkConfiguration['view'] || !array_key_exists('templateRootPaths', $this->extbaseFrameworkConfiguration['view'])) {
+                echo "Static typoscript template hasn't been included in this branch.";
+                exit;
+            }
         }
         if ($this->request->hasArgument('errorMessages')) {
             $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));

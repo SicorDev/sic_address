@@ -2,7 +2,7 @@
 
 return array(
     'ctrl' => array(
-        'title'	=> '{properties.title}',
+        'title'	=> '{properties.tcaLabel}',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -19,13 +19,14 @@ return array(
             'endtime' => 'endtime',
         ),
         'searchFields' => 'title,',
+        'groupName' => 'sic_address',
         'iconfile' => 'EXT:sic_address/Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
     ),
     'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, title',
+        'showRecordFieldList' => 'sys_language_uid, hidden, title',
     ),
     'types' => array(
-        '1' => array('showitem' => 'sys_language_uid, l18n_parent, l18n_diffsource, hidden, --palette--;;1, title, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+        '1' => array('showitem' => 'sys_language_uid, hidden, --palette--;;1, title, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -40,8 +41,7 @@ return array(
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => array(
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
+                    array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0),
                 ),
             ),
         ),
@@ -55,8 +55,8 @@ return array(
                 'items' => array(
                     array('', 0),
                 ),
-                'foreign_table' => 'tx_sicaddress_domain_model_address',
-                'foreign_table_where' => 'AND tx_sicaddress_domain_model_address.pid=###CURRENT_PID### AND tx_sicaddress_domain_model_address.sys_language_uid IN (-1,0)',
+                'foreign_table' => 'tx_sicaddress_domain_model_{properties.title}',
+                'foreign_table_where' => 'AND tx_sicaddress_domain_model_{properties.title}.pid=###CURRENT_PID### AND tx_sicaddress_domain_model_{properties.title}.sys_language_uid = 0',
             ),
         ),
         'l18n_diffsource' => array(

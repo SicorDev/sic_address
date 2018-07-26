@@ -90,6 +90,16 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     public function deleteAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
     {
         if (TYPO3_MODE == 'BE') {
+            if($domainProperty->getType() === 'mmtable') {
+                $title = $domainProperty->getTitle();
+                $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");
+
+                // Delete extra files
+                $delFile = $extPath . 'Classes/Domain/Model/' . $title . '.php';
+                if (is_file($delFile)) unlink($delFile);
+                $delFile = $extPath . 'Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($title) . '.php';
+                if (is_file($delFile)) unlink($delFile);
+            }
             $this->domainPropertyRepository->deleteFieldDefinition($domainProperty->getUid());
             $this->redirect('list', 'Module');
         }

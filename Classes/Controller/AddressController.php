@@ -235,10 +235,12 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 }
                 $addresses = $addressPlus;
 
-                // Sort everything once again
-                usort($addresses, function ($adr1, $adr2) {
-                    return strcmp($adr1->getSortField(), $adr2->getSortField());
-                });
+                // Sort everything once again (actually groups by filter!)
+                if(count($addresses) > 1) {
+                    usort($addresses, function ($adr1, $adr2) {
+                        return strcmp($adr1->getSortField(), $adr2->getSortField());
+                    });
+                }
             }
         }
 
@@ -319,7 +321,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function sortCategories(&$categoryList)
     {
-        if ($categoryList) {
+        if ($categoryList && count($$categoryList) > 1) {
             usort($categoryList, function ($cat1, $cat2) {
                 $str1 = $this->normalize($cat1->getTitle());
                 $str2 = $this->normalize($cat2->getTitle());
@@ -444,13 +446,14 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         {
             case 'nicosdir': $template = 'NicosList.html'; break;
             case 'spdir': $template = 'SPDirList.html'; break;
+            case 'sicor': $template = 'SicorList.html'; break;
             case 'eundw': $template = 'EundwList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;
-            case 'mmdir': $template = 'MMList.html'; break;
+            case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
             case 'obgdir': $template = 'OBGList.html'; break;
             case 'sachon': $template = 'SachonList.html'; break;
-            case 'sicor': $template = 'SicorList.html'; break;
+            case 'ualdir': $template = 'UALList.html'; break;
         }
         if (method_exists($this->view, 'setTemplate')) {
             // TYPO3 8 specific

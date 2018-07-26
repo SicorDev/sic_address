@@ -91,7 +91,7 @@
 			</div>
 			<f:widget.paginate objects="{addresses}" as="addresspage"
 							   configuration="{itemsPerPage: 20, maximumNumberOfLinks: 9, addQueryStringMethod: 'POST,GET', insertAbove: 0,insertBelow: 1}">
-				<f:render partial="Address/MMLists" arguments="{settings:settings, addresspage:addresspage}" />
+				<f:render partial="Address/UALLists" arguments="{settings:settings, addresspage:addresspage}" />
 			</f:widget.paginate>
 		</f:then>
 		<f:else>

@@ -78,7 +78,7 @@
                 <tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
                     <td headers="anschrift">
                         <b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
-                        <span>{address.address}</span><br><br>
+                        <span>{address.street}</span><br><br>
                         <span>{address.zip} {address.city}</span><br><br>
                         <f:if condition="{address.categories}">
                             <br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
@@ -110,7 +110,7 @@
                     <td headers="anschrift">
                         <b>{address.company}</b><br>
                         <span>{address.title} {address.name}</span><br>
-                        <span>{address.address}</span><br><br>
+                        <span>{address.street}</span><br><br>
                         <span>{address.zip} {address.city}</span>
                     </td>
                     <td headers="kontaktdaten">

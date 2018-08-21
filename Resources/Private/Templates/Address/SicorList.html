@@ -68,7 +68,7 @@
 								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
 								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
 								<f:if condition="{settings.detailPageField}">
-									<f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address}">
+									<f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address, listPageUid: listPageUid}">
 										Detail
 									</f:link.action>
 								</f:if>

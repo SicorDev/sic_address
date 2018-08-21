@@ -128,6 +128,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
+        $this->view->assign('listPageUid', $GLOBALS['TSFE']->id);
     }
 
     /**
@@ -321,7 +322,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function sortCategories(&$categoryList)
     {
-        if ($categoryList && count($$categoryList) > 1) {
+        if ($categoryList && count($categoryList) > 1) {
             usort($categoryList, function ($cat1, $cat2) {
                 $str1 = $this->normalize($cat1->getTitle());
                 $str2 = $this->normalize($cat2->getTitle());
@@ -363,7 +364,17 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $address = $this->addressRepository->findByUid($uid);
         }
 
+        $listPageUid = $this->settings['listPageField'];
+        if(empty($listPageUid)) {
+            if($this->request->hasArgument('listPageUid')) {
+                $listPageUid = $this->request->getArgument('listPageUid');
+            } else {
+                $listPageUid = 0;
+            }
+        }
+
         $this->view->assign('address', $address);
+        $this->view->assign('listPageUid', $listPageUid);
     }
 
     /**

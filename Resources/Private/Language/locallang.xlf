@@ -42,6 +42,9 @@
 			<trans-unit id="label_new">
 				<source>Eingabe</source>
 			</trans-unit>
+            <trans-unit id="label_listPageField">
+                <source>Listenansicht (Seite)</source>
+            </trans-unit>
             <trans-unit id="label_detailPageField">
                 <source>Detail Seite</source>
             </trans-unit>

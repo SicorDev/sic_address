@@ -35,7 +35,15 @@
             <f:if condition="{address.email}">
                 <a href="mailto:{address.email}">{address.email}</a><br /><br />
             </f:if>
-            <a href="javascript:history.back()">zurück</a>
+            <f:if condition="{listPageUid}">
+                <f:then>
+                    <f:link.action pageUid="{listPageUid}">zurück</f:link.action>
+                </f:then>
+                <f:else>
+                    <a href="javascript:history.back()">zurück</a>
+                </f:else>
+            </f:if>
+
         </dd>
     </dl>
 

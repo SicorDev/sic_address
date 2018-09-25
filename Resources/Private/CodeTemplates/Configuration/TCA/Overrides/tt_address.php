@@ -55,3 +55,6 @@ $GLOBALS['TCA']['tt_address']['columns']['birthday']['config'] = array(
     'size' => '8',
     'default' => 0
 );
+
+// Link to sys_category
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable('sic_address', 'tt_address');

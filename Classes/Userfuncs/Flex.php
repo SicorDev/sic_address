@@ -3,7 +3,7 @@
 namespace SICOR\SicAddress\Userfuncs;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *

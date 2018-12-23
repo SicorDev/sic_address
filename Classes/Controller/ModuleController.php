@@ -232,7 +232,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
 
-        $this->updateExtension();
+        //$this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
     }
 

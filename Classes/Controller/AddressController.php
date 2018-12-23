@@ -84,7 +84,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         }
 
         // Make search respect configured pages if there are some
-        $pages = $this->configurationManager->getContentObjectRenderer()->data['pages'];
+        $pages = $this->configurationManager->getContentObject()->data['pages'];
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 
         if (strlen($pages) > 0) {
@@ -145,7 +145,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function fillAddressList($atozValue, $categoryValue, $filterValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
-        $this->fillCategoryLists($this->configurationManager->getContentObjectRenderer()->data['uid']);
+        $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
         $this->view->assign('maincategories', $this->mainCategoryList);
@@ -485,7 +485,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         // Get config
         $field = $this->settings['atozField'];
         if (empty($field) || $field === "none") return null;
-        $pages = $this->configurationManager->getContentObjectRenderer()->data['pages'];
+        $pages = $this->configurationManager->getContentObject()->data['pages'];
 
         // Query Database
         $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);

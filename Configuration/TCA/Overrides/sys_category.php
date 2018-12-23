@@ -23,6 +23,6 @@ $GLOBALS['TCA']['sys_category']['ctrl']['default_sortby'] = 'ORDER BY title';
 $GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = '';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'',
+	'tx_sicaddress_domain_model_address',
 	'EXT:/Resources/Private/Language/locallang_csh_.xlf'
 );

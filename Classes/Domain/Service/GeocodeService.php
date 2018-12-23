@@ -13,7 +13,7 @@ namespace SICOR\SicAddress\Domain\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,7 +71,7 @@ class GeocodeService
           }
          */
         // Get extensions configuration
-        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['geolocations']);
+        $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('geolocations');
         // Append server-key as URL-parameter
         $key = $serverKey ? $serverKey : (!empty($extConf['serverKey']) ? $extConf['serverKey'] : null);
         if ($key) {

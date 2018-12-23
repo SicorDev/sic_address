@@ -29,13 +29,24 @@ namespace SICOR\SicAddress\ViewHelpers;
 class ArrayValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param mixed $key
-	 * @param array $array
-	 * @param integer $level
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+		$this->registerArgument('key', 'mixed', null);
+		$this->registerArgument('array', 'array', array());
+		$this->registerArgument('level', 'integer', 0);
+    }
+
+	/**
 	 * 
 	 * @return boolean
 	 */
-	public function render($key, $array, $level) {
+	public function render() {
+		$key = $this->arguments['key'];
+		$array = $this->arguments['array'];
+		$level = $this->arguments['level'];
+
 		return $array[$level][$key];
 	}
 }

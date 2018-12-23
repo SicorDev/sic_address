@@ -26,6 +26,7 @@ namespace SICOR\SicAddress\Task;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
@@ -41,7 +42,7 @@ class AddGeoLocationTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     public function execute()
     {
         // Check configuration
-        $extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $extensionManagerSettings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
         if(!$extensionManagerSettings["ttAddressMapping"])
             return FALSE;
         

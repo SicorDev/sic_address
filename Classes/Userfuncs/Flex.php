@@ -2,6 +2,9 @@
 
 namespace SICOR\SicAddress\Userfuncs;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+
+
 /***************************************************************
  *
  *  Copyright notice
@@ -40,7 +43,7 @@ class Flex
      */
     public function __construct()
     {
-        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
     }
 
     /**

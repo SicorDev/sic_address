@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+
 // Register Sicor icon
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon('extensions-sicor-icon', 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider', [
@@ -22,7 +25,7 @@ $TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_sicaddresslist.xml');
 
-$extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+$extensionManagerSettings = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
 if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(

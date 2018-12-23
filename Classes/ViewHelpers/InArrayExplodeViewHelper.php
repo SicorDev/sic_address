@@ -29,12 +29,22 @@ namespace SICOR\SicAddress\ViewHelpers;
 class InArrayExplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param mixed $needle
-	 * @param string $haystack
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+		$this->registerArgument('needle', 'mixed', null);
+		$this->registerArgument('haystack', 'string', '');
+    }
+
+	/**
 	 * 
 	 * @return boolean
 	 */
-	public function render($needle, $haystack) {
+	public function render() {
+		$needle = $this->arguments['needle'];
+		$haystack = $this->arguments['haystack'];
+
 		$haystack = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $haystack, TRUE);
 		return in_array($needle, $haystack);
 	}

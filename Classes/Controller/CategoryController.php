@@ -36,7 +36,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $categoryRepository = NULL;
     
@@ -89,7 +89,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * action edit
      *
      * @param \SICOR\SicAddress\Domain\Model\Category $category
-     * @ignorevalidation $category
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $category
      * @return void
      */
     public function editAction(\SICOR\SicAddress\Domain\Model\Category $category)

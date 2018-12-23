@@ -25,6 +25,7 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -39,7 +40,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $addressRepository = NULL;
 
@@ -47,7 +48,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $categoryRepository = NULL;
 
@@ -71,7 +72,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function initializeAction()
     {
         // Init config
-        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting
@@ -83,7 +84,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         }
 
         // Make search respect configured pages if there are some
-        $pages = $this->configurationManager->getContentObject()->data['pages'];
+        $pages = $this->configurationManager->getContentObjectRenderer()->data['pages'];
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 
         if (strlen($pages) > 0) {
@@ -144,7 +145,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function fillAddressList($atozValue, $categoryValue, $filterValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
-        $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
+        $this->fillCategoryLists($this->configurationManager->getContentObjectRenderer()->data['uid']);
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
         $this->view->assign('maincategories', $this->mainCategoryList);
@@ -413,7 +414,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * action edit
      *
      * @param \SICOR\SicAddress\Domain\Model\Address $address
-     * @ignorevalidation $address
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $address
      * @return void
      */
     public function editAction(\SICOR\SicAddress\Domain\Model\Address $address)
@@ -471,7 +472,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $this->view->setTemplate($template);
         } else {
             // TYPO3 7 specific
-            $action = str_replace('.html','', GeneralUtility::lcfirst($template));
+            $action = str_replace('.html','', lcfirst($template));
             $this->request->setControllerActionName($action);
         }
     }
@@ -484,7 +485,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         // Get config
         $field = $this->settings['atozField'];
         if (empty($field) || $field === "none") return null;
-        $pages = $this->configurationManager->getContentObject()->data['pages'];
+        $pages = $this->configurationManager->getContentObjectRenderer()->data['pages'];
 
         // Query Database
         $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);

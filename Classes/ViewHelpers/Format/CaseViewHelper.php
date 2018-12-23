@@ -25,13 +25,22 @@ namespace SICOR\SicAddress\ViewHelpers\Format;
 class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('case', 'string', '"upper" or "lower"');
+    }
+
+    /**
      * Render the converted text
      *
-     * @param string $case "upper" or "lower"
      * @return string converted text
      * @api
      */
-    public function render($case) {
+    public function render() {
+        $case = $this->arguments['case'];
+        
         $stringToConvert = $this->renderChildren();
         switch ($case) {
             case 'upper':

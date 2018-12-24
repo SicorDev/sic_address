@@ -52,6 +52,14 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function deleteFieldDefinitions($external)
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "external = " . $external);
+        $query = $this->createQuery();
+
+        $query->matching(
+            $query->equals('external', $external)
+        );
+        
+        foreach($query->execute() as $item) {
+            $this->remove($item);
+        }
     }
 }

@@ -47,15 +47,6 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * Delete single definition.
-     * @param string $uid
-     */
-    public function deleteFieldDefinition($uid)
-    {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "uid = " . $uid);
-    }
-
-    /**
      * Delete either all custom or all tt_address definitions.
      * @param string $external
      */

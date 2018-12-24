@@ -100,7 +100,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
                 $delFile = $extPath . 'Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($title) . '.php';
                 if (is_file($delFile)) unlink($delFile);
             }
-            $this->domainPropertyRepository->deleteFieldDefinition($domainProperty->getUid());
+            $this->domainPropertyRepository->remove($domainProperty);
             $this->redirect('list', 'Module');
         }
     }

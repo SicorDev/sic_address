@@ -16,16 +16,17 @@ $EM_CONF[$_EXTKEY] = array (
   'category' => 'plugin',
   'author' => 'SICOR DEVTEAM',
   'author_email' => 'dev@sicor-kdl.net',
-  'state' => 'stable',
+  'state' => 'beta',
   'uploadfolder' => false,
   'createDirs' => '',
   'clearCacheOnLoad' => 0,
-  'version' => '1.1.9 (7.6.x-9.5.x)',
+  'version' => '2.0.0',
   'constraints' => 
   array (
     'depends' => 
     array (
       'typo3' => '9.5.0-9.5.99',
+      'php' => 7
     ),
     'conflicts' => 
     array (

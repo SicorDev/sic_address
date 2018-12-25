@@ -28,6 +28,8 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DomainPropertyController
@@ -35,10 +37,12 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
 
+    protected $objectManager = null;
+
     /**
      * domainPropertyRepository
      *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
+     * @var SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
      * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $domainPropertyRepository = NULL;
@@ -146,21 +150,17 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      */
     public function getFlexFields($config, $types)
     {
-        $where = 'deleted = 0 AND hidden = 0 AND (';
-        $typeList = explode(',', $types);
-        foreach ($typeList as $type) {
-            $where .= '(type = "' . $type . '") OR ';
-        }
-        $where .= '1=0 )';
+        # auto inject doesnt work here because of direct call as userFunc in flex form
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->domainPropertyRepository = $this->objectManager->get(\SICOR\SicAddress\Domain\Repository\DomainPropertyRepository::class);
 
-        // Query Database
-        $types = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title, type, tca_label', 'tx_sicaddress_domain_model_domainproperty', $where, 'tca_label');
+        $fields = $this->domainPropertyRepository->findByTypes( explode(',',$types) );
 
         $optionList = array();
         $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');
-        foreach ($types as $type) {
-            $value = ($type["type"] == "mmtable") ? $type["title"] . ".title" : $type["title"];
-            $optionList[] = array(0 => $type["tca_label"], 1 => $value);
+        foreach ($fields as $field) {
+            $value = ($field["type"] == "mmtable") ? $field["title"] . ".title" : $field["title"];
+            $optionList[] = array(0 => $field["tca_label"], 1 => $value);
         }
 
         $config['items'] = array_merge($config['items'], $optionList);

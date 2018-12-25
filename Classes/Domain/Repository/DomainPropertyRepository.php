@@ -47,6 +47,25 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
+     * @param mixed $types
+     */
+    public function findByTypes($types) {
+        $query = $this->createQuery();
+
+        if( is_array($types) ) {
+            $query->matching(
+                $query->in('type', $types)
+            );
+        } else {
+            $query->matching(
+                $query->equals('type', $types)
+            );
+        }
+
+        return $query->execute(true);
+    }
+
+    /**
      * Delete either all custom or all tt_address definitions.
      * @param string $external
      */

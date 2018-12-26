@@ -135,6 +135,8 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findAtoz($field, $addresstable, $categories, $pages)
     {
+        $query = $this->createQuery();
+
         // Make A-Z respect configured pages if there are some
         $where = "pid<>-1 ";
         if(strlen($pages) > 0)
@@ -153,12 +155,14 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             $where .= "1=0 )";
         }
+        
+        $sql = 'select DISTINCT UPPER(LEFT('.$field.', 1)) as letter from ' . $addresstable . ' where ' . $where;
 
         $res = array();
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('DISTINCT UPPER(LEFT('.$field.', 1)) as letter', $addresstable, $where);
-        while($result = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results))	{
+        foreach($query->statement($sql)->execute(true) as $result) {
             $res[] = $result['letter'];
         }
+        
         return $res;
     }
 

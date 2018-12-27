@@ -42,7 +42,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     /**
      * domainPropertyRepository
      *
-     * @var SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
+     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
      * @inject
      */
     protected $domainPropertyRepository = NULL;

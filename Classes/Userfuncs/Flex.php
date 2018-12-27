@@ -2,8 +2,6 @@
 
 namespace SICOR\SicAddress\Userfuncs;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /***************************************************************
  *
  *  Copyright notice

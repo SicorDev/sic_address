@@ -261,7 +261,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Return categories as configured by the according tt_content element
-     * @param $cOjb the content element
+     * @param $uid of the content element
      */
     public function fillCategoryLists($uid)
     {

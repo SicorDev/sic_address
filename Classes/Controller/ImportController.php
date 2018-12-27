@@ -40,24 +40,40 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class ImportController extends ModuleController {
 
     /**
+     * addressRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
+     * @TYPO3\CMS\Extbase\Annotation\Inject
+     */
+    protected $addressRepository = NULL;
+
+    /**
+     * domainPropertyRepository
+     *
+     * @var SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
+     * @TYPO3\CMS\Extbase\Annotation\Inject
+     */
+    protected $domainPropertyRepository = NULL;
+
+    /**
      * action importTTAddress
      *
      * @return void
      */
     public function importTTAddressAction()
     {
-        // Clear database
-        $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery("tx_sicaddress_domain_model_domainproperty");
-
         if ($this->extensionConfiguration["ttAddressMapping"]) {
-            $categories = mysqli_fetch_fields($GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tt_address', '', '', '', 1));
-            foreach ($categories as $category) {
-                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $category->name) === 0) {
+            // Clear database
+            $this->domainPropertyRepository->removeAll();
+            
+            $fields = $this->addressRepository->getFields();
+            foreach ($fields as $field) {
+                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $field) === 0) {
                     $domainProperty = new DomainProperty();
-                    $domainProperty->setTitle($category->name);
-                    $domainProperty->setTcaLabel($category->name);
-                    $domainProperty->setType(($category->name === 'image') ? 'image' : 'string');
-                    $domainProperty->setExternal(!Service::startsWith($category->name, 'tx_'));
+                    $domainProperty->setTitle($field);
+                    $domainProperty->setTcaLabel($field);
+                    $domainProperty->setType(($field === 'image') ? 'image' : 'string');
+                    $domainProperty->setExternal(!Service::startsWith($field, 'tx_'));
 
                     $this->domainPropertyRepository->add($domainProperty);
                 }

@@ -40,7 +40,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $categoryRepository = NULL;
 

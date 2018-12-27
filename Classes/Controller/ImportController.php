@@ -4,7 +4,6 @@ use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility\FALImageWizard;
 use SICOR\SicAddress\Utility\Service;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -43,7 +42,7 @@ class ImportController extends ModuleController {
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $addressRepository = NULL;
 
@@ -51,7 +50,7 @@ class ImportController extends ModuleController {
      * domainPropertyRepository
      *
      * @var SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $domainPropertyRepository = NULL;
 

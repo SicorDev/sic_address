@@ -36,7 +36,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $categoryRepository = NULL;
     

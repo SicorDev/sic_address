@@ -25,7 +25,6 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
@@ -40,7 +39,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $addressRepository = NULL;
 
@@ -48,7 +47,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * contentRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $contentReposirory = NULL;
 
@@ -56,7 +55,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $categoryRepository = NULL;
 
@@ -80,7 +79,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function initializeAction()
     {
         // Init config
-        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting

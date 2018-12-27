@@ -27,7 +27,6 @@ namespace SICOR\SicAddress\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -44,7 +43,7 @@ class ExportController extends ModuleController {
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $addressRepository = NULL;
 
@@ -52,7 +51,7 @@ class ExportController extends ModuleController {
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $categoryRepository = NULL;
 
@@ -60,7 +59,7 @@ class ExportController extends ModuleController {
      * domainPropertyRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $domainPropertyRepository = NULL;
 

@@ -4,11 +4,9 @@ namespace SICOR\SicAddress\Controller;
 
 use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
-use TYPO3\CMS\Extbase\Annotation\Inject;
 
 /***************************************************************
  *
@@ -45,7 +43,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $addressRepository = NULL;
 
@@ -53,7 +51,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * domainPropertyRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $domainPropertyRepository = NULL;
 
@@ -61,7 +59,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
+     * @inject
      */
     protected $categoryRepository = NULL;
 
@@ -106,8 +104,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     public function initializeAction()
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
-        $this->extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
         $this->configuration = $this->domainPropertyRepository->findAll();
@@ -232,7 +229,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
 
-        //$this->updateExtension();
+        $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
     }
 

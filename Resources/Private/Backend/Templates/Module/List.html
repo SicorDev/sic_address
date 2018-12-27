@@ -119,21 +119,5 @@
         <f:form.submit class="btn btn-primary" value="<f:translate key='BackendImporterButtonLabel'/>" />
         <f:link.action class="btn btn-danger" action="deleteFieldDefinitions" arguments="{external : '1'}"><f:translate key='DeleteTTAddressFieldsLabel'/></f:link.action>
     </f:form>
-
-    <f:form action="migrateNicosDirectory" controller="Import">
-        <f:form.submit class="btn btn-default" value="Migrate Data from nicos_directory" />
-    </f:form>
-
-    <f:form action="migrateSPDirectory" controller="Import">
-        <f:form.submit class="btn btn-default" value="Migrate Data from sp_directory" />
-    </f:form>
-
-    <f:form action="migrateOBG" controller="Import">
-        <f:form.submit class="btn btn-default" value="Migrate Data from fe_user + sic_mm" />
-    </f:form>
-
-    <f:form action="migrateBezugsquelle" controller="Import">
-        <f:form.submit class="btn btn-default" value="Migrate Data from sc_bezugsquelle" />
-    </f:form>
-
+    
 </f:section>

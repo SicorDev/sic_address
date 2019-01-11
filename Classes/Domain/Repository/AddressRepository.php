@@ -27,10 +27,6 @@ namespace SICOR\SicAddress\Domain\Repository;
  ***************************************************************/
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Connection;
-
 /**
  * The repository for Addresses
  */
@@ -254,14 +250,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Get all fields from tt_address
      */
     public function getFields() {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_address')->createQueryBuilder();
-        $queryBuilder
-        ->select('*')
-        ->from('tt_address')
-        ->setFirstResult(0)
-        ->setMaxResults(1);
+        $query = $this->createQuery();
+        $sql = 'select * from tt_address limit 1'; # IMPORTANT tt_address should not be empty in order to get the field names!!!
         
-        foreach($queryBuilder->execute(true) as $arr)
+        foreach($query->statement($sql)->execute(true) as $arr)
         return array_keys($arr);
     }
 }

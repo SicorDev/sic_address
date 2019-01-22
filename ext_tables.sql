@@ -65,10 +65,3 @@ CREATE TABLE tx_sicaddress_domain_model_domainproperty (
 	KEY parent (pid),
 	KEY language (l10n_parent,sys_language_uid)
 );
-
-#
-# Hook for table sys_category
-#
-CREATE TABLE sys_category (
-  sorting int(11) DEFAULT '0' NOT NULL
-);

@@ -9,6 +9,18 @@ plugin.tx_sicaddress_sicaddress {
 	}
 }
 
+plugin.tx_sicaddress_sicaddress {
+    persistence {
+        classes {
+            SICOR\SicAddress\Domain\Model\Content {
+                mapping {
+                    tableName = tt_content
+                }
+            }
+        }
+    }
+}
+
 # Module configuration
 module.tx_sicaddress_web_sicaddresssicaddress {
 	persistence {

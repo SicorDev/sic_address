@@ -47,12 +47,22 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * Delete single definition.
-     * @param string $uid
+     * @param mixed $types
      */
-    public function deleteFieldDefinition($uid)
-    {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "uid = " . $uid);
+    public function findByTypes($types) {
+        $query = $this->createQuery();
+
+        if( is_array($types) ) {
+            $query->matching(
+                $query->in('type', $types)
+            );
+        } else {
+            $query->matching(
+                $query->equals('type', $types)
+            );
+        }
+
+        return $query->execute(true);
     }
 
     /**
@@ -61,6 +71,14 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function deleteFieldDefinitions($external)
     {
-        $GLOBALS['TYPO3_DB']->exec_DELETEquery("tx_sicaddress_domain_model_domainproperty", "external = " . $external);
+        $query = $this->createQuery();
+
+        $query->matching(
+            $query->equals('external', $external)
+        );
+        
+        foreach($query->execute() as $item) {
+            $this->remove($item);
+        }
     }
 }

@@ -20,9 +20,9 @@ if(isset($GLOBALS['TCA']['sys_category']['types']['1']['showitem'])) {
 }
 $GLOBALS['TCA']['sys_category']['types']['Tx_SicAddress_Category']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:tx_sicaddress_domain_model_category,';
 $GLOBALS['TCA']['sys_category']['ctrl']['default_sortby'] = 'ORDER BY title';
-$GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = '';
+$GLOBALS['TCA']['sys_category']['ctrl']['sortby'] = 'sorting';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-	'',
+	'tx_sicaddress_domain_model_address',
 	'EXT:/Resources/Private/Language/locallang_csh_.xlf'
 );

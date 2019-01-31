@@ -29,11 +29,20 @@ namespace SICOR\SicAddress\ViewHelpers;
 class IncrementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param integer $i
+     * Initialize arguments
+     */
+    public function initializeArguments()
+    {
+		$this->registerArgument('i', 'integer', 0);
+    }
+
+	/**
 	 * 
 	 * @return integer
 	 */
-	public function render($i) {
+	public function render() {
+		$i = $this->arguments['i'];
+
 		$i++;
 		return $i;
 	}

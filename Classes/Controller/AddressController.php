@@ -44,6 +44,14 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $addressRepository = NULL;
 
     /**
+     * contentRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
+     * @inject
+     */
+    protected $contentReposirory = NULL;
+
+    /**
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
@@ -261,13 +269,14 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->displayCategoryList = null;
         $this->searchCategoryList = null;
 
-        $results = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid_local', 'sys_category_record_mm', "tablenames = 'tt_content' AND uid_foreign = " . $uid);
-        $count = $GLOBALS['TYPO3_DB']->sql_num_rows($results);
+        $ce = $this->contentReposirory->findByUid($uid);
+        $categories = $ce->getCategoryUids();
+        $count = count($categories);
 
         if ($count == 1) {
             if ($this->settings['mainCategoryType'] !== "none") {
                 // Fill main category list
-                $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+                $uid = array_pop($categories);
                 $this->mainCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
 
                 // Display children of main category
@@ -279,7 +288,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $this->searchCategoryList = $this->displayCategoryList;
             } else {
                 // Display children of selected category
-                $uid = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)['uid_local'];
+                $uid = array_pop($categories);
                 $this->displayCategoryList = $this->categoryRepository->findByParent($uid)->toArray();
 
                 // If there's no children just use the category defined by uid
@@ -290,8 +299,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $this->searchCategoryList = $this->displayCategoryList;
             }
         } elseif ($count > 1) {
-            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($results)) {
-                $uid = $row['uid_local'];
+            foreach($categories as $uid) {
                 $category = $this->categoryRepository->findByUid($uid);
 
                 // Display selected categories
@@ -413,7 +421,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * action edit
      *
      * @param \SICOR\SicAddress\Domain\Model\Address $address
-     * @ignorevalidation $address
+     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $address
      * @return void
      */
     public function editAction(\SICOR\SicAddress\Domain\Model\Address $address)
@@ -471,7 +479,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $this->view->setTemplate($template);
         } else {
             // TYPO3 7 specific
-            $action = str_replace('.html','', GeneralUtility::lcfirst($template));
+            $action = str_replace('.html','', lcfirst($template));
             $this->request->setControllerActionName($action);
         }
     }

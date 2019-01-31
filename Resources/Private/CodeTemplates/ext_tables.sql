@@ -5,6 +5,9 @@
 #
 CREATE TABLE tt_address (
   sorting int(11) DEFAULT '0' NOT NULL,
+  
+  t3ver_oid int(11) DEFAULT '0' NOT NULL,
+  t3ver_wsid int(11) DEFAULT '0' NOT NULL,
 
 	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>
@@ -34,7 +37,7 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
 	l10n_state text,
-
+    
 	<f:for each="{properties}" as="field"><f:format.raw>{field.definition}</f:format.raw>,
 	</f:for>
 

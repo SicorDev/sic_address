@@ -1,8 +1,9 @@
+
 #
 # Table structure for table 'tx_sicaddress_domain_model_address'
 #
 CREATE TABLE tx_sicaddress_domain_model_address (
-	uid INT AUTO_INCREMENT NOT NULL ,
+	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	categories int(11) unsigned DEFAULT '0' NOT NULL,
@@ -16,15 +17,21 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	endtime int(11) unsigned DEFAULT '0' NOT NULL,
 	sorting int(11) DEFAULT '0' NOT NULL,
 	fe_group varchar(100) DEFAULT '0' NOT NULL,
+
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l10n_parent int(11) DEFAULT '0' NOT NULL,
 	l10n_diffsource mediumblob,
-	l10n_state TEXT DEFAULT NULL,
+	l10n_state text,
+
+	
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
   KEY language (l10n_parent,sys_language_uid)
 );
+
+
+
 
 #
 # Table structure for table 'tx_sicaddress_domain_model_domainproperty'

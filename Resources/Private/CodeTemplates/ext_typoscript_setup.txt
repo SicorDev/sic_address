@@ -12,6 +12,12 @@ config.tx_extbase {
                     tableName = sys_category
                 }
             }
+
+            SICOR\SicAddress\Domain\Model\Content {
+                mapping {
+                    tableName = tt_content
+                }
+            }
         <f:if condition="{settings.ttAddressMapping}">
             SICOR\SicAddress\Domain\Model\Address {
                 mapping {

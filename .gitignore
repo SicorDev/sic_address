@@ -6,4 +6,4 @@
 Classes/Domain/Model/Address.php
 Configuration/TCA/Overrides/tt_address.php
 Resources/Private/Language/locallang_db.xlf
-ext_typoscript_setup.txt
+/ext_typoscript_setup.txt

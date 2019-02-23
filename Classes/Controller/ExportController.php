@@ -78,7 +78,7 @@ class ExportController extends ModuleController {
 
         // Override path with extension config
         $this->$renderTemplatesPath = GeneralUtility::getFileAbsFileName("EXT:sic_address/Resources/Private/Templates/Export/");
-        if(count($this->extensionConfiguration["exportRenderTemplates"]) > 0) {
+        if(!empty($this->extensionConfiguration["exportRenderTemplates"]) > 0) {
             $this->$renderTemplatesPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration["exportRenderTemplates"]);
         }
     }

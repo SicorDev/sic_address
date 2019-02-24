@@ -48,7 +48,7 @@ var SicAddress = {
                 trigger: function() {
                     top.TYPO3.Modal.dismiss();
                     if(ajax) {
-                        jQuery.get(deleteUri,{},function(){
+                        sicQuery.get(deleteUri,{},function(){
                             sicQuery(link.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).remove();
                         });
                     } else location.href = deleteUri;

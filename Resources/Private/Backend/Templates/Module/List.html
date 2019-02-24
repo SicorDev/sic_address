@@ -107,17 +107,39 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <f:link.action class="btn btn-primary" action="create">Generate Model, TCA, i18n, DB</f:link.action>
-            <f:link.external class="btn btn-success" uri="https://www.sicor-kdl.net/index.php?id=111"><f:translate key="HelpButtonLabel"/></f:link.external>
+            <f:link.action id="generateAction" class="btn btn-primary" action="create">Generate Model, TCA, i18n, DB</f:link.action>
+            <f:link.external class="btn btn-success" target="sicor" uri="https://www.sicor-kdl.net/index.php?id=111"><f:translate key="HelpButtonLabel"/></f:link.external>
         </div>
-        <div class="col-sm-2 col-sm-offset-5"><f:link.action class="btn btn-danger" action="deleteFieldDefinitions" arguments="{external : '0'}"><f:translate key='DeleteCustomFieldsLabel'/></f:link.action></div>
+        <div class="col-sm-2 col-sm-offset-5">
+            <a
+                    data-delete-uri="{f:uri.action(action:'deleteFieldDefinitions',arguments:'{external : \'0\'}')}"
+                    class="btn btn-danger delete"
+                    data-modal-title="{f:translate(key:'Attention')}"
+                    data-modal-type="error"
+                    data-modal-content="{f:translate(key:'DeleteCustomFieldsLabel')}"
+                    data-modal-button-cancel="{f:translate(key:'Cancel')}"
+                    data-modal-button-delete="{f:translate(key:'Delete')}"
+            >
+                <f:translate key='DeleteCustomFieldsLabel'/>
+            </a>
+        </div>
     </div>
 
     <h2><f:translate key="BackendImporterListTitle" /></h2>
 
     <f:form action="importTTAddress" controller="Import">
         <f:form.submit class="btn btn-primary" value="<f:translate key='BackendImporterButtonLabel'/>" />
-        <f:link.action class="btn btn-danger" action="deleteFieldDefinitions" arguments="{external : '1'}"><f:translate key='DeleteTTAddressFieldsLabel'/></f:link.action>
+        <a
+                data-delete-uri="{f:uri.action(action:'deleteFieldDefinitions',arguments:'{external : \'1\'}')}"
+                class="btn btn-danger delete"
+                data-modal-title="{f:translate(key:'Attention')}"
+                data-modal-type="error"
+                data-modal-content="{f:translate(key:'DeleteTTAddressFieldsLabel')}"
+                data-modal-button-cancel="{f:translate(key:'Cancel')}"
+                data-modal-button-delete="{f:translate(key:'Delete')}"
+        >
+            <f:translate key='DeleteTTAddressFieldsLabel'/>
+        </a>
     </f:form>
     
 </f:section>

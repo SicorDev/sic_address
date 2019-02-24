@@ -35,6 +35,13 @@ var SicAddress = {
         var modalButtonDelete = sicQuery(this).data('modalButtonDelete');
         top.TYPO3.Modal.confirm(modalTitle, modalContent, modalType=='error' ? top.TYPO3.Severity.error : top.TYPO3.Severity.warning, [
             {
+                text: modalButtonCancel,
+                btnClass: 'btn btn-default',
+                trigger: function() {
+                    top.TYPO3.Modal.dismiss();
+                }
+            },
+            {
                 text: modalButtonDelete,
                 btnClass: 'btn btn-danger',
                 active: true,
@@ -45,12 +52,6 @@ var SicAddress = {
                             sicQuery(link.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).remove();
                         });
                     } else location.href = deleteUri;
-                }
-            }, {
-                text: modalButtonCancel,
-                btnClass: 'btn btn-default',
-                trigger: function() {
-                    top.TYPO3.Modal.dismiss();
                 }
             }
         ]);

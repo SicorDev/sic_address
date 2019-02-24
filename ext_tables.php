@@ -35,7 +35,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
         array(
             'Module' => 'list, create, deleteFieldDefinitions',
             'Import' => 'migrateNicosDirectory, migrateSPDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
-            'DomainProperty' => 'create, update, delete',
+            'DomainProperty' => 'create, update, delete, sort',
         ),
         array(
             'access' => 'user,group',

@@ -169,5 +169,12 @@ return array(
 				'default' => 0
 			)
 		),
+		'sorting' => array(
+            'exclude' => 1,
+            'config' => array(
+                'type' => 'passthrough',
+            ),
+
+        )
 	),
 );

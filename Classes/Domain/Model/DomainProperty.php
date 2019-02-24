@@ -81,6 +81,13 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $external;
 
     /**
+     * sorting
+     *
+     * @var integer
+     */
+    protected $sorting;
+
+    /**
      * DomainProperty constructor.
      * @param string $title
      * @param string $type
@@ -237,6 +244,20 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function setExternal($external) {
         $this->external = $external;
+    }
+
+    /**
+     * @return int $sorting
+     */
+    public function getSorting() {
+        return $this->sorting;
+    }
+
+    /**
+     * @param integer $sorting
+     */
+    public function setSorting($sorting) {
+        $this->sorting = abs($sorting);
     }
 
 }

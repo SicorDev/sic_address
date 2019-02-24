@@ -1,8 +1,14 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
 <f:layout name="Default" />
 
 <f:section name="content">
-    <h2><f:translate key="BackendListTitle" /></h2>
+    <h2><f:translate key="BackendListTitle" />
+        <span class="btn btn-default sortableHandle ui-sortable-handle field-new" title="Add new property" onclick="SicAddress.addPropertyClicked()">
+            <core:icon identifier="actions-add" />
+        </span>
+    </h2>
 
     <f:if condition="{errorMessages}">
         <f:then>
@@ -13,95 +19,22 @@
     </f:if>
 
     <div class="container-fluid table">
-        <f:if condition="{properties}">
-            <f:then>
-                <ul>
-                    <f:for each="{properties}" as="property">
-                        <f:if condition="{property.external} == '0'">
-                            <li>
-                                <f:form action="update" controller="DomainProperty" object="{property}" objectName="domainProperty">
-                                    <div class="row tr">
-                                        <div class="col-sm-3 td">
-                                            <label>Datebank Feldname:</label>
-                                            <f:form.textfield disabled="true" property="title" value="{property.title}" />
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                            <label>Beschriftung:</label>
-                                            <f:form.textfield property="tcaLabel" value="{property.label}" />
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                            <label>TCA Override:</label>
-                                            <f:form.textarea property="tcaOverride" value="{property.tcaOverride}" />
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                            <label>Einstellungen:</label>
-                                            <f:form.textarea property="settings" value="{property.settings}" />
-                                        </div>
-                                    </div>
-                                    <div class="row tr">
-                                        <div class="col-sm-3 td">
-                                            <label>Teil des Labels:</label>
-                                            <f:form.checkbox property="isListLabel" value="property.isListLabel" />
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                            <label>Feld Typ:</label>
-                                            <f:form.select class="form-control" property="type" value="{property.type.title}" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
-                                        </div>
-                                        <div class="col-sm-3 td">
-                                            <f:form.submit class="btn btn-success" value="Save" />
-                                            <f:link.action class="btn btn-danger" action="delete" controller="DomainProperty" arguments="{domainProperty: property}">Delete</f:link.action>
-                                        </div>
-                                    </div>
-                                </f:form>
-                            </li>
-                        </f:if>
-                    </f:for>
-                </ul>
-            </f:then>
-        </f:if>
-        <div class="row tr">
-            <ul>
-                <li>
-                    <f:form id="createDomainTemplate" action="create" controller="DomainProperty" name="newDomainProperty" object="{newDomainProperty}" >
-                        <div class="row tr">
-                            <div class="col-sm-3 td">
-                                <label>Datebank Feldname:</label>
-                                <f:form.textfield property="title" />
-                            </div>
-                            <div class="col-sm-3 td">
-                                <label>Beschriftung:</label>
-                                <f:form.textfield property="tcaLabel" />
-                            </div>
-                            <div class="col-sm-3 td">
-                                <label>TCA Override:</label>
-                                <f:form.textarea property="tcaOverride" />
-                            </div>
-                            <div class="col-sm-3 td">
-                                <label>Einstellungen:</label>
-                                <f:form.textarea property="settings" />
-                            </div>
-                        </div>
-                        <div class="row tr">
-                            <div class="col-sm-3 td">
-                                <label>Teil des Labels:</label>
-                                <f:form.checkbox property="isListLabel" value="" />
-                            </div>
-                            <div class="col-sm-3 td">
-                            </div>
-                            <div class="col-sm-3 td">
-                                <label>Feld Typ:</label>
-                                <f:form.select class="form-control" property="type" options="{fieldTypes}" optionValueField="key" optionLabelField="value"/>
-                            </div>
-                            <div class="col-sm-3 td">
-                                <f:form.submit class="btn btn-success" value="Save" />
-                            </div>
-                        </div>
-                    </f:form>
-                </li>
-            </ul>
+
+        <div class="panel-group panel-hover ui-sortable" data-title="Properties" id="sic_address_properties">
+            <f:if condition="{properties}">
+                <f:for each="{properties}" as="property">
+                    <f:if condition="{property.external} == '0'">
+                        <f:render partial="Property/Form" arguments="{_all}" />
+                    </f:if>
+                </f:for>
+            </f:if>
+            <f:render partial="Property/Form" arguments="{_all}" />
         </div>
+
+        <f:form id="sortingForm" target="sortingIframe" controller="DomainProperty" action="sort">
+            <f:form.hidden class="sorting" name="ordered" value="" />
+        </f:form>
+               
     </div>
     <hr />
 

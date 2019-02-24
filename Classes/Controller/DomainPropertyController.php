@@ -48,6 +48,14 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     protected $domainPropertyRepository = NULL;
 
     /**
+     * Persistence Manager
+     *
+     *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+     *@inject
+     */
+    protected $persistenceManager;
+
+    /**
      * action create
      *
      * @param \SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty
@@ -56,14 +64,22 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     public function createAction(\SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty)
     {
         if (TYPO3_MODE == 'BE') {
+            $this->response->setHeader('Content-Type','application/json');
+
             $errorMessages = [];
-            $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
-            if ($existingObjectWithSameName->count() < 1) {
-                $this->domainPropertyRepository->add($newDomainProperty);
-            } else {
-                $errorMessages[] = "A field named '" . $newDomainProperty->getTitle() . "' already exists. Please choose a unique name.";
+            if(!empty($newDomainProperty->getTitle())) {
+                $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
+                if ($existingObjectWithSameName->count() < 1) {
+                    $this->domainPropertyRepository->add($newDomainProperty);
+                } else {
+                    $errorMessages['title'] = "A field named '" . $newDomainProperty->getTitle() . "' already exists. Please choose a unique name.";
+                    return json_encode($errorMessages);
+                }
+                $this->persistenceManager->persistAll();
             }
-            $this->redirect('list', 'Module', null, ['errorMessages' => $errorMessages]);
+
+            return json_encode(array());
+            #$this->redirect('list', 'Module', null, ['errorMessages' => $errorMessages]);
         }
     }
 
@@ -81,7 +97,10 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
                 $domainProperty->setIsListLabel(false);
             }
             $this->domainPropertyRepository->update($domainProperty);
-            $this->redirect('list', 'Module');
+            $this->persistenceManager->persistAll();
+            $this->response->setHeader('Content-Type','application/json');
+            return json_encode(array());
+            #$this->redirect('list', 'Module');
         }
     }
 
@@ -107,6 +126,26 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             $this->domainPropertyRepository->remove($domainProperty);
             $this->redirect('list', 'Module');
         }
+    }
+
+    public function sortAction() {
+        $args = $this->request->getArguments();
+
+        if(!empty($args['ordered'])) {
+            $uids = explode(',', $args['ordered']);
+
+            foreach($uids as $sorting=>$uid) {
+                if($uid>0) {
+
+                    $property = $this->domainPropertyRepository->findByUid($uid);
+                    if($property) {
+                        $property->setSorting($sorting);
+                        $this->domainPropertyRepository->update($property);
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**

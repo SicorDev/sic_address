@@ -249,11 +249,52 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Get all fields from tt_address
      */
-    public function getFields() {
-        $query = $this->createQuery();
-        $sql = 'select * from tt_address limit 1'; # IMPORTANT tt_address should not be empty in order to get the field names!!!
-        
-        foreach($query->statement($sql)->execute(true) as $arr)
-        return array_keys($arr);
+    public function getFields() {        
+        if(!empty($GLOBALS['TYPO3_DB'])) {
+
+            $GLOBALS['TYPO3_DB']
+            ->exec_INSERTquery('tt_address', array(
+                'company' => 'SICOR'
+            ));
+
+            $rows = $GLOBALS['TYPO3_DB']
+            ->exec_SELECTgetRows('*', 'tt_address', '', '', '', 1);
+
+            $GLOBALS['TYPO3_DB']
+            ->exec_DELETEquery('tt_address', 'company = "SICOR"');
+
+            return array_keys(array_pop($rows));
+
+        } else {
+
+            $connection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
+            ->getConnectionForTable('tt_address');
+
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder
+            ->insert('tt_address')
+            ->values(array(
+                'company' => 'SICOR'
+            ))
+            ->execute();
+
+            $queryBuilder = $connection->createQueryBuilder();
+            $rows = $queryBuilder
+            ->select('*')
+            ->from('tt_address')
+            ->setMaxResults(1)
+            ->setFirstResult(0)
+            ->execute()
+            ->fetchAll();
+
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder
+            ->delete('tt_address')
+            ->where('company = "SICOR"')
+            ->execute();
+
+            return array_keys(array_pop($rows));
+            
+        }        
     }
 }

@@ -1,46 +1,52 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}
-<div class="export">
-    <h2>Kategorien für den Adressexport</h2>
-    <hr />
+<f:layout name="Default" />
 
-    <f:form action="exportToFile" >
-        <div class="row">
-            <div class="col-sm-12">
-                <f:for each="{categoryTree.0}" as="currentCategory">
-                    <li class="{f:if(condition:'{sic:InArrayExplode(needle : currentCategory.uid, haystack : selectedCategories)}', then : 'selected', else : 'no')}">
-                        <f:form.checkbox name="categories[]"  multiple="true" value="{currentCategory.uid}"/>
-                        <label>{currentCategory.title}</label>
-                        <f:render partial="Export/ChildCategoryRecursion" arguments="{categoryTree : categoryTree, selectedCategories : selectedCategories, currentCategory : currentCategory,	currentLevel : 0, stopRecursionOnLevel : 8}"/>
-                    </li>
-                </f:for>
-                <button class="btn btn-default" onclick="checkAll();return false;">Alle Kategorien auswählen</button>
-            </div>
-        </div>
+<f:section name="content">
 
-        <h2>Einstellungen</h2>
+    <div class="export">
+        <h2>Kategorien für den Adressexport</h2>
         <hr />
 
-        <div class="row">
-            <div class="col-sm-12">
-                <label>Templates:</label>
-                <f:form.select options="{templates}" name="template" optionValueField="key" optionLabelField="value" />
+        <f:form action="exportToFile" >
+            <div class="row">
+                <div class="col-sm-12">
+                    <f:for each="{categoryTree.0}" as="currentCategory">
+                        <li class="{f:if(condition:'{sic:InArrayExplode(needle : currentCategory.uid, haystack : selectedCategories)}', then : 'selected', else : 'no')}">
+                            <f:form.checkbox name="categories"  multiple="true" value="{currentCategory.uid}"/>
+                            <label>{currentCategory.title}</label>
+                            <f:render partial="Export/ChildCategoryRecursion" arguments="{categoryTree : categoryTree, selectedCategories : selectedCategories, currentCategory : currentCategory,	currentLevel : 0, stopRecursionOnLevel : 8}"/>
+                        </li>
+                    </f:for>
+                <button class="btn btn-default" onclick="checkAll();return false;">Alle Kategorien auswählen</button>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <label>Sortierung:</label>
-                <f:form.select options="{sorting}" name="sorting" optionLabelField="tcaLabel" optionValueField="title" prependOptionLabel="-----" prependOptionValue="name"/>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Export</h2>
-                <hr />
-                <f:form.hidden id="type" name="type" value="HTML" />
-                <f:form.submit class="btn btn-default" value="CSV Export" onclick="document.getElementById('type').value = 'CSV';" />
-                <f:form.submit class="btn btn-default" value="HTML Export" onclick="document.getElementById('type').value = 'HTML';" />
+            <h2>Einstellungen</h2>
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Templates:</label>
+                    <f:form.select options="{templates}" name="template" optionValueField="key" optionLabelField="value" />
+                </div>
             </div>
-        </div>
-    </f:form>
-</div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Sortierung:</label>
+                    <f:form.select options="{sorting}" name="sorting" optionLabelField="tcaLabel" optionValueField="title" prependOptionLabel="-----" prependOptionValue="name"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Export</h2>
+                    <hr />
+                    <f:form.hidden id="type" name="type" value="HTML" />
+                    <f:form.submit class="btn btn-default" value="CSV Export" onclick="document.getElementById('type').value = 'CSV';" />
+                    <f:form.submit class="btn btn-default" value="HTML Export" onclick="document.getElementById('type').value = 'HTML';" />
+                </div>
+            </div>
+        </f:form>
+    </div>
+
+</f:section>

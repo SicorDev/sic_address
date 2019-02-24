@@ -4,8 +4,8 @@ require(['jquery'], function(jQuery, cookie, ui) {
     
     sicQuery = jQuery;
 
-TYPO3.jQuery(function() {
-    checkboxListener();
+    SicAddress.checkboxListener();
+
     jQuery(function() {
         jQuery('.btn.delete').click(SicAddress.btnDeleteClicked);
     });
@@ -14,15 +14,15 @@ TYPO3.jQuery(function() {
 
 var SicAddress = {
 
-var checkboxListener = function() {
-    TYPO3.jQuery('.export input:checkbox').change(function() {
-        TYPO3.jQuery(this).next().next().find('input:checkbox').prop('checked', TYPO3.jQuery(this).prop("checked"));
+    checkboxListener: function() {
+        sicQuery('.export input:checkbox').change(function() {
+            sicQuery(this).next().next().find('input:checkbox').prop('checked', sicQuery(this).prop("checked"));
         });
-};
+    },
     
-var checkAll = function() {
-    TYPO3.jQuery('.export input:checkbox').prop('checked', 'true')
-};
+    checkAll: function() {
+        sicQuery('.export input:checkbox').prop('checked', 'true');
+    },
 
     btnDeleteClicked: function() {
         var link = this;

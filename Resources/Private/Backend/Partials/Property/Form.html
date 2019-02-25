@@ -4,7 +4,7 @@
 <f:form action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
 
-    <div class="panel panel-default panel-condensed panel-collapsed property" data-uid="{property.uid}" id="p{property.uid}">
+    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'primary',else:'info')} panel-condensed panel-collapsed property" data-uid="{property.uid}" id="p{property.uid}">
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
             <div class="form-irre-header">
                 <div class="form-irre-header-cell form-irre-header-icon">
@@ -15,17 +15,17 @@
                         <dl>
                             <dt>
                                 <f:if condition="{property.tcaLabel}">
-                                    <f:then>{property.tcaLabel}</f:then>
+                                    <f:then>{property.title}</f:then>
                                     <f:else>Neu...</f:else>
                                 </f:if>
                             </dt>
                             <dd>
-                                {property.title}
+                                {property.tcaLabel}         
                                 <f:if condition="{property.isListLabel}">
-                                        <core:icon identifier="actions-system-shortcut-active" />
-                                </f:if>
+                                    <core:icon identifier="actions-system-shortcut-active" />
+                                </f:if>                       
                                 <f:if condition="{property.type.title}">
-                                    <span class="pull-right label label-{f:if(condition:'{property.isListLabel}',then:'primary',else:'default')}">
+                                    <span class="pull-right badge">
                                         {property.type.title}
                                     </span>
                                 </f:if>
@@ -39,7 +39,7 @@
                             <core:icon identifier="actions-open" />
                         </a>
                         <f:if condition="{property.uid}">
-                            <a class="hidden btn btn-default hiddenHandle t3js-data-1-tt_content-14-image-sys_file_reference-14_disabled" href="#" onclick="
+                            <a class="hidden btn btn-danger hiddenHandle t3js-data-1-tt_content-14-image-sys_file_reference-14_disabled" href="#" onclick="
                                 return inline.enableDisableRecord('data-1-tt_content-14-image-sys_file_reference-14','hidden')" title="Hide record">
                                 <core:icon identifier="actions-edit-hide" />
                             </a>

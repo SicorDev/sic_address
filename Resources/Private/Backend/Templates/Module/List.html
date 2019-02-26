@@ -61,10 +61,10 @@
     <h2><f:translate key="BackendImporterListTitle" /></h2>
 
     <f:form action="importTTAddress" controller="Import">
-        <f:form.submit class="btn btn-primary" value="<f:translate key='BackendImporterButtonLabel'/>" />
+        <f:form.submit class="btn btn-primary {f:if(condition:'{ttAddressMapping}',then:'',else:'disabled')}" value="<f:translate key='BackendImporterButtonLabel'/>" />
         <a
                 data-delete-uri="{f:uri.action(action:'deleteFieldDefinitions',arguments:'{external : \'1\'}')}"
-                class="btn btn-danger delete"
+                class="btn btn-danger delete {f:if(condition:'{ttAddressMapping}',then:'',else:'disabled')}"
                 data-modal-title="{f:translate(key:'Attention')}"
                 data-modal-type="error"
                 data-modal-content="{f:translate(key:'DeleteTTAddressFieldsLabel')}"

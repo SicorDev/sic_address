@@ -43,6 +43,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
+        $querySettings->setIgnoreEnableFields(TRUE);
         $this->setDefaultQuerySettings($querySettings);
     }
 

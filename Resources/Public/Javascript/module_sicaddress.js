@@ -86,6 +86,32 @@ var SicAddress = {
         .toggleClass('panel-visible');
     },
 
+    togglePropertyState: function(link) {
+        var uid = sicQuery(link).data('uid');
+        var hidden = sicQuery('#hidden'+uid).val();
+        sicQuery('#hidden'+uid).val(hidden > 0 ? 0 : 1);
+
+        var form = sicQuery('#form'+uid);
+        var formAction = sicQuery(form).attr('action');
+        var formData = SicAddress.getFormData(form);
+
+        sicQuery.post(formAction, formData, function(res){
+            var html = sicQuery(link).html();
+            if(hidden > 0) {
+                html = html
+                .replace('-unhide', '-hide')
+                .replace('-unhide', '-hide')
+                .replace('-unhide', '-hide');
+            } else {
+                html = html
+                .replace('-hide', '-unhide')
+                .replace('-hide', '-unhide')
+                .replace('-hide', '-unhide');
+            }
+            sicQuery(link).html(html);
+        })
+    },
+
     sendPropertyForms: function(forms,actionLink) {
         var form = forms.pop();
         if(form) {

@@ -3,8 +3,9 @@
 
 <f:form id="form{property.uid}" action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
+    <f:form.hidden id="hidden{property.uid}" property="hidden" value="{f:if(condition:'{property.hidden}',then:'1',then:'0')}" />
 
-    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'primary',else:'info')} panel-condensed panel-collapsed property" data-uid="{property.uid}" id="p{property.uid}">
+    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property" data-uid="{property.uid}" id="property{property.uid}">
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
             <div class="form-irre-header">
                 <div class="form-irre-header-cell form-irre-header-icon">
@@ -39,9 +40,8 @@
                             <core:icon identifier="actions-open" />
                         </a>
                         <f:if condition="{property.uid}">
-                            <a class="hidden btn btn-danger hiddenHandle t3js-data-1-tt_content-14-image-sys_file_reference-14_disabled" href="#" onclick="
-                                return inline.enableDisableRecord('data-1-tt_content-14-image-sys_file_reference-14','hidden')" title="Hide record">
-                                <core:icon identifier="actions-edit-hide" />
+                            <a class="btn btn-default hiddenHandle" onclick="SicAddress.togglePropertyState(this)" data-uid="{property.uid}" title="{f:if(condition:'{property.hidden}',then:'Unhide',else:'Hide')} record">
+                                <core:icon identifier="actions-edit-{f:if(condition:'{property.hidden}',then:'un')}hide" />
                             </a>
                             <a
                                 data-target="#property{property.uid}"

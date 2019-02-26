@@ -88,6 +88,13 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $sorting;
 
     /**
+     * Uhidden
+     *
+     * @var integer
+     */
+    protected $hidden;
+
+    /**
      * DomainProperty constructor.
      * @param string $title
      * @param string $type
@@ -258,6 +265,21 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function setSorting($sorting) {
         $this->sorting = abs($sorting);
+    }
+
+    /**
+     * @return integer hidden
+     */
+    public function getHidden() {
+        return $this->hidden;
+    }
+
+    /**
+     * @param integer $hidden
+     * @return void
+     */
+    public function setHidden($hidden) {
+        $this->hidden = $hidden;
     }
 
 }

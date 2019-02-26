@@ -48,8 +48,9 @@
                                     data-ajax="true"
                                     data-delete-uri="{f:uri.action(action:'delete',controller:'DomainProperty',arguments:'{domainProperty: property}')}"
                                     class="btn btn-default t3js-editform-delete-inline-record delete"
+                                    data-modal-type="error"
                                     data-modal-title="Achtung"
-                                    data-modal-content="<strong>{property.tcaLabel}</strong> {property.title} <i>{property.type.title}</i>"
+                                    data-modal-content="Remove property: {property.title} ({property.tcaLabel}) <{property.type.title}>"
                                     data-modal-button-cancel="{f:translate(key:'Cancel')}"
                                     data-modal-button-delete="{f:translate(key:'Delete')}"
                             >

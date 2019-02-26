@@ -64,19 +64,24 @@ var SicAddress = {
         })
     },
 
+    getTargetObject: function(obj) {
+        var target = sicQuery(obj).data('target');
+        return sicQuery(target);
+    },
+
     addPropertyClicked: function() {
         var form = sicQuery('form:last-child',propertiesSelector).clone();
         sicQuery(propertiesSelector).append(form);
     },
 
     btnOpenClicked: function(link) {
-        sicQuery(link.parentNode.parentNode.parentNode.parentNode.parentNode)
+        sicQuery(SicAddress.getTargetObject(link))
         .toggleClass('panel-collapsed')
         .toggleClass('panel-visible');
     },
     
     headerOpenClicked: function(link) {
-        sicQuery(link.parentNode.parentNode.parentNode)
+        sicQuery(SicAddress.getTargetObject(link))
         .toggleClass('panel-collapsed')
         .toggleClass('panel-visible');
     },
@@ -153,7 +158,7 @@ var SicAddress = {
                     top.TYPO3.Modal.dismiss();
                     if(ajax) {
                         sicQuery.get(deleteUri,{},function(){
-                            sicQuery(link.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode).remove();
+                            sicQuery(SicAddress.getTargetObject(link)).remove();
                         });
                     } else location.href = deleteUri;
                 }

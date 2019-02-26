@@ -1,7 +1,7 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}
 {namespace core=TYPO3\CMS\Core\ViewHelpers}
 
-<f:form action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
+<f:form id="form{property.uid}" action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
 
     <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'primary',else:'info')} panel-condensed panel-collapsed property" data-uid="{property.uid}" id="p{property.uid}">
@@ -10,7 +10,7 @@
                 <div class="form-irre-header-cell form-irre-header-icon">
                     <span class="caret"></span>
                 </div>
-                <div onclick="SicAddress.headerOpenClicked(this)" class="form-irre-header-cell form-irre-header-body">
+                <div onclick="SicAddress.headerOpenClicked(this)" data-target="#property{property.uid}" class="form-irre-header-cell form-irre-header-body">
                     <span>
                         <dl>
                             <dt>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
                     <div class="btn-group btn-group-sm" role="group">
-                        <a onclick="SicAddress.btnOpenClicked(this)" class="btn btn-default open" data-uid="{property.uid}" id="p{property.uid}" title="Edit {property.title}">
+                        <a onclick="SicAddress.btnOpenClicked(this)" data-target="#property{property.uid}" class="btn btn-default open" data-uid="{property.uid}" id="p{property.uid}" title="Edit {property.title}">
                             <core:icon identifier="actions-open" />
                         </a>
                         <f:if condition="{property.uid}">
@@ -44,6 +44,7 @@
                                 <core:icon identifier="actions-edit-hide" />
                             </a>
                             <a
+                                data-target="#property{property.uid}"
                                     data-ajax="true"
                                     data-delete-uri="{f:uri.action(action:'delete',controller:'DomainProperty',arguments:'{domainProperty: property}')}"
                                     class="btn btn-default t3js-editform-delete-inline-record delete"

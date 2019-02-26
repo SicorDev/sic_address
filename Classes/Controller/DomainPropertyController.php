@@ -114,9 +114,14 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
      * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
      * @return void
      */
-    public function deleteAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty)
+    public function deleteAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty = null)
     {
         if (TYPO3_MODE == 'BE') {
+            $arguments = $this->request->getArgument("domainProperty");
+            if(empty($domainProperty)) {
+                $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments));
+                $domainProperty->setHidden(false);
+            }
             if($domainProperty->getType() === 'mmtable') {
                 $title = $domainProperty->getTitle();
                 $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");

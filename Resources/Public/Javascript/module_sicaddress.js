@@ -64,9 +64,8 @@ var SicAddress = {
         })
     },
 
-    getTargetObject: function(obj) {
-        var target = sicQuery(obj).data('target');
-        return sicQuery(target);
+    getPanelObject: function(obj) {
+        return sicQuery(obj).closest('.panel');
     },
 
     addPropertyClicked: function() {
@@ -75,13 +74,13 @@ var SicAddress = {
     },
 
     btnOpenClicked: function(link) {
-        sicQuery(SicAddress.getTargetObject(link))
+        sicQuery(SicAddress.getPanelObject(link))
         .toggleClass('panel-collapsed')
         .toggleClass('panel-visible');
     },
     
     headerOpenClicked: function(link) {
-        sicQuery(SicAddress.getTargetObject(link))
+        sicQuery(SicAddress.getPanelObject(link))
         .toggleClass('panel-collapsed')
         .toggleClass('panel-visible');
     },
@@ -184,7 +183,7 @@ var SicAddress = {
                     top.TYPO3.Modal.dismiss();
                     if(ajax) {
                         sicQuery.get(deleteUri,{},function(){
-                            sicQuery(SicAddress.getTargetObject(link)).remove();
+                            sicQuery(SicAddress.getPanelObject(link)).remove();
                         });
                     } else location.href = deleteUri;
                 }

@@ -3,7 +3,7 @@
 
 <f:form id="form{property.uid}" action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
-    <f:form.hidden id="hidden{property.uid}" property="hidden" value="{f:if(condition:'{property.hidden}',then:'1',then:'0')}" />
+    <f:form.hidden id="hidden{property.uid}" property="hidden" value="{property.hidden}" />
 
     <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property">
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">

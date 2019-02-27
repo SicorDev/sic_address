@@ -171,6 +171,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Model
         $domainProperties = array();
         foreach ($this->configuration as $key => $value) {
+            if($value->getHidden()) continue;
+
             $title = GeneralUtility::underscoredToLowerCamelCase($value->getTitle());
             $value->getType()->setClassName($title);
 
@@ -253,7 +255,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $sql = array();
         foreach ($this->configuration as $key => $value) {
-            if (!$value->isExternal()) {
+            if (!$value->getHidden() && !$value->isExternal()) {
                 $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`'.$value->getTitle().'`');
                 $sql[$key]["title"] = $value->getTitle();
                 $sql[$key]["type"] = $value->getType($value->getTitle());
@@ -271,7 +273,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $tca = array();
         foreach ($this->configuration as $key => $value) {
-            $tca[] = $this->getSingleTCAConfiguration($value);
+            if(!$value->getHidden()) $tca[] = $this->getSingleTCAConfiguration($value);
         }
         return $tca;
     }

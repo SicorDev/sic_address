@@ -95,7 +95,6 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             $arguments = $this->request->getArgument("domainProperty");
             if(empty($domainProperty)) {
                 $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments['__identity']));
-                $domainProperty->setHidden(false);
             }
             if (!array_key_exists("isListLabel", $arguments)) {
                 $domainProperty->setIsListLabel(false);
@@ -120,7 +119,6 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             $arguments = $this->request->getArgument("domainProperty");
             if(empty($domainProperty)) {
                 $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments));
-                $domainProperty->setHidden(false);
             }
             if($domainProperty->getType() === 'mmtable') {
                 $title = $domainProperty->getTitle();

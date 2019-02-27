@@ -5,7 +5,7 @@
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
     <f:form.hidden id="hidden{property.uid}" property="hidden" value="{f:if(condition:'{property.hidden}',then:'1',then:'0')}" />
 
-    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property" data-uid="{property.uid}" id="property{property.uid}">
+    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property">
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
             <div class="form-irre-header">
                 <div class="form-irre-header-cell form-irre-header-icon">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
                     <div class="btn-group btn-group-sm" role="group">
-                        <a onclick="SicAddress.btnOpenClicked(this)" class="btn btn-default open" data-uid="{property.uid}" id="p{property.uid}" title="Edit {property.title}">
+                        <a onclick="SicAddress.btnOpenClicked(this)" class="btn btn-default open" data-uid="{property.uid}" title="Edit {property.title}">
                             <core:icon identifier="actions-open" />
                         </a>
                         <f:if condition="{property.uid}">

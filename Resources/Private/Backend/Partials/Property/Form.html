@@ -5,7 +5,7 @@
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
     <f:form.hidden id="hidden{property.uid}" property="hidden" value="{property.hidden}" />
 
-    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property">
+    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property" data-uid='{property.uid}'>
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
             <div class="form-irre-header">
                 <div class="form-irre-header-cell form-irre-header-icon">

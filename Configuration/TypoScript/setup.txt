@@ -22,15 +22,15 @@ plugin.tx_sicaddress_sicaddress {
 }
 
 # Module configuration
-module.tx_sicaddress_web_sicaddresssicaddress {
+module.tx_sicaddress {
 	persistence {
-		#storagePid = {$module.tx_sicaddress_sicaddress.persistence.storagePid}
+		#storagePid = {$module.tx_sicaddress.persistence.storagePid}
 	}
 	view {
-		templateRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.templateRootPath}
-		partialRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.partialRootPath}
-		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.layoutRootPath}
-		codeTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddress.view.codeTemplateRootPaths}
+		templateRootPaths.0 = {$module.tx_sicaddress.view.templateRootPath}
+		partialRootPaths.0 = {$module.tx_sicaddress.view.partialRootPath}
+		layoutRootPaths.0 = {$module.tx_sicaddress.view.layoutRootPath}
+		codeTemplateRootPaths.0 = {$module.tx_sicaddress.view.codeTemplateRootPaths}
 	}
 }
 
@@ -40,10 +40,6 @@ module.tx_sicaddress_web_sicaddresssicaddressexport {
 		#storagePid = {$module.tx_sicaddress_sicaddressexport.persistence.storagePid}
 	}
 	view {
-		templateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.templateRootPath}
-		partialRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.partialRootPath}
-		layoutRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.layoutRootPath}
-
 		exportTemplateRootPaths.0 = {$module.tx_sicaddress_sicaddressexport.view.exportTemplateRootPaths}
 	}
 }

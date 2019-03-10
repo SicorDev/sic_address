@@ -15,3 +15,6 @@ ttAddressMapping = 0
 
 # cat=basic/enable/50; type=options[nicosdir,spdir,sicor,eundw,irsee,massiv,muniges,obgdir,sachon,ualdir]; label=TemplateSet: Choose one of the preset template sets.
 templateSet = nicosdir
+
+# cat=basic/enable/55; type=boolean; label=Doublets: Enable module for finding and removing address doublets.
+doublets = 0

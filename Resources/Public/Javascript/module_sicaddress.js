@@ -189,6 +189,88 @@ var SicAddress = {
                 }
             }
         ]);
+    },
+
+    droppedObj: null,
+    doubletCheckboxListener: function() {
+        sicQuery('form#doublets input').change(function(){
+            this.form.submit();
+        })
+    },
+
+    ajaxShowDoubletteDatasets: function(frm,index) {
+        var formAction = sicQuery(frm).attr('action');
+        var formData = sicQuery(frm).serialize();
+
+        sicQuery.post(formAction, formData, function(result) {
+            result = SicAddress.markDoublets(result);
+            sicQuery('td',result)
+            .on('dragover', function(e){
+                e.preventDefault();
+            })
+            .on('dragend', function(e){
+                if(SicAddress.droppedObj) {
+                    var switchFrm = sicQuery('form#switchDatasets');
+                    sicQuery('.target', switchFrm).val(SicAddress.droppedObj.uid);
+                    sicQuery('.property', switchFrm).val(SicAddress.droppedObj.property);
+                    sicQuery('.source', switchFrm).val(e.target.dataset.uid);
+
+                    var switchFormData = sicQuery(switchFrm).serialize();
+                    var switchFormAction = sicQuery(switchFrm).attr('action');
+                    sicQuery.post( switchFormAction, switchFormData, function(res) {
+                        SicAddress.ajaxShowDoubletteDatasets(frm,index);
+                    })
+                }
+            })
+            .on('drop dragdrop', function(e){
+                SicAddress.droppedObj = e.target.dataset;
+            });
+            sicQuery('#ajax'+index)
+            .html(result);
+        })
+    },
+
+    markDoublets: function(html) {
+        var values = {};
+        var htmlResult = sicQuery('<table class="table doublets ajax"></table>');
+        sicQuery(htmlResult).append('<tbody></tbody>');
+        sicQuery('tr', html).each(function(trIndex,tr){
+            var trNew = sicQuery('<tr></tr>');
+            var items = sicQuery('th,td', tr);
+            var total = items.length;
+            sicQuery(items).each(function(tdIndex,td){
+                if( values[tdIndex] == undefined ) {
+                    values[tdIndex] = {};
+                }
+                var value = td.innerText;
+                var isDoublet = values[tdIndex] != undefined && values[tdIndex][value] != undefined;
+                if(tdIndex && isDoublet) {
+                    sicQuery(td).addClass('isDoublet');
+                    total--;
+                }
+                values[tdIndex][value] = 1;
+                sicQuery(trNew).append(td);
+            });
+            if(trIndex) sicQuery('a', trNew).css('color', (total>1) ? 'red' : 'green');
+            sicQuery(htmlResult).append(trNew);
+        });
+
+        return htmlResult;
+    },
+
+    ajaxActivateField: function(a) {
+        sicQuery('input.field_'+a.innerText).click();
+        sicQuery(a).css('color','red').attr('href',null);
+    },
+
+    deleteDoublet: function(a) {
+        sicQuery.post(a.dataset.href+'&ts='+Date.now(), {}, function(result) {
+            sicQuery(a).closest('tr').html('');
+        })
+    },
+
+    ajaxClose: function(a) {
+        sicQuery(a).closest('table').html('');
     }
 
 }

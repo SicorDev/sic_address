@@ -48,6 +48,9 @@
 			<trans-unit id="label_detail">
 				<source>Detail</source>
 			</trans-unit>
+			<trans-unit id="datasets">
+				<source>Datensätze</source>
+			</trans-unit>
 			<trans-unit id="label_new">
 				<source>Eingabe</source>
 			</trans-unit>

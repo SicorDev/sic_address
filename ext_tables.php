@@ -63,6 +63,24 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"]) {
     );
 }
 
+if (TYPO3_MODE === 'BE' && $extensionManagerSettings["doublets"]) {
+    // Registers Backend Doublets Module
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'SICOR.' . $_EXTKEY,
+        'web',     // Make module a submodule of 'web'
+        'sicaddressdoublets',    // Submodule key
+        '',                        // Position
+        array(
+            'Module' => 'doublets,ajaxDoublets,ajaxDeleteDoublet,switchDatasets',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_24.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddress_doublets.xlf',
+        )
+    );
+}
+
 if ($extensionManagerSettings["ttAddressMapping"]) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\SICOR\SicAddress\Task\AddGeoLocationTask::class] = array(
         'extension' => $_EXTKEY,

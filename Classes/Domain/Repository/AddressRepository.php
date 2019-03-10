@@ -26,6 +26,7 @@ namespace SICOR\SicAddress\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The repository for Addresses
@@ -296,5 +297,140 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return array_keys(array_pop($rows));
             
         }        
+    }
+
+    /**
+     * Find doublets in address entries
+     *
+     * @param array $fields The db fields to search for doublets.
+     * @return void
+     */
+    public function findDoublets($fields) {
+        $properties = [];
+        foreach($fields as $field=>$active) {
+            if(!empty($active)) {
+                $properties[] = $field;
+            }
+        }
+        if(!empty($properties)) {
+            $selectProperties = [];
+            foreach($properties as $property) {
+                $selectProperties[] = 'IF('.$property.' IS NULL,"(NULL)",'.$property.') AS '.$property;
+            }
+            $selectProperties = implode(',', $selectProperties);
+            $properties = implode(',', $properties);
+
+            $query = $this->createQuery();
+            $table = $query->getSource()->getSelectorName();
+            $where = '1=1';
+            if(empty($fields['hidden'])) {
+                $where .= ' AND hidden=0';
+            }
+            if(empty($fields['deleted'])) {
+                $where .= ' AND deleted=0';
+            }
+
+            $sql = '
+            select
+                count(uid) as total,'.$selectProperties.'
+            from
+                '.$table.'
+            where
+                '.$where.'
+            group by
+                '.$properties.'
+                having total > 1
+            order by
+                deleted desc,
+                hidden desc,
+                total desc,' . $properties;
+
+            $doublets = [];
+            foreach($query->statement($sql)->execute(true) as $doublet) {
+                $pid = empty($fields['pid']) ? 0 : $doublet['pid'];
+                if(isset($doublet['pid'])) {
+                    unset($doublet['pid']);
+                }
+                $doublets[$pid]['page'] = $this->getPageNameLabel($pid);
+                $doublets[$pid]['datasets'][] = $doublet;
+            }
+            return $doublets;
+        }
+
+        return [];
+    }
+
+    /**
+     * Get page name from its pid
+     *
+     * @param int $pid The pid value of the page
+     * @return string
+     */
+    public function getPageNameLabel($pid = 0) {
+        if(isset($this->pages[$pid])) {
+            return $this->pages[$pid];
+        }
+
+        $query = $this->createQuery();
+        $sql = 'select uid,hidden,deleted,title from pages where uid = '.abs($pid);
+
+        $page = $query->statement($sql)->execute(true);
+        $this->pages[$pid] = empty($page) ? [] : $page[0];
+
+        return $this->pages[$pid];
+    }
+
+    /**
+     * Find address entries matching the values of the given arguments
+     *
+     * @param array $args An array of fields with their values included; array('field1' => 'value1', 'field2' => 'value2', ...)
+     * @return void
+     */
+    public function findByArgs($args) {
+        $constraints  = array();
+        $query = $this->createQuery();
+
+        foreach($args as $field=>$value) {
+            if( $value == '(NULL)' ) $value = '';
+
+            if( !empty($value) && !in_array($field, array('action','controller')) ) {
+                $property = GeneralUtility::underscoredToLowerCamelCase($field);
+                $constraints[] = $query->equals($property, $value);
+            }
+        }
+
+        $query->matching($query->logicalAnd($constraints));
+        $query->getQuerySettings()->setRespectStoragePage(false);
+
+        return $query->execute();
+    }
+
+    /**
+     * Return the table of for query object
+     *
+     * @return void
+     */
+    public function getTable() {
+        return $this->createQuery()->getSource()->getSelectorName();
+    }
+
+    /**
+     * Check if given property is relevant.
+     * - not a system field
+     * - has not empty values
+     *
+     * @param array $property
+     * @return boolean
+     */
+    public function isRelevant($property) {
+        if(in_array($property, array('crdate','tstamp','l10n_diffsource','cruser_id'))) return false;
+
+        $query = $this->createQuery();
+        $table = $query->getSource()->getSelectorName();
+
+        $sql = 'SELECT COUNT(' . $property . ') AS total FROM ' . $table . ' WHERE LENGTH(TRIM(' . $property . ')) > 0 AND TRIM(' . $property . ') != "0" GROUP BY ' . $property;
+        $res = $query->statement($sql)->execute(true);
+
+        return !empty($res[0]);
     }
 }

@@ -37,3 +37,21 @@ h1.generate {
     75% { opacity:0.5 }
     100% { opacity:0.25 }
 }
+
+form#doublets .fields ul.internal {
+    color: #030;
+}
+form#doublets .fields ul.external {
+    opacity: 0.5;
+}
+
+form#doublets label:not(.btn) {
+    opacity: 0.5;
+
+    padding: 0.125em 0.25em;
+}
+form#doublets label.active {
+    opacity: 1;
+}
+
+table.doublets.ajax .isDoublet { background:#fee }

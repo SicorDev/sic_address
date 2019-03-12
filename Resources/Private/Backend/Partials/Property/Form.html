@@ -1,0 +1,86 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:form id="form{property.uid}" action="{f:if(condition:'{property.uid}',then:'update',else:'create')}" controller="DomainProperty" object="{property}" objectName="{f:if(condition:'{property.uid}',then:'domainProperty',else:'newDomainProperty')}">
+    <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
+    <f:form.hidden id="hidden{property.uid}" property="hidden" value="{property.hidden}" />
+
+    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property" data-uid='{property.uid}'>
+        <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
+            <div class="form-irre-header">
+                <div class="form-irre-header-cell form-irre-header-icon">
+                    <span class="caret"></span>
+                </div>
+                <div onclick="SicAddress.headerOpenClicked(this)" class="form-irre-header-cell form-irre-header-body">
+                    <span>
+                        <dl>
+                            <dt>
+                                <f:if condition="{property.tcaLabel}">
+                                    <f:then>{property.title}</f:then>
+                                    <f:else>Neu...</f:else>
+                                </f:if>
+                            </dt>
+                            <dd>
+                                {property.tcaLabel}         
+                                <f:if condition="{property.isListLabel}">
+                                    <core:icon identifier="actions-system-shortcut-active" />
+                                </f:if>                       
+                                <f:if condition="{property.type.title}">
+                                    <span class="pull-right badge">
+                                        {property.type.title}
+                                    </span>
+                                </f:if>
+                            </dd>
+                        </dl>
+                    </span>
+                </div>
+                <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a onclick="SicAddress.btnOpenClicked(this)" class="btn btn-default open" data-uid="{property.uid}" title="Edit {property.title}">
+                            <core:icon identifier="actions-open" />
+                        </a>
+                        <f:if condition="{property.uid}">
+                            <a class="btn btn-default hiddenHandle" onclick="SicAddress.togglePropertyState(this)" data-uid="{property.uid}" title="{f:if(condition:'{property.hidden}',then:'Unhide',else:'Hide')} record">
+                                <core:icon identifier="actions-edit-{f:if(condition:'{property.hidden}',then:'un')}hide" />
+                            </a>
+                            <a
+                                    data-ajax="true"
+                                    data-delete-uri="{f:uri.action(action:'delete',controller:'DomainProperty',arguments:'{domainProperty: property}')}"
+                                    class="btn btn-default t3js-editform-delete-inline-record delete"
+                                    data-modal-type="error"
+                                    data-modal-title="Achtung"
+                                    data-modal-content="Remove property: {property.title} ({property.tcaLabel}) <{property.type.title}>"
+                                    data-modal-button-cancel="{f:translate(key:'Cancel')}"
+                                    data-modal-button-delete="{f:translate(key:'Delete')}"
+                            >
+                                <core:icon identifier="actions-delete" />
+                            </a>
+                        </f:if>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <span class="btn btn-default sortableHandle ui-sortable-handle" title="Move this item">
+                            <core:icon identifier="actions-move-move" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-collapse">
+            <div class="tab-content">
+                <fieldset class="form-section">
+                    <div class="row">
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-1',type:'checkbox',property:property,label:'isListLabel',value:property.isListLabel}" />
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-4',property:property,label:'title',value:property.title,disable:'true',require:'true',uid:property.uid}" />
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-4',property:property,label:'tcaLabel',value:property.tcaLabel,require:'true'}" />
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-1',type:'select',property:property,label:'type',value:property.type.title,options:'{fieldTypes}'}" />
+                    </div>
+                    <div class="row">
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-6',type:'textarea',property:property,label:'tcaOverride',value:property.tcaOverride}" />
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-6',type:'textarea',property:property,label:'settings',value:property.settings}" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</f:form>

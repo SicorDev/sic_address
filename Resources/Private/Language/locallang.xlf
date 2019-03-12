@@ -30,6 +30,15 @@
 			<trans-unit id="DeleteTTAddressFieldsLabel">
 				<source>Remove tt_address Field Definitions</source>
 			</trans-unit>
+			<trans-unit id="Attention">
+				<source>Achtung</source>
+			</trans-unit>
+			<trans-unit id="Cancel">
+				<source>Abbrechen</source>
+			</trans-unit>
+			<trans-unit id="Delete">
+				<source>Löschen</source>
+			</trans-unit>
 			<trans-unit id="label_switchAction">
 				<source>Ansicht</source>
 			</trans-unit>
@@ -38,6 +47,9 @@
 			</trans-unit>
 			<trans-unit id="label_detail">
 				<source>Detail</source>
+			</trans-unit>
+			<trans-unit id="datasets">
+				<source>Datensätze</source>
 			</trans-unit>
 			<trans-unit id="label_new">
 				<source>Eingabe</source>

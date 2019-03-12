@@ -36,6 +36,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var array
      */
     protected $defaultOrderings = array(
+        'hidden' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
@@ -43,6 +44,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
+        $querySettings->setIgnoreEnableFields(TRUE);
         $this->setDefaultQuerySettings($querySettings);
     }
 

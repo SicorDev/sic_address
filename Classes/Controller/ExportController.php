@@ -77,9 +77,9 @@ class ExportController extends ModuleController {
         parent::initializeAction();
 
         // Override path with extension config
-        $this->$renderTemplatesPath = GeneralUtility::getFileAbsFileName("EXT:sic_address/Resources/Private/Templates/Export/");
-        if(count($this->extensionConfiguration["exportRenderTemplates"]) > 0) {
-            $this->$renderTemplatesPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration["exportRenderTemplates"]);
+        $this->renderTemplatesPath = GeneralUtility::getFileAbsFileName("EXT:sic_address/Resources/Private/Templates/Export/");
+        if(!empty($this->extensionConfiguration["exportRenderTemplates"]) > 0) {
+            $this->renderTemplatesPath = GeneralUtility::getFileAbsFileName($this->extensionConfiguration["exportRenderTemplates"]);
         }
     }
 
@@ -107,8 +107,8 @@ class ExportController extends ModuleController {
     {
         // Set template
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-        $customView->setTemplatePathAndFilename($this->$renderTemplatesPath.'ExportVianovis.html');
-        $customView->setPartialRootPaths([$this->$renderTemplatesPath.'ExportVianovis.html']);
+        $customView->setTemplatePathAndFilename($this->renderTemplatesPath.'ExportVianovis.html');
+        $customView->setPartialRootPaths([$this->renderTemplatesPath.'ExportVianovis.html']);
 
         // Fetch data
         $adresses = $this->addressRepository->findForVianovis()->toArray();
@@ -199,7 +199,7 @@ class ExportController extends ModuleController {
     private function exportToCSV($addresses, $template) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $templatePathAndFilename = $this->$renderTemplatesPath . $template;
+        $templatePathAndFilename = $this->renderTemplatesPath . $template;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $this->parseCSV($addresses));
@@ -221,7 +221,7 @@ class ExportController extends ModuleController {
     private function exportToHTML($addresses, $template) {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
-        $templatePathAndFilename = $this->$renderTemplatesPath . $template;
+        $templatePathAndFilename = $this->renderTemplatesPath . $template;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $addresses);
@@ -238,7 +238,7 @@ class ExportController extends ModuleController {
      */
     private function getTemplates() {
         $templates = array();
-        $entries = array_diff(scandir($this->$renderTemplatesPath), array('.', '..'));
+        $entries = array_diff(scandir($this->renderTemplatesPath), array('.', '..'));
         foreach ($entries as $entry) {
             if(!strpos($entry, ".tmpl")) {
                 $template = new \stdClass();

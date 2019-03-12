@@ -153,6 +153,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if ($this->request->hasArgument('errorMessages')) {
             $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));
         }
+        $this->view->assign('ttAddressMapping',$this->extensionConfiguration['ttAddressMapping']);
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
@@ -170,6 +171,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Model
         $domainProperties = array();
         foreach ($this->configuration as $key => $value) {
+            if($value->getHidden()) continue;
+
             $title = GeneralUtility::underscoredToLowerCamelCase($value->getTitle());
             $value->getType()->setClassName($title);
 
@@ -252,7 +255,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $sql = array();
         foreach ($this->configuration as $key => $value) {
-            if (!$value->isExternal()) {
+            if (!$value->getHidden() && !$value->isExternal()) {
                 $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`'.$value->getTitle().'`');
                 $sql[$key]["title"] = $value->getTitle();
                 $sql[$key]["type"] = $value->getType($value->getTitle());
@@ -270,7 +273,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $tca = array();
         foreach ($this->configuration as $key => $value) {
-            $tca[] = $this->getSingleTCAConfiguration($value);
+            if(!$value->getHidden()) $tca[] = $this->getSingleTCAConfiguration($value);
         }
         return $tca;
     }
@@ -371,5 +374,125 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
         $service->install($this->request->getControllerExtensionKey());
+    }
+
+    /**
+     * Show doublet finder page for address entries
+     *
+     * @return void
+     */
+    public function doubletsAction() {        
+        $args = $this->request->getArguments();
+        $properties = $this->getRelevantOnly($this->domainPropertyRepository->findAll());
+        $letters = $fields = [];
+        $sources = [
+            'internal' => 1,
+            'external' => 0
+        ];
+        if(!empty($args['sources'])) {
+            $sources = $args['sources'];
+        }
+        if(!empty($args['fields'])) {
+            $fields = $args['fields'];
+        }
+
+        foreach($properties as $property) {
+            $source = $property->getExternal() ? 'external' : 'internal';
+            $title = trim($property->getTitle());
+            $tcaLabel = trim($property->getTcaLabel());
+            if($title !== $tcaLabel) $tcaLabel .= ' (' . $title . ')';
+            $letter = strtoupper($title[0]);
+            if($sources[$source]) {
+                $letters[$letter][$source][$title] = [
+                    'title' => $title,
+                    'label' => $tcaLabel,
+                    'checked' => !empty($fields[$title])
+                ];
+                ksort($letters[$letter][$source]);
+                krsort($letters[$letter]);
+            }
+        }
+        ksort($letters);
+        $this->view->assign('letters', $letters);
+        $this->view->assign('sources', $sources);
+        $this->view->assign('fields', $fields);
+
+        $pages = [];
+        $searched = false;
+        if(!empty($fields)) {
+            $searched = array_sum($fields);
+            $pages = $this->addressRepository->findDoublets($fields);
+        }
+        $this->view->assign('pages', $pages);
+        $this->view->assign('searched', $searched);
+    }
+
+    /**
+     * This action shows the value of selected dataset doublets
+     *
+     * @return void
+     */
+    public function ajaxDoubletsAction() {
+        $properties = $this->domainPropertyRepository->findAll();
+        $args = $this->request->getArguments();
+        $addresses = $this->addressRepository->findByArgs($args);
+        $this->view->assign('addresses', $addresses);
+        $this->view->assign('properties', $this->getRelevantOnly($properties));
+    }
+
+    /**
+     * Get onnly relevant properties from given property list.
+     *
+     * @param array $properties
+     * @return void
+     */
+    protected function getRelevantOnly($properties) {
+        $relevantProperties = array();
+
+        foreach($properties as $property) {
+            if($this->addressRepository->isRelevant($property->getTitle())) {
+                $relevantProperties[] = $property;
+            }
+        }
+
+        return $relevantProperties;
+    }
+
+    /**
+     * Remove action for address entries called over ajax
+     *
+     * @param \SICOR\SicAddress\Domain\Model\Address $address
+     * @return void
+     */
+    public function ajaxDeleteDoubletAction($address) {
+        $this->addressRepository->remove($address);
+        return json_encode(array());
+    }
+
+    /**
+     * Switch value of given property for given source and target object
+     *
+     * @return void
+     */
+    public function switchDatasetsAction() {
+        $sourceUid = $this->request->hasArgument('source') ? $this->request->getArgument('source') : 0;
+        $targetUid = $this->request->hasArgument('target') ? $this->request->getArgument('target') : 0;
+        $property = $this->request->hasArgument('property') ? $this->request->getArgument('property') : 0;
+        $property = GeneralUtility::underscoredToUpperCamelCase($property);
+        $propertyGetter = 'get' . $property;
+        $propertySetter = 'set' . $property;
+        $sourceDataset = $this->addressRepository->findByUid( $sourceUid );
+        $targetDataset = $this->addressRepository->findByUid( $targetUid );
+
+        if( $sourceDataset && method_exists($sourceDataset, $propertyGetter)) {
+            $value = $sourceDataset->$propertyGetter();
+
+            if( $targetDataset && method_exists($targetDataset, $propertySetter) ) {
+                $targetDataset->$propertySetter($value);
+                $this->addressRepository->update($targetDataset);
+            }
+        }
+
+        return;
     }
 }

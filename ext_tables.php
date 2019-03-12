@@ -35,7 +35,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["developerMode"]) {
         array(
             'Module' => 'list, create, deleteFieldDefinitions',
             'Import' => 'migrateNicosDirectory, migrateSPDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
-            'DomainProperty' => 'create, update, delete',
+            'DomainProperty' => 'create, update, delete, sort',
         ),
         array(
             'access' => 'user,group',
@@ -59,6 +59,24 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"]) {
             'access' => 'user,group',
             'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_24.png',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddressexport.xlf',
+        )
+    );
+}
+
+if (TYPO3_MODE === 'BE' && $extensionManagerSettings["doublets"]) {
+    // Registers Backend Doublets Module
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'SICOR.' . $_EXTKEY,
+        'web',     // Make module a submodule of 'web'
+        'sicaddressdoublets',    // Submodule key
+        '',                        // Position
+        array(
+            'Module' => 'doublets,ajaxDoublets,ajaxDeleteDoublet,switchDatasets',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_24.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddress_doublets.xlf',
         )
     );
 }

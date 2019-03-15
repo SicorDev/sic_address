@@ -45,6 +45,18 @@
 			<trans-unit id="label_list">
 				<source>Liste</source>
 			</trans-unit>
+            <trans-unit id="label_listandmap">
+                <source>Liste (mit Karte)</source>
+            </trans-unit>
+            <trans-unit id="label_center_address">
+                <source>Zentrum der Karte (Adresse)</source>
+            </trans-unit>
+            <trans-unit id="label_distances">
+                <source>Entfernungen in km (mit Komma getrennt)</source>
+            </trans-unit>
+            <trans-unit id="label_root_category">
+                <source>Hauptkategorie für Filterfunktion</source>
+            </trans-unit>
 			<trans-unit id="label_detail">
 				<source>Detail</source>
 			</trans-unit>

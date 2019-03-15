@@ -12,6 +12,28 @@ plugin.tx_sicaddress_sicaddress {
 		# cat=plugin.tx_sicaddress_sicaddress//a; type=string; label=Default storage PID
 		# storagePid = 1
 	}
+	settings {
+		map {
+			map {
+				# https://leafletjs.com/reference-1.4.0.html#map-option
+				zoom = 12
+				preferCanvas = true
+			}
+			circle {
+				# https://leafletjs.com/reference-1.4.0.html#circle
+				stroke = true
+			}
+			icon {
+				# https://leafletjs.com/reference-1.4.0.html#icon
+				iconSize = [50, 50]
+			}
+			# https://leafletjs.com/reference-1.4.0.html#tilelayer
+			tileLayerUrl = https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+			tileLayer {
+				attribution = &copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>
+			}
+		}
+	}
 }
 
 module.tx_sicaddress {

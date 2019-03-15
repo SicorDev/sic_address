@@ -7,6 +7,24 @@ plugin.tx_sicaddress_sicaddress {
 	persistence {
 		#storagePid = {$plugin.tx_sicaddress_sicaddress.persistence.storagePid}
 	}
+    settings {
+        map {
+            map {
+                zoom = {$plugin.tx_sicaddress_sicaddress.settings.map.map.zoom}
+                preferCanvas = {$plugin.tx_sicaddress_sicaddress.settings.map.map.preferCanvas}
+            }
+            circle {
+                stroke = {$plugin.tx_sicaddress_sicaddress.settings.map.circle.stroke}
+            }
+            icon {
+                iconSize = {$plugin.tx_sicaddress_sicaddress.settings.map.icon.iconSize}
+            }
+            tileLayerUrl = {$plugin.tx_sicaddress_sicaddress.settings.map.tileLayerUrl}
+            tileLayer {
+                attribution = {$plugin.tx_sicaddress_sicaddress.settings.map.tileLayer.attribution}
+            }
+        }
+    }
 }
 
 plugin.tx_sicaddress_sicaddress {

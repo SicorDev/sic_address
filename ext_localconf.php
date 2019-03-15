@@ -12,7 +12,7 @@ if (!defined('TYPO3_MODE')) {
     ),
     // non-cacheable actions
     array(
-        'Address' => 'create, update, delete, search',
+        'Address' => 'create, update, delete, search, map',
         'Category' => 'create, update, delete',
     )
 );

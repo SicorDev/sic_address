@@ -48,6 +48,10 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 </f:else>
 </f:if>
 
+CREATE TABLE sys_category (
+  sic_address_marker int(10) unsigned default '0',
+);
+
 <f:for each="{properties}" as="field">
 <f:if condition="{0: '{field.type.title}'} == {0: 'mmtable'}">
 #

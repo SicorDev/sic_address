@@ -19,10 +19,14 @@
                                 <numIndex index="1">Address->list;Address->search</numIndex>
                             </numIndex>
                             <numIndex index="2" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_listandmap</numIndex>
+                                <numIndex index="1">Address->map</numIndex>
+                            </numIndex>
+                            <numIndex index="3" type="array">
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_detail</numIndex>
                                 <numIndex index="1">Address->show</numIndex>
                             </numIndex>
-                            <numIndex index="3" type="array">
+                            <numIndex index="4" type="array">
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_new</numIndex>
                                 <numIndex index="1">Address->new;Address->create</numIndex>
                             </numIndex>
@@ -265,6 +269,46 @@
                     </displayCond>
                 </TCEforms>
             </settings.singleAddress>
+            <settings.centerAddress>
+                <TCEforms>
+                    <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_center_address</label>
+                    <config>
+                        <type>group</type>
+                        <internal_type>db</internal_type>
+                        <allowed>tx_sicaddress_domain_model_address,tt_address</allowed>
+                        <size>1</size>
+                        <maxitems>1</maxitems>
+                        <minitems>0</minitems>
+                        <show_thumbs>1</show_thumbs>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->map</displayCond>
+                </TCEforms>
+            </settings.centerAddress>
+            <settings.distances>
+                <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_distances</label>
+                <config>
+                    <type>input</type>
+                    <size>20</size>
+                    <max>30</max>
+                    <eval>trim</eval>
+                </config>
+                <displayCond>FIELD:switchableControllerActions:=:Address->map</displayCond>
+            </settings.distances>
+            <settings.rootCategory>
+                <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_root_category</label>
+                <config>
+                    <type>select</type>
+                    <items type="array">
+                        <numIndex index="0" type="array">
+                            <numIndex index="0"></numIndex>
+                            <numIndex index="1"></numIndex>
+                        </numIndex>
+                    </items>
+                    <foreign_table>sys_category</foreign_table>
+                </config>
+                <displayCond>FIELD:switchableControllerActions:=:Address->map</displayCond>
+            </settings.rootCategory>
             <settings.singleTtAddress>
                 <TCEforms>
                     <exclude>1</exclude>

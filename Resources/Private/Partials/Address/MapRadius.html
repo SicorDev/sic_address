@@ -1,0 +1,4 @@
+<f:form action="map" class="row">
+    <f:form.textfield name="center" class="col" value="{args.center}" placeholder="Strasse/Nr, PLZ, Ort, ..."/>
+    <f:form.select name="distance" class="col" additionalAttributes="{onchange: 'this.form.submit()'}" options="{distances}" value="{args.distance}" />
+</f:form>

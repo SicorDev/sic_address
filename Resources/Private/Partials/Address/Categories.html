@@ -1,34 +1,93 @@
-<f:form.hidden id="sic_address_category" name="category" value="{categoryvalue}" />
-<f:switch expression="{settings.categoryType}">
-    <f:case value="breadcrumbs">
-        <a href="#" onclick="return submitCategory('-1');">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}</a>
-        <f:for each="{categories}" as="category">| <a href="#" onclick="return submitCategory('{category.uid}');">{category.title}</a>&nbsp;</f:for>
-    </f:case>
-    <f:case value="dropdown">
-        <f:form.select class="address_dropdown" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
-                       prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}" />
-    </f:case>
-    <f:case value="selectbox">
-        <f:form.select class="address_category_selectbox" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
-                       size="5" additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
-                       prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}" />
-    </f:case>
-    <f:case value="checkboxes">
-        <br /><input onchange="toggleCategories(jQuery(this).prop('checked'));" class="address_category_checkbox_all" name="tx_sicaddress_sicaddress[checkall]"
-                     id="checkall" value="checkall" type="checkbox" />{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}
-        <f:for each="{categories}" as="category">
-            <br /><f:form.checkbox id="sic_address_checkbox" class="address_category_checkbox" value="{category.uid}" additionalAttributes="{onchange: 'submitCategories();'}"/>{category.title}
-        </f:for>
-        <script>
-            var bCheckAll = '{checkall}' == 'checkall';
-            function fillCheckBoxes () {
-                var cats = jQuery('#sic_address_category').val().split(',');
-                for(var i=0; i<cats.length; i++){
-                    jQuery("input[value='" + cats[i] + "']" ).prop('checked', true);
+<div class="sic-address-categories">
+    <f:form.hidden id="sic_address_category" name="category" value="{categoryvalue}" />
+
+    <f:switch expression="{settings.categoryType}">
+        <f:case value="breadcrumbs">
+            <a href="#" onclick="return submitCategory('-1');">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}</a>
+            <f:for each="{categories}" as="category">| <a href="#" onclick="return submitCategory('{category.uid}');">{category.title}</a>&nbsp;</f:for>
+        </f:case>
+        <f:case value="dropdown">
+            <f:form.select class="address_dropdown" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
+                           additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
+                           prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}" />
+        </f:case>
+        <f:case value="selectbox">
+            <f:form.select class="address_category_selectbox" options="{categories}" optionValueField="uid" optionLabelField="title" value="{categoryvalue}"
+                           size="5" additionalAttributes="{onchange: 'submitCategory(jQuery(this).val());'}" prependOptionValue="-1"
+                           prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}" />
+        </f:case>
+        <f:case value="checkboxes">
+            <br /><input onchange="toggleCategories(jQuery(this).prop('checked'));" class="address_category_checkbox_all" name="tx_sicaddress_sicaddress[checkall]"
+                         id="checkall" value="checkall" type="checkbox" />{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}
+            <f:for each="{categories}" as="category">
+                <br /><f:form.checkbox id="sic_address_checkbox" class="address_category_checkbox" value="{category.uid}" additionalAttributes="{onchange: 'submitCategories();'}"/>{category.title}
+            </f:for>
+            <script>
+                var bCheckAll = '{checkall}' == 'checkall';
+                function fillCheckBoxes () {
+                    var cats = jQuery('#sic_address_category').val().split(',');
+                    for(var i=0; i<cats.length; i++){
+                        jQuery("input[value='" + cats[i] + "']" ).prop('checked', true);
+                    }
+                    jQuery('#checkall').prop('checked', bCheckAll);
                 }
-                jQuery('#checkall').prop('checked', bCheckAll);
-            }
-        </script>
-    </f:case>
-</f:switch>
+            </script>
+        </f:case>
+        <f:case value="buttons">
+            <div class="buttons">
+                <f:for each="{categories}" as="category">
+                    <div class="card">
+                        <div class="card-header">
+                            <f:if condition="{category.uid} == {currentCategory}">
+                                <f:then>
+                                    <button class="btn btn-accord active">
+                                        <f:link.action arguments="{currentCategory:0}" pluginName="{pluginName}" extensionName="{extensionName}">
+                                            &times; {category.title}
+                                        </f:link.action>
+                                    </button>
+                                </f:then>
+                                <f:else>
+                                    <button class="btn btn-accord">
+                                        <f:link.action arguments="{currentCategory:category}" pluginName="{pluginName}" extensionName="{extensionName}">
+                                            {category.title}
+                                        </f:link.action>
+                                    </button>
+                                </f:else>
+                            </f:if>
+                        </div>
+                    </div>
+                </f:for>
+            </div>
+        </f:case>
+        <f:case value="groups">
+            <div class="groups">
+                <div class="row">
+                    <f:for each="{categories}" as="category" key="groupTitle">
+                        <div class="col">
+                            <div class="group">
+                                <h2>{groupTitle}</h2>
+                                <ul>
+                                    <f:for each="{category.children}" as="category" key="title">
+                                        <li class="{f:if(condition:'{category.active}',then:'active')}">
+                                            <f:link.action arguments="{category.arguments}">
+                                                {title}
+                                            </f:link.action>
+                                            <f:if condition="{category.arguments.marker}">
+                                                <f:image image="{category.arguments.marker}" width="30" />
+                                            </f:if>
+                                        </li>
+                                    </f:for>
+                                </ul>
+                            </div>
+                        </div>
+                    </f:for>
+                    <f:if condition="{postPartial}">
+                        <div class="col">
+                            <f:render partial="{postPartial}" arguments="{_all}" />
+                        </div>
+                    </f:if>
+                </div>
+            </div>
+        </f:case>
+    </f:switch>
+</div>

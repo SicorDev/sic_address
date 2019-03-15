@@ -37,7 +37,7 @@ class GeocodeService
      *
      * @var string
      */
-    protected $geocodingUrl = '//maps.googleapis.com/maps/api/geocode/json';
+    protected $geocodingUrl = '//nominatim.openstreetmap.org/search';
 
     /**
      * Languages provided by google: https://developers.google.com/maps/faq?hl=de#languagesupport
@@ -62,13 +62,6 @@ class GeocodeService
      */
     public function __construct($appendParameter = null, $serverKey = null, $languageKey = null, $cacheTime = null)
     {
-        /*
-          if (GeneralUtility::getIndpEnv('TYPO3_SSL')) {
-          $protocol = 'https:';
-          } else {
-          $protocol = 'http:';
-          }
-         */
         // Get extensions configuration
         $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['geolocations']);
         // Append server-key as URL-parameter
@@ -85,7 +78,10 @@ class GeocodeService
         if ($appendParameter) {
             $urlParameter[] = preg_replace('/[^\[\]\da-z&_-]/i', '', $appendParameter);
         }
-        $this->geocodingUrl = (GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http') . ':' . $this->geocodingUrl . '?';
+
+        $urlParameter[] = 'format=json';
+        $urlParameter[] = 'q=';
+        $this->geocodingUrl =  'https:' . $this->geocodingUrl . '?';
         if (count($urlParameter) > 0) {
             $this->geocodingUrl .= implode('&', $urlParameter);
         }
@@ -107,15 +103,17 @@ class GeocodeService
             return null;
 
         // Append address to geocoding-url
-        $geocodingUrl = $this->geocodingUrl . '&address=' . urlencode($address);
+        $geocodingUrl = $this->geocodingUrl . urlencode($address);
+
         // Query geocoding-service
         $results = json_decode(GeneralUtility::getUrl($geocodingUrl));
-        if ($results->status === 'OK')
+
+        if (!empty($results[0]->lat))
         {
-            $record = $results->results[0];
+            $record = $results[0];
             $results = [
-                'latitude' => $record->geometry->location->lat,
-                'longitude' => $record->geometry->location->lng,
+                'latitude' => $record->lat,
+                'longitude' => $record->lon,
                 'place_id' => $record->place_id ? $record->place_id : ''
             ];
         }
@@ -123,6 +121,7 @@ class GeocodeService
         {
             $results = null;
         }
+
         return $results;
     }
 }

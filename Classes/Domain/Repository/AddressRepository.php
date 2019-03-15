@@ -239,6 +239,69 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
+     * @param $centerAddress
+     * @param $distance
+     * @param $currentCategories
+     * @param $currentCountry
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findGeoEntries($centerAddress, $distance, $currentCategories, $currentCountry) {
+        $query = $this->createQuery();
+
+        if(!empty($centerAddress) && \is_numeric($distance)) {
+            $lat = $centerAddress->getLatitude() / 180 * M_PI;
+            $lon = $centerAddress->getLongitude() / 180 * M_PI;
+
+            $having = $limit = '';
+            if(is_numeric($distance)) {
+                $having = 'HAVING distance <= ' . $distance;
+            } else {
+                $having = 'HAVING distance > 0';
+                $limit = 'LIMIT 1';
+            }
+
+            $sql = <<< SQL
+                SELECT *,(6368 * SQRT(2*(1-cos(RADIANS(latitude)) * 
+                cos($lat) * (sin(RADIANS(longitude)) *
+                sin($lon) + cos(RADIANS(longitude)) * 
+                cos($lon)) - sin(RADIANS(latitude)) *
+                sin($lat)))) AS distance
+                FROM tt_address
+                $having
+                ORDER BY distance
+                $limit
+SQL;
+
+            return $query->statement($sql)->execute();
+        }
+
+        $constraints = array(
+            $query->logicalNot(
+                $query->logicalOr(
+                    $query->equals('latitude', null),
+                    $query->equals('longitude', null)
+                )
+            )
+        );
+
+        foreach($currentCategories as $currentCategory) {
+            if($currentCategory) {
+                $constraints[] = $query->contains('categories', $currentCategory);
+            }
+        }
+
+        if(!empty($currentCountry)) {
+            $constraints[] = $query->equals('country', $currentCountry);
+        }
+
+        $query->matching(
+            $query->logicalAnd($constraints)
+        );
+
+        return $query->execute();
+    }
+
+    /**
      * Allow third parties like sic_calender to submit their own queries
      */
     public function findByConstraints($constraints)

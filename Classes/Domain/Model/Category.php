@@ -31,4 +31,47 @@ namespace SICOR\SicAddress\Domain\Model;
  */
 class Category extends \TYPO3\CMS\Extbase\Domain\Model\Category
 {
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\FileReference>
+     * @lazy
+     */
+    protected $sicAddressMarker = NULL;
+
+    /**
+     * Initialize images
+     *
+     * @return \GeorgRinger\News\Domain\Model\Category
+     */
+    public function __construct()
+    {
+        $this->sicAddressMarker = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
+
+    /**
+     * @return FileReference[]|\TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getSicAddressMarker() {
+        return $this->sicAddressMarker;
+    }
+
+    /**
+     * @param FileReference $sicAddressMarker
+     */
+    public function setSicAddressMarker(FileReference $sicAddressMarker) {
+        $this->sicAddressMarker = $sicAddressMarker;
+    }
+
+    /**
+     * @param FileReference $sicAddressMarker
+     */
+    public function addSicAddressMarker(FileReference $sicAddressMarker) {
+        $this->sicAddressMarker->attach($sicAddressMarker);
+    }
+
+    /**
+     * @param FileReference $sicAddressMarker
+     */
+    public function removeSicAddressMarker(FileReference $sicAddressMarker) {
+        $this->sicAddressMarker->detach($sicAddressMarker);
+    }
 }

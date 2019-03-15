@@ -1,0 +1,32 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:render partial="Address/Map" arguments="{_all}" />
+    <f:render partial="Address/MapRadius" arguments="{_all}" />
+
+    <h1>
+        <f:translate key="results" />
+    </h1>
+
+    <div class="row results">
+        <f:for each="{addresses}" as="address">
+            <div id="sic_address_marker_popup_{contentUid}_{address.uid}" class="col result">
+                <strong>{address.company}</strong>
+                <br>
+                {address.address}
+                <br>
+                {address.zip} {address.city}
+                <br>
+                <f:if condition="{address.phone}">
+                    Tel.: {address.phone}
+                    <br>
+                </f:if>
+                <f:link.email email="{address.email}" />
+                <br>
+                <f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+            </div>
+        </f:for>
+    </div>
+</f:section>

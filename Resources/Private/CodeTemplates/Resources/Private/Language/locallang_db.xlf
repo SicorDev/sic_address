@@ -9,6 +9,9 @@
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_category.marker">
+				<source>Marker</source>
+			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_domainproperty">
 				<source>Domain Property</source>
 			</trans-unit>

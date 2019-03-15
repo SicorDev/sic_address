@@ -60,6 +60,12 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $categoryRepository = NULL;
 
     /**
+     * @var \SICOR\SicAddress\Domain\Service\GeocodeService
+     * @inject
+     */
+    protected $geoService = NULL;
+
+    /**
      * Holds the Extension configuration
      *
      * @var array
@@ -119,6 +125,122 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $emptyList = $this->settings['noListStartup'];
 
         $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
+    }
+
+    /**
+     * @return array|mixed
+     */
+    protected function getDistances() {
+        $distances = array(0 => '');
+        foreach(explode(',', $this->settings['distances']) as $distance) {
+            $distances[$distance] = $distance . ' km';
+        }
+
+        return $distances;
+    }
+
+    /**
+     * @return void
+     */
+    public function mapAction() {
+        $args = $this->request->getArguments();
+
+        $currentCategories = array();
+        if($this->request->hasArgument('currentCategories')) {
+            $currentCategories = $this->request->getArgument('currentCategories');
+        }
+
+        $currentCountry = null;
+        if($this->request->hasArgument('country')) {
+            $currentCountry = $this->request->getArgument('country');
+        }
+
+        $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'],$currentCategories);
+        $this->settings['categoryType'] = 'groups';
+
+        $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
+        if(!empty($args['center'])) {
+            $center = $this->geoService->getCoordinatesForAddress($args['center']);
+            $centerAddress->setLongitude($center['longitude']);
+            $centerAddress->setLatitude($center['latitude']);
+        }
+
+        $addresses = $this->addressRepository->findGeoEntries($centerAddress, $args['distance'], $currentCategories, $currentCountry);
+        $countries = array('' => 'Land');
+        foreach($addresses as $address) {
+            $country = $address->getCountry();
+            $country = trim($country);
+            if(!empty($country)) {
+                $countries[$country] = $country;
+            }
+        }
+        ksort($countries);
+
+        $this->view->assignMultiple(array(
+            'args' => $args,
+            'categories' => $categories,
+            'settings' => $this->settings,
+            'mapSettings' => $this->settings['map'],
+            'addresses' => $addresses,
+            'countries' => $countries,
+            'centerAddress' => $centerAddress,
+            'distances' => $this->getDistances(),
+            'radius' => $args['distance'],
+            'contentUid' => $this->configurationManager->getContentObject()->data['uid']
+        ));
+    }
+
+    /**
+     * @param $mainCategory
+     * @param array $currentCategories
+     * @return array
+     */
+    public function getCategoriesAndChildren( $mainCategory, $currentCategories ) {
+        $categories = array();
+        $this->categoryRepository->setDefaultOrderings(array(
+            'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        ));
+
+        foreach($this->categoryRepository->findByParent($mainCategory) as $index=>$category) {
+            $categoryTitle = $category->getTitle();
+
+            $children = $this->categoryRepository->findByParent($category->getUid());
+            $category = array(
+                'uid' => $category->getUid()
+            );
+            foreach($children as $child) {
+                $active = in_array($child->getUid(),$currentCategories);
+                $args = array(
+                    'currentCategories' => $currentCategories
+                );
+                $args['currentCategories'][\rawurlencode($categoryTitle)] = $active ? 0 : $child->getUid();
+                $args['marker'] = $child->getSicAddressMarker()->current();
+
+                $category['children'][$child->getTitle()] = array(
+                    'uid' => $child->getUid(),
+                    'active' => $active,
+                    'arguments' => $args
+                );
+            }
+
+            $categories[$categoryTitle] = $category;
+        }
+
+        return $categories;
+    }
+
+    /**
+     * @return object
+     */
+    public function getCenterAddressObjectFromFlexConfig() {
+        $centerAddressUid = 0;
+
+        if(!empty($this->settings['centerAddress'])) {
+            $arr = explode('_',$this->settings['centerAddress']);
+            $centerAddressUid = array_pop($arr);
+        }
+
+        return $this->addressRepository->findByUid($centerAddressUid);
     }
 
     /**

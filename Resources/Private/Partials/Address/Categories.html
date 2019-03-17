@@ -65,15 +65,27 @@
                     <f:for each="{categories}" as="category" key="groupTitle">
                         <div class="col">
                             <div class="group">
-                                <h2>{groupTitle}</h2>
+                                <f:if condition="{category.uid} == {currentCategory}">
+                                    <f:then>
+                                        <f:link.action class="active" arguments="{currentCategory:0}" pluginName="{pluginName}" extensionName="{extensionName}">
+                                            {groupTitle}
+                                        </f:link.action>
+                                    </f:then>
+                                    <f:else>
+                                        <f:link.action arguments="{currentCategory:category.uid}" pluginName="{pluginName}" extensionName="{extensionName}">
+                                            {groupTitle}
+                                        </f:link.action>
+                                    </f:else>
+                                </f:if>
+
                                 <ul>
-                                    <f:for each="{category.children}" as="category" key="title">
-                                        <li class="{f:if(condition:'{category.active}',then:'active')}">
-                                            <f:link.action arguments="{category.arguments}">
+                                    <f:for each="{category.children}" as="subCategory" key="title">
+                                        <li class="{f:if(condition:'{subCategory.active}',then:'active')}">
+                                            <f:link.action arguments="{subCategory.arguments}">
                                                 {title}
                                             </f:link.action>
-                                            <f:if condition="{category.arguments.marker}">
-                                                <f:image image="{category.arguments.marker}" width="30" />
+                                            <f:if condition="{subCategory.arguments.marker}">
+                                                <f:image image="{subCategory.arguments.marker}" width="30" />
                                             </f:if>
                                         </li>
                                     </f:for>

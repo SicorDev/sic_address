@@ -161,11 +161,26 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
         if(!empty($args['center'])) {
             $center = $this->geoService->getCoordinatesForAddress($args['center']);
-            $centerAddress->setLongitude($center['longitude']);
-            $centerAddress->setLatitude($center['latitude']);
+            if(!empty($center['longitude']) && !empty($center['latitude'])) {
+                if($centerAddress) {
+                    $centerAddress = clone $centerAddress;                    
+                } else {
+                    $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
+                }
+
+                $centerAddress->setLongitude($center['longitude']);
+                $centerAddress->setLatitude($center['latitude']);
+            }
+        }
+        if(!$centerAddress) {
+            $args['fitBounds'] = true;
         }
 
         $addresses = $this->addressRepository->findGeoEntries($centerAddress, $args['distance'], $currentCategories, $currentCountry);
+        if(!$addresses->getFirst()) {
+            $addresses = $this->addressRepository->findGeoEntries($centerAddress, 'nearest', $currentCategories, $currentCountry);
+        }
+
         $countries = array('' => 'Land');
         foreach($addresses as $address) {
             $country = $address->getCountry();

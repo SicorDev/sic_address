@@ -267,6 +267,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 cos($lon)) - sin(RADIANS(latitude)) *
                 sin($lat)))) AS distance
                 FROM tt_address
+                WHERE
+                  hidden = 0
+                  AND
+                  deleted = 0
                 $having
                 ORDER BY distance
                 $limit

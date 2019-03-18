@@ -193,9 +193,22 @@
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_checkboxes</numIndex>
                                 <numIndex index="1">checkboxes</numIndex>
                             </numIndex>
+                            <numIndex index="6" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_buttons</numIndex>
+                                <numIndex index="1">buttons</numIndex>
+                            </numIndex>
+                            <numIndex index="7" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_groups</numIndex>
+                                <numIndex index="1">groups</numIndex>
+                            </numIndex>
                         </items>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                    <displayCond>                    
+                        <or>
+                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search</value1>
+                            <value2>FIELD:switchableControllerActions:=:Address->map</value2>
+                        </or>
+                    </displayCond>
                 </TCEforms>
             </settings.categoryType>
             <settings.categoryDefault>
@@ -276,7 +289,7 @@
                     <config>
                         <type>group</type>
                         <internal_type>db</internal_type>
-                        <allowed>tx_sicaddress_domain_model_address,tt_address</allowed>
+                        <allowed>tt_address</allowed>
                         <size>1</size>
                         <maxitems>1</maxitems>
                         <minitems>0</minitems>

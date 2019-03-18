@@ -106,7 +106,7 @@ class GeocodeService
         $geocodingUrl = $this->geocodingUrl . urlencode($address);
 
         // Query geocoding-service
-        $results = json_decode(GeneralUtility::getUrl($geocodingUrl));
+        $results = json_decode(GeneralUtility::getUrl($geocodingUrl, 0, array('Content-Type: application/json', 'Accept: application/json', 'User-Agent: https://extensions.typo3.org/extension/sic_address')));
 
         if (!empty($results[0]->lat))
         {

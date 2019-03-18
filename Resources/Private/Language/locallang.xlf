@@ -114,6 +114,12 @@
 			<trans-unit id="label_cattype_checkboxes">
 				<source>Checkboxen</source>
 			</trans-unit>
+			<trans-unit id="label_cattype_buttons">
+				<source>Schalter</source>
+			</trans-unit>
+			<trans-unit id="label_cattype_groups">
+				<source>Gruppen</source>
+			</trans-unit>
 			<trans-unit id="label_categoryDefault">
 				<source>Vorausgewählte Kategorie</source>
 			</trans-unit>

@@ -248,7 +248,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function findGeoEntries($centerAddress, $distance, $currentCategories, $currentCountry) {
         $query = $this->createQuery();
 
-        if(!empty($centerAddress) && \is_numeric($distance)) {
+        if(!empty($centerAddress) && !empty($distance)) {
             $lat = $centerAddress->getLatitude() / 180 * M_PI;
             $lon = $centerAddress->getLongitude() / 180 * M_PI;
 

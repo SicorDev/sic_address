@@ -52,7 +52,7 @@ class OpenStreetMapViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
                 }
             }
 
-            if($categoryUid) {
+            if(!empty($icons[$categoryUid])) {
                 $markerSettings['icon'] = '.sic_address_icon_'. $id . '_' . $categoryUid;
             }
 
@@ -118,7 +118,7 @@ JS;
         $json = '';
         $count = 0;
 
-        if(count($arr))
+        if(is_array($arr)) if(count($arr))
         foreach($arr as $key=>$val) {
             if($count++) {
                 $json .= ', ';

@@ -131,7 +131,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * @return array|mixed
      */
     protected function getDistances() {
-        $distances = array(0 => '');
+        $distances = array();
         foreach(explode(',', $this->settings['distances']) as $distance) {
             $distances[$distance] = $distance . ' km';
         }
@@ -149,24 +149,52 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         if($this->request->hasArgument('currentCategories')) {
             $currentCategories = $this->request->getArgument('currentCategories');
         }
+        $currentCategory = '';
+        if($this->request->hasArgument('currentCategory')) {
+            $currentCategory = $this->request->getArgument('currentCategory');
+            $currentCategories = array($currentCategory);
+        }
 
         $currentCountry = null;
         if($this->request->hasArgument('country')) {
             $currentCountry = $this->request->getArgument('country');
         }
 
-        $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'],$currentCategories);
-        $this->settings['categoryType'] = 'groups';
+        $categories = array();
+        if(!empty($this->settings['rootCategory'])) {
+            if($this->settings['categoryType'] === 'groups') {
+                $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'], $currentCategories);
+            } else {
+                $categories = $this->categoryRepository->findByParent($this->settings['rootCategory']);
+            }
+        }
 
         $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
         if(!empty($args['center'])) {
             $center = $this->geoService->getCoordinatesForAddress($args['center']);
-            $centerAddress->setLongitude($center['longitude']);
-            $centerAddress->setLatitude($center['latitude']);
+            if(!empty($center['longitude']) && !empty($center['latitude'])) {
+                if($centerAddress) {
+                    $centerAddress = clone $centerAddress;                    
+                } else {
+                    $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
+                }
+
+                $centerAddress->setLongitude($center['longitude']);
+                $centerAddress->setLatitude($center['latitude']);
+            }
+        }
+        if(!$centerAddress) {
+            $args['fitBounds'] = true;
         }
 
         $addresses = $this->addressRepository->findGeoEntries($centerAddress, $args['distance'], $currentCategories, $currentCountry);
-        $countries = array('' => 'Land');
+        if(!$addresses->getFirst()) {
+            $addresses = $this->addressRepository->findGeoEntries($centerAddress, 'nearest', $currentCategories, $currentCountry);
+        }
+
+        $countries = array();
+        if($addresses->getFirst())
+        if(method_exists($addresses->getFirst(),'getCountry'))
         foreach($addresses as $address) {
             $country = $address->getCountry();
             $country = trim($country);
@@ -177,6 +205,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         ksort($countries);
 
         $this->view->assignMultiple(array(
+            'currentCategory' => $currentCategory,
+            'currentCategories' => $currentCategories,
             'args' => $args,
             'categories' => $categories,
             'settings' => $this->settings,

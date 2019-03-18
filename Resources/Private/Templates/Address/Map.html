@@ -6,6 +6,10 @@
     <f:render partial="Address/Map" arguments="{_all}" />
     <f:render partial="Address/MapRadius" arguments="{_all}" />
 
+    <f:if condition="{settings.categoryType}">
+        <f:render partial="Address/Categories" arguments="{_all}" />
+    </f:if>
+
     <h1>
         <f:translate key="results" />
     </h1>

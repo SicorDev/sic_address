@@ -24,14 +24,12 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_state text,
 
 	
-
-	PRIMARY KEY (uid),
-	KEY parent (pid),
-  KEY language (l10n_parent,sys_language_uid)
 );
 
 
-
+CREATE TABLE sys_category (
+  sic_address_marker int(10) unsigned default '0',
+);
 
 #
 # Table structure for table 'tx_sicaddress_domain_model_domainproperty'

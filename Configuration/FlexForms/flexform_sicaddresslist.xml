@@ -203,7 +203,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>                    
+                    <displayCond>
                         <or>
                             <value1>FIELD:switchableControllerActions:=:Address->list;Address->search</value1>
                             <value2>FIELD:switchableControllerActions:=:Address->map</value2>
@@ -320,7 +320,12 @@
                     </items>
                     <foreign_table>sys_category</foreign_table>
                 </config>
-                <displayCond>FIELD:switchableControllerActions:=:Address->map</displayCond>
+                <displayCond>
+                    <or>
+                        <value1>FIELD:switchableControllerActions:=:Address->map</value1>
+                        <value2>FIELD:switchableControllerActions:=:Address->list;Address->search</value2>
+                    </or>
+                </displayCond>
             </settings.rootCategory>
             <settings.singleTtAddress>
                 <TCEforms>

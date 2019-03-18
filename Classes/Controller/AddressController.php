@@ -174,7 +174,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $center = $this->geoService->getCoordinatesForAddress($args['center']);
             if(!empty($center['longitude']) && !empty($center['latitude'])) {
                 if($centerAddress) {
-                    $centerAddress = clone $centerAddress;                    
+                    $centerAddress = clone $centerAddress;
                 } else {
                     $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
                 }
@@ -305,6 +305,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
+        if($this->settings['categoryType'] == 'groups') {
+            $this->displayCategoryList = $this->getCategoriesAndChildren($this->settings['rootCategory'], array());
+        }
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
         $this->view->assign('maincategories', $this->mainCategoryList);

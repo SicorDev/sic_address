@@ -9,6 +9,14 @@
             <core:icon identifier="actions-add" />
         </span>
     </h2>
+    <f:if condition="{ttAddressMapping}">
+        <f:form action="list">
+            <f:form.select name="external" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}">
+                <f:form.select.option value="0">internal</f:form.select.option>
+                <f:form.select.option value="1">external</f:form.select.option>
+            </f:form.select>
+        </f:form>
+    </f:if>
 
     <f:if condition="{errorMessages}">
         <f:then>
@@ -18,24 +26,43 @@
         </f:then>
     </f:if>
 
-    <div class="container-fluid table">
 
-        <div class="panel-group panel-hover ui-sortable" data-title="Properties" id="sic_address_properties">
-            <f:if condition="{properties}">
-                <f:for each="{properties}" as="property">
-                    <f:if condition="{property.external} == '0'">
-                        <f:render partial="Property/Form" arguments="{_all}" />
+    <f:if condition="{external}">
+        <f:then>
+            <h2>tt_address</h2>
+            <f:for each="{properties}" as="property">
+                <f:render partial="Property/External" arguments="{_all}" />
+            </f:for>
+        </f:then>
+        <f:else>
+            <div class="container-fluid table">
+
+                <div class="panel-group panel-hover ui-sortable" data-title="Properties" id="sic_address_properties">
+                    <f:if condition="{properties}">
+                        <f:for each="{properties}" as="property">
+                            <f:if condition="{property.external} == {external}">
+                                <f:if condition="{property.external}">
+                                    <f:then>
+                                        <f:render partial="Property/External" arguments="{_all}" />
+                                    </f:then>
+                                    <f:else>
+                                        <f:render partial="Property/Form" arguments="{_all}" />
+                                    </f:else>
+                                </f:if>
+                            </f:if>
+                        </f:for>
                     </f:if>
-                </f:for>
-            </f:if>
-            <f:render partial="Property/Form" arguments="{_all}" />
-        </div>
+                    <f:render partial="Property/Form" arguments="{_all}" />
+                </div>
 
-        <f:form id="sortingForm" target="sortingIframe" controller="DomainProperty" action="sort">
-            <f:form.hidden class="sorting" name="ordered" value="" />
-        </f:form>
-               
-    </div>
+                <f:form id="sortingForm" target="sortingIframe" controller="DomainProperty" action="sort">
+                    <f:form.hidden class="sorting" name="ordered" value="" />
+                </f:form>
+
+            </div>
+        </f:else>
+    </f:if>
+
     <hr />
 
     <div class="row">

@@ -37,8 +37,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     protected $defaultOrderings = array(
         'hidden' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-        'external' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
 
     public function initializeObject()

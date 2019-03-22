@@ -99,6 +99,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $templateRootPath = "";
 
     /**
+     * @var int
+     */
+    protected $external = 0;
+
+    /**
      * Called before any action
      */
     public function initializeAction()
@@ -113,7 +118,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
-        $this->configuration = $this->domainPropertyRepository->findAll();
+        $this->external = $this->request->hasArgument('external') ? $this->request->getArgument('external') : 0;
+        $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         foreach ($this->configuration as $key => $value) {
             // Initialize Type Objects
             $type = $this->configuration[$key]->getType();
@@ -172,7 +178,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
-        $this->view->assign('external', $this->request->hasArgument('external') ? $this->request->getArgument('external') : 0);
+        $this->view->assign('external', $this->external);
     }
 
     /**

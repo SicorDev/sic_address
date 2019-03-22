@@ -12,6 +12,8 @@ input[type="text"]:focus,textarea:focus {border-bottom: solid 2px #969696;box-sh
 .table ul li {background: white;list-style: none;padding: 5px;margin-bottom: 10px;}
 .table ul li:hover {background: #efefef;list-style: none;padding: 5px;margin-bottom: 10px;}
 
+span.btn.external { margin-right: 1em; margin-bottom: 1em }
+
 ul#sic_address_properties > li .switch { border-bottom: 1px solid black }
 ul#sic_address_properties > li .switch strong.listLabel { text-transform: uppercase }
 ul#sic_address_properties > li form { display:none }

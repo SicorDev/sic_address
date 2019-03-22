@@ -99,6 +99,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $templateRootPath = "";
 
     /**
+     * @var int
+     */
+    protected $external = 0;
+
+    /**
      * Called before any action
      */
     public function initializeAction()
@@ -107,7 +112,14 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
-        $this->configuration = $this->domainPropertyRepository->findAll();
+        if(!empty($this->extensionConfiguration['ttAddressMapping'])) {
+            if(empty($GLOBALS['TCA']['tt_address'])) {
+                $this->extensionConfiguration['ttAddressMapping'] = null;
+            }
+        }
+
+        $this->external = $this->request->hasArgument('external') ? $this->request->getArgument('external') : 0;
+        $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         foreach ($this->configuration as $key => $value) {
             // Initialize Type Objects
             $type = $this->configuration[$key]->getType();
@@ -143,6 +155,15 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     public function listAction()
     {
+        if($this->extensionConfiguration['ttAddressMapping'] === null) {
+            $this->addFlashMessage(
+                'tt_address missing! Mapping ignored.',
+                $messageTitle = 'WARNING',
+                $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
+                $storeInSession = FALSE
+            );
+        }
+
         // Bailout if static template is missing
         if ($this->view instanceof NotFoundView) {
             if (!$this->extbaseFrameworkConfiguration['view'] || !array_key_exists('templateRootPaths', $this->extbaseFrameworkConfiguration['view'])) {
@@ -157,6 +178,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
+        $this->view->assign('external', $this->external);
     }
 
     /**

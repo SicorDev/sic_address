@@ -119,7 +119,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         $this->external = $this->request->hasArgument('external') ? $this->request->getArgument('external') : 0;
-        $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
+        if($this->request->getControllerActionName() === 'list') {
+            $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
+        } else {
+            $this->configuration = $this->domainPropertyRepository->findAll();
+        }
+
         foreach ($this->configuration as $key => $value) {
             // Initialize Type Objects
             $type = $this->configuration[$key]->getType();

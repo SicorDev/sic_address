@@ -23,7 +23,9 @@ CREATE TABLE tx_sicaddress_domain_model_address (
 	l10n_diffsource mediumblob,
 	l10n_state text,
 
-	
+	PRIMARY KEY (uid),
+	KEY parent (pid),
+  KEY language (l10n_parent,sys_language_uid)
 );
 
 

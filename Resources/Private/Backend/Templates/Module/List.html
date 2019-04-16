@@ -5,9 +5,11 @@
 
 <f:section name="content">
     <h2><f:translate key="BackendListTitle" />
+        <f:if condition="{external} == 0">
         <span class="btn btn-default sortableHandle ui-sortable-handle field-new" title="Add new property" onclick="SicAddress.addPropertyClicked()">
             <core:icon identifier="actions-add" />
         </span>
+        </f:if>
     </h2>
     <f:if condition="{ttAddressMapping}">
         <f:form action="list">

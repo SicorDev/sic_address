@@ -10,16 +10,16 @@
             </f:for>
         </tr>
         <f:for each="{addresses}" as="addr" iteration="iter">
-            <tr id="address{a.uid}">
+            <tr id="address{addr.uid}">
                 <td>
                     <f:if condition="{iter.index}">
-                        <a href="javascript:" onclick="SicAddress.deleteDoublet(this)" data-href="{f:uri.action(action:'ajaxDeleteDoublet',arguments:{address:'{a.uid}'})}">
+                        <a href="javascript:" onclick="SicAddress.deleteDoublet(this)" data-href="{f:uri.action(action:'ajaxDeleteDoublet',arguments:{address:'{addr.uid}'})}">
                             <core:icon identifier="actions-delete" size="default" />
                         </a>
                     </f:if>
                 </td>
                 <f:for each="{properties}" as="property">
-                    <td draggable="true" data-uid="{a.uid}" data-property="{property.title}">
+                    <td draggable="true" data-uid="{addr.uid}" data-property="{property.title}">
                         <sic:getModelValue property="{property.title}" model="{addr}" />
                     </td>
                 </f:for>

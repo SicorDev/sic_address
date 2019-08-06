@@ -2,8 +2,8 @@ mod.wizards.newContentElement.wizardItems {
         plugins {
                 elements {
                         sicaddress {
-                                title = Adressverwaltung
-                                description = Plugin zur Anzeige und Verwaltung von Adressen
+                                title = LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:address_management
+                                description = LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:address_management_description
                                 iconIdentifier = extensions-sicor-icon
                                 tt_content_defValues {
                                         CType = list

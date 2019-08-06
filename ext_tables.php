@@ -14,7 +14,7 @@ $iconRegistry->registerIcon('extensions-sicor-icon', 'TYPO3\\CMS\\Core\\Imaging\
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'SICOR.' . $_EXTKEY,
     'Sicaddress',
-    'Adressverwaltung'
+    'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:address_management'
 );
 
 $extensionName = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));
@@ -85,12 +85,14 @@ if ($extensionManagerSettings["ttAddressMapping"]) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\SICOR\SicAddress\Task\AddGeoLocationTask::class] = array(
         'extension' => $_EXTKEY,
         'title' => 'GeoLocation für tt_address',
+        'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:geolocation_task_title',
         'description' => 'Geht durch alle vorhandenen Address Einträge und führt die Verortung durch.',
+        'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:geolocation_task_description',
         'additionalFields' => NULL
     );
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/Configuration/TSconfig/Page/wizard.txt">');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Adressverwaltung');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:address_management');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_sicaddress_domain_model_domainproperty', 'EXT:sic_address/Resources/Private/Language/locallang_csh_tx_sicaddress_domain_model_domainproperty.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_sicaddress_domain_model_domainproperty');

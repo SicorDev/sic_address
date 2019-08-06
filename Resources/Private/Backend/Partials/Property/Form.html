@@ -17,7 +17,7 @@
                             <dt>
                                 <f:if condition="{property.tcaLabel}">
                                     <f:then>{property.title}</f:then>
-                                    <f:else>Neu...</f:else>
+                                    <f:else><f:translate key="New..." /></f:else>
                                 </f:if>
                             </dt>
                             <dd>
@@ -48,7 +48,7 @@
                                     data-delete-uri="{f:uri.action(action:'delete',controller:'DomainProperty',arguments:'{domainProperty: property}')}"
                                     class="btn btn-default t3js-editform-delete-inline-record delete"
                                     data-modal-type="error"
-                                    data-modal-title="Achtung"
+                                    data-modal-title="{f:translate(key:'Attention')}"
                                     data-modal-content="Remove property: {property.title} ({property.tcaLabel}) <{property.type.title}>"
                                     data-modal-button-cancel="{f:translate(key:'Cancel')}"
                                     data-modal-button-delete="{f:translate(key:'Delete')}"

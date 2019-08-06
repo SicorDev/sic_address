@@ -4,22 +4,28 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
-				<source>Adressen</source>
+				<source>Addresses</source>
 			</trans-unit>
 			<trans-unit id="label_single_address">
-				<source>Adresse</source>
+				<source>Address</source>
 			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_category">
 				<source>Category</source>
 			</trans-unit>
 			<trans-unit id="BackendListTitle">
-				<source>Datenbank Editor</source>
+				<source>Database Editor</source>
 			</trans-unit>
 			<trans-unit id="BackendImporterListTitle">
 				<source>Importer</source>
 			</trans-unit>
 			<trans-unit id="BackendImporterButtonLabel">
 				<source>Import tt_address Field Definition</source>
+			</trans-unit>
+			<trans-unit id="Generate">
+				<source>Generate</source>
+			</trans-unit>
+			<trans-unit id="New...">
+				<source>New...</source>
 			</trans-unit>
 			<trans-unit id="HelpButtonLabel">
 				<source>Help</source>
@@ -31,76 +37,76 @@
 				<source>Remove tt_address Field Definitions</source>
 			</trans-unit>
 			<trans-unit id="Attention">
-				<source>Achtung</source>
+				<source>Attention</source>
 			</trans-unit>
 			<trans-unit id="Cancel">
-				<source>Abbrechen</source>
+				<source>Cancel</source>
 			</trans-unit>
 			<trans-unit id="Delete">
-				<source>Löschen</source>
+				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="label_switchAction">
-				<source>Ansicht</source>
+				<source>View</source>
 			</trans-unit>
 			<trans-unit id="label_list">
-				<source>Liste</source>
+				<source>List</source>
 			</trans-unit>
             <trans-unit id="label_listandmap">
-                <source>Liste (mit Karte)</source>
+                <source>List (with Map)</source>
             </trans-unit>
             <trans-unit id="label_center_address">
-                <source>Zentrum der Karte (Adresse)</source>
+                <source>Center of map (Address)</source>
             </trans-unit>
             <trans-unit id="label_distances">
-                <source>Entfernungen in km (mit Komma getrennt)</source>
+                <source>Distance in km (comma separated)</source>
             </trans-unit>
             <trans-unit id="label_root_category">
-                <source>Hauptkategorie für Filterfunktion</source>
+                <source>Main category for filter</source>
             </trans-unit>
 			<trans-unit id="label_detail">
 				<source>Detail</source>
 			</trans-unit>
 			<trans-unit id="datasets">
-				<source>Datensätze</source>
+				<source>Datansets</source>
 			</trans-unit>
 			<trans-unit id="label_new">
-				<source>Eingabe</source>
+				<source>Input</source>
 			</trans-unit>
             <trans-unit id="label_listPageField">
-                <source>Listenansicht (Seite)</source>
+                <source>List-View (Page)</source>
             </trans-unit>
             <trans-unit id="label_detailPageField">
-                <source>Detail Seite</source>
+                <source>Detail Page</source>
             </trans-unit>
 			<trans-unit id="label_atozField">
-				<source>A-Z Feld</source>
+				<source>A-Z Field</source>
 			</trans-unit>
 			<trans-unit id="label_distanceField">
-				<source>Umkreissuchfeld</source>
+				<source>Radial field</source>
 			</trans-unit>
 			<trans-unit id="label_queryField">
-				<source>Suchfeld</source>
+				<source>Search field</source>
 			</trans-unit>
 			<trans-unit id="label_queryFieldOn">
-				<source>Einblenden</source>
+				<source>Show</source>
 			</trans-unit>
 			<trans-unit id="label_queryFieldOff">
-				<source>Ausblenden</source>
+				<source>Hide</source>
 			</trans-unit>
 			<trans-unit id="label_sortField">
-				<source>Sortierfeld</source>
+				<source>Order field</source>
 			</trans-unit>
 			<trans-unit id="label_filterField">
-				<source>Filterfeld</source>
+				<source>Filter field</source>
 			</trans-unit>
 			<trans-unit id="label_categoryType">
-				<source>Kategoriedarstellung</source>
+				<source>Category type</source>
 			</trans-unit>
 			<trans-unit id="label_mainCategoryType">
-				<source>Vorgeschaltete Hauptkategorie</source>
+				<source>Main category type</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_none">
-				<source>Ausblenden</source>
+				<source>Hide</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_breadcrumbs">
 				<source>Breadcrumbs</source>
@@ -115,67 +121,94 @@
 				<source>Checkboxen</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_buttons">
-				<source>Schalter</source>
+				<source>Buttons</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_groups">
-				<source>Gruppen</source>
+				<source>Groups</source>
 			</trans-unit>
 			<trans-unit id="label_categoryDefault">
-				<source>Vorausgewählte Kategorie</source>
+				<source>Default category</source>
 			</trans-unit>
 			<trans-unit id="label_listType">
-				<source>Listendarstellung</source>
+				<source>List type</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_vcard">
-				<source>Visitenkarte</source>
+				<source>vCard</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_2column">
-				<source>2-Spaltig</source>
+				<source>2 column</source>
 			</trans-unit>
 			<trans-unit id="label_cattype_3column">
-				<source>3-Spaltig</source>
+				<source>3 column</source>
 			</trans-unit>
 			<trans-unit id="label_noListStartup">
-				<source>Liste beim Start nicht anzeigen</source>
+				<source>Do not show all datasets by default</source>
 			</trans-unit>
 			<trans-unit id="noselect_label">
-				<source>Alle</source>
+				<source>All</source>
 			</trans-unit>
 			<trans-unit id="frontend_main_category_filter">
-				<source>Kategorien:</source>
+				<source>Categories:</source>
 			</trans-unit>
 			<trans-unit id="frontend_category_filter">
-				<source>Rubriken:</source>
+				<source>Category filter:</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_filter">
-				<source>Umkreissuche:</source>
+				<source>Distance filter:</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option1">
-				<source>Alle Einträge</source>
+				<source>All items</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option2">
-				<source>Zentrum / Innenstadt</source>
+				<source>Center (city)</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option3">
-				<source>bis 5km Umkreis</source>
+				<source>up to 5 km around</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option4">
-				<source>bis 10km Umkreis</source>
+				<source>up to 10 km around</source>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option5">
-				<source>bis 15km Umkreis</source>
+				<source>up to 15 km around</source>
 			</trans-unit>
 			<trans-unit id="frontend_query_filter">
-				<source>Suche:</source>
+				<source>Search:</source>
 			</trans-unit>
 			<trans-unit id="frontend_query_button">
-				<source>Los!</source>
+				<source>Go!</source>
 			</trans-unit>
 			<trans-unit id="frontend_results">
-				<source>Ergebnisse</source>
+				<source>Regults</source>
 			</trans-unit>
 			<trans-unit id="search_no_hits_message">
-				<source>Leider wurden keine Treffer zu Ihrer Suche gefunden oder es wurde noch keine Rubrik ausgewählt.</source>
+				<source>No items found or no filters given!</source>
+			</trans-unit>
+			<trans-unit id="property.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="property.tcaLabel">
+				<source>Label (TCA)</source>
+			</trans-unit>
+			<trans-unit id="property.tcaOverride">
+				<source>TCA Override (Array)</source>
+			</trans-unit>
+			<trans-unit id="property.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="property.settings">
+				<source>Settings (Array)</source>
+			</trans-unit>
+			<trans-unit id="export.categories">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="sorting">
+				<source>Sorting</source>
+			</trans-unit>
+			<trans-unit id="settings">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="doublets">
+				<source>Doublets</source>
 			</trans-unit>
 		</body>
 	</file>

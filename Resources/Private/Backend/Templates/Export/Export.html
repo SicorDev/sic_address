@@ -4,7 +4,7 @@
 <f:section name="content">
 
     <div class="export">
-        <h2>Kategorien für den Adressexport</h2>
+        <h2><f:translate key="export.categories" /></h2>
         <hr />
 
         <f:form action="exportToFile" >
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <h2>Einstellungen</h2>
+            <h2><f:translate key="settings" /></h2>
             <hr />
 
             <div class="row">
@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <label>Sortierung:</label>
+                    <label><f:translate key="sorting" />:</label>
                     <f:form.select options="{sorting}" name="sorting" optionLabelField="tcaLabel" optionValueField="title" prependOptionLabel="-----" prependOptionValue="name"/>
                 </div>
             </div>

@@ -14,7 +14,7 @@ $iconRegistry->registerIcon('extensions-sicor-icon', 'TYPO3\\CMS\\Core\\Imaging\
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'SICOR.' . $_EXTKEY,
     'Sicaddress',
-    'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:address_management'
+    'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddress.xlf:mlang_tabs_tab'
 );
 
 $extensionName = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));

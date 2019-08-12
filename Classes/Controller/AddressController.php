@@ -281,7 +281,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function searchAction()
     {
         if(!empty($this->settings['ignoreDemands'])) {
-            $this->forward('list');
+            return $this->listAction();
         }
 
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';

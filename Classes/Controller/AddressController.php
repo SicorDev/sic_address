@@ -280,6 +280,10 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function searchAction()
     {
+        if(!empty($this->settings['ignoreDemands'])) {
+            $this->forward('list');
+        }
+
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
@@ -287,6 +291,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $distanceValue = $this->request->hasArgument('distance') ? $this->request->getArgument('distance') : '';
         $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
+
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
         $this->view->assign('listPageUid', $GLOBALS['TSFE']->id);
     }

@@ -177,6 +177,9 @@
 			<trans-unit id="search_no_hits_message">
 				<source>Leider wurden keine Treffer zu Ihrer Suche gefunden oder es wurde noch keine Rubrik ausgewählt.</source>
 			</trans-unit>
+			<trans-unit id="label_ignore_demands">
+				<source>Ignoriere Suchparameter</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

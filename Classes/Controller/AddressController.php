@@ -120,6 +120,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
+        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
+
         $this->maincategoryvalue = '';
         $defcat = $this->categoryRepository->findByUid($this->settings['categoryDefault']);
         $emptyList = $this->settings['noListStartup'];
@@ -216,7 +218,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             'centerAddress' => $centerAddress,
             'distances' => $this->getDistances(),
             'radius' => $args['distance'],
-            'contentUid' => $this->configurationManager->getContentObject()->data['uid']
+            'contentUid' => $this->configurationManager->getContentObject()->data['uid'],
+            'data' => $this->configurationManager->getContentObject()->data
         ));
     }
 
@@ -294,6 +297,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
         $this->view->assign('listPageUid', $GLOBALS['TSFE']->id);
+
+        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 
     /**
@@ -543,6 +548,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $this->view->assign('address', $address);
         $this->view->assign('listPageUid', $listPageUid);
+
+        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 
     /**
@@ -587,6 +594,8 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function editAction(\SICOR\SicAddress\Domain\Model\Address $address)
     {
         $this->view->assign('address', $address);
+
+        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 
     /**

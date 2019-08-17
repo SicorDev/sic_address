@@ -13,10 +13,7 @@
     </h2>
     <f:if condition="{ttAddressMapping}">
         <f:form action="list">
-            <f:form.select name="external" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}">
-                <f:form.select.option value="0">internal</f:form.select.option>
-                <f:form.select.option value="1">external</f:form.select.option>
-            </f:form.select>
+            <f:form.select name="external" options="{types}" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}" />
         </f:form>
     </f:if>
 

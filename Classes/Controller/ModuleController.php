@@ -184,6 +184,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
         $this->view->assign('external', $this->external);
+        $types = array(0 => 'internal');
+        if($this->extensionConfiguration['ttAddressMapping']) {
+            $types[1] = 'external';
+        }
+        $this->view->assign('types', $types);
     }
 
     /**

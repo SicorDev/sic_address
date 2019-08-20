@@ -33,7 +33,7 @@ use SICOR\SicAddress\Domain\Service\FALService;
 /**
  * AddressController
  */
-class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AddressController extends AbstractController
 {
     /**
      * addressRepository
@@ -280,7 +280,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function searchAction()
     {
-        $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : 'Alle';
+        $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : $this->translate('label_all');
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
         $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
@@ -567,7 +567,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
         }
 
-        $this->addFlashMessage('Adresse wurde erstellt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->addFlashMessage($this->translate('label_address_created'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->add($newAddress);
         $this->redirect('new');
     }
@@ -592,7 +592,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function updateAction(\SICOR\SicAddress\Domain\Model\Address $address)
     {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage($this->translate('label_address_updated'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->addressRepository->update($address);
         $this->redirect('list');
     }
@@ -605,7 +605,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function deleteAction(\SICOR\SicAddress\Domain\Model\Address $address)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage($this->translate('label_address_removed'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         $this->addressRepository->remove($address);
         $this->redirect('list');
     }
@@ -650,7 +650,7 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $pages = $this->configurationManager->getContentObject()->data['pages'];
 
         // Query Database
-        $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);
+        $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages, $this->extensionConfiguration['ttAddressMapping']);
 
         // Build two dimensional result array
         $atoz = array();
@@ -658,9 +658,9 @@ class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $atoz[] = array("character" => $char, "active" => (array_search($char, $res) !== false));
         }
 
-        // Add 'Alle'
+        // Add 'All'
         if (count($res) > 0)
-            $atoz[] = array("character" => "Alle", "active" => true);
+            $atoz[] = array("character" => $this->translate('label_all'), "active" => true);
 
         return $atoz;
     }

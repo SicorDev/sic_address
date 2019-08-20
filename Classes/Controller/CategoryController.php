@@ -29,7 +29,7 @@ namespace SICOR\SicAddress\Controller;
 /**
  * CategoryController
  */
-class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class CategoryController extends AbstractController
 {
 
     /**
@@ -80,7 +80,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function createAction(\SICOR\SicAddress\Domain\Model\Category $newCategory)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage($this->translate('label_category_created'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->categoryRepository->add($newCategory);
         $this->redirect('list');
     }
@@ -105,7 +105,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function updateAction(\SICOR\SicAddress\Domain\Model\Category $category)
     {
-        $this->addFlashMessage('The object was updated. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage($this->translate('label_category_updated'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->categoryRepository->update($category);
         $this->redirect('list');
     }
@@ -118,7 +118,7 @@ class CategoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     public function deleteAction(\SICOR\SicAddress\Domain\Model\Category $category)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
+        $this->addFlashMessage($this->translate('label_category_deleted'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         $this->categoryRepository->remove($category);
         $this->redirect('list');
     }

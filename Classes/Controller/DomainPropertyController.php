@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * DomainPropertyController
  */
-class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DomainPropertyController extends AbstractController
 {
 
     protected $objectManager = null;
@@ -206,7 +206,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
         $fields = $this->domainPropertyRepository->findByTypes( explode(',',$types) );
 
         $optionList = array();
-        $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');
+        $optionList[0] = array(0 => $this->translate('label_none'), 1 => 'none');
         foreach ($fields as $field) {
             $value = ($field["type"] == "mmtable") ? $field["title"] . ".title" : $field["title"];
             $optionList[] = array(0 => $field["tca_label"], 1 => $value);

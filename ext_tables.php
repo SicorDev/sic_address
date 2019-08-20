@@ -84,9 +84,7 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["doublets"]) {
 if ($extensionManagerSettings["ttAddressMapping"]) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\SICOR\SicAddress\Task\AddGeoLocationTask::class] = array(
         'extension' => $_EXTKEY,
-        'title' => 'GeoLocation für tt_address',
         'title' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:geolocation_task_title',
-        'description' => 'Geht durch alle vorhandenen Address Einträge und führt die Verortung durch.',
         'description' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf:geolocation_task_description',
         'additionalFields' => NULL
     );

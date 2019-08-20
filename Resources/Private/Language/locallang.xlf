@@ -210,6 +210,51 @@
 			<trans-unit id="doublets">
 				<source>Doublets</source>
 			</trans-unit>
+			<trans-unit id="geolocation_task_title">
+				<source>Geo location task for tt_address datasets</source>
+			</trans-unit>
+			<trans-unit id="geolocation_task_description">
+				<source>Gets geo coordinates for tt_address datasets using Open Street Map API</source>
+			</trans-unit>
+			<trans-unit id="label_none">
+				<source>Hide</source>
+			</trans-unit>
+			<trans-unit id="label_all">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="label_address_created">
+				<source>Address successfully created.</source>
+			</trans-unit>
+			<trans-unit id="label_address_updated">
+				<source>Address successfully updated.</source>
+			</trans-unit>
+			<trans-unit id="label_address_removed">
+				<source>Address successfully deleted!</source>
+			</trans-unit>
+			<trans-unit id="label_category_created">
+				<source>Category successfully created.</source>
+			</trans-unit>
+			<trans-unit id="label_category_updated">
+				<source>Category successfully updated.</source>
+			</trans-unit>
+			<trans-unit id="label_category_deleted">
+				<source>Category successfully deleted!</source>
+			</trans-unit>
+			<trans-unit id="label_categories_all">
+				<source>All categories</source>
+			</trans-unit>
+			<trans-unit id="label_templates">
+				<source>Templates</source>
+			</trans-unit>
+			<trans-unit id="label_export">
+				<source>Export</source>
+			</trans-unit>
+			<trans-unit id="label_extension_successfully_updated">
+				<source>Extension successfully updated.</source>
+			</trans-unit>
+			<trans-unit id="label_no_doublets_found">
+				<source>No doublets found!</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -134,7 +134,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz($field, $addresstable, $categories, $pages)
+    public function findAtoz($field, $addresstable, $categories, $pages, $ttAddressMapping)
     {
         $query = $this->createQuery();
 
@@ -143,8 +143,12 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if(strlen($pages) > 0)
             $where = "pid IN (".$pages.") ";
 
+        $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
+
         // Standard constraints
         $where .= "AND deleted=0 AND hidden=0 ";
+        if(empty($ttAddressMapping))
+            $where .= "AND sys_language_uid IN (-1,".$currentLanguageUid .") ";
 
         // Respect categories
         if ($categories && count($categories) > 0) {

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" target-language="de" product-name="sic_address">
+		<header/>
+		<body>
+			<trans-unit id="tx_sicaddress_domain_model_address_title">
+				<target>Adressen</target>
+			</trans-unit>
+			<trans-unit id="label_single_address">
+				<target>Adresse</target>
+			</trans-unit>
+			<trans-unit id="tx_sicaddress_domain_model_category">
+				<target>Kategorie</target>
+			</trans-unit>
+			<trans-unit id="BackendListTitle">
+				<target>Datenbank Editor</target>
+			</trans-unit>
+			<trans-unit id="BackendImporterListTitle">
+				<target>Importer</target>
+			</trans-unit>
+			<trans-unit id="BackendImporterButtonLabel">
+				<target>Importiere tt_address Feld Definitionen</target>
+			</trans-unit>
+			<trans-unit id="Generate">
+				<target>Generiere</target>
+			</trans-unit>
+			<trans-unit id="New...">
+				<target>Neu...</target>
+			</trans-unit>
+			<trans-unit id="HelpButtonLabel">
+				<target>Hilfe</target>
+			</trans-unit>
+			<trans-unit id="DeleteCustomFieldsLabel">
+				<target>Entferne eigene Adress-Felder</target>
+			</trans-unit>
+			<trans-unit id="DeleteTTAddressFieldsLabel">
+				<target>Entferne tt_address Felder</target>
+			</trans-unit>
+			<trans-unit id="Attention">
+				<target>Achtung</target>
+			</trans-unit>
+			<trans-unit id="Cancel">
+				<target>Abbrechen</target>
+			</trans-unit>
+			<trans-unit id="Delete">
+				<target>Entfernen</target>
+			</trans-unit>
+			<trans-unit id="label_switchAction">
+				<target>Zeige</target>
+			</trans-unit>
+			<trans-unit id="label_list">
+				<target>Liste</target>
+			</trans-unit>
+            <trans-unit id="label_listandmap">
+                <target>Liste (mit Karte)</target>
+            </trans-unit>
+            <trans-unit id="label_center_address">
+                <target>Kartenmittelpunkt (Adresse)</target>
+            </trans-unit>
+            <trans-unit id="label_distances">
+                <target>Entfernung in km (kommagetrennt)</target>
+            </trans-unit>
+            <trans-unit id="label_root_category">
+                <target>Hauptkategorie für Filter</target>
+            </trans-unit>
+			<trans-unit id="label_detail">
+				<target>Detail</target>
+			</trans-unit>
+			<trans-unit id="datasets">
+				<target>Datensätze</target>
+			</trans-unit>
+			<trans-unit id="label_new">
+				<target>Input</target>
+			</trans-unit>
+            <trans-unit id="label_listPageField">
+                <target>Liste (Seite)</target>
+            </trans-unit>
+            <trans-unit id="label_detailPageField">
+                <target>Detailseite/Snippet</target>
+            </trans-unit>
+			<trans-unit id="label_atozField">
+				<target>A-Z Feld</target>
+			</trans-unit>
+			<trans-unit id="label_distanceField">
+				<target>Umkreisfild</target>
+			</trans-unit>
+			<trans-unit id="label_queryField">
+				<target>Suchfild</target>
+			</trans-unit>
+			<trans-unit id="label_queryFieldOn">
+				<target>Sichtbar</target>
+			</trans-unit>
+			<trans-unit id="label_queryFieldOff">
+				<target>Versteckt</target>
+			</trans-unit>
+			<trans-unit id="label_sortField">
+				<target>Sortierfeld</target>
+			</trans-unit>
+			<trans-unit id="label_filterField">
+				<target>Filterfeld</target>
+			</trans-unit>
+			<trans-unit id="label_categoryType">
+				<target>Kategorie Art</target>
+			</trans-unit>
+			<trans-unit id="label_mainCategoryType">
+				<target>Hauptkategorie Art</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_none">
+				<target>Versteckt</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_breadcrumbs">
+				<target>Breadcrumbs</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_dropdown">
+				<target>Dropdown</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_selectbox">
+				<target>Selectbox</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_checkboxes">
+				<target>Checkboxen</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_buttons">
+				<target>Buttons</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_groups">
+				<target>Groups</target>
+			</trans-unit>
+			<trans-unit id="label_categoryDefault">
+				<target>Standardkategorie</target>
+			</trans-unit>
+			<trans-unit id="label_listType">
+				<target>Liste (Art)</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_vcard">
+				<target>vCard</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_2column">
+				<target>2spalter</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_3column">
+				<target>3spalter</target>
+			</trans-unit>
+			<trans-unit id="label_noListStartup">
+				<target>Zeige keine Einträge beim Start</target>
+			</trans-unit>
+			<trans-unit id="noselect_label">
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="frontend_main_category_filter">
+				<target>Kategorien:</target>
+			</trans-unit>
+			<trans-unit id="frontend_category_filter">
+				<target>Kategorie-Filter:</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_filter">
+				<target>Umkreis-Filter:</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option1">
+				<target>Alle Einträge</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option2">
+				<target>Mitte (Stadt)</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option3">
+				<target>bis 5 km</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option4">
+				<target>bis 10 km</target>
+			</trans-unit>
+			<trans-unit id="frontend_distance_option5">
+				<target>bis 15 km</target>
+			</trans-unit>
+			<trans-unit id="frontend_query_filter">
+				<target>Suche:</target>
+			</trans-unit>
+			<trans-unit id="frontend_query_button">
+				<target>Los!</target>
+			</trans-unit>
+			<trans-unit id="frontend_results">
+				<target>Ergebnisse</target>
+			</trans-unit>
+			<trans-unit id="search_no_hits_message">
+				<target>Keine Ergebnisse gefunden oder keine Filter angegeben!</target>
+			</trans-unit>
+			<trans-unit id="property.title">
+				<target>Titel</target>
+			</trans-unit>
+			<trans-unit id="property.tcaLabel">
+				<target>Bezeichnung (TCA)</target>
+			</trans-unit>
+			<trans-unit id="property.tcaOverride">
+				<target>TCA überschreiben (Array)</target>
+			</trans-unit>
+			<trans-unit id="property.type">
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="property.settings">
+				<target>Einstellungen (Array)</target>
+			</trans-unit>
+			<trans-unit id="export.categories">
+				<target>Kategorien</target>
+			</trans-unit>
+			<trans-unit id="sorting">
+				<target>Sortierung</target>
+			</trans-unit>
+			<trans-unit id="settings">
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="doublets">
+				<target>Dubletten</target>
+			</trans-unit>
+			<trans-unit id="geolocation_task_title">
+				<target>Geo Lokalisierung für tt_address Datensätze</target>
+			</trans-unit>
+			<trans-unit id="geolocation_task_description">
+				<target>Ermittelt Geo Koordinaten für tt_address Datasätze über Open Street Map API</target>
+			</trans-unit>
+			<trans-unit id="label_none">
+				<target>Versteckt</target>
+			</trans-unit>
+			<trans-unit id="label_all">
+				<target>Alle</target>
+			</trans-unit>
+			<trans-unit id="label_address_created">
+				<target>Adresse erfolgreich erstellt.</target>
+			</trans-unit>
+			<trans-unit id="label_address_updated">
+				<target>Adresse erfolgreich aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="label_address_removed">
+				<target>Adresse erfolgreich entfernt!</target>
+			</trans-unit>
+			<trans-unit id="label_category_created">
+				<target>Kategorie erfolgreich erstellt.</target>
+			</trans-unit>
+			<trans-unit id="label_category_updated">
+				<target>Kategorie erfolgreich aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="label_category_deleted">
+				<target>Kategorie successfully entfernt!</target>
+			</trans-unit>
+			<trans-unit id="label_categories_all">
+				<target>Alle Kategorien</target>
+			</trans-unit>
+			<trans-unit id="label_templates">
+				<target>Templates</target>
+			</trans-unit>
+			<trans-unit id="label_export">
+				<target>Export</target>
+			</trans-unit>
+			<trans-unit id="label_extension_successfully_updated">
+				<target>Erweiterung erfolgreich aktualisiert.</target>
+			</trans-unit>
+			<trans-unit id="label_no_doublets_found">
+				<target>Keine Doubletten gefunden!</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

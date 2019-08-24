@@ -290,6 +290,10 @@ class AddressController extends AbstractController
      */
     public function searchAction()
     {
+        if(!empty($this->settings['ignoreDemands'])) {
+            return $this->listAction();
+        }
+        
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : $this->translate('label_all');
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';

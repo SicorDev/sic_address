@@ -255,6 +255,9 @@
 			<trans-unit id="label_no_doublets_found">
 				<source>No doublets found!</source>
 			</trans-unit>
+			<trans-unit id="label_ignore_demands">
+				<source>Ignoriere Suchparameter</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

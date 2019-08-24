@@ -588,44 +588,6 @@ class AddressController extends AbstractController
     }
 
     /**
-     * action edit
-     *
-     * @param \SICOR\SicAddress\Domain\Model\Address $address
-     * @TYPO3\CMS\Extbase\Annotation\IgnoreValidation $address
-     * @return void
-     */
-    public function editAction(\SICOR\SicAddress\Domain\Model\Address $address)
-    {
-        $this->view->assign('address', $address);
-    }
-
-    /**
-     * action update
-     *
-     * @param \SICOR\SicAddress\Domain\Model\Address $address
-     * @return void
-     */
-    public function updateAction(\SICOR\SicAddress\Domain\Model\Address $address)
-    {
-        $this->addFlashMessage($this->translate('label_address_updated'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
-        $this->addressRepository->update($address);
-        $this->redirect('list');
-    }
-
-    /**
-     * action delete
-     *
-     * @param \SICOR\SicAddress\Domain\Model\Address $address
-     * @return void
-     */
-    public function deleteAction(\SICOR\SicAddress\Domain\Model\Address $address)
-    {
-        $this->addFlashMessage($this->translate('label_address_removed'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
-        $this->addressRepository->remove($address);
-        $this->redirect('list');
-    }
-
-    /**
      *  Switch templates based on config
      */
     public function setConfiguredTemplate()

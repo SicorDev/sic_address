@@ -225,21 +225,6 @@
 			<trans-unit id="label_address_created">
 				<target>Adresse erfolgreich erstellt.</target>
 			</trans-unit>
-			<trans-unit id="label_address_updated">
-				<target>Adresse erfolgreich aktualisiert.</target>
-			</trans-unit>
-			<trans-unit id="label_address_removed">
-				<target>Adresse erfolgreich entfernt!</target>
-			</trans-unit>
-			<trans-unit id="label_category_created">
-				<target>Kategorie erfolgreich erstellt.</target>
-			</trans-unit>
-			<trans-unit id="label_category_updated">
-				<target>Kategorie erfolgreich aktualisiert.</target>
-			</trans-unit>
-			<trans-unit id="label_category_deleted">
-				<target>Kategorie successfully entfernt!</target>
-			</trans-unit>
 			<trans-unit id="label_categories_all">
 				<target>Alle Kategorien</target>
 			</trans-unit>

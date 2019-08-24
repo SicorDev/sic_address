@@ -138,6 +138,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $query = $this->createQuery();
 
+        // TODO: Get it from $context with 9 LTS+ version only
+        $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
+
         // Make A-Z respect configured pages if there are some
         $where = "pid<>-1 ";
         if(strlen($pages) > 0)

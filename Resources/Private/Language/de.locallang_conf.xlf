@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file target-language="de" datatype="plaintext" original="messages" date="2019-08-24T12:34:56Z" product-name="sic_address">
+		<header/>
+		<body>
+			<trans-unit id="basic_search_fields">
+				<target>Suchfelder: Komma-getrennte Liste von durchsuchbaren Datensatzfeldern.</target>
+			</trans-unit>
+			<trans-unit id="basic_developer_mode">
+				<target>Entwickler-Modus: Aktiviert das Backend-Modul zum Bearbeiten der eigenen Adressfelder.</target>
+			</trans-unit>
+			<trans-unit id="basic_address_export">
+				<target>Addresen-Export: Aktiviert das Backend-Modul für den Export der Adressdaten.</target>
+			</trans-unit>
+			<trans-unit id="basic_export_templates">
+				<target>Templates (Address-Export): Setzt den Pfaad zu den Export-Templates.</target>
+			</trans-unit>
+			<trans-unit id="basic_tt_address_mapping">
+				<target>tt_address: Aktiviert die Nutzung von tt_address als Unterbau.</target>
+			</trans-unit>
+			<trans-unit id="basic_template_sets">
+				<target>Template-Auswahl: Bitte ein vorgefertigtes Template für das Frontend auswählen.</target>
+			</trans-unit>			
+			<trans-unit id="basic_doublet_finder">
+				<target>Dubletten: Aktiviert das Backed-Modul für das Auffinden von Datensatz-Dubletten.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

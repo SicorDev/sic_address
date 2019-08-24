@@ -36,7 +36,7 @@ use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 /**
  * ModuleController
  */
-class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ModuleController extends AbstractController
 {
 
     /**
@@ -184,9 +184,9 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
         $this->view->assign('external', $this->external);
-        $types = array(0 => 'internal');
+        $types = array(0 => $this->translate('internal'));
         if($this->extensionConfiguration['ttAddressMapping']) {
-            $types[1] = 'external';
+            $types[1] = $this->translate('external');
         }
         $this->view->assign('types', $types);
     }

@@ -10,7 +10,7 @@
         <f:for each="{sources}" as="value" key="source">
             <label class="{f:if(condition:'{value}',then:'active',else:'')}">
                 <f:form.checkbox name="sources[{source}]" value="1" checked="{value}" onclick="SicAddress.doubletCheckboxListener()" />
-                {source}
+                <f:translate key="{source}" />
             </label>
         </f:for>
 

@@ -28,7 +28,6 @@ namespace SICOR\SicAddress\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use SICOR\SicAddress\Domain\Service\FALService;
 
 /**

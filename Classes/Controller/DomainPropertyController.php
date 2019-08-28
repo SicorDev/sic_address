@@ -27,8 +27,6 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**

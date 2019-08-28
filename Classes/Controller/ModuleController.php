@@ -2,10 +2,7 @@
 
 namespace SICOR\SicAddress\Controller;
 
-use SICOR\SicAddress\Domain\Model\DomainProperty;
-use SICOR\SicAddress\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 
 /***************************************************************

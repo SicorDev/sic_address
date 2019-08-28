@@ -246,6 +246,12 @@
 			<trans-unit id="external">
 				<target>extern</target>
 			</trans-unit>
+			<trans-unit id="flash_warning">
+				<target>W A R N U N G</target>
+			</trans-unit>
+			<trans-unit id="flash_tt_address_missing">
+				<target>tt_address nicht verfügbar! Mapping wird ignoriert!</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

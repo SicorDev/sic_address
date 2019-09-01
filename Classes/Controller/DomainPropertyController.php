@@ -77,7 +77,6 @@ class DomainPropertyController extends AbstractController
             }
 
             return json_encode(array());
-            #$this->redirect('list', 'Module', null, ['errorMessages' => $errorMessages]);
         }
     }
 
@@ -104,7 +103,6 @@ class DomainPropertyController extends AbstractController
             $this->persistenceManager->persistAll();
             $this->response->setHeader('Content-Type','application/json');
             return json_encode(array());
-            #$this->redirect('list', 'Module');
         }
     }
 

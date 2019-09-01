@@ -121,7 +121,11 @@ class ModuleController extends AbstractController
         }
 
         $this->external = $this->request->hasArgument('external') ? abs($this->request->getArgument('external')) : 0;
-        if($this->request->getControllerActionName() === 'list') {
+        if(
+            $this->request->getControllerActionName() === 'list'
+            ||
+            empty($this->extensionConfiguration['ttAddressMapping'])
+            ) {
             $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         } else {
             $this->configuration = $this->domainPropertyRepository->findAll();

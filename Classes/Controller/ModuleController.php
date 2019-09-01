@@ -159,8 +159,8 @@ class ModuleController extends AbstractController
     {
         if($this->extensionConfiguration['ttAddressMapping'] === null) {
             $this->addFlashMessage(
-                'tt_address missing! Mapping ignored.',
-                $messageTitle = 'WARNING',
+                $this->translate('flash_tt_address_missing'),
+                $messageTitle = $this->translate('flash_warning'),
                 $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
                 $storeInSession = FALSE
             );

@@ -252,6 +252,9 @@
 			<trans-unit id="flash_tt_address_missing">
 				<target>tt_address nicht verfügbar! Mapping wird ignoriert!</target>
 			</trans-unit>
+			<trans-unit id="error_field_already_exists">
+				<target>Feld existiert bereits! Bitte anderen, eindeutigen Namen angeben.</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

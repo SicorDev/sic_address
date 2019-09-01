@@ -255,6 +255,9 @@
 			<trans-unit id="flash_tt_address_missing">
 				<source>tt_address missing! Mapping ignored!</source>
 			</trans-unit>
+			<trans-unit id="error_field_already_exists">
+				<source>Field already exists! Please choose another unique name.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

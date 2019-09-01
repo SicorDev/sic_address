@@ -1,20 +1,22 @@
-# cat=basic/enable/10; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_search_fields
+# cat=basic/10; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_search_fields
 searchFields = company
 
-# cat=modules/enable/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_developer_mode
-developerMode = 1
-
-# cat=modules/enable/25; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_address_export
-addressExport = 0
-
-# cat=templates/enable/27; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_export_templates
-exportRenderTemplates = EXT:sic_address/Resources/Private/Templates/Export/
-
-# cat=basic/enable/30; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_tt_address_mapping
+# cat=basic/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_tt_address_mapping
 ttAddressMapping = 0
 
-# cat=templates/enable/50; type=options[nicosdir,spdir,sicor,eundw,irsee,massiv,muniges,obgdir,sachon,ualdir]; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_template_sets
+
+# cat=templates/10; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_export_templates
+exportRenderTemplates = EXT:sic_address/Resources/Private/Templates/Export/
+
+# cat=templates/20; type=options[nicosdir,spdir,sicor,eundw,irsee,massiv,muniges,obgdir,sachon,ualdir]; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_template_sets
 templateSet = nicosdir
 
-# cat=modules/enable/55; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_doublet_finder
+
+# cat=modules/10; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_developer_mode
+developerMode = 1
+
+# cat=modules/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_address_export
+addressExport = 0
+
+# cat=modules/30; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_doublet_finder
 doublets = 0

@@ -44,6 +44,13 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $tcaLabel = '';
+
+    /**
+     * tcaLabels
+     *
+     * @var array
+     */
+    protected $tcaLabels;
     
     /**
      * tcaOverride
@@ -134,6 +141,27 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->tcaLabel = $tcaLabel;
     }
     
+/**
+     * Returns the tcaLabels
+     *
+     * @return string $tcaLabels
+     */
+    public function getTcaLabels()
+    {
+        return $this->tcaLabels;
+    }
+    
+    /**
+     * Sets the tcaLabels
+     *
+     * @param array $tcaLabels
+     * @return void
+     */
+    public function setTcaLabels($tcaLabels)
+    {
+        $this->tcaLabels = $tcaLabels;
+    }
+
     /**
      * Returns the tcaOverride
      *

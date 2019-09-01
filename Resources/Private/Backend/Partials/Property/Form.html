@@ -71,7 +71,7 @@
                     <div class="row">
                         <f:render partial="Property/Field" arguments="{col:'col-sm-1',type:'checkbox',property:property,label:'isListLabel',value:property.isListLabel}" />
                         <f:render partial="Property/Field" arguments="{col:'col-sm-4',property:property,label:'title',value:property.title,disable:'true',require:'true',uid:property.uid}" />
-                        <f:render partial="Property/Field" arguments="{col:'col-sm-4',property:property,label:'tcaLabel',value:property.tcaLabel,require:'true'}" />
+                        <f:render partial="Property/Field" arguments="{col:'col-sm-4',languages:languages,locales:locales,property:property,label:'tcaLabel',value:property.tcaLabel,require:'true'}" />
                         <f:render partial="Property/Field" arguments="{col:'col-sm-1',type:'select',property:property,label:'type',value:property.type.title,options:'{fieldTypes}'}" />
                     </div>
                     <div class="row">

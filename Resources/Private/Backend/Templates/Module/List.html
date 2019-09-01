@@ -38,17 +38,21 @@
 
                 <div class="panel-group panel-hover ui-sortable" data-title="Properties" id="sic_address_properties">
                     <f:if condition="{properties}">
-                        <f:for each="{properties}" as="property">
-                            <f:if condition="{property.external} == {external}">
-                                <f:if condition="{property.external}">
-                                    <f:then>
-                                        <f:render partial="Property/External" arguments="{_all}" />
-                                    </f:then>
-                                    <f:else>
-                                        <f:render partial="Property/Form" arguments="{_all}" />
-                                    </f:else>
+                        <f:for each="{properties}" as="locales">
+                            <f:for each="{locales}" as="property" key="languageUid">
+                                <f:if condition="{languageUid} == 0">      
+                                    <f:if condition="{property.0.external} == {external}">
+                                        <f:if condition="{property.0.external}">
+                                            <f:then>
+                                                <f:render partial="Property/External" arguments="{_all}" />
+                                            </f:then>
+                                            <f:else>
+                                                <f:render partial="Property/Form" arguments="{_all}" />
+                                            </f:else>
+                                        </f:if>
+                                    </f:if>
                                 </f:if>
-                            </f:if>
+                            </f:for>                            
                         </f:for>
                     </f:if>
                     <f:render partial="Property/Form" arguments="{_all}" />

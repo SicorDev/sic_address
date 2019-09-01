@@ -64,6 +64,20 @@ class DomainPropertyController extends AbstractController
         if (TYPO3_MODE == 'BE') {
             $this->response->setHeader('Content-Type','application/json');
 
+            if($newDomainProperty->getTcaLabels()) {
+                foreach($newDomainProperty->getTcaLabels() as $languageUid=>$tcaLabel) {
+                    if(!empty($tcaLabel)) {
+                        $subProperty = clone $newDomainProperty;
+                        $subProperty->setTcaLabels(array());
+                        $subProperty->setTcaLabel($tcaLabel);
+                        $subProperty->_setProperty('_languageUid', $languageUid);
+                        $this->domainPropertyRepository->add($subProperty);
+                    }                    
+                }
+                $this->persistenceManager->persistAll();
+                return json_encode(array());
+            }
+
             $errorMessages = [];
             if(!empty($newDomainProperty->getTitle())) {
                 $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
@@ -99,6 +113,29 @@ class DomainPropertyController extends AbstractController
             if (!array_key_exists("isListLabel", $arguments)) {
                 $domainProperty->setIsListLabel(false);
             }
+            if($domainProperty->getTcaLabels()) {
+                foreach($domainProperty->getTcaLabels() as $propertyUid=>$tcaLabel) {                    
+                    if($propertyUid < 0) {
+                        $propertyUid = abs($propertyUid);
+                        $subProperty = $this->domainPropertyRepository->findByUid($propertyUid);
+                        if(empty($tcaLabel)) {
+                            $this->domainPropertyRepository->remove($subProperty);
+                        } else {
+                            $subProperty->setTcaLabel($tcaLabel);
+                            $this->domainPropertyRepository->update($subProperty);
+                        }
+                    } else {
+                        if(!empty($tcaLabel)) {
+                            $subProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
+                            $subProperty->setTitle($domainProperty->getTitle());
+                            $subProperty->_setProperty('_languageUid', $propertyUid);
+                            $subProperty->setTcaLabel($tcaLabel);
+                            $subProperty->setType($domainProperty->getType());                            
+                            $this->domainPropertyRepository->add($subProperty);
+                        }                        
+                    }
+                }
+            }
             $this->domainPropertyRepository->update($domainProperty);
             $this->persistenceManager->persistAll();
             $this->response->setHeader('Content-Type','application/json');
@@ -130,6 +167,14 @@ class DomainPropertyController extends AbstractController
                 if (is_file($delFile)) unlink($delFile);
             }
             $this->domainPropertyRepository->remove($domainProperty);
+            $properties = $this->domainPropertyRepository->findByTitle($domainProperty->getTitle());
+            if($properties) {
+                foreach($properties as $property) {
+                    if($property->getExternal() === $domainProperty->getExternal()) {
+                        $this->domainPropertyRepository->remove($property);
+                    }                    
+                }                
+            }
             $this->redirect('list', 'Module');
         }
     }

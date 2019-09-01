@@ -254,6 +254,8 @@ class ExportController extends ModuleController {
         $domainProperties = $this->domainPropertyRepository->findAll();
         foreach($values->toArray() as $key => $domainObject) {
             foreach($domainProperties as $property) {
+                if(is_array($property)) $property = $property[0];
+                
                 $propertyTitle = GeneralUtility::underscoredToLowerCamelCase($property->getTitle());
 
                 $value = ObjectAccess::getProperty($domainObject, $propertyTitle);

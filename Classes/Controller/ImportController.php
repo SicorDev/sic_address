@@ -63,7 +63,7 @@ class ImportController extends ModuleController {
     {
         if ($this->extensionConfiguration["ttAddressMapping"]) {
             // Clear database
-            $this->domainPropertyRepository->removeAll();
+            $this->domainPropertyRepository->deleteFieldDefinitions(1);
             
             $fields = $this->addressRepository->getFields();
             foreach ($fields as $field) {

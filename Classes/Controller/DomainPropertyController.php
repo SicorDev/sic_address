@@ -185,8 +185,11 @@ class DomainPropertyController extends AbstractController
 
                     $property = $this->domainPropertyRepository->findByUid($uid);
                     if($property) {
-                        $property->setSorting($sorting);
-                        $this->domainPropertyRepository->update($property);
+                        $subProperties = $this->domainPropertyRepository->findByTitle($property->getTitle());
+                        foreach($subProperties as $subProperty) {
+                            $subProperty->setSorting($sorting);
+                            $this->domainPropertyRepository->update($subProperty);
+                        }
                     }
                 }
             }

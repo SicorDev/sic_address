@@ -11,7 +11,7 @@
 </xliff>
 
 <f:section name="source">
-	<file source-language="en" datatype="plaintext" original="messages" date="{f:format.date(date:'now',format:'c')}" product-name="sic_address">
+	<file datatype="plaintext" original="messages" date="{f:format.date(date:'now',format:'c')}" product-name="sic_address">
 		<header/>
 		<body>
 		<f:render section="properties" arguments="{_all}" />			

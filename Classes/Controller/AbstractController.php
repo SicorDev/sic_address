@@ -4,7 +4,7 @@ namespace SICOR\SicAddress\Controller;
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
     /**
-     * UReturns translation for given key (and extension)
+     * Returns translation for given key (and extension)
      *
      * @param [type] $key
      * @param string $extension

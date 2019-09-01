@@ -2,7 +2,7 @@
 searchFields = company
 
 # cat=modules/enable/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_developer_mode
-developerMode = 0
+developerMode = 1
 
 # cat=modules/enable/25; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_address_export
 addressExport = 0

@@ -95,25 +95,6 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $hidden;
 
     /**
-     * DomainProperty constructor.
-     * @param string $title
-     * @param string $type
-     * @param string $label
-     * @param string $tcaOverride
-     * @param string $settings
-     * @param bool $isListLabel
-     */
-    public function setProperties($title, $type, $label, $tcaOverride, $settings, $isListLabel)
-    {
-        $this->setTitle($title);
-        $this->setType($type);
-        $this->setTcaLabel($label);
-        $this->setTcaOverride($tcaOverride);
-        $this->setSettings($settings);
-        $this->setIsListLabel($isListLabel);
-    }
-
-    /**
      * @return string
      */
     public function getTitle()

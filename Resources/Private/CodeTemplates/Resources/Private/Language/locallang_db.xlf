@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-23T16:33:08Z" product-name="sic_address">
+	<f:if condition="{prefix}">
+		<f:then>
+			<f:render section="target" arguments="{_all}" />
+		</f:then>
+		<f:else>
+			<f:render section="source" arguments="{_all}" />
+		</f:else>
+	</f:if>	
+</xliff>
+
+<f:section name="source">
+	<file datatype="plaintext" original="messages" date="{f:format.date(date:'now',format:'c')}" product-name="sic_address">
 		<header/>
 		<body>
-			<trans-unit id="sic_address_tca_tab_label">
-				<source>Erweitert</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_category">
-				<source>Category</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_category.marker">
-				<source>Marker</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty">
-				<source>Domain Property</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.title">
-				<source>Title</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.tca_label">
-				<source>Tca Label</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.tca_override">
-				<source>Tca Override</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.settings">
-				<source>Settings</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.is_list_label">
-				<source>Is List Label</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_domainproperty.type">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_fieldtype">
-				<source>Field Type</source>
-			</trans-unit>
-			<trans-unit id="tx_sicaddress_domain_model_fieldtype.title">
-				<source>Title</source>
-			</trans-unit>
-			<f:for each="{properties}" as="property">
-            <trans-unit id="tx_sicaddress_domain_model_address.{property.title}">
-                <f:if condition="{property.tcaLabel}">
-                    <f:then><source>{property.tcaLabel}</source></f:then>
-                    <f:else><source>{property.title}</source></f:else>
-                </f:if>
-            </trans-unit>
-            </f:for>
+		<f:render section="properties" arguments="{_all}" />			
 		</body>
 	</file>
-</xliff>
+</f:section>
+
+<f:section name="target">
+	<file target-language="{prefix}" datatype="plaintext" original="messages" date="{f:format.date(date:'now',format:'c')}" product-name="sic_address">
+		<header/>
+		<body>
+		<f:render section="properties" arguments="{_all}" />			
+		</body>
+	</file>
+</f:section>
+
+<f:section name="properties">
+	<f:for each="{properties}" as="property">
+		<trans-unit id="tx_sicaddress_domain_model_address.{property.title}"><f:spaceless>
+			<f:if condition="{property.tcaLabel}">
+				<f:then>
+					<f:render section="tag" arguments="{value: property.tcaLabel, prefix: prefix}" />
+				</f:then>
+				<f:else>
+					<f:render section="tag" arguments="{value: property.title, prefix: prefix}" />
+				</f:else>
+			</f:if>
+		</f:spaceless></trans-unit>
+	</f:for>
+</f:section>
+
+<f:section name="tag">
+	<f:if condition="{prefix}">
+		<f:then>
+			<target>{value}</target>
+		</f:then>
+		<f:else>
+			<source>{value}</source>
+		</f:else>
+	</f:if>
+</f:section>

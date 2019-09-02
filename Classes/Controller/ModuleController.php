@@ -2,10 +2,7 @@
 
 namespace SICOR\SicAddress\Controller;
 
-use SICOR\SicAddress\Domain\Model\DomainProperty;
-use SICOR\SicAddress\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 
 /***************************************************************
@@ -36,7 +33,7 @@ use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
 /**
  * ModuleController
  */
-class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ModuleController extends AbstractController
 {
 
     /**
@@ -104,6 +101,11 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     protected $external = 0;
 
     /**
+     * @var array
+     */
+    protected $languages = array();
+
+    /**
      * Called before any action
      */
     public function initializeAction()
@@ -118,23 +120,30 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             }
         }
 
-        $this->external = $this->request->hasArgument('external') ? $this->request->getArgument('external') : 0;
-        if($this->request->getControllerActionName() === 'list') {
+        $this->external = $this->request->hasArgument('external') ? abs($this->request->getArgument('external')) : 0;
+        if(
+            $this->request->getControllerActionName() === 'list'
+            ||
+            empty($this->extensionConfiguration['ttAddressMapping'])
+            ) {
             $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         } else {
             $this->configuration = $this->domainPropertyRepository->findAll();
         }
 
-        foreach ($this->configuration as $key => $value) {
+        foreach ($this->configuration as $key => $languages)
+        foreach ($languages as $language => $value) {
             // Initialize Type Objects
-            $type = $this->configuration[$key]->getType();
+            $type = $this->configuration[$key][$language]->getType();
             $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
 
             $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-            $this->configuration[$key]->setType($objectManager->get($class));
+            $this->configuration[$key][$language]->setType($objectManager->get($class));
         }
 
         $this->setBackendModuleTemplates();
+
+        $this->languages = $this->domainPropertyRepository->getSysLanguages();
     }
 
     /**
@@ -162,8 +171,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         if($this->extensionConfiguration['ttAddressMapping'] === null) {
             $this->addFlashMessage(
-                'tt_address missing! Mapping ignored.',
-                $messageTitle = 'WARNING',
+                $this->translate('flash_tt_address_missing'),
+                $messageTitle = $this->translate('flash_warning'),
                 $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
                 $storeInSession = FALSE
             );
@@ -184,6 +193,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
         $this->view->assign('external', $this->external);
+        $types = array(0 => $this->translate('internal'));
+        if($this->extensionConfiguration['ttAddressMapping']) {
+            $types[1] = $this->translate('external');
+        }
+        $this->view->assign('types', $types);
+        $this->view->assign('languages', $this->domainPropertyRepository->getSysLanguages());
     }
 
     /**
@@ -198,7 +213,10 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         // Model
         $domainProperties = array();
         foreach ($this->configuration as $key => $value) {
+            if(is_array($value)) $value = $value[0];
+
             if($value->getHidden()) continue;
+            if($value->_getProperty('_languageUid')) continue;
 
             $title = GeneralUtility::underscoredToLowerCamelCase($value->getTitle());
             $value->getType()->setClassName($title);
@@ -252,7 +270,7 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         // Language
-        if (!$this->saveTemplate('Resources/Private/Language/locallang_db.xlf', $this->configuration))
+        if (!$this->saveLanguageTemplates('Resources/Private/Language/###prefix###locallang_db.xlf', $this->configuration))
             $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
 
         // Table Mapping
@@ -282,6 +300,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $sql = array();
         foreach ($this->configuration as $key => $value) {
+            if(is_array($value)) $value = $value[0];
+
             if (!$value->getHidden() && !$value->isExternal()) {
                 $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`'.$value->getTitle().'`');
                 $sql[$key]["title"] = $value->getTitle();
@@ -300,6 +320,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $tca = array();
         foreach ($this->configuration as $key => $value) {
+            if(is_array($value)) $value = $value[0];
+            
             if(!$value->getHidden()) $tca[] = $this->getSingleTCAConfiguration($value);
         }
         return $tca;
@@ -358,9 +380,12 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      *
      * @return bool
      */
-    private function saveTemplate($filename, $properties, $templatePath = "", $headline = "", $orderbyquery = "")
+    private function saveTemplate($filename, $properties, $templatePath = "", $headline = "", $orderbyquery = "", $prefix = '')
     {
         $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+
+        $targetFilename = str_replace('###prefix###', $prefix ? $prefix . '.' : '', $filename);
+        $filename = str_replace('###prefix###', '', $filename);
 
         $templatePathAndFilename = !$templatePath ? $this->templateRootPath . $filename : $this->templateRootPath . $templatePath;
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
@@ -369,11 +394,38 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $customView->assign("properties", $properties);
         $customView->assign("headline", $headline);
         $customView->assign("orderbyquery", $orderbyquery);
+        $customView->assign('prefix', $prefix);
 
         $content = $customView->render();
-        $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $filename;
+        $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
 
         return (boolean)file_put_contents($filename, $content);
+    }
+
+    /**
+     * Save language templates
+     *
+     * @param string $filename
+     * @param array $properties
+     * @return void
+     */
+    private function saveLanguageTemplates($filename, $properties) {
+        $locales = array();
+
+        foreach($properties as $key=>$l) {
+            foreach($l as $languageUid=>$property) {
+                $locales[$languageUid][$key] = $property;
+            }
+        }
+
+        $languages = $this->domainPropertyRepository->getSysLanguages();
+
+        foreach($locales as $languageUid=>$localeProperties) {
+            $prefix = $languageUid ? $languages[$languageUid]['iso'] : '';
+            $this->saveTemplate($filename, $localeProperties, '', '', '', $prefix);
+        }
+
+        return true;
     }
 
     /**
@@ -424,6 +476,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         }
 
         foreach($properties as $property) {
+            if(is_array($property)) $property = $property[0];
+
             $source = $property->getExternal() ? 'external' : 'internal';
             $title = trim($property->getTitle());
             $tcaLabel = trim($property->getTcaLabel());
@@ -477,6 +531,8 @@ class ModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $relevantProperties = array();
 
         foreach($properties as $property) {
+            if(is_array($property)) $property = $property[0];
+
             if($this->addressRepository->isRelevant($property->getTitle())) {
                 $relevantProperties[] = $property;
             }

@@ -8,10 +8,7 @@
                 <core:icon identifier="actions-system-shortcut-active" />
             </f:then>
             <f:else>
-                {label}
-                <f:comment>
-                <f:translate key="{label}" extensionName="sic_address" />
-                </f:comment>
+                <f:translate key="property.{label}" />
             </f:else>
         </f:if>
     </label>
@@ -23,7 +20,7 @@
                         <f:if condition="{type} == 'checkbox'">
                             <f:then>
                                 <label>
-                                    <f:form.checkbox checked="{value}" title="Teil des Labels" property="{label}" name="{label}" value="1" />
+                                    <f:form.checkbox checked="{value}" title="{label}" property="{label}" name="{label}" value="1" />
                                 </label>
                             </f:then>
                             <f:else>
@@ -49,7 +46,7 @@
                                                         </f:if>                                                        
                                                     </f:then>
                                                     <f:else>
-                                                        <f:form.textfield required="{require}" class="form-control t3js-clearable hasDefaultValue t3js-charcounter-initialized" property="{label}" name="{label}" value="{value}" />
+                                                        <f:render section="languages" arguments="{_all}" />
                                                     </f:else>
                                                 </f:if>
                                             </f:else>
@@ -65,3 +62,30 @@
     </div>
     <span class="field-error field-{label}-error text-danger"></span>
 </div>
+
+<f:section name="languages">
+    <f:for each="{languages}" as="localLanguage" key="localLanguageUid">
+        <f:if condition="{f:render(section:'locales',arguments:'{_all}')}">
+            <f:then>
+                {f:render(section:'locales',arguments:'{_all}')}
+            </f:then>
+            <f:else>
+                <div style="display:flex;align-items:center;justify-content: space-between">
+                    <f:if condition="{localLanguage.flag}"><strong style="margin-right:1em">{localLanguage.flag}</strong></f:if>
+                    <f:form.textfield required="{require}" class="form-control t3js-clearable hasDefaultValue t3js-charcounter-initialized" placeholder="{localLanguage.title}" property="{label}s.{localLanguageUid}" value="{localProperty.tcaLabel}" />
+                </div>
+            </f:else>
+        </f:if>        
+    </f:for>
+</f:section>
+
+<f:section name="locales"><f:spaceless>
+    <f:for each="{locales}" as="localProperty" key="languageUid">
+        <f:if condition="{languageUid} == {localLanguageUid}">
+            <div style="display:flex;align-items:center;justify-content: space-between">
+                <f:if condition="{localLanguage.flag}"><strong style="margin-right:1em">{localLanguage.flag}</strong></f:if>
+                <f:form.textfield required="{require}" class="form-control t3js-clearable hasDefaultValue t3js-charcounter-initialized" placeholder="{localLanguage.title}" property="{label}s.-{localProperty.uid}" value="{localProperty.tcaLabel}" />
+            </div>
+        </f:if>
+    </f:for>
+</f:spaceless></f:section>

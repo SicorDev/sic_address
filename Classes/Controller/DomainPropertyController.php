@@ -27,14 +27,12 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * DomainPropertyController
  */
-class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class DomainPropertyController extends AbstractController
 {
 
     protected $objectManager = null;
@@ -67,19 +65,27 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             $this->response->setHeader('Content-Type','application/json');
 
             $errorMessages = [];
-            if(!empty($newDomainProperty->getTitle())) {
-                $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
-                if ($existingObjectWithSameName->count() < 1) {
-                    $this->domainPropertyRepository->add($newDomainProperty);
-                } else {
-                    $errorMessages['title'] = "A field named '" . $newDomainProperty->getTitle() . "' already exists. Please choose a unique name.";
-                    return json_encode($errorMessages);
+            if($newDomainProperty->getTcaLabels()) {
+                foreach($newDomainProperty->getTcaLabels() as $languageUid=>$tcaLabel) {
+                    if(!empty($tcaLabel)) {
+                        $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
+                        if ($existingObjectWithSameName->count() < 1) {
+                            $this->domainPropertyRepository->add($newDomainProperty);
+                        } else {
+                            $errorMessages['title'] = $this->translate('error_field_already_exists');
+                            return json_encode($errorMessages);
+                        }
+                        $subProperty = clone $newDomainProperty;
+                        $subProperty->setTcaLabels(array());
+                        $subProperty->setTcaLabel($tcaLabel);
+                        $subProperty->_setProperty('_languageUid', $languageUid);
+                        $this->domainPropertyRepository->add($subProperty);
+                    }                    
                 }
                 $this->persistenceManager->persistAll();
             }
 
             return json_encode(array());
-            #$this->redirect('list', 'Module', null, ['errorMessages' => $errorMessages]);
         }
     }
 
@@ -102,11 +108,33 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
             if (!array_key_exists("isListLabel", $arguments)) {
                 $domainProperty->setIsListLabel(false);
             }
+            if($domainProperty->getTcaLabels()) {
+                foreach($domainProperty->getTcaLabels() as $propertyUid=>$tcaLabel) {                    
+                    if($propertyUid < 0) {
+                        $propertyUid = abs($propertyUid);
+                        $subProperty = $this->domainPropertyRepository->findByUid($propertyUid);
+                        if(empty($tcaLabel)) {
+                            $this->domainPropertyRepository->remove($subProperty);
+                        } else {
+                            $subProperty->setTcaLabel($tcaLabel);
+                            $this->domainPropertyRepository->update($subProperty);
+                        }
+                    } else {
+                        if(!empty($tcaLabel)) {
+                            $subProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
+                            $subProperty->setTitle($domainProperty->getTitle());
+                            $subProperty->_setProperty('_languageUid', $propertyUid);
+                            $subProperty->setTcaLabel($tcaLabel);
+                            $subProperty->setType($domainProperty->getType());                            
+                            $this->domainPropertyRepository->add($subProperty);
+                        }                        
+                    }
+                }
+            }
             $this->domainPropertyRepository->update($domainProperty);
             $this->persistenceManager->persistAll();
             $this->response->setHeader('Content-Type','application/json');
             return json_encode(array());
-            #$this->redirect('list', 'Module');
         }
     }
 
@@ -134,6 +162,14 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
                 if (is_file($delFile)) unlink($delFile);
             }
             $this->domainPropertyRepository->remove($domainProperty);
+            $properties = $this->domainPropertyRepository->findByTitle($domainProperty->getTitle());
+            if($properties) {
+                foreach($properties as $property) {
+                    if($property->getExternal() === $domainProperty->getExternal()) {
+                        $this->domainPropertyRepository->remove($property);
+                    }                    
+                }                
+            }
             $this->redirect('list', 'Module');
         }
     }
@@ -149,8 +185,11 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 
                     $property = $this->domainPropertyRepository->findByUid($uid);
                     if($property) {
-                        $property->setSorting($sorting);
-                        $this->domainPropertyRepository->update($property);
+                        $subProperties = $this->domainPropertyRepository->findByTitle($property->getTitle());
+                        foreach($subProperties as $subProperty) {
+                            $subProperty->setSorting($sorting);
+                            $this->domainPropertyRepository->update($subProperty);
+                        }
                     }
                 }
             }
@@ -206,7 +245,7 @@ class DomainPropertyController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
         $fields = $this->domainPropertyRepository->findByTypes( explode(',',$types) );
 
         $optionList = array();
-        $optionList[0] = array(0 => 'Ausblenden', 1 => 'none');
+        $optionList[0] = array(0 => $this->translate('label_none'), 1 => 'none');
         foreach ($fields as $field) {
             $value = ($field["type"] == "mmtable") ? $field["title"] . ".title" : $field["title"];
             $optionList[] = array(0 => $field["tca_label"], 1 => $value);

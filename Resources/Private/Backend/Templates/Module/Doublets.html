@@ -10,7 +10,7 @@
         <f:for each="{sources}" as="value" key="source">
             <label class="{f:if(condition:'{value}',then:'active',else:'')}">
                 <f:form.checkbox name="sources[{source}]" value="1" checked="{value}" onclick="SicAddress.doubletCheckboxListener()" />
-                {source}
+                <f:translate key="{source}" />
             </label>
         </f:for>
 
@@ -39,7 +39,7 @@
             hidden
         </label>
 
-        <h1>Doubletten</h1>
+        <h1><f:translate key="doublets" /></h1>
 
         <div class="fields">
             <div class="btn-toolbar" role="toolbar">
@@ -124,7 +124,7 @@
                 </f:for>
             </f:then>
             <f:else>
-                <span class="alert alert-success">Keine Dubletten gefunden!</span>
+                <span class="alert alert-success"><f:translate key="label_no_doublets_found" /></span>
             </f:else>
         </f:if>
     </f:if>

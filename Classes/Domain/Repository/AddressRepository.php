@@ -25,7 +25,6 @@ namespace SICOR\SicAddress\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -134,7 +133,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz($field, $addresstable, $categories, $pages)
+    public function findAtoz($field, $addresstable, $categories, $pages, $ttAddressMapping)
     {
         $query = $this->createQuery();
 
@@ -146,8 +145,12 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if(strlen($pages) > 0)
             $where = "pid IN (".$pages.") ";
 
+        $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
+
         // Standard constraints
-        $where .= "AND deleted=0 AND hidden=0 AND sys_language_uid=".$currentLanguageUid ." ";
+        $where .= "AND deleted=0 AND hidden=0 ";
+        if(empty($ttAddressMapping))
+            $where .= "AND sys_language_uid IN (-1,".$currentLanguageUid .") ";
 
         // Respect categories
         if ($categories && count($categories) > 0) {
@@ -320,53 +323,22 @@ SQL;
     /**
      * Get all fields from tt_address
      */
-    public function getFields() {        
-        if(!empty($GLOBALS['TYPO3_DB'])) {
+    public function getFields() {
+        $fields = array();
 
-            $GLOBALS['TYPO3_DB']
-            ->exec_INSERTquery('tt_address', array(
-                'company' => 'SICOR'
-            ));
+        if(!empty($GLOBALS['TCA']['tt_address']['columns'])) {
+            foreach($GLOBALS['TCA']['tt_address']['columns'] as $field=>$config) {
+                if(
+                    !isset($GLOBALS['TCA']['tt_content']['columns'][$field])
+                    &&
+                    !isset($GLOBALS['TCA']['pages']['columns'][$field])
+                    ) {
+                        $fields[] = $field;
+                }
+            }
+        }
 
-            $rows = $GLOBALS['TYPO3_DB']
-            ->exec_SELECTgetRows('*', 'tt_address', '', '', '', 1);
-
-            $GLOBALS['TYPO3_DB']
-            ->exec_DELETEquery('tt_address', 'company = "SICOR"');
-
-            return array_keys(array_pop($rows));
-
-        } else {
-
-            $connection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
-            ->getConnectionForTable('tt_address');
-
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder
-            ->insert('tt_address')
-            ->values(array(
-                'company' => 'SICOR'
-            ))
-            ->execute();
-
-            $queryBuilder = $connection->createQueryBuilder();
-            $rows = $queryBuilder
-            ->select('*')
-            ->from('tt_address')
-            ->setMaxResults(1)
-            ->setFirstResult(0)
-            ->execute()
-            ->fetchAll();
-
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder
-            ->delete('tt_address')
-            ->where('company = "SICOR"')
-            ->execute();
-
-            return array_keys(array_pop($rows));
-            
-        }        
+        return $fields;
     }
 
     /**

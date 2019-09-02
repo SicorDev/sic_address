@@ -4,7 +4,7 @@
 <f:section name="content">
 
     <div class="export">
-        <h2>Kategorien für den Adressexport</h2>
+        <h2><f:translate key="export.categories" /></h2>
         <hr />
 
         <f:form action="exportToFile" >
@@ -17,29 +17,29 @@
                             <f:render partial="Export/ChildCategoryRecursion" arguments="{categoryTree : categoryTree, selectedCategories : selectedCategories, currentCategory : currentCategory,	currentLevel : 0, stopRecursionOnLevel : 8}"/>
                         </li>
                     </f:for>
-                    <button class="btn btn-default" onclick="SicAddress.checkAll();return false;">Alle Kategorien auswählen</button>
+                    <button class="btn btn-default" onclick="SicAddress.checkAll();return false;"><f:translate key="label_categories_all" /></button>
                 </div>
             </div>
 
-            <h2>Einstellungen</h2>
+            <h2><f:translate key="settings" /></h2>
             <hr />
 
             <div class="row">
                 <div class="col-sm-12">
-                    <label>Templates:</label>
+                    <label><f:translate key="label_templates" />:</label>
                     <f:form.select options="{templates}" name="template" optionValueField="key" optionLabelField="value" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <label>Sortierung:</label>
+                    <label><f:translate key="sorting" />:</label>
                     <f:form.select options="{sorting}" name="sorting" optionLabelField="tcaLabel" optionValueField="title" prependOptionLabel="-----" prependOptionValue="name"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-12">
-                    <h2>Export</h2>
+                    <h2><f:translate key="label_export" /></h2>
                     <hr />
                     <f:form.hidden id="type" name="type" value="HTML" />
                     <f:form.submit class="btn btn-default" value="CSV Export" onclick="document.getElementById('type').value = 'CSV';" />

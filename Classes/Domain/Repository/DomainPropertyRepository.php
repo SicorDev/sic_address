@@ -36,6 +36,8 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var array
      */
     protected $defaultOrderings = array(
+        'external' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+        'sys_language_uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
         'hidden' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
         'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
     );
@@ -45,6 +47,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
         $querySettings->setRespectStoragePage(FALSE);
         $querySettings->setIgnoreEnableFields(TRUE);
+        $querySettings->setRespectSysLanguage(FALSE);
         $this->setDefaultQuerySettings($querySettings);
     }
 
@@ -82,5 +85,57 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         foreach($query->execute() as $item) {
             $this->remove($item);
         }
+    }
+
+    /**
+     * Return sys_language items
+     *
+     * @return array
+     */
+    public function getSysLanguages() {
+        $query = $this->createQuery();
+
+        $sql = 'select uid,flag,title,language_isocode as iso from sys_language where hidden=0 order by uid';
+
+        $languages = array(0 => '');
+        foreach($query->statement($sql)->execute(true) as $row) {
+            $languages[ $row['uid'] ] = $row;
+        }
+        return $languages;
+    }
+
+    /**
+     *
+     * @param int $external
+     * @return void
+     */
+    public function findByExternal($external) {
+        $query = $this->createQuery();
+        $external = abs($external);
+
+        $query->matching(
+            $query->equals('external', $external)
+        );
+
+        return $this->groupByLanguages($query);
+    }
+
+    public function findAll() {
+        $query = $this->createQuery();
+
+        return $this->groupByLanguages($query);
+    }
+
+    private function groupByLanguages($query) {
+        $properties = array();
+
+        foreach($query->execute() as $property) {
+            $title = $property->getTitle();
+            if(empty($title)) continue;
+            $sysLanguage = $property->_getProperty('_languageUid');            
+            $properties[$title][$sysLanguage] = $property;
+        }
+
+        return $properties;
     }
 }

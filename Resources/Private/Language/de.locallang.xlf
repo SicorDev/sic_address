@@ -1,262 +1,259 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" product-name="sic_address">
+	<file datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" target-language="de" product-name="sic_address">
 		<header/>
 		<body>
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
-				<source>Addresses</source>
+				<target>Adressen</target>
 			</trans-unit>
 			<trans-unit id="label_single_address">
-				<source>Address</source>
+				<target>Adresse</target>
 			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_category">
-				<source>Category</source>
+				<target>Kategorie</target>
 			</trans-unit>
 			<trans-unit id="BackendListTitle">
-				<source>Database Editor</source>
+				<target>Datenbank Editor</target>
 			</trans-unit>
 			<trans-unit id="BackendImporterListTitle">
-				<source>Importer</source>
+				<target>Importer</target>
 			</trans-unit>
 			<trans-unit id="BackendImporterButtonLabel">
-				<source>Import tt_address Field Definition</source>
+				<target>Importiere tt_address Feld Definitionen</target>
 			</trans-unit>
 			<trans-unit id="Generate">
-				<source>Generate</source>
+				<target>Generiere</target>
 			</trans-unit>
 			<trans-unit id="New...">
-				<source>New...</source>
+				<target>Neu...</target>
 			</trans-unit>
 			<trans-unit id="HelpButtonLabel">
-				<source>Help</source>
+				<target>Hilfe</target>
 			</trans-unit>
 			<trans-unit id="DeleteCustomFieldsLabel">
-				<source>Remove Custom Field Definitions</source>
+				<target>Entferne eigene Adress-Felder</target>
 			</trans-unit>
 			<trans-unit id="DeleteTTAddressFieldsLabel">
-				<source>Remove tt_address Field Definitions</source>
+				<target>Entferne tt_address Felder</target>
 			</trans-unit>
 			<trans-unit id="Attention">
-				<source>Attention</source>
+				<target>Achtung</target>
 			</trans-unit>
 			<trans-unit id="Cancel">
-				<source>Cancel</source>
+				<target>Abbrechen</target>
 			</trans-unit>
 			<trans-unit id="Delete">
-				<source>Delete</source>
+				<target>Entfernen</target>
 			</trans-unit>
 			<trans-unit id="label_switchAction">
-				<source>View</source>
+				<target>Zeige</target>
 			</trans-unit>
 			<trans-unit id="label_list">
-				<source>List</source>
+				<target>Liste</target>
 			</trans-unit>
             <trans-unit id="label_listandmap">
-                <source>List (with Map)</source>
+                <target>Liste (mit Karte)</target>
             </trans-unit>
             <trans-unit id="label_center_address">
-                <source>Center of map (Address)</source>
+                <target>Kartenmittelpunkt (Adresse)</target>
             </trans-unit>
             <trans-unit id="label_distances">
-                <source>Distance in km (comma separated)</source>
+                <target>Entfernung in km (kommagetrennt)</target>
             </trans-unit>
             <trans-unit id="label_root_category">
-                <source>Main category for filter</source>
+                <target>Hauptkategorie für Filter</target>
             </trans-unit>
 			<trans-unit id="label_detail">
-				<source>Detail</source>
+				<target>Detail</target>
 			</trans-unit>
 			<trans-unit id="datasets">
-				<source>Datansets</source>
+				<target>Datensätze</target>
 			</trans-unit>
 			<trans-unit id="label_new">
-				<source>Input</source>
+				<target>Input</target>
 			</trans-unit>
             <trans-unit id="label_listPageField">
-                <source>List-View (Page)</source>
+                <target>Liste (Seite)</target>
             </trans-unit>
             <trans-unit id="label_detailPageField">
-                <source>Detail Page</source>
+                <target>Detailseite/Snippet</target>
             </trans-unit>
 			<trans-unit id="label_atozField">
-				<source>A-Z Field</source>
+				<target>A-Z Feld</target>
 			</trans-unit>
 			<trans-unit id="label_distanceField">
-				<source>Radial field</source>
+				<target>Umkreisfild</target>
 			</trans-unit>
 			<trans-unit id="label_queryField">
-				<source>Search field</source>
+				<target>Suchfild</target>
 			</trans-unit>
 			<trans-unit id="label_queryFieldOn">
-				<source>Show</source>
+				<target>Sichtbar</target>
 			</trans-unit>
 			<trans-unit id="label_queryFieldOff">
-				<source>Hide</source>
+				<target>Versteckt</target>
 			</trans-unit>
 			<trans-unit id="label_sortField">
-				<source>Order field</source>
+				<target>Sortierfeld</target>
 			</trans-unit>
 			<trans-unit id="label_filterField">
-				<source>Filter field</source>
+				<target>Filterfeld</target>
 			</trans-unit>
 			<trans-unit id="label_categoryType">
-				<source>Category type</source>
+				<target>Kategorie Art</target>
 			</trans-unit>
 			<trans-unit id="label_mainCategoryType">
-				<source>Main category type</source>
+				<target>Hauptkategorie Art</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_none">
-				<source>Hide</source>
+				<target>Versteckt</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_breadcrumbs">
-				<source>Breadcrumbs</source>
+				<target>Breadcrumbs</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_dropdown">
-				<source>Dropdown</source>
+				<target>Dropdown</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_selectbox">
-				<source>Selectbox</source>
+				<target>Selectbox</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_checkboxes">
-				<source>Checkboxen</source>
+				<target>Checkboxen</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_buttons">
-				<source>Buttons</source>
+				<target>Buttons</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_groups">
-				<source>Groups</source>
+				<target>Groups</target>
 			</trans-unit>
 			<trans-unit id="label_categoryDefault">
-				<source>Default category</source>
+				<target>Standardkategorie</target>
 			</trans-unit>
 			<trans-unit id="label_listType">
-				<source>List type</source>
+				<target>Liste (Art)</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_vcard">
-				<source>vCard</source>
+				<target>vCard</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_2column">
-				<source>2 column</source>
+				<target>2spalter</target>
 			</trans-unit>
 			<trans-unit id="label_cattype_3column">
-				<source>3 column</source>
+				<target>3spalter</target>
 			</trans-unit>
 			<trans-unit id="label_noListStartup">
-				<source>Do not show all datasets by default</source>
+				<target>Zeige keine Einträge beim Start</target>
 			</trans-unit>
 			<trans-unit id="noselect_label">
-				<source>All</source>
+				<target>Alle</target>
 			</trans-unit>
 			<trans-unit id="frontend_main_category_filter">
-				<source>Categories:</source>
+				<target>Kategorien:</target>
 			</trans-unit>
 			<trans-unit id="frontend_category_filter">
-				<source>Category filter:</source>
+				<target>Kategorie-Filter:</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_filter">
-				<source>Distance filter:</source>
+				<target>Umkreis-Filter:</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option1">
-				<source>All items</source>
+				<target>Alle Einträge</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option2">
-				<source>Center (city)</source>
+				<target>Mitte (Stadt)</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option3">
-				<source>up to 5 km around</source>
+				<target>bis 5 km</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option4">
-				<source>up to 10 km around</source>
+				<target>bis 10 km</target>
 			</trans-unit>
 			<trans-unit id="frontend_distance_option5">
-				<source>up to 15 km around</source>
+				<target>bis 15 km</target>
 			</trans-unit>
 			<trans-unit id="frontend_query_filter">
-				<source>Search:</source>
+				<target>Suche:</target>
 			</trans-unit>
 			<trans-unit id="frontend_query_button">
-				<source>Go!</source>
+				<target>Los!</target>
 			</trans-unit>
 			<trans-unit id="frontend_results">
-				<source>Regults</source>
+				<target>Ergebnisse</target>
 			</trans-unit>
 			<trans-unit id="search_no_hits_message">
-				<source>No items found or no filters given!</source>
+				<target>Keine Ergebnisse gefunden oder keine Filter angegeben!</target>
 			</trans-unit>
 			<trans-unit id="property.title">
-				<source>Title</source>
+				<target>Titel</target>
 			</trans-unit>
 			<trans-unit id="property.tcaLabel">
-				<source>Label (TCA)</source>
+				<target>Bezeichnung (TCA)</target>
 			</trans-unit>
 			<trans-unit id="property.tcaOverride">
-				<source>TCA Override (Array)</source>
+				<target>TCA überschreiben (Array)</target>
 			</trans-unit>
 			<trans-unit id="property.type">
-				<source>Type</source>
+				<target>Typ</target>
 			</trans-unit>
 			<trans-unit id="property.settings">
-				<source>Settings (Array)</source>
+				<target>Einstellungen (Array)</target>
 			</trans-unit>
 			<trans-unit id="export.categories">
-				<source>Categories</source>
+				<target>Kategorien</target>
 			</trans-unit>
 			<trans-unit id="sorting">
-				<source>Sorting</source>
+				<target>Sortierung</target>
 			</trans-unit>
 			<trans-unit id="settings">
-				<source>Settings</source>
+				<target>Einstellungen</target>
 			</trans-unit>
 			<trans-unit id="doublets">
-				<source>Doublets</source>
+				<target>Dubletten</target>
 			</trans-unit>
 			<trans-unit id="geolocation_task_title">
-				<source>Geo location task for tt_address datasets</source>
+				<target>Geo Lokalisierung für tt_address Datensätze</target>
 			</trans-unit>
 			<trans-unit id="geolocation_task_description">
-				<source>Gets geo coordinates for tt_address datasets using Open Street Map API</source>
+				<target>Ermittelt Geo Koordinaten für tt_address Datasätze über Open Street Map API</target>
 			</trans-unit>
 			<trans-unit id="label_none">
-				<source>Hide</source>
+				<target>Versteckt</target>
 			</trans-unit>
 			<trans-unit id="label_all">
-				<source>All</source>
+				<target>Alle</target>
 			</trans-unit>
 			<trans-unit id="label_address_created">
-				<source>Address successfully created.</source>
+				<target>Adresse erfolgreich erstellt.</target>
 			</trans-unit>
 			<trans-unit id="label_categories_all">
-				<source>All categories</source>
+				<target>Alle Kategorien</target>
 			</trans-unit>
 			<trans-unit id="label_templates">
-				<source>Templates</source>
+				<target>Templates</target>
 			</trans-unit>
 			<trans-unit id="label_export">
-				<source>Export</source>
+				<target>Export</target>
 			</trans-unit>
 			<trans-unit id="label_extension_successfully_updated">
-				<source>Extension successfully updated.</source>
+				<target>Erweiterung erfolgreich aktualisiert.</target>
 			</trans-unit>
 			<trans-unit id="label_no_doublets_found">
-				<source>No doublets found!</source>
-			</trans-unit>
-			<trans-unit id="label_ignore_demands">
-				<source>Ignoriere Suchparameter</source>
+				<target>Keine Doubletten gefunden!</target>
 			</trans-unit>
 			<trans-unit id="internal">
-				<source>internal</source>
+				<target>intern</target>
 			</trans-unit>
 			<trans-unit id="external">
-				<source>external</source>
+				<target>extern</target>
 			</trans-unit>
 			<trans-unit id="flash_warning">
-				<source>W A R N I N G</source>
+				<target>W A R N U N G</target>
 			</trans-unit>
 			<trans-unit id="flash_tt_address_missing">
-				<source>tt_address missing! Mapping ignored!</source>
+				<target>tt_address nicht verfügbar! Mapping wird ignoriert!</target>
 			</trans-unit>
 			<trans-unit id="error_field_already_exists">
-				<source>Field already exists! Please choose another unique name.</source>
+				<target>Feld existiert bereits! Bitte anderen, eindeutigen Namen angeben.</target>
 			</trans-unit>
 		</body>
 	</file>

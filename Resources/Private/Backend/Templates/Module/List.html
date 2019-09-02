@@ -13,10 +13,7 @@
     </h2>
     <f:if condition="{ttAddressMapping}">
         <f:form action="list">
-            <f:form.select name="external" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}">
-                <f:form.select.option value="0">internal</f:form.select.option>
-                <f:form.select.option value="1">external</f:form.select.option>
-            </f:form.select>
+            <f:form.select name="external" options="{types}" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}" />
         </f:form>
     </f:if>
 
@@ -41,17 +38,21 @@
 
                 <div class="panel-group panel-hover ui-sortable" data-title="Properties" id="sic_address_properties">
                     <f:if condition="{properties}">
-                        <f:for each="{properties}" as="property">
-                            <f:if condition="{property.external} == {external}">
-                                <f:if condition="{property.external}">
-                                    <f:then>
-                                        <f:render partial="Property/External" arguments="{_all}" />
-                                    </f:then>
-                                    <f:else>
-                                        <f:render partial="Property/Form" arguments="{_all}" />
-                                    </f:else>
+                        <f:for each="{properties}" as="locales">
+                            <f:for each="{locales}" as="property" key="languageUid">
+                                <f:if condition="{languageUid} == 0">      
+                                    <f:if condition="{property.0.external} == {external}">
+                                        <f:if condition="{property.0.external}">
+                                            <f:then>
+                                                <f:render partial="Property/External" arguments="{_all}" />
+                                            </f:then>
+                                            <f:else>
+                                                <f:render partial="Property/Form" arguments="{_all}" />
+                                            </f:else>
+                                        </f:if>
+                                    </f:if>
                                 </f:if>
-                            </f:if>
+                            </f:for>                            
                         </f:for>
                     </f:if>
                     <f:render partial="Property/Form" arguments="{_all}" />
@@ -71,7 +72,9 @@
         <f:then>
             <div class="row">
                 <div class="col-sm-4">
-                    <f:link.action id="generateAction" class="btn btn-primary" action="create">Generate Model, TCA, i18n, DB</f:link.action>
+                    <f:link.action id="generateAction" class="btn btn-primary" action="create">
+                        <f:translate key="Generate" />
+                        Model, TCA, i18n, DB</f:link.action>
                     <f:link.external class="btn btn-success" target="sicor" uri="https://www.sicor-kdl.net/index.php?id=111"><f:translate key="HelpButtonLabel"/></f:link.external>
                 </div>
                 <div class="col-sm-2 col-sm-offset-5">

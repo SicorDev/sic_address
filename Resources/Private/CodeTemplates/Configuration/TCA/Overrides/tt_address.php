@@ -22,7 +22,7 @@ if(!empty($GLOBALS['TCA']['tt_address'])) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address',$tmp_sic_address_columns);
 
     // Extend show items from tt_address TCA
-    $GLOBALS['TCA']['tt_address']['types']['0']['showitem'] .= ',--div--;LLL:EXT:sic_address/Resources/Private/Language/locallang_db.xlf:sic_address_tca_tab_label,';
+    $GLOBALS['TCA']['tt_address']['types']['0']['showitem'] .= ',--div--;sic_address,';
     $GLOBALS['TCA']['tt_address']['types']['0']['showitem'] .= '<f:for each="{properties}" as="field"><f:if condition="{field.external} == '0'"> {field.title},</f:if></f:for>';
 
     // Upgrade Description to an RTE field

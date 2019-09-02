@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2019-08-24T12:34:56Z" product-name="sic_address">
+		<header/>
+		<body>
+			<trans-unit id="basic_search_fields">
+				<source>Search Fields: Comma separated list of database fields used for searching</source>
+			</trans-unit>
+			<trans-unit id="basic_developer_mode">
+				<source>Developer Mode: Enables the backend module with the field configurator.</source>
+			</trans-unit>
+			<trans-unit id="basic_address_export">
+				<source>Address Export: Enables the backend address export module.</source>
+			</trans-unit>
+			<trans-unit id="basic_export_templates">
+				<source>Address Export Templates: Set an alternate path for export render templates</source>
+			</trans-unit>
+			<trans-unit id="basic_tt_address_mapping">
+				<source>tt_address Mapping: Enables mapping of sic_address on tt_address</source>
+			</trans-unit>
+			<trans-unit id="basic_template_sets">
+				<source>TemplateSet: Choose one of the preset template sets.</source>
+			</trans-unit>			
+			<trans-unit id="basic_doublet_finder">
+				<source>Doublets: Enable module for finding and removing address doublets.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

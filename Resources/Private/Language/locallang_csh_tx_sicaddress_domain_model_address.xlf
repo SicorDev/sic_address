@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="categories.description">
-				<source>categories</source>
+				<source>Categories</source>
 			</trans-unit>
 		</body>
 	</file>

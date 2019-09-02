@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - handling locales for tcaLabel
   > you can translate your tca labels into all installed languages
 - generate locallang_db.xlf for every installed language
-  > added fluid logic generation template to separate between source and target language
+  > added fluid logic in generation template to separate between source and target language
 - localized Export and Doublet module, too
 
 ### Changed
@@ -28,14 +28,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - get tt_address fields from TCA instead of DB 
 
 ### Fixed
-- removed view helper "f:form.select.option" for select box used for "internal/external" properties
+- removed view helper "f:form.select.option" from select box used for "internal/external" properties
   > available in TYPO3 v8 and above (throws error in TYPO3 v7)
-- ignore external fields iff tt_address mapping off
-  > do not use tt_address field anymore after mapping gets disabled
+- ignore external fields if tt_address mapping disabled
+  > do not use imported tt_address fields anymore if/after mapping of tt_address gets disabled
  
 
 ### Removed
 - obsolete code
-  > old use statements for unused classes
+  > use statements for unused classes
 
-  > old controllers, methods and templates
+  > unused controllers, methods and templates

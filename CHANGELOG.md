@@ -17,10 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   > you can translate your tca labels into all installed languages
 - generate locallang_db.xlf for every installed language
   > added fluid logic in generation template to separate between source and target language
-- localized Export and Doublet module, too
 
 ### Changed
 - localized class and template files
+- localized Export and Doublet module, too
 - labels in default language file(s) changed to english
 - localized extension configuration file, too
 - enable developer module in extension configuration

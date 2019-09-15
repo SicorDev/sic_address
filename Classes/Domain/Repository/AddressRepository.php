@@ -144,8 +144,6 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $where = "pid<>-1 ";
         if(strlen($pages) > 0)
             $where = "pid IN (".$pages.") ";
-            
-            $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
 
         // Standard constraints
         $where .= "AND deleted=0 AND hidden=0 ";

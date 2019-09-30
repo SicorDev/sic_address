@@ -1,31 +1,31 @@
-config.tx_extbase <f:format.raw>{</f:format.raw>
-    persistence <f:format.raw>{</f:format.raw>
-        classes <f:format.raw>{</f:format.raw>
-             SICOR\SicAddress\Domain\Model\FileReference <f:format.raw>{</f:format.raw>
-                 mapping <f:format.raw>{</f:format.raw>
+config.tx_extbase {
+    persistence {
+        classes {
+             SICOR\SicAddress\Domain\Model\FileReference {
+                 mapping {
                      tableName = sys_file_reference
-                 <f:format.raw>}</f:format.raw>
-             <f:format.raw>}</f:format.raw>
+                 }
+             }
 
-            SICOR\SicAddress\Domain\Model\Category <f:format.raw>{</f:format.raw>
-                mapping <f:format.raw>{</f:format.raw>
+            SICOR\SicAddress\Domain\Model\Category {
+                mapping {
                     tableName = sys_category
-                <f:format.raw>}</f:format.raw>
-            <f:format.raw>}</f:format.raw>
+                }
+            }
 
-            SICOR\SicAddress\Domain\Model\Content <f:format.raw>{</f:format.raw>
-                mapping <f:format.raw>{</f:format.raw>
+            SICOR\SicAddress\Domain\Model\Content {
+                mapping {
                     tableName = tt_content
-                <f:format.raw>}</f:format.raw>
-            <f:format.raw>}</f:format.raw>
+                }
+            }
         <f:if condition="{settings.ttAddressMapping}">
-            SICOR\SicAddress\Domain\Model\Address <f:format.raw>{</f:format.raw>
-                mapping <f:format.raw>{</f:format.raw>
+            SICOR\SicAddress\Domain\Model\Address {
+                mapping {
                     tableName = tt_address
-                <f:format.raw>}</f:format.raw>
-             <f:format.raw>}</f:format.raw>
+                }
+             }
         </f:if>
             updateReferenceIndex = 1
-        <f:format.raw>}</f:format.raw>
-    <f:format.raw>}</f:format.raw>
-<f:format.raw>}</f:format.raw>
+        }
+    }
+}

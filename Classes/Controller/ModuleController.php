@@ -269,13 +269,14 @@ class ModuleController extends AbstractController
             if (is_file($delFile)) unlink($delFile);
         }
 
-        // Language
-        if (!$this->saveLanguageTemplates('Resources/Private/Language/###prefix###locallang_db.xlf', $this->configuration))
-            $errorMessages[] = "Unable to save Locallang: locallang_db.xlf";
-
         // Table Mapping
         if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
             $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
+
+        // Language
+        $generationResults = $this->saveLanguageTemplates('Resources/Private/Language/###prefix###locallang_db.xlf', $this->configuration);
+        if($generationResults !== true)
+            $errorMessages[] = $generationResults;
 
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
@@ -407,7 +408,7 @@ class ModuleController extends AbstractController
      *
      * @param string $filename
      * @param array $properties
-     * @return void
+     * @return boolean|string
      */
     private function saveLanguageTemplates($filename, $properties) {
         $locales = array();
@@ -422,7 +423,8 @@ class ModuleController extends AbstractController
 
         foreach($locales as $languageUid=>$localeProperties) {
             $prefix = $languageUid ? $languages[$languageUid]['iso'] : '';
-            $this->saveTemplate($filename, $localeProperties, '', '', '', $prefix);
+            if(!$this->saveTemplate($filename, $localeProperties, '', '', '', $prefix))
+                return 'Unable to save Locallang: ' . $prefix . ($prefix?'.':'') . 'locallang_db.xlf';
         }
 
         return true;

@@ -26,6 +26,7 @@ $EM_CONF[$_EXTKEY] = array (
     'depends' => 
     array (
       'typo3' => '7.6.0-9.5.99',
+        'php' => '5.6.0-7.2.99'
     ),
     'conflicts' => 
     array (
@@ -35,6 +36,6 @@ $EM_CONF[$_EXTKEY] = array (
     ),
   ),
   'clearcacheonload' => false,
-  'author_company' => NULL,
+  'author_company' => 'SICOR'
 );
 

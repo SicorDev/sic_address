@@ -24,13 +24,13 @@
             </f:for>
             <script>
                 var bCheckAll = '{checkall}' == 'checkall';
-                function fillCheckBoxes () <f:format.raw>{</f:format.raw>
+                function fillCheckBoxes () {
                     var cats = jQuery('#sic_address_category').val().split(',');
-                    for(var i=0; i<cats.length; i++) <f:format.raw>{</f:format.raw>
+                    for(var i=0; i<cats.length; i++) {
                         jQuery("input[value='" + cats[i] + "']" ).prop('checked', true);
-                    <f:format.raw>}</f:format.raw>
+                    }
                     jQuery('#checkall').prop('checked', bCheckAll);
-                <f:format.raw>}</f:format.raw>
+                }
             </script>
         </f:case>
         <f:case value="buttons">

@@ -332,13 +332,7 @@ SQL;
 
         if(!empty($GLOBALS['TCA']['tt_address']['columns'])) {
             foreach($GLOBALS['TCA']['tt_address']['columns'] as $field=>$config) {
-                if(
-                    !isset($GLOBALS['TCA']['tt_content']['columns'][$field])
-                    &&
-                    !isset($GLOBALS['TCA']['pages']['columns'][$field])
-                    ) {
-                        $fields[] = $field;
-                }
+                $fields[] = $field;
             }
         }
 

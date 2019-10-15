@@ -258,6 +258,12 @@
 			<trans-unit id="error_field_already_exists">
 				<source>Field already exists! Please choose another unique name.</source>
 			</trans-unit>
+			<trans-unit id="help_tcaOverride">
+				<source>Put your own custom TCA config here.</source>
+			</trans-unit>
+			<trans-unit id="help_tcaSettings">
+				<source>List of items for "Select" and "Checklist" property.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

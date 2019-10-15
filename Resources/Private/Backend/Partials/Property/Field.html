@@ -26,7 +26,8 @@
                             <f:else>
                                 <f:if condition="{type} == 'textarea'">
                                     <f:then>
-                                        <f:form.textarea class="form-control t3js-clearable hasDefaultValue t3js-charcounter-initialized" property="{label}" name="{label}" value="{value}" />
+                                        <f:form.textarea placeholder="{f:render(section:'placeholder',arguments:'{_all}')}" class="form-control t3js-clearable hasDefaultValue t3js-charcounter-initialized" property="{label}" name="{label}" value="{value}" rows="5" />
+                                        <code>{f:render(section:'help',arguments:'{_all}')}</code>
                                     </f:then>
                                     <f:else>
                                         <f:if condition="{type} == 'select'">
@@ -88,4 +89,27 @@
             </div>
         </f:if>
     </f:for>
+</f:spaceless></f:section>
+
+<f:section name="placeholder"><f:spaceless>
+    <f:if condition="{label} == 'tcaOverride'">
+array(
+    'type' => 'inline',
+    ...
+)
+    </f:if>
+    <f:if condition="{label} == 'settings'">
+Item 1
+Item 2
+Item 3
+Item 4
+    </f:if>
+</f:spaceless></f:section>
+<f:section name="help"><f:spaceless>
+    <f:if condition="{label} == 'tcaOverride'">
+        <f:translate key="help_tcaOverride" />
+    </f:if>
+    <f:if condition="{label} == 'settings'">
+        <f:translate key="help_tcaSettings" />
+    </f:if>
 </f:spaceless></f:section>

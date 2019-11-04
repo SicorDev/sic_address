@@ -552,6 +552,17 @@ class AddressController extends AbstractController
 
         $this->view->assign('address', $address);
         $this->view->assign('listPageUid', $listPageUid);
+
+        if($this->request->hasArgument('vcard') && $this->request->getArgument('vcard')) {
+            $this->request->setFormat('vcf');
+            header('Content-type: text/vcard');
+            $filename = $this->request->hasArgument('filename') ? $this->request->getArgument('filename') : '';
+            if(empty($filename)) {
+                $filename = method_exists($address,'getName') ? $address->getName() : $address->getUid();
+            }
+            header('Content-Disposition: attachment; filename="' . $filename . '.vcf"');
+            die($this->view->render());
+        }
     }
 
     /**

@@ -1,0 +1,53 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}BEGIN:VCARD
+VERSION:4.0
+N:{address.lastName};{address.firstName};{address.middleName};{address.title};{f:render(section:'gender',arguments:'{_all}')}
+FN:{f:render(section:'gender',arguments:'{_all}')} {address.firstName} {address.middleName} {address.lastName} {address.title}
+GENDER:{address.gender}
+ORG:{address.company}
+ROLE:{address.position}
+TITLE:{address.department}
+BDAY: <f:format.date format="Y-m-d" date="{address.birthday}" /><f:spaceless>
+{f:render(section:'categories',arguments:'{_all}')}
+{f:render(section:'images',arguments:'{_all}')}</f:spaceless>
+TEL;TYPE=work,voice;VALUE=uri:{address.phone}
+TEL;TYPE=work,cell;VALUE=uri:{address.mobile}
+TEL;TYPE=work,fax;VALUE=uri:{address.fax}
+ADR;TYPE=work;LABEL="{address.address}"
+ :{address.building};{address.room};{address.address};{address.city};{address.region};{address.zip};{address.country}
+EMAIL: {address.email}
+URL: <f:uri.external uri="{address.www}" />
+GEO:geo: {address.longitude}\,{address.latitude}
+NOTE: {address.description}
+SOURCE: {f:render(section:'source',arguments:'{_all}')}
+{f:render(section:'social',arguments:'{_all}')}
+REV:<f:format.date format="Ymd" date="{address.crdate}" />T<f:format.date format="His" date="{address.crdate}" />Z
+END:VCARD
+
+<f:section name="categories"><f:spaceless>
+CATEGORIES: <f:for each="{address.categories}" as="category" iteration="iter"><f:spaceless>
+<f:if condition="{iter.index}">,</f:if>{category.title}
+</f:spaceless></f:for>
+</f:spaceless></f:section>
+
+<f:section name="gender"><f:spaceless>
+    <f:if condition="{address.gender} != 'm'">
+    <f:then>Frau</f:then>
+    <f:else>Herr</f:else>
+    </f:if>
+</f:spaceless></f:section>
+
+<f:section name="images"><f:spaceless>
+<f:for each="{address.image}" as="image">
+PHOTO;MEDIATYPE=<sic:mimeType file="{f:uri.image(image:'{image}')}" />:<f:uri.image image="{image}" absolute="true" /></f:for>
+</f:spaceless></f:section>
+
+<f:section name="source"><f:spaceless>
+<f:uri.action action="show" additionalParams="{type:24853078}" absolute="true" arguments="{vcard:1,address:address}" />
+</f:spaceless></f:section>
+
+<f:section name="social"><f:spaceless>
+X-SKYPE: {address.skype}
+X-TWITTER: {address.twitter}
+X-LINKEDIN: {address.linkedin}
+X-FACEBOOK: {address.facebook}
+</f:spaceless></f:section>

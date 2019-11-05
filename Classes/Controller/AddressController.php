@@ -554,14 +554,28 @@ class AddressController extends AbstractController
         $this->view->assign('listPageUid', $listPageUid);
 
         if($this->request->hasArgument('vcard') && $this->request->getArgument('vcard')) {
+            $description = $address->getDescription();
+            $description = strip_tags($description);
+            $description = \html_entity_decode($description);
+            $description = \str_replace(
+                array(';',"\r","\n"),
+                array('\;','','\n'),
+                $description
+            );
+            $address->setDescription($description);
+            $this->view->assign('address', $address);
+
             $this->request->setFormat('vcf');
+            $this->view->setControllerContext($this->getControllerContext());
             header('Content-type: text/vcard');
+
             $filename = $this->request->hasArgument('filename') ? $this->request->getArgument('filename') : '';
             if(empty($filename)) {
                 $filename = method_exists($address,'getName') ? $address->getName() : $address->getUid();
             }
             header('Content-Disposition: attachment; filename="' . $filename . '.vcf"');
-            die($this->view->render());
+
+            die ($this->view->render());
         }
     }
 

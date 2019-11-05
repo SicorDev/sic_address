@@ -6,7 +6,8 @@ GENDER:{address.gender}
 ORG:{address.company}
 ROLE:{address.position}
 TITLE:{address.department}
-BDAY: <f:format.date format="Y-m-d" date="{address.birthday}" /><f:spaceless>
+BDAY:<f:if condition="{address.birthday}"><f:format.date format="Y-m-d" date="{address.birthday}" /></f:if>
+<f:spaceless>
 {f:render(section:'categories',arguments:'{_all}')}
 {f:render(section:'images',arguments:'{_all}')}</f:spaceless>
 TEL;TYPE=work,voice;VALUE=uri:{address.phone}
@@ -14,11 +15,11 @@ TEL;TYPE=work,cell;VALUE=uri:{address.mobile}
 TEL;TYPE=work,fax;VALUE=uri:{address.fax}
 ADR;TYPE=work;LABEL="{address.address}"
  :{address.building};{address.room};{address.address};{address.city};{address.region};{address.zip};{address.country}
-EMAIL: {address.email}
-URL: <f:uri.external uri="{address.www}" />
+EMAIL:{address.email}
+URL:<f:uri.external uri="{address.www}" />
 GEO:geo: {address.longitude}\,{address.latitude}
-NOTE: {address.description}
-SOURCE: {f:render(section:'source',arguments:'{_all}')}
+NOTE:{address.description}
+SOURCE:{f:render(section:'source',arguments:'{_all}')}
 {f:render(section:'social',arguments:'{_all}')}
 REV:<f:format.date format="Ymd" date="{address.crdate}" />T<f:format.date format="His" date="{address.crdate}" />Z
 END:VCARD

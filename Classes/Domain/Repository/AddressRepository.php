@@ -215,13 +215,13 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $filterField = substr($filterField, 0, strpos($filterField, '.'));
 
             $constraints[] = $query->contains($filterField, $filterValue);
-        }        
+        }
 
         // Localization constraint
         if(empty($ttAddressMapping)) {
             $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
             $constraints[] = $query->in('sysLanguageUid', array(-1,$currentLanguageUid));
-        }            
+        }
 
         if(count($constraints) < 1) {
             return $this->findAll();

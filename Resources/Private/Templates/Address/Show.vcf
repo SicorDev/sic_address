@@ -1,11 +1,11 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}BEGIN:VCARD
 VERSION:4.0
-N:{address.lastName};{address.firstName};{address.middleName};{address.title};{f:render(section:'gender',arguments:'{_all}')}
-FN:{f:render(section:'gender',arguments:'{_all}')} {address.firstName} {address.middleName} {address.lastName} {address.title}
+N;CHARSET={charset}:{address.lastName};{address.firstName};{address.middleName};{address.title};{f:render(section:'gender',arguments:'{_all}')}
+FN;CHARSET={charset}:{f:render(section:'gender',arguments:'{_all}')} {address.firstName} {address.middleName} {address.lastName} {address.title}
 GENDER:{address.gender}
-ORG:{address.company}
-ROLE:{address.position}
-TITLE:{address.department}
+ORG;CHARSET={charset}:{address.company}
+ROLE;CHARSET={charset}:{address.position}
+TITLE;CHARSET={charset}:{address.department}
 BDAY:<f:if condition="{address.birthday}"><f:format.date format="Y-m-d" date="{address.birthday}" /></f:if>
 <f:spaceless>
 {f:render(section:'categories',arguments:'{_all}')}
@@ -13,19 +13,19 @@ BDAY:<f:if condition="{address.birthday}"><f:format.date format="Y-m-d" date="{a
 TEL;TYPE=work,voice;VALUE=uri:{address.phone}
 TEL;TYPE=work,cell;VALUE=uri:{address.mobile}
 TEL;TYPE=work,fax;VALUE=uri:{address.fax}
-ADR;TYPE=work;LABEL="{address.address}"
+ADR;TYPE=work;CHARSET={charset};LABEL="{address.address}"
  :{address.building};{address.room};{address.address};{address.city};{address.region};{address.zip};{address.country}
 EMAIL:{address.email}
 URL:<f:uri.external uri="{address.www}" />
 GEO:geo: {address.longitude}\,{address.latitude}
-NOTE:{address.description}
+NOTE;CHARSET={charset}:{address.description}
 SOURCE:{f:render(section:'source',arguments:'{_all}')}
 {f:render(section:'social',arguments:'{_all}')}
 REV:<f:format.date format="Ymd" date="{address.crdate}" />T<f:format.date format="His" date="{address.crdate}" />Z
 END:VCARD
 
 <f:section name="categories"><f:spaceless>
-CATEGORIES: <f:for each="{address.categories}" as="category" iteration="iter"><f:spaceless>
+CATEGORIES;CHARSET={charset}:<f:for each="{address.categories}" as="category" iteration="iter"><f:spaceless>
 <f:if condition="{iter.index}">,</f:if>{category.title}
 </f:spaceless></f:for>
 </f:spaceless></f:section>

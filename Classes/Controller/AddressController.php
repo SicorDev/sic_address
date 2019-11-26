@@ -554,6 +554,8 @@ class AddressController extends AbstractController
         $this->view->assign('listPageUid', $listPageUid);
 
         if($this->request->hasArgument('vcard') && $this->request->getArgument('vcard')) {
+            $this->view->assign('charset', \strtolower(mb_internal_encoding()));
+
             $description = $address->getDescription();
             $description = strip_tags($description);
             $description = \html_entity_decode($description);

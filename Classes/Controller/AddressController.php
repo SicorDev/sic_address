@@ -298,7 +298,7 @@ class AddressController extends AbstractController
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
         $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
         $distanceValue = $this->request->hasArgument('distance') ? $this->request->getArgument('distance') : '';
-        $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
+        $queryvalue = $this->request->hasArgument('query') ? trim($this->request->getArgument('query')) : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
 
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);

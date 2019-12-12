@@ -49,7 +49,7 @@ class AddressController extends AbstractController
      * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
      * @inject
      */
-    protected $contentReposirory = NULL;
+    protected $contentRepository = NULL;
 
     /**
      * categoryRepository
@@ -438,7 +438,7 @@ class AddressController extends AbstractController
         $this->displayCategoryList = null;
         $this->searchCategoryList = null;
 
-        $ce = $this->contentReposirory->findByUid($uid);
+        $ce = $this->contentRepository->findByUid($uid);
         $categories = $ce->getCategoryUids();
         $count = count($categories);
 

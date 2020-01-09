@@ -538,6 +538,19 @@ class AddressController extends AbstractController
             if(!empty($this->settings['singleTtAddress'])) {
                 $uid = $this->settings['singleTtAddress'];
             }
+            $addresses = array();
+            foreach(explode(',', $uid) as $id) {
+                if(empty($id)) continue;
+                $id = abs($id);
+                $item = $this->addressRepository->findByUid($id);
+                if($item) $addresses[] = $item;
+            }
+            if(count($addresses) > 1) {
+                $this->request->setControllerActionName('showMultiple');
+                $this->view->setControllerContext($this->getControllerContext());
+                $this->view->assign('addresses', $addresses);
+                die($this->view->render());
+            }
             $address = $this->addressRepository->findByUid($uid);
         }
 

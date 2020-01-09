@@ -22,7 +22,7 @@
 				<target>Aktiviert die Standard-Sortierung im Backend (Feld: sorting in DB).</target>
 			</trans-unit>
 			<trans-unit id="basic_template_sets">
-				<target>Template-Auswahl: Bitte ein vorgefertigtes Template für das Frontend auswählen.</target>
+				<target>Template-Auswahl: Bitte ein vorgefertigtes Template für das Frontend auswählen. Das Template "auto" generiert automatisch ein Template mit allen erstellten Feldern.</target>
 			</trans-unit>			
 			<trans-unit id="basic_doublet_finder">
 				<target>Dubletten: Aktiviert das Backed-Modul für das Auffinden von Datensatz-Dubletten.</target>

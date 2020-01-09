@@ -551,6 +551,7 @@ class AddressController extends AbstractController
                 $this->view->assign('addresses', $addresses);
                 die($this->view->render());
             }
+
             $address = $this->addressRepository->findByUid($uid);
         }
 
@@ -644,6 +645,8 @@ class AddressController extends AbstractController
             case 'obgdir': $template = 'OBGList.html'; break;
             case 'sachon': $template = 'SachonList.html'; break;
             case 'ualdir': $template = 'UALList.html'; break;
+            case 'auto': $template = 'AutoList.html'; break;
+
         }
         if (method_exists($this->view, 'setTemplate')) {
             // TYPO3 8 specific

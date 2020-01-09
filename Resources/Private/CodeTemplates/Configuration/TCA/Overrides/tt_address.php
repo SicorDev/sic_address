@@ -1,4 +1,4 @@
-<?php
+<?php // Auto generated on '{now}'! Do NOT edit !!!
 if(!empty($GLOBALS['TCA']['tt_address'])) {
 
     // Add additional columns to tt_address TCA

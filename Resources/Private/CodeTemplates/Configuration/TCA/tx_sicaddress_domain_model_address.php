@@ -1,4 +1,4 @@
-<?php
+<?php // Auto generated on '{now}'! Do NOT edit !!!
 
 return array(
     'ctrl' => array(

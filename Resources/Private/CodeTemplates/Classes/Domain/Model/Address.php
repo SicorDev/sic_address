@@ -1,4 +1,4 @@
-<?php
+<?php // Auto generated on '{now}'! Do NOT edit !!!
 namespace SICOR\SicAddress\Domain\Model;
 {namespace sic=SICOR\SicAddress\ViewHelpers}
 /***************************************************************

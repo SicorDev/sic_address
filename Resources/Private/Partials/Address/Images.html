@@ -3,16 +3,27 @@
         <f:if condition="{address.clickenlarge}">
             <f:then>
                 <a href="{image.originalResource.publicUrl}" class="lightbox">
-                    <f:image treatIdAsReference="1" src="{image.uid}"
-                             width="{f:if(condition:'{imageWidth}',then:'{imageWidth}',else:'120c')}"
-                             height="{f:if(condition:'{imageHeight}',then:'{imageHeight}',else:'')}" />
+                    <f:render section="image" arguments="{_all}" />
                 </a>
             </f:then>
             <f:else>
-                <f:image treatIdAsReference="1" src="{image.uid}"
-                         width="{f:if(condition:'{imageWidth} != 0',then:'{imageWidth}',else:'120c')}"
-                         height="{f:if(condition:'{imageHeight} !=0',then:'{imageHeight}',else:'')}" />
+                <f:if condition="{settings.clickenlarge}">
+                    <f:then>
+                        <a href="{image.originalResource.publicUrl}" class="lightbox">
+                            <f:render section="image" arguments="{_all}" />
+                        </a>
+                    </f:then>
+                    <f:else>
+                        <f:render section="image" arguments="{_all}" />
+                    </f:else>
+                </f:if>
             </f:else>
         </f:if>
     </f:for>
 </f:if>
+
+<f:section name="image">
+    <f:image image="{image}"
+             width="{f:if(condition:'{imageWidth}',then:'{imageWidth}',else:'120c')}"
+             height="{f:if(condition:'{imageHeight}',then:'{imageHeight}',else:'')}" />
+</f:section>

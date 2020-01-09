@@ -243,6 +243,8 @@
 			<trans-unit id="label_ignore_demands">
 				<source>Ignore demands</source>
 			</trans-unit>
+			<trans-unit id="label_clickenlarge">
+				<source>Click on images to enlarge</source>
 			</trans-unit>
 			<trans-unit id="internal">
 				<source>internal</source>

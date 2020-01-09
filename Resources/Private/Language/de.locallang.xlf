@@ -243,6 +243,9 @@
 			<trans-unit id="label_ignore_demands">
 				<target>Ignoriere Suchparameter</target>
 			</trans-unit>
+			<trans-unit id="label_clickenlarge">
+				<target>Bilder bei Klick vergrössern</target>
+			</trans-unit>
 			<trans-unit id="internal">
 				<target>intern</target>
 			</trans-unit>

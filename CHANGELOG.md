@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2020-01-09
+
+### Added
+- auto generation of fluid partial for address; based on given properties
+  > this partial contains all your configured properties. You can easily copy it to fileadmin and customize it there.
+
+  > it's NOT meant to be used on-the-fly in production mode !
+
+- added "auto generated" comment to all generated files, including datetime of last generation and a warning.
+
+- added logic for activation of default ordering for address records in backend
+  > default ordering was used in frontend already, if no ordering field was choosen in plugin
+
+- added "clickenlarge" logic to plugin, too.
+
+- added logic to show multiple address records in detail view
+
+- [Microdata](https://www.w3.org/TR/microdata/)/semantics added to Show/Multiple template.
+  > itemscope and itemprop
+
+### Changed
+- moved inline condition for property panel class to own section
+- did some code styling
+- translated "Kategorien" in Show/Multiple template
+
+### Fixed
+- merged pull requests from [Franz Holzinger](https://github.com/franzholz)
+  > tt_address telephone is phone [#31](https://github.com/SicorDev/sic_address/pull/31)
+
+  > remove leading and trailing blanks [#32](https://github.com/SicorDev/sic_address/pull/32)
+
+  > misspelling contentReposirory [#34](https://github.com/SicorDev/sic_address/pull/34)
+
+- fixed translation for "ignore demands" option in plugin
+
 ## [2.2.1] - 2019-11-26
 
 ### Fixed

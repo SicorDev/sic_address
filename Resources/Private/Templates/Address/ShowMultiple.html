@@ -8,7 +8,8 @@
         <dl class="vcard">
             <dd class="vcard">
                 <f:if condition="{address.categories}">
-                    Kategorien:<br />
+                    <f:translate key="export.categories" />:
+                    <br />
                     <ul>
                         <f:for each="{address.categories}" as="category">
                             <li>{category.title}</li>

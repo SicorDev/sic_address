@@ -18,6 +18,9 @@
 			<trans-unit id="basic_tt_address_mapping">
 				<target>tt_address: Aktiviert die Nutzung von tt_address als Unterbau.</target>
 			</trans-unit>
+			<trans-unit id="basic_custom_ordering">
+				<target>Aktiviert die Standard-Sortierung im Backend (Feld: sorting in DB).</target>
+			</trans-unit>
 			<trans-unit id="basic_template_sets">
 				<target>Template-Auswahl: Bitte ein vorgefertigtes Template für das Frontend auswählen.</target>
 			</trans-unit>			

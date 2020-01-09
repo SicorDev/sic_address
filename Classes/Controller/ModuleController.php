@@ -114,32 +114,32 @@ class ModuleController extends AbstractController
         $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
-        if(!empty($this->extensionConfiguration['ttAddressMapping'])) {
-            if(empty($GLOBALS['TCA']['tt_address'])) {
+        if (!empty($this->extensionConfiguration['ttAddressMapping'])) {
+            if (empty($GLOBALS['TCA']['tt_address'])) {
                 $this->extensionConfiguration['ttAddressMapping'] = null;
             }
         }
 
         $this->external = $this->request->hasArgument('external') ? abs($this->request->getArgument('external')) : 0;
-        if(
+        if (
             $this->request->getControllerActionName() === 'list'
             ||
             empty($this->extensionConfiguration['ttAddressMapping'])
-            ) {
+        ) {
             $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         } else {
             $this->configuration = $this->domainPropertyRepository->findAll();
         }
 
         foreach ($this->configuration as $key => $languages)
-        foreach ($languages as $language => $value) {
-            // Initialize Type Objects
-            $type = $this->configuration[$key][$language]->getType();
-            $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
+            foreach ($languages as $language => $value) {
+                // Initialize Type Objects
+                $type = $this->configuration[$key][$language]->getType();
+                $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
 
-            $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-            $this->configuration[$key][$language]->setType($objectManager->get($class));
-        }
+                $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+                $this->configuration[$key][$language]->setType($objectManager->get($class));
+            }
 
         $this->setBackendModuleTemplates();
 
@@ -169,7 +169,8 @@ class ModuleController extends AbstractController
      */
     public function listAction()
     {
-        if($this->extensionConfiguration['ttAddressMapping'] === null) {
+
+        if ($this->extensionConfiguration['ttAddressMapping'] === null) {
             $this->addFlashMessage(
                 $this->translate('flash_tt_address_missing'),
                 $messageTitle = $this->translate('flash_warning'),
@@ -188,14 +189,14 @@ class ModuleController extends AbstractController
         if ($this->request->hasArgument('errorMessages')) {
             $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));
         }
-        $this->view->assign('ttAddressMapping',$this->extensionConfiguration['ttAddressMapping']);
+        $this->view->assign('ttAddressMapping', $this->extensionConfiguration['ttAddressMapping']);
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
         $this->view->assign("address", $this->addressRepository->findAll());
         $this->view->assign('external', $this->external);
         $this->view->assign("settings", $this->extensionConfiguration);
         $types = array(0 => $this->translate('internal'));
-        if($this->extensionConfiguration['ttAddressMapping']) {
+        if ($this->extensionConfiguration['ttAddressMapping']) {
             $types[1] = $this->translate('external');
         }
         $this->view->assign('types', $types);
@@ -214,10 +215,10 @@ class ModuleController extends AbstractController
         // Model
         $domainProperties = array();
         foreach ($this->configuration as $key => $value) {
-            if(is_array($value)) $value = $value[0];
+            if (is_array($value)) $value = $value[0];
 
-            if($value->getHidden()) continue;
-            if($value->_getProperty('_languageUid')) continue;
+            if ($value->getHidden()) continue;
+            if ($value->_getProperty('_languageUid')) continue;
 
             $title = GeneralUtility::underscoredToLowerCamelCase($value->getTitle());
             $value->getType()->setClassName($title);
@@ -276,7 +277,7 @@ class ModuleController extends AbstractController
 
         // Language
         $generationResults = $this->saveLanguageTemplates('Resources/Private/Language/###prefix###locallang_db.xlf', $this->configuration);
-        if($generationResults !== true)
+        if ($generationResults !== true)
             $errorMessages[] = $generationResults;
 
         $this->updateExtension();
@@ -302,10 +303,10 @@ class ModuleController extends AbstractController
     {
         $sql = array();
         foreach ($this->configuration as $key => $value) {
-            if(is_array($value)) $value = $value[0];
+            if (is_array($value)) $value = $value[0];
 
             if (!$value->getHidden() && !$value->isExternal()) {
-                $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`'.$value->getTitle().'`');
+                $sql[$key]["definition"] = $value->getType()->getSQLDefinition('`' . $value->getTitle() . '`');
                 $sql[$key]["title"] = $value->getTitle();
                 $sql[$key]["type"] = $value->getType($value->getTitle());
             }
@@ -322,9 +323,9 @@ class ModuleController extends AbstractController
     {
         $tca = array();
         foreach ($this->configuration as $key => $value) {
-            if(is_array($value)) $value = $value[0];
-            
-            if(!$value->getHidden()) $tca[] = $this->getSingleTCAConfiguration($value);
+            if (is_array($value)) $value = $value[0];
+
+            if (!$value->getHidden()) $tca[] = $this->getSingleTCAConfiguration($value);
         }
         return $tca;
     }
@@ -412,21 +413,22 @@ class ModuleController extends AbstractController
      * @param array $properties
      * @return boolean|string
      */
-    private function saveLanguageTemplates($filename, $properties) {
+    private function saveLanguageTemplates($filename, $properties)
+    {
         $locales = array();
 
-        foreach($properties as $key=>$l) {
-            foreach($l as $languageUid=>$property) {
+        foreach ($properties as $key => $l) {
+            foreach ($l as $languageUid => $property) {
                 $locales[$languageUid][$key] = $property;
             }
         }
 
         $languages = $this->domainPropertyRepository->getSysLanguages();
 
-        foreach($locales as $languageUid=>$localeProperties) {
+        foreach ($locales as $languageUid => $localeProperties) {
             $prefix = $languageUid ? $languages[$languageUid]['iso'] : '';
-            if(!$this->saveTemplate($filename, $localeProperties, '', '', '', $prefix))
-                return 'Unable to save Locallang: ' . $prefix . ($prefix?'.':'') . 'locallang_db.xlf';
+            if (!$this->saveTemplate($filename, $localeProperties, '', '', '', $prefix))
+                return 'Unable to save Locallang: ' . $prefix . ($prefix ? '.' : '') . 'locallang_db.xlf';
         }
 
         return true;
@@ -464,7 +466,8 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function doubletsAction() {
+    public function doubletsAction()
+    {
         $args = $this->request->getArguments();
         $properties = $this->getRelevantOnly($this->domainPropertyRepository->findAll());
         $letters = $fields = [];
@@ -472,22 +475,22 @@ class ModuleController extends AbstractController
             'internal' => 1,
             'external' => 0
         ];
-        if(!empty($args['sources'])) {
+        if (!empty($args['sources'])) {
             $sources = $args['sources'];
         }
-        if(!empty($args['fields'])) {
+        if (!empty($args['fields'])) {
             $fields = $args['fields'];
         }
 
-        foreach($properties as $property) {
-            if(is_array($property)) $property = $property[0];
+        foreach ($properties as $property) {
+            if (is_array($property)) $property = $property[0];
 
             $source = $property->getExternal() ? 'external' : 'internal';
             $title = trim($property->getTitle());
             $tcaLabel = trim($property->getTcaLabel());
-            if($title !== $tcaLabel) $tcaLabel .= ' (' . $title . ')';
+            if ($title !== $tcaLabel) $tcaLabel .= ' (' . $title . ')';
             $letter = strtoupper($title[0]);
-            if($sources[$source]) {
+            if ($sources[$source]) {
                 $letters[$letter][$source][$title] = [
                     'title' => $title,
                     'label' => $tcaLabel,
@@ -504,7 +507,7 @@ class ModuleController extends AbstractController
 
         $pages = [];
         $searched = false;
-        if(!empty($fields)) {
+        if (!empty($fields)) {
             $searched = array_sum($fields);
             $pages = $this->addressRepository->findDoublets($fields);
         }
@@ -517,7 +520,8 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function ajaxDoubletsAction() {
+    public function ajaxDoubletsAction()
+    {
         $properties = $this->domainPropertyRepository->findAll();
         $args = $this->request->getArguments();
         $addresses = $this->addressRepository->findByArgs($args);
@@ -531,13 +535,14 @@ class ModuleController extends AbstractController
      * @param array $properties
      * @return void
      */
-    protected function getRelevantOnly($properties) {
+    protected function getRelevantOnly($properties)
+    {
         $relevantProperties = array();
 
-        foreach($properties as $property) {
-            if(is_array($property)) $property = $property[0];
+        foreach ($properties as $property) {
+            if (is_array($property)) $property = $property[0];
 
-            if($this->addressRepository->isRelevant($property->getTitle())) {
+            if ($this->addressRepository->isRelevant($property->getTitle())) {
                 $relevantProperties[] = $property;
             }
         }
@@ -551,7 +556,8 @@ class ModuleController extends AbstractController
      * @param \SICOR\SicAddress\Domain\Model\Address $address
      * @return void
      */
-    public function ajaxDeleteDoubletAction($address) {
+    public function ajaxDeleteDoubletAction($address)
+    {
         $this->addressRepository->remove($address);
         return json_encode(array());
     }
@@ -561,20 +567,21 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function switchDatasetsAction() {
+    public function switchDatasetsAction()
+    {
         $sourceUid = $this->request->hasArgument('source') ? $this->request->getArgument('source') : 0;
         $targetUid = $this->request->hasArgument('target') ? $this->request->getArgument('target') : 0;
         $property = $this->request->hasArgument('property') ? $this->request->getArgument('property') : 0;
         $property = GeneralUtility::underscoredToUpperCamelCase($property);
         $propertyGetter = 'get' . $property;
         $propertySetter = 'set' . $property;
-        $sourceDataset = $this->addressRepository->findByUid( $sourceUid );
-        $targetDataset = $this->addressRepository->findByUid( $targetUid );
+        $sourceDataset = $this->addressRepository->findByUid($sourceUid);
+        $targetDataset = $this->addressRepository->findByUid($targetUid);
 
-        if( $sourceDataset && method_exists($sourceDataset, $propertyGetter)) {
+        if ($sourceDataset && method_exists($sourceDataset, $propertyGetter)) {
             $value = $sourceDataset->$propertyGetter();
 
-            if( $targetDataset && method_exists($targetDataset, $propertySetter) ) {
+            if ($targetDataset && method_exists($targetDataset, $propertySetter)) {
                 $targetDataset->$propertySetter($value);
                 $this->addressRepository->update($targetDataset);
             }

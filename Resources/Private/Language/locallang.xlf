@@ -241,7 +241,8 @@
 				<source>No doublets found!</source>
 			</trans-unit>
 			<trans-unit id="label_ignore_demands">
-				<source>Ignoriere Suchparameter</source>
+				<source>Ignore demands</source>
+			</trans-unit>
 			</trans-unit>
 			<trans-unit id="internal">
 				<source>internal</source>

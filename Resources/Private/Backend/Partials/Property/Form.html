@@ -5,7 +5,7 @@
     <f:form.hidden class="sorting" property="sorting" value="{property.sorting}" />
     <f:form.hidden id="hidden{property.uid}" property="hidden" value="{property.hidden}" />
 
-    <div class="panel panel-{f:if(condition:'{property.isListLabel}',then:'warning',else:'default')} panel-condensed panel-collapsed property" data-uid='{property.uid}'>
+    <div class="panel {f:render(section:'propertyPanel',arguments:'{_all}')} panel-condensed panel-collapsed property" data-uid='{property.uid}'>
         <div class="panel-heading" data-toggle="formengine-inline" data-expandsingle="0">
             <div class="form-irre-header">
                 <div class="form-irre-header-cell form-irre-header-icon">
@@ -84,3 +84,15 @@
     </div>
 
 </f:form>
+
+<f:section name="propertyPanel">
+<f:if condition="{property.hidden}">
+    <f:then>panel-danger</f:then>
+    <f:else>
+        <f:if condition="{property.isListLabel}">
+            <f:then>panel-warning</f:then>
+            <f:else>panel-default</f:else>
+        </f:if>
+    </f:else>
+</f:if>
+</f:section>

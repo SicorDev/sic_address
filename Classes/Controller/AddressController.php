@@ -90,9 +90,10 @@ class AddressController extends AbstractController
 
         // Init sorting
         $field = $this->settings['sortField'];
+        $direction = $this->settings['sortDirection'];
         if ($field && !($field === "none")) {
             $this->addressRepository->setDefaultOrderings(array(
-                $field => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+                $field => $direction !== 'desc' ? \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING : \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
             ));
         }
 

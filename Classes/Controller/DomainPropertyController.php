@@ -221,7 +221,7 @@ class DomainPropertyController extends AbstractController
      */
     public function getFlexStringFields($config)
     {
-        return $this->getFlexFields($config, "string");
+        return $this->getFlexFields($config, "string,integer");
     }
 
     /**
@@ -246,6 +246,7 @@ class DomainPropertyController extends AbstractController
 
         $optionList = array();
         $optionList[0] = array(0 => $this->translate('label_none'), 1 => 'none');
+        $optionList[1] = array(0 => 'uid', 1 => 'uid');
         foreach ($fields as $field) {
             $value = ($field["type"] == "mmtable") ? $field["title"] . ".title" : $field["title"];
             $optionList[] = array(0 => $field["tca_label"], 1 => $value);

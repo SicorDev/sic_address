@@ -96,6 +96,15 @@
 			<trans-unit id="label_sortField">
 				<target>Sortierfeld</target>
 			</trans-unit>
+			<trans-unit id="label_sortDirection">
+				<target>Sortierung</target>
+			</trans-unit>
+			<trans-unit id="label_sortDirectionAsc">
+				<target>aufsteigend</target>
+			</trans-unit>
+			<trans-unit id="label_sortDirectionDesc">
+				<target>absteigend</target>
+			</trans-unit>
 			<trans-unit id="label_filterField">
 				<target>Filterfeld</target>
 			</trans-unit>

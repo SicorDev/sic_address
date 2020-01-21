@@ -9,14 +9,7 @@ return array(
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
-        <f:if condition="{settings.customOrdering}">
-        <f:then>
         'sortby' => 'sorting',
-        </f:then>
-        <f:else>
-        'default_sortby' => '{orderbyquery}',
-        </f:else>
-        </f:if>
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',

@@ -4,9 +4,6 @@ searchFields = company
 # cat=basic/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_tt_address_mapping
 ttAddressMapping = 0
 
-# cat=basic/30; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_custom_ordering
-customOrdering = 0
-
 
 # cat=templates/10; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_export_templates
 exportRenderTemplates = EXT:sic_address/Resources/Private/Templates/Export/

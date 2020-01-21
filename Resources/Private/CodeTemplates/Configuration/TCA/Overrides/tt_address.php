@@ -48,22 +48,15 @@ if(!empty($GLOBALS['TCA']['tt_address'])) {
     $GLOBALS['TCA']['tt_address']['ctrl']['label'] = 'company';
     $GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';
 
-    <f:if condition="{settings.customOrdering}">
+
+    <f:if condition="{orderbyquery}">
         <f:then>
     $GLOBALS['TCA']['tt_address']['ctrl']['sortby'] = 'sorting';
         </f:then>
         <f:else>
-            <f:if condition="{orderbyquery}">
-            <f:then>
-    $GLOBALS['TCA']['tt_address']['ctrl']['default_sortby'] = '{orderbyquery}';
-            </f:then>
-            <f:else>
     $GLOBALS['TCA']['tt_address']['ctrl']['default_sortby'] = 'ORDER BY company';
-            </f:else>
-            </f:if>
         </f:else>
     </f:if>
-
 
     // Add company to backend search
     $GLOBALS['TCA']['tt_address']['ctrl']['searchFields'] .= ', company';

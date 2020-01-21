@@ -96,6 +96,15 @@
 			<trans-unit id="label_sortField">
 				<source>Order field</source>
 			</trans-unit>
+			<trans-unit id="label_sortDirection">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="label_sortDirectionAsc">
+				<source>ascending</source>
+			</trans-unit>
+			<trans-unit id="label_sortDirectionDesc">
+				<source>descending</source>
+			</trans-unit>
 			<trans-unit id="label_filterField">
 				<source>Filter field</source>
 			</trans-unit>

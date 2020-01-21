@@ -56,6 +56,9 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function findByTypes($types) {
         $query = $this->createQuery();
+        $query->setOrderings(array(
+            'title' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        ));
 
         if( is_array($types) ) {
             $query->matching(

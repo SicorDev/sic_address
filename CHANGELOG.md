@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2020-01-21
+
+### Added
+- dropdown for ascending and descending sorting order added to plugin
+
+### Changed
+- in the plugin, you can now choose integer fields as sorting field as well, too.
+- internal/external select changed to radio buttons
+
+### Fixed
+- brought back slider partial for UnigesList template
+
 ## [2.3.1] - 2020-01-10
 
 ### Fixed

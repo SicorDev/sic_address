@@ -13,7 +13,9 @@
     </h2>
     <f:if condition="{ttAddressMapping}">
         <f:form action="list">
-            <f:form.select name="external" options="{types}" additionalAttributes="{onchange:'this.form.submit()'}" value="{external}" />
+            <f:for each="{types}" as="type" key="value">
+                <f:form.radio name="external" value="{value}" checked="{value} == {external}" additionalAttributes="{onclick:'this.form.submit()'}" /> {type}
+            </f:for>
         </f:form>
     </f:if>
 

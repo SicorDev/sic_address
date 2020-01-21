@@ -4,36 +4,49 @@
     <f:flashMessages/>
 
     <dl class="vcard">
-        <dd class="vcard">
+        <dd class="vcard" itemscope>
             <f:if condition="{address.categories}">
-                Kategorien:<br />
+                <f:translate key="export.categories" />:
+                <br />
                 <ul>
                     <f:for each="{address.categories}" as="category">
-                        <li>{category.title}</li>
+                        <li itemprop="category">{category.title}</li>
                     </f:for>
                 </ul>
             </f:if>
             <f:render partial="Address/Images" arguments="{address:address}" />
-			<f:if condition="{address.company}">
-                <b>{address.company}</b><br /><br />
+            <f:if condition="{address.company}">
+                <b itemprop="company">{address.company}</b>
+                <br />
+                <br />
             </f:if>
             <f:if condition="{address.address}">
-                {address.address}<br>
+                <address itemprop="address">{address.address}</address>
+                <br>
             </f:if>
             <f:if condition="{address.zip}">
-                {address.zip}
+                <span itemprop="zip">{address.zip}</span>
             </f:if>
             <f:if condition="{address.city}">
-                 {address.city}<br /><br />
+                <span itemprop="city">{address.city}</span>
+                <br />
+                <br />
             </f:if>
             <f:if condition="{address.phone}">
-                Tel.:&nbsp;{address.phone}<br />
+                Tel.:&nbsp;
+                <a itemprop="tel" href="tel:{address.phone}">{address.phone}</a>
+                <br />
             </f:if>
             <f:if condition="{address.fax}">
-                Fax:&nbsp;{address.fax}<br /><br />
+                Fax:&nbsp;
+                <span itemprop="fax">{address.fax}</span>
+                <br />
+                <br />
             </f:if>
             <f:if condition="{address.email}">
-                <a href="mailto:{address.email}">{address.email}</a><br /><br />
+                <f:link.email additionalAttributes="{itemprop:'email'}" email="{address.email}" />
+                <br />
+                <br />
             </f:if>
             <f:if condition="{listPageUid}">
                 <f:then>

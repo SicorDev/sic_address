@@ -49,7 +49,7 @@ class AddressController extends AbstractController
      * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
      * @inject
      */
-    protected $contentReposirory = NULL;
+    protected $contentRepository = NULL;
 
     /**
      * categoryRepository
@@ -298,7 +298,7 @@ class AddressController extends AbstractController
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
         $this->maincategoryvalue = $this->request->hasArgument('maincategory') ? $this->request->getArgument('maincategory') : '';
         $distanceValue = $this->request->hasArgument('distance') ? $this->request->getArgument('distance') : '';
-        $queryvalue = $this->request->hasArgument('query') ? $this->request->getArgument('query') : '';
+        $queryvalue = $this->request->hasArgument('query') ? trim($this->request->getArgument('query')) : '';
         $checkall = $this->request->hasArgument('checkall') ? $this->request->getArgument('checkall') : '';
 
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
@@ -438,7 +438,7 @@ class AddressController extends AbstractController
         $this->displayCategoryList = null;
         $this->searchCategoryList = null;
 
-        $ce = $this->contentReposirory->findByUid($uid);
+        $ce = $this->contentRepository->findByUid($uid);
         $categories = $ce->getCategoryUids();
         $count = count($categories);
 
@@ -538,6 +538,20 @@ class AddressController extends AbstractController
             if(!empty($this->settings['singleTtAddress'])) {
                 $uid = $this->settings['singleTtAddress'];
             }
+            $addresses = array();
+            foreach(explode(',', $uid) as $id) {
+                if(empty($id)) continue;
+                $id = abs($id);
+                $item = $this->addressRepository->findByUid($id);
+                if($item) $addresses[] = $item;
+            }
+            if(count($addresses) > 1) {
+                $this->request->setControllerActionName('showMultiple');
+                $this->view->setControllerContext($this->getControllerContext());
+                $this->view->assign('addresses', $addresses);
+                die($this->view->render());
+            }
+
             $address = $this->addressRepository->findByUid($uid);
         }
 
@@ -631,6 +645,8 @@ class AddressController extends AbstractController
             case 'obgdir': $template = 'OBGList.html'; break;
             case 'sachon': $template = 'SachonList.html'; break;
             case 'ualdir': $template = 'UALList.html'; break;
+            case 'auto': $template = 'AutoList.html'; break;
+
         }
         if (method_exists($this->view, 'setTemplate')) {
             // TYPO3 8 specific

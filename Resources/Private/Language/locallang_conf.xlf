@@ -18,6 +18,9 @@
 			<trans-unit id="basic_tt_address_mapping">
 				<source>tt_address Mapping: Enables mapping of sic_address on tt_address</source>
 			</trans-unit>
+			<trans-unit id="basic_custom_ordering">
+				<source>Activate default ordering in backend over db field "sorting".</source>
+			</trans-unit>
 			<trans-unit id="basic_template_sets">
 				<source>TemplateSet: Choose one of the preset template sets.</source>
 			</trans-unit>			

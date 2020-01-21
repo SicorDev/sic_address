@@ -1,0 +1,13 @@
+<f:if condition="{address.image}">
+    <div class="image_slider">
+        <ul class="slides">
+            <f:for each="{address.image}" as="image">
+                <li>
+                    <a href="{image.originalResource.publicUrl}" class="lightbox">
+                        <f:image treatIdAsReference="1" src="{image.uid}" class="img-responsive"/>
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+    </div>
+</f:if>

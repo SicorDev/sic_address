@@ -82,10 +82,10 @@
 				<target>A-Z Feld</target>
 			</trans-unit>
 			<trans-unit id="label_distanceField">
-				<target>Umkreisfild</target>
+				<target>Umkreisfeld</target>
 			</trans-unit>
 			<trans-unit id="label_queryField">
-				<target>Suchfild</target>
+				<target>Suchfeld</target>
 			</trans-unit>
 			<trans-unit id="label_queryFieldOn">
 				<target>Sichtbar</target>

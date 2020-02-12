@@ -5,6 +5,7 @@
 		.listview { width: 100%;}
 		.category { margin-top: 10px; margin-bottom: 10px; }
 		.sic_address_search { margin-top: 10px; margin-bottom: 10px; }
+		.sic_address_search_button { background: #d51218; border: none; height: 26px; margin: 2px;}
 		.sorry { text-align: center; margin-top: 45px;}
 		.tx-sic-address .listview > .list.row { position: relative; }
 	</style>
@@ -46,7 +47,7 @@
 							<label>Suche</label>
 							<form>
 								<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small sic-address-input" style="font-size: 12px;" value="{queryvalue}" />
-								<f:form.button type="submit" class="tx_nicosdirectory-pi1-small sic-address-search" additionalAttributes="{onclick: 'submitQuery();'}"/>
+								<f:form.button type="submit" class="sic_address_search_button" additionalAttributes="{onclick: 'submitQuery();'}"/>
 							</form>
 						</f:if>
 					</div>

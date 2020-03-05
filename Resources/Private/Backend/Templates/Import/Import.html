@@ -1,0 +1,52 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+    <div class="import">
+        <h2><f:translate key="label_import_fields" />:</h2>
+
+        <table class="table">
+            <tr>
+                <f:for each="{properties}" as="property" iteration="iter">
+                    <f:if condition="{iter.isFirst}">
+                        <f:else>
+                            <th>;</th>
+                        </f:else>
+                    </f:if>
+                    <th>
+                        {property.title}
+                    </th>
+                </f:for>
+            </tr>
+            <f:render section="trBody" arguments="{_all}" />
+            <f:render section="trBody" arguments="{_all}" />
+            <f:render section="trBody" arguments="{_all}" />
+            <f:section name="trBody">
+            <tr>
+                <f:for each="{properties}" as="property" iteration="iter">
+                    <f:if condition="{iter.isFirst}">
+                        <f:else>
+                            <td>;</td>
+                        </f:else>
+                    </f:if>
+                    <td>
+                        ...
+                    </td>
+                </f:for>
+            </tr>
+            </f:section>
+        </table>
+
+        <f:form action="importFromFile" enctype="multipart/form-data">
+            <f:form.select options="{pids}" name="pid" prependOptionLabel="{f:translate(key:'label_storage')}" additionalAttributes="{required:'required'}" />
+            <f:for each="{pids}" as="pidTitle" key="pid">
+                <f:form.hidden name="pids[{pid}]" value="{pidTitle}" />
+            </f:for>
+            <br/>
+            <br/>
+            <f:form.upload name="file" additionalAttributes="{accept:'.csv',required:'required'}" />
+            <br/>
+            <f:form.submit class="btn btn-default" value="CSV Import" />
+        </f:form>
+
+    </div>
+</f:section>

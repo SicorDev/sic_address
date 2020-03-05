@@ -473,4 +473,23 @@ SQL;
 
         return !empty($res[0]);
     }
+
+    /**
+     * Find address storages
+     *
+     * @return array
+     */
+    public function findPids() {
+        $query = $this->createQuery();
+        $table = $query->getSource()->getSelectorName();
+
+        $sql = 'select uid,title from pages where uid in (select distinct pid from '.$table.')';
+
+        $pids = array();
+        foreach($query->statement($sql)->execute(true) as $item) {
+            $pids[$item['uid']] = $item['title'];
+        }
+
+        return $pids;
+    }
 }

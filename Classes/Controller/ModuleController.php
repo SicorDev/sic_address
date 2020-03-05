@@ -45,14 +45,6 @@ class ModuleController extends AbstractController
     protected $addressRepository = NULL;
 
     /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository

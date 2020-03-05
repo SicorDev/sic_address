@@ -12,6 +12,9 @@
 			<trans-unit id="basic_address_export">
 				<source>Address Export: Enables the backend address export module.</source>
 			</trans-unit>
+			<trans-unit id="basic_address_import">
+				<source>Address Import: Enables the backend address import module.</source>
+			</trans-unit>
 			<trans-unit id="basic_export_templates">
 				<source>Address Export Templates: Set an alternate path for export render templates</source>
 			</trans-unit>

@@ -63,6 +63,24 @@ if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressExport"]) {
     );
 }
 
+if (TYPO3_MODE === 'BE' && $extensionManagerSettings["addressImport"]) {
+    // Registers Backend Module
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'SICOR.' . $_EXTKEY,
+        'web',     // Make module a submodule of 'web'
+        'sicaddressimport',    // Submodule key
+        '',                        // Position
+        array(
+            'Import' => 'import, importFromFile',
+        ),
+        array(
+            'access' => 'user,group',
+            'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module_icon_24.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_sicaddressimport.xlf',
+        )
+    );
+}
+
 if (TYPO3_MODE === 'BE' && $extensionManagerSettings["doublets"]) {
     // Registers Backend Doublets Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(

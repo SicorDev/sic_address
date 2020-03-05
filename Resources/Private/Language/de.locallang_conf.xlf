@@ -12,6 +12,9 @@
 			<trans-unit id="basic_address_export">
 				<target>Addresen-Export: Aktiviert das Backend-Modul für den Export der Adressdaten.</target>
 			</trans-unit>
+			<trans-unit id="basic_address_import">
+				<target>Addresen-Import: Aktiviert das Backend-Modul für den Import der Adressdaten.</target>
+			</trans-unit>
 			<trans-unit id="basic_export_templates">
 				<target>Templates (Address-Export): Setzt den Pfaad zu den Export-Templates.</target>
 			</trans-unit>

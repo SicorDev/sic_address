@@ -51,6 +51,15 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $this->setDefaultQuerySettings($querySettings);
     }
 
+    public function initializeRegularObject()
+    {
+        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings->setRespectStoragePage(FALSE);
+        $querySettings->setIgnoreEnableFields(false);
+        $querySettings->setRespectSysLanguage(true);
+        $this->setDefaultQuerySettings($querySettings);
+    }
+
     /**
      * @param mixed $types
      */
@@ -140,5 +149,20 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         return $properties;
+    }
+
+    public function findAllImportable() {
+        $query = $this->createQuery();
+
+        $query->matching(
+            $query->logicalNot(
+                $query->logicalOr(
+                    $query->equals('type', 'image'),
+                    $query->equals('type', 'mmtable')
+                )
+            )
+        );
+
+        return $query->execute();
     }
 }

@@ -7,6 +7,13 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    /**
+     * domainPropertyRepository
+     *
+     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
+     * @inject
+     */
+    protected $domainPropertyRepository = NULL;
 
     /**
      * Returns translation for given key (and extension)

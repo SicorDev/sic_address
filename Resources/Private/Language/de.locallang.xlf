@@ -12,6 +12,24 @@
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
 				<target>Adressen</target>
 			</trans-unit>
+			<trans-unit id="label_storage">
+				<target>Speicher</target>
+			</trans-unit>
+			<trans-unit id="label_import_fields">
+				<target>Importierbare Felder</target>
+			</trans-unit>
+			<trans-unit id="label_import_total">
+				<target>Einträge importiert</target>
+			</trans-unit>
+			<trans-unit id="label_import_error_csv">
+				<target>CSV enthält keine gültigen Felder!</target>
+			</trans-unit>
+			<trans-unit id="label_import_error_upload">
+				<target>Upload schlug fehl!</target>
+			</trans-unit>
+			<trans-unit id="label_import_error_mime">
+				<target>Datei hat falsches Format!</target>
+			</trans-unit>
 			<trans-unit id="label_single_address">
 				<target>Adresse</target>
 			</trans-unit>

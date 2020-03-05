@@ -18,5 +18,8 @@ developerMode = 1
 # cat=modules/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_address_export
 addressExport = 0
 
+# cat=modules/20; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_address_import
+addressImport = 0
+
 # cat=modules/30; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_doublet_finder
 doublets = 0

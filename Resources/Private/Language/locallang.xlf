@@ -3,6 +3,12 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" product-name="sic_address">
 		<header/>
 		<body>
+			<trans-unit id="label_update_title">
+				<source>sic_address has been updated !</source>
+			</trans-unit>
+			<trans-unit id="label_update_message">
+				<source>Generation process must be run again!</source>
+			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
 				<source>Addresses</source>
 			</trans-unit>

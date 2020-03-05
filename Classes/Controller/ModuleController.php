@@ -285,6 +285,8 @@ class ModuleController extends AbstractController
 
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
+
+        if(empty($errorMessages)) @unlink(PATH_typo3conf . 'ext/sic_address/PLEASE_GENERATE');
     }
 
 

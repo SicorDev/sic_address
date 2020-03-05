@@ -3,6 +3,12 @@
 	<file datatype="plaintext" original="messages" date="2016-06-22T13:49:32Z" target-language="de" product-name="sic_address">
 		<header/>
 		<body>
+			<trans-unit id="label_update_title">
+				<target>sic_address wurde aktualisiert !</target>
+			</trans-unit>
+			<trans-unit id="label_update_message">
+				<target>Der Generierungsprozess muss erneut durchgeführt werden!</target>
+			</trans-unit>
 			<trans-unit id="tx_sicaddress_domain_model_address_title">
 				<target>Adressen</target>
 			</trans-unit>

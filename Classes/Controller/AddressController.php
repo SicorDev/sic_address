@@ -128,8 +128,6 @@ class AddressController extends AbstractController
      */
     public function listAction()
     {
-
-
         $this->maincategoryvalue = '';
         $defcat = $this->categoryRepository->findByUid($this->settings['categoryDefault']);
         $emptyList = $this->settings['noListStartup'];

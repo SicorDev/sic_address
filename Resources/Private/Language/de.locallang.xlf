@@ -271,7 +271,7 @@
 				<target>Feld existiert bereits! Bitte anderen, eindeutigen Namen angeben.</target>
 			</trans-unit>
 			<trans-unit id="help_tcaOverride">
-				<target>Platzieren Sie hier Ihre eigene TCA Konfiguration hier.</target>
+				<target>Platzieren Sie hier Ihre eigene TCA Konfiguration.</target>
 			</trans-unit>
 			<trans-unit id="help_tcaSettings">
 				<target>Liste von Elementen für das Select-und Checklist-Feld.</target>

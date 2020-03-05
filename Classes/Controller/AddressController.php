@@ -134,7 +134,7 @@ class AddressController extends AbstractController
         $defcat = $this->categoryRepository->findByUid($this->settings['categoryDefault']);
         $emptyList = $this->settings['noListStartup'];
 
-        $this->fillAddressList('Alle', $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
+        $this->fillAddressList($this->translate('label_all'), $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
     }
 
     /**

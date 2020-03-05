@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2020-03-05
+
+### Added
+- CSV import module
+- check if sic_address was updated and domain properties already saved
+  > in this case a flash error is shown both in backend and frontend to inform the developer to run the generate process again
+
+### Changed
+- added new css style to IrseeList template
+- did some code styling
+- removed some obsolete code
+
+### Fixed
+- fixed some translations
+- fixed some typos [#36](https://github.com/SicorDev/sic_address/pull/36)
+
 ## [2.3.2] - 2020-01-21
 
 ### Added

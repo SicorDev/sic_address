@@ -3,7 +3,7 @@
 /***************************************************************
  * Extension Manager/Repository config file for ext "sic_address".
  *
- * Auto generated 21-01-2020 10:33
+ * Auto generated 05-11-1955 08:08
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -20,7 +20,7 @@ $EM_CONF[$_EXTKEY] = array (
   'uploadfolder' => false,
   'createDirs' => '',
   'clearCacheOnLoad' => 0,
-  'version' => '2.3.2',
+  'version' => '2.4.0',
   'constraints' => 
   array (
     'depends' => 

@@ -297,7 +297,7 @@ class ModuleController extends AbstractController
 </f:comment>
 
 ';
-        $content .= '<div itemscope class="sicaddress-address" itemid="{f:uri.action(action:\'show\',arguments:\'{absolute:true,pageUid:settings.detailPagefield,address:address}\')}">' . "\n\n";
+        $content .= '<div itemscope class="sicaddress-address" itemid="{f:uri.action(action:\'show\',absolute:true,arguments:\'{pageUid:settings.detailPagefield,address:address}\')}">' . "\n\n";
         foreach ($domainProperties as $prop) {
 
             if (!$prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\BooleanType) {

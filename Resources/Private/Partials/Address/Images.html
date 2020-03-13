@@ -14,7 +14,16 @@
                         </a>
                     </f:then>
                     <f:else>
-                        <f:render section="image" arguments="{_all}" />
+                        <f:if condition="{image.originalResource.link}">
+                            <f:then>
+                                <f:link.typolink parameter="{image.originalResource.link}" target="_blank">
+                                    <f:render section="image" arguments="{_all}" />
+                                </f:link.typolink>
+                            </f:then>
+                            <f:else>
+                                <f:render section="image" arguments="{_all}" />
+                            </f:else>
+                        </f:if>
                     </f:else>
                 </f:if>
             </f:else>

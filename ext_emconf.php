@@ -20,13 +20,13 @@ $EM_CONF[$_EXTKEY] = array (
   'uploadfolder' => false,
   'createDirs' => '',
   'clearCacheOnLoad' => 0,
-  'version' => '2.4.0',
+  'version' => '2.4.1',
   'constraints' => 
   array (
     'depends' => 
     array (
       'typo3' => '7.6.0-9.5.99',
-        'php' => '5.6.0-7.2.99'
+        'php' => '5.6.0-7.4.99'
     ),
     'conflicts' => 
     array (

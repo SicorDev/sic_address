@@ -492,9 +492,10 @@ class ModuleController extends AbstractController
         $customView->assign("headline", $headline);
         $customView->assign("orderbyquery", $orderbyquery);
         $customView->assign('prefix', $prefix);
-        $customView->assign('now', date('c'));
+        $customView->assign('now', $ts=date('c'));
 
         $content = $customView->render();
+        $content = \str_replace('{now}', $ts, $content);
         $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
 
         return (boolean)file_put_contents($filename, $content);

@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   > those both contain the required Fluid Engine 2.6.4 update
 - image link logic added to image partial
-- removed a obsolete variable
+- removed an obsolete variable
 
 ### Fixed
 - fixed parameter "absolute" in an uri.action

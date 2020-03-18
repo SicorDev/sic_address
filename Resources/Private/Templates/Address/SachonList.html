@@ -63,7 +63,18 @@
 									<h4>{address.produkt.0.title}</h4>
 									<div class="address-block">
 										<div class="address-image">
-											<f:render partial="Address/Images" arguments="{address:address, imageWidth:'150c'}" />
+											<f:if condition="{address.fullwidth}">
+												<f:then>
+													<f:if condition="{address.image}">
+														<f:for each="{address.image}" as="image">
+															<img src="<f:uri.image image='{image}' />" width="100%" />
+														</f:for>
+													</f:if>
+												</f:then>
+												<f:else>
+													<f:render partial="Address/Images" arguments="{address:address, imageWidth:'150c'}" />
+												</f:else>
+											</f:if>
 										</div>
 										<strong>{address.company}</strong><br>
 										<f:format.html>{address.firmenzusatz}</f:format.html>

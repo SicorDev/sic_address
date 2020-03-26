@@ -5,6 +5,7 @@ use In2code\Powermail\ViewHelpers\String\UnderscoredToLowerCamelCaseViewHelper;
 use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
 use SICOR\SicAddress\Domain\Model\DomainObject\MmtableType;
+use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Utility\Service;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -62,6 +63,35 @@ class ImportController extends ModuleController {
      *@inject
      */
     protected $persistenceManager;
+
+
+    /**
+     * action importTTAddress
+     *
+     * @return void
+     */
+    public function importTTAddressAction()
+    {
+        if ($this->extensionConfiguration["ttAddressMapping"]) {
+            // Clear database
+            $this->domainPropertyRepository->deleteFieldDefinitions(1);
+
+            $fields = $this->addressRepository->getFields();
+            foreach ($fields as $field) {
+                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $field) === 0) {
+                    $domainProperty = new DomainProperty();
+                    $domainProperty->setTitle($field);
+                    $domainProperty->setTcaLabel($field);
+                    $domainProperty->setType(($field === 'image') ? 'image' : 'string');
+                    $domainProperty->setExternal(!Service::startsWith($field, 'tx_'));
+
+                    $this->domainPropertyRepository->add($domainProperty);
+                }
+            }
+        }
+
+        $this->redirect("list", "Module");
+    }
 
     public function importAction() {
         $this->domainPropertyRepository->initializeRegularObject();

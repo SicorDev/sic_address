@@ -4,7 +4,7 @@ if (!defined('TYPO3_MODE')) {
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'SICOR.' . $_EXTKEY,
+    'SICOR.sic_address',
     'Sicaddress',
     array(
         'Address' => 'list, show, new, create, edit, update, delete, search',
@@ -18,7 +18,7 @@ if (!defined('TYPO3_MODE')) {
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'SICOR.' . $_EXTKEY,
+    'SICOR.sic_address',
     'SicaddressVianovisExport',
     array(
         'Export' => 'exportVianovis',

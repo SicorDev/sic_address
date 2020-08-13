@@ -26,6 +26,7 @@ namespace SICOR\SicAddress\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service
@@ -35,5 +36,26 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface
     public static function startsWith($haystack, $needle) {
         // search backwards starting from haystack length characters from the end
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+    }
+
+    /**
+     * Get the current extension configuration.
+     * @return array
+     */
+    public static function getConfiguration(): array
+    {
+        static $configuration;
+        if (\is_array($configuration)) {
+            return $configuration;
+        }
+
+        // Try this as long as we support TYPO3 8:
+        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        if(!$configuration) {
+            // This works from TYPO3 9 onward:
+            $configuration = (array)GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('sic_address');
+        }
+
+        return $configuration;
     }
 }

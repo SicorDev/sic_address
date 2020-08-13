@@ -2,9 +2,6 @@
 
 namespace SICOR\SicAddress\Controller;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
-
 /***************************************************************
  *
  *  Copyright notice
@@ -29,6 +26,11 @@ use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use SICOR\SicAddress\Utility\Service;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * ModuleController
@@ -103,7 +105,7 @@ class ModuleController extends AbstractController
     public function initializeAction()
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
+        $this->extensionConfiguration = Service::getConfiguration();
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
         if (!empty($this->extensionConfiguration['ttAddressMapping'])) {

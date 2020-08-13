@@ -38,6 +38,13 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     */
     protected $categories = null;
 
+    /**
+     * Sortfield
+     *
+     * @var String
+     */
+    protected $sortField;
+
     <f:for each="{properties}" as="property">
     <f:format.htmlentitiesDecode>
     /**
@@ -134,4 +141,19 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     }
     </f:if>
     </f:for>
+
+    /**
+     * @return string
+     */
+    public function getSortField() {
+        return $this->sortField;
+    }
+
+    /**
+     * @param string $sortField
+     * @return void
+     */
+    public function setSortField($sortField) {
+        $this->sortField = $sortField;
+    }
 }

@@ -31,7 +31,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use SICOR\SicAddress\Domain\Repository\AddressRepository;
 use SICOR\SicAddress\Domain\Service\GeocodeService;
-use SICOR\SicAddress\Utility\Service;
 
 /**
  * AddGeoLocationTask
@@ -42,7 +41,7 @@ class AddGeoLocationTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     public function execute()
     {
         // Check configuration
-        $extensionManagerSettings = Service::getConfiguration();
+        $extensionManagerSettings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         if(!$extensionManagerSettings["ttAddressMapping"])
             return FALSE;
         

@@ -27,8 +27,6 @@ namespace SICOR\SicAddress\Userfuncs;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use SICOR\SicAddress\Utility\Service;
-
 class Flex
 {
     /**
@@ -42,7 +40,7 @@ class Flex
      */
     public function __construct()
     {
-        $this->extensionConfiguration = Service::getConfiguration();
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
     }
 
     /**

@@ -87,7 +87,7 @@ class AddressController extends AbstractController
     public function initializeAction()
     {
         // Init config
-        $this->extensionConfiguration = Service::getConfiguration();
+        $this->extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting

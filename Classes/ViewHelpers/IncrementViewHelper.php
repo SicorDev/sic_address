@@ -25,9 +25,8 @@ namespace SICOR\SicAddress\ViewHelpers;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-class IncrementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
+class IncrementViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 	/**
      * Initialize arguments
      */
@@ -47,4 +46,3 @@ class IncrementViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 		return $i;
 	}
 }
-?>

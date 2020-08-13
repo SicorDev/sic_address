@@ -22,8 +22,8 @@ namespace SICOR\SicAddress\ViewHelpers\Format;
  *
  * @api
  */
-class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
+class CaseViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+{
     /**
      * Initialize arguments
      */
@@ -54,6 +54,3 @@ class CaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
         }
     }
 }
-
-
-?>

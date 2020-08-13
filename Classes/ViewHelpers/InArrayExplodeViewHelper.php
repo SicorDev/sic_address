@@ -25,9 +25,8 @@ namespace SICOR\SicAddress\ViewHelpers;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-class InArrayExplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
+class InArrayExplodeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 	/**
      * Initialize arguments
      */
@@ -49,4 +48,3 @@ class InArrayExplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 		return in_array($needle, $haystack);
 	}
 }
-?>

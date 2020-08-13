@@ -25,9 +25,8 @@ namespace SICOR\SicAddress\ViewHelpers;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
-class ArrayValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
+class ArrayValueViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 	/**
      * Initialize arguments
      */
@@ -50,4 +49,3 @@ class ArrayValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		return $array[$level][$key];
 	}
 }
-?>

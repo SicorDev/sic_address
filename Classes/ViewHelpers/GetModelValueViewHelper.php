@@ -1,8 +1,6 @@
 <?php
 namespace SICOR\SicAddress\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /***************************************************************
 *  Copyright notice
 *
@@ -27,9 +25,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class GetModelValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-
+class GetModelValueViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 	/**
      * Initialize arguments
      */
@@ -55,4 +54,3 @@ class GetModelValueViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
 		return '';
 	}
 }
-?>

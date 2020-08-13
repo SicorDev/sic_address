@@ -263,8 +263,8 @@ class ModuleController extends AbstractController
         }
 
         // Table Mapping
-        if (!$this->saveTemplate('ext_typoscript_setup.txt', $this->extensionConfiguration))
-            $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.txt";
+        if (!$this->saveTemplate('ext_typoscript_setup.typoscript', $this->extensionConfiguration))
+            $errorMessages[] = "Unable to save Table Mapping: ext_typoscript_setup.typoscript";
 
         // Language
         $generationResults = $this->saveLanguageTemplates('Resources/Private/Language/###prefix###locallang_db.xlf', $this->configuration);

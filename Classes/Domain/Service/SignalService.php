@@ -52,7 +52,7 @@ class SignalService implements \TYPO3\CMS\Core\SingletonInterface
         // Create default files
         $this->saveTemplate('Classes/Domain/Model/Address.php', array());
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array());
-        $this->saveTemplate('ext_typoscript_setup.txt', array());
+        $this->saveTemplate('ext_typoscript_setup.typoscript', array());
         $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array());
 
         // 'Autoload' above classes...

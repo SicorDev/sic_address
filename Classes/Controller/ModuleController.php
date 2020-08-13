@@ -163,7 +163,6 @@ class ModuleController extends AbstractController
      */
     public function listAction()
     {
-
         if ($this->extensionConfiguration['ttAddressMapping'] === null) {
             $this->addFlashMessage(
                 $this->translate('flash_tt_address_missing'),
@@ -235,7 +234,7 @@ class ModuleController extends AbstractController
             $errorMessages[] = "Unable to save SQL: ext_tables.sql";
 
         // TCA
-        $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");
+        $extPath = ExtensionManagementUtility::extPath("sic_address");
         if ($this->extensionConfiguration["ttAddressMapping"]) {
             // tt_address override
             if (!$this->saveTemplate('Configuration/TCA/Overrides/tt_address.php', $this->getTCAConfiguration()))
@@ -280,9 +279,11 @@ class ModuleController extends AbstractController
         $this->updateExtension();
         $this->view->assign("errorMessages", $errorMessages);
 
-        if(empty($errorMessages)) @unlink(PATH_typo3conf . 'ext/sic_address/PLEASE_GENERATE');
+        if(empty($errorMessages)) {
+            $delFile = $extPath.'PLEASE_GENERATE';
+            if (is_file($delFile)) unlink($delFile);
+        }
     }
-
 
     /**
      * Create Show Template
@@ -375,7 +376,7 @@ class ModuleController extends AbstractController
 
         }
         $content .= "</div>\n";
-        $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
+        $filename = ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
         return (boolean)file_put_contents($filename, $content);
     }
 
@@ -498,7 +499,7 @@ class ModuleController extends AbstractController
 
         $content = $customView->render();
         $content = \str_replace('{now}', $ts, $content);
-        $filename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
+        $filename = ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
 
         return (boolean)file_put_contents($filename, $content);
     }

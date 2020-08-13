@@ -40,7 +40,7 @@ class ModuleController extends AbstractController
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $addressRepository = NULL;
 
@@ -48,7 +48,7 @@ class ModuleController extends AbstractController
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $categoryRepository = NULL;
 

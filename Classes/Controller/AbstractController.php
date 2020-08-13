@@ -11,14 +11,14 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      * domainPropertyRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $domainPropertyRepository = NULL;
 
     /**
      * Returns translation for given key (and extension)
      *
-     * @param [type] $key
+     * @param string $key
      * @param string $extension
      * @return string
      */

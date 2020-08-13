@@ -2,7 +2,6 @@
 
 namespace SICOR\SicAddress\Controller;
 
-
 /***************************************************************
  *
  *  Copyright notice
@@ -41,7 +40,7 @@ class DomainPropertyController extends AbstractController
      * domainPropertyRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $domainPropertyRepository = NULL;
 
@@ -49,7 +48,7 @@ class DomainPropertyController extends AbstractController
      * Persistence Manager
      *
      *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     *@inject
+     *@TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $persistenceManager;
 

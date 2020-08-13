@@ -44,7 +44,7 @@ class ImportController extends ModuleController {
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $addressRepository = NULL;
 
@@ -52,7 +52,7 @@ class ImportController extends ModuleController {
      * domainPropertyRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $domainPropertyRepository = NULL;
 
@@ -60,7 +60,7 @@ class ImportController extends ModuleController {
      * Persistence Manager
      *
      *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     *@inject
+     *@TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $persistenceManager;
 

@@ -33,7 +33,7 @@ class Category extends \TYPO3\CMS\Extbase\Domain\Model\Category
 {
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\FileReference>
-     * @lazy
+     * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
      */
     protected $sicAddressMarker = NULL;
 

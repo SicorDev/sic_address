@@ -25,10 +25,12 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use SICOR\SicAddress\Domain\Service\FALService;
+use SICOR\SicAddress\Utility\Service;
 
 /**
  * AddressController
@@ -39,7 +41,7 @@ class AddressController extends AbstractController
      * addressRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $addressRepository = NULL;
 
@@ -47,7 +49,7 @@ class AddressController extends AbstractController
      * contentRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $contentRepository = NULL;
 
@@ -55,13 +57,13 @@ class AddressController extends AbstractController
      * categoryRepository
      *
      * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $categoryRepository = NULL;
 
     /**
      * @var \SICOR\SicAddress\Domain\Service\GeocodeService
-     * @inject
+     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $geoService = NULL;
 

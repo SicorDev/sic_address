@@ -137,7 +137,12 @@
                         <renderType>selectSingle</renderType>
                         <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexSortableFields</itemsProcFunc>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                    <displayCond>
+                        <or>
+                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search</value1>
+                            <value2>FIELD:switchableControllerActions:=:Address->map</value2>
+                        </or>
+                    </displayCond>
                 </TCEforms>
             </settings.sortField>
             <settings.sortDirection>
@@ -158,7 +163,12 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
+                    <displayCond>
+                        <or>
+                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search</value1>
+                            <value2>FIELD:switchableControllerActions:=:Address->map</value2>
+                        </or>
+                    </displayCond>
                 </TCEforms>
             </settings.sortDirection>
             <settings.filterField>

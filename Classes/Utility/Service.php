@@ -26,6 +26,7 @@ namespace SICOR\SicAddress\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -53,7 +54,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
         if(!$configuration) {
             // This works from TYPO3 9 onward:
-            $configuration = (array)GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('sic_address');
+            $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
         }
 
         return $configuration;

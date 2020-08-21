@@ -185,7 +185,6 @@ class ModuleController extends AbstractController
         $this->view->assign('ttAddressMapping', $this->extensionConfiguration['ttAddressMapping']);
         $this->view->assign("properties", $this->configuration);
         $this->view->assign("fieldTypes", $this->getFieldTypeList());
-        $this->view->assign("address", $this->addressRepository->findAll());
         $this->view->assign('external', $this->external);
         $types = array(0 => $this->translate('internal'));
         if ($this->extensionConfiguration['ttAddressMapping']) {

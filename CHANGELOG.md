@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.1] - 2020-08-14
 
+### Fixed
+- Usage without tt_address.
+
+## [3.0.1] - 2020-08-14
+
 ### Changed
 - Field and direction for Sorting now visible in plugin's map view
 

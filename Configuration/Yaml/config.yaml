@@ -1,0 +1,28 @@
+  SicAddress:
+    type: Extbase
+    extension: SicAddress
+    plugin: sicaddress
+    limitToPages: [55]
+    routes:
+      -
+        routePath: '/{atoz}'
+        _controller: 'Address::search'
+        _arguments:
+          atoz: 'atoz'
+      -
+        routePath: '/{category}'
+        _controller: 'Address::search'
+        _arguments:
+          category: 'category'
+    defaultController: 'Address::list'
+    requirements:
+      atoz: '[A-Za-z]|Alle'
+    aspects:
+      atoz:
+        type: StaticRangeMapper
+        start: 'A'
+        end: 'Z'
+      category:
+        type: PersistedAliasMapper
+        tableName: 'sys_category'
+        routeFieldName: 'title'

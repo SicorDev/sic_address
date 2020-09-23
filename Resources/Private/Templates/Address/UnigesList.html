@@ -2,102 +2,28 @@
 <f:section name="main">
     <f:flashMessages/>
     <style>
-        .listview {
-            width: 100%;
-        }
-
-        .listview p.bodytext {
-
-            padding-top: 10px;
-
-        }
-
-        .abisz {
-            height: 22px;
-            text-align: center;
-        }
-
-        .category {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .search {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .list {
-            border-bottom: 1px solid #999999;
-            margin: 5px 5px 15px 5px;
-        }
-
-        .sorry {
-            text-align: center;
-            margin-top: 45px;
-        }
-
-        .image > img {
-            float: right;
-            padding: 5px;
-        }
-
-        .f3-widget-paginator {
-            list-style: none;
-            text-align: center;
-        }
-
-        .f3-widget-paginator > li {
-            display: inline;
-        }
-
-        .f3-widget-paginator > li.current {
-            color: #CC0000;
-        }
-
-        .f3-widget-paginator > li.previous,
-        .f3-widget-paginator > li.next {
-            display: none;
-        }
-
-        .f3-widget-paginator::before {
-            content: 'Seite';
-        }
-
-        .activelinkcolor {
-            color: #CC0000;
-        }
-
-        .deadlinkcolor {
-            color: #999999;
-        }
+        .listview { width: 100%; }
+        .listview p { padding-top: 10px; }
+        .abisz { height: 22px; text-align: center; }
+        .category { margin-top: 10px; margin-bottom: 10px; }
+        .search { margin-top: 10px; margin-bottom: 10px; }
+        .list { border-bottom: 1px solid #999999; margin: 5px 5px 15px 5px; }
+        .sorry { text-align: center; margin-top: 45px; }
+        .image > img { float: right; padding: 5px; }
+        .f3-widget-paginator { list-style: none; text-align: center; }
+        .f3-widget-paginator > li { display: inline; }
+        .f3-widget-paginator > li.current { color: #CC0000; }
+        .f3-widget-paginator > li.previous, .f3-widget-paginator > li.next { display: none; }
+        .f3-widget-paginator::before { content: 'Seite'; }
+        .sic_address_atoz_activelink { color: #CC0000; }
+        .sic_address_atoz_deadlink { color: #999999; }
     </style>
 
     <div class="listview">
         <f:form id="sic_address_search_form" action="search">
-            <div class="alumni">
-                <f:if condition="{atoz}">
-                    <f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}"/>
-                    <f:for each="{atoz}" as="value">
-                        <f:if condition="{value.active}">
-                            <f:then>
-                                <f:if condition="{value.character} == {atozvalue}">
-                                    <f:then>
-                                        <span class="activelinkcolor">{value.character}</span>
-                                    </f:then>
-                                    <f:else>
-                                        <a href="#"
-                                           onclick="return submitAtoz('{value.character}');">{value.character}</a>
-                                    </f:else>
-                                </f:if>
-                            </f:then>
-                            <f:else>
-                                <span class="deadlinkcolor">{value.character}</span>
-                            </f:else>
-                        </f:if>
-                    </f:for>
-                </f:if>
-            </div>
+            <f:if condition="{atoz}">
+                <f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
+            </f:if>
             <div class="row">
                 <div class="category col-xs-5 col-xs-offset-1">
                     <f:if condition="{categories}">
@@ -117,8 +43,7 @@
         </f:form>
         <f:if condition="{addresses}">
             <f:then>
-                <f:widget.paginate objects="{addresses}" as="addresspage"
-                                   configuration="{itemsPerPage: 5, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'POST,GET'}">
+                <f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 5, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'GET'}">
                     <f:for each="{addresspage}" as="address">
                         <div class="list row">
                             <div class="row">

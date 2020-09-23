@@ -23,7 +23,15 @@
 										<span class="activelinkcolor">{value.character}</span><span class="divoc">|</span>
 									</f:then>
 									<f:else>
-										<a class="lifelink" href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a><span class="divoc">|</span>
+										<f:comment><!-- check if single character or "all" option --></f:comment>
+										<f:if condition="{value.character} == {value.character -> f:format.crop(maxCharacters:1, append:'')}">
+											<f:then>
+												<f:link.action class="lifelink" action="search" arguments="{atoz:value.character}">{value.character}</f:link.action><span class="divoc">|</span>
+											</f:then>
+											<f:else>
+												<f:link.page class="lifelink">{value.character}</f:link.page><span class="divoc">|</span>
+											</f:else>
+										</f:if>
 									</f:else>
 								</f:if>
 							</f:then>

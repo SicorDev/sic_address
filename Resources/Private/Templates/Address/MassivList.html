@@ -84,7 +84,7 @@
 	<f:if condition="{addresses}">
 		<f:then>
 			<f:widget.paginate objects="{addresses}" as="addresspage"
-							   configuration="{itemsPerPage: 12, addQueryStringMethod: 'POST,GET', insertAbove: 0,insertBelow: 1}">
+							   configuration="{itemsPerPage: 12, addQueryStringMethod: 'GET', insertAbove: 0,insertBelow: 1}">
 			<div id="sic_address_result_list">
 					<f:for each="{addresspage}" as="address" key="index">
 						<div id="sic_address_result">

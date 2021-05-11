@@ -1,0 +1,37 @@
+{
+	"name": "sicirdev/sic_address",
+	"type": "typo3-cms-extension",
+	"description": "Address Extension that can either enhance or replace tt_address. You can add required fields dynamically like mask/powermail. Originally it was written in 2016 to replace extensions like nicos_directory, wt_directory or sp_directory and grew from there.",
+	"minimum-stability": "stable",
+	"license": "GPL-3.0-only",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://composer.typo3.org/"
+		}
+	],
+	"require": {
+		"typo3/cms-core": "^9.5 || ^10.4",
+		"php": "^7.0. || ^7.4"
+	},
+	"authors": [
+		{
+			"name": "SICOR DEVTEAM",
+			"email": "dev@sicor-kdl.net",
+			"role": "Developer"
+		}
+	],
+	"suggest": {
+		"friendsoftypo3/tt-address": "Displays a list of addresses from an address table on the page."
+	},
+	"autoload": {
+		"psr-4": {
+			"SICOR\\SicAddress\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "sic_address"
+		}
+	}
+}

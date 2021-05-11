@@ -1,5 +1,5 @@
 {
-	"name": "sicor/sic_address",
+	"name": "sicor/sic-address",
 	"type": "typo3-cms-extension",
 	"description": "Address Extension that can either enhance or replace tt_address. You can add required fields dynamically like mask/powermail. Originally it was written in 2016 to replace extensions like nicos_directory, wt_directory or sp_directory and grew from there.",
 	"minimum-stability": "stable",

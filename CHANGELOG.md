@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved TCA generation.
 
 ### Changed
-- Added composer.json submitted via pull request. No idea what it does...
+- Added composer.json submitted via pull request.
 
 ## [3.1.2] - 2020-12-09
 

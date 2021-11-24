@@ -65,12 +65,10 @@ class DomainPropertyController extends AbstractController
 
             $errorMessages = [];
             if($newDomainProperty->getTcaLabels()) {
-                foreach($newDomainProperty->getTcaLabels() as $languageUid=>$tcaLabel) {
-                    if(!empty($tcaLabel)) {
+                foreach ($newDomainProperty->getTcaLabels() as $languageUid => $tcaLabel) {
+                    if (!empty($tcaLabel)) {
                         $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
-                        if ($existingObjectWithSameName->count() < 1) {
-                            $this->domainPropertyRepository->add($newDomainProperty);
-                        } else {
+                        if ($existingObjectWithSameName->count() > 0) {
                             $errorMessages['title'] = $this->translate('error_field_already_exists');
                             return json_encode($errorMessages);
                         }
@@ -79,11 +77,10 @@ class DomainPropertyController extends AbstractController
                         $subProperty->setTcaLabel($tcaLabel);
                         $subProperty->_setProperty('_languageUid', $languageUid);
                         $this->domainPropertyRepository->add($subProperty);
-                    }                    
+                    }
                 }
                 $this->persistenceManager->persistAll();
             }
-
             return json_encode(array());
         }
     }

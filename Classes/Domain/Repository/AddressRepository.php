@@ -25,6 +25,8 @@ namespace SICOR\SicAddress\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -133,12 +135,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function findAtoz($field, $addresstable, $categories, $pages, $ttAddressMapping)
+    public function findAtoz($field, $addresstable, $categories, $pages)
     {
         $query = $this->createQuery();
-
-        // TODO: Get it from $context with 9 LTS+ version only
-        $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
 
         // Make A-Z respect configured pages if there are some
         $where = "pid<>-1 ";
@@ -146,9 +145,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $where = "pid IN (".$pages.") ";
 
         // Standard constraints
-        $where .= "AND deleted=0 AND hidden=0 ";
-        if(empty($ttAddressMapping))
-            $where .= "AND sys_language_uid IN (-1,".$currentLanguageUid .") ";
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
+        $where .= "AND deleted=0 AND hidden=0 AND sys_language_uid IN (-1,".$currentLanguageUid .") ";
 
         // Respect categories
         if ($categories && count($categories) > 0) {
@@ -174,7 +173,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * @return array
      */
-    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryFields, $distanceValue, $distanceField, $filterValue, $filterField, $ttAddressMapping)
+    public function search($atozvalue, $atozField, $categories, $queryvalue, $queryFields, $distanceValue, $distanceField, $filterValue, $filterField)
     {
         $query = $this->createQuery();
 
@@ -218,10 +217,9 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         // Localization constraint
-        if(empty($ttAddressMapping)) {
-            $currentLanguageUid = (int) $GLOBALS['TSFE']->sys_language_uid;
-            $constraints[] = $query->in('sysLanguageUid', array(-1,$currentLanguageUid));
-        }
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
+        $currentLanguageUid = $languageAspect->getId();
+        $constraints[] = $query->in('sysLanguageUid', array(-1,$currentLanguageUid));
 
         if(count($constraints) < 1) {
             return $this->findAll();

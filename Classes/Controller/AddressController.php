@@ -376,7 +376,7 @@ class AddressController extends AbstractController
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
-            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField, $this->extensionConfiguration['ttAddressMapping']);
+            $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
             // mmtable resolver
             $field = $this->settings['filterField'];
@@ -670,7 +670,7 @@ class AddressController extends AbstractController
         $pages = $this->configurationManager->getContentObject()->data['pages'];
 
         // Query Database
-        $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages, $this->extensionConfiguration['ttAddressMapping']);
+        $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);
 
         // Build two dimensional result array
         $atoz = array();
@@ -699,7 +699,7 @@ class AddressController extends AbstractController
 
         // Query Database
         $filterList = array();
-        $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '', $this->extensionConfiguration['ttAddressMapping']);
+        $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
 
         // Build filter list
         foreach ($res as $address) {

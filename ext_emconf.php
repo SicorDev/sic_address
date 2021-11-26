@@ -19,7 +19,7 @@ $EM_CONF[$_EXTKEY] = array (
   'state' => 'stable',
   'uploadfolder' => false,
   'clearCacheOnLoad' => 0,
-  'version' => '3.1.3',
+  'version' => '3.1.4',
   'constraints' =>
   array (
     'depends' =>
@@ -38,4 +38,3 @@ $EM_CONF[$_EXTKEY] = array (
   'clearcacheonload' => false,
   'author_company' => 'SICOR',
 );
-

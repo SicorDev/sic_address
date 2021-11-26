@@ -59,25 +59,25 @@ return array(
                 'default' => 0,
             ]
         ],
-        'l10n_parent' => array(
+        'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
-            'config' => array(
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => array(
-                    array('', 0),
-                ),
-                'foreign_table' => 'tx_sicaddress_domain_model_address',
-                'foreign_table_where' => 'AND tx_sicaddress_domain_model_address.pid=###CURRENT_PID### AND tx_sicaddress_domain_model_address.sys_language_uid IN (-1,0)',
-            ),
-        ),
-        'l10n_diffsource' => array(
-            'config' => array(
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'tx_sicaddress_domain_model_address',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'default' => 0,
+            ],
+        ],
+        'l10n_diffsource' => [
+            'config' => [
                 'type' => 'passthrough',
-            ),
-        ),
+                'default' => ''
+            ]
+        ],
         'hidden' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
@@ -93,34 +93,34 @@ return array(
                 ],
             ]
         ],
-            'starttime' => [
-                'exclude' => true,
-                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel',
-                'config' => [
-                    'type' => 'input',
-                    'renderType' => 'inputDateTime',
-                    'size' => 16,
-                    'eval' => 'datetime,int',
-                    'default' => 0,
-                    'behaviour' => [
-                        'allowLanguageSynchronization' => true,
-                    ],
-                ]
-            ],
-            'endtime' => [
-                'exclude' => true,
-                'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel',
-                'config' => [
-                    'type' => 'input',
-                    'renderType' => 'inputDateTime',
-                    'size' => 16,
-                    'eval' => 'datetime,int',
-                    'default' => 0,
-                    'behaviour' => [
-                        'allowLanguageSynchronization' => true,
-                    ],
-                ]
-            ],
+        'starttime' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:starttime_formlabel',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'size' => 16,
+                'eval' => 'datetime,int',
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
+        ],
+        'endtime' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:endtime_formlabel',
+            'config' => [
+                'type' => 'input',
+                'renderType' => 'inputDateTime',
+                'size' => 16,
+                'eval' => 'datetime,int',
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]
+        ],
     <f:for each="{properties}" as="field">
         <f:format.htmlentitiesDecode>
     '{field.title}' => array(

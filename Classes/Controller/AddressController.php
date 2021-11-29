@@ -293,7 +293,7 @@ class AddressController extends AbstractController
         if(!empty($this->settings['ignoreDemands'])) {
             return $this->listAction();
         }
-        
+
         $atozvalue = $this->request->hasArgument('atoz') ? $this->request->getArgument('atoz') : $this->translate('label_all');
         $categoryvalue = $this->request->hasArgument('category') ? $this->request->getArgument('category') : '';
         $filtervalue = $this->request->hasArgument('filter') ? $this->request->getArgument('filter') : '';
@@ -639,7 +639,6 @@ class AddressController extends AbstractController
             case 'nicosdir': $template = 'NicosList.html'; break;
             case 'spdir': $template = 'SPDirList.html'; break;
             case 'sicor': $template = 'SicorList.html'; break;
-            case 'eundw': $template = 'EundwList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;

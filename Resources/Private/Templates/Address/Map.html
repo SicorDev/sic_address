@@ -5,15 +5,12 @@
 <f:section name="main">
     <f:render partial="Address/Map" arguments="{_all}" />
     <f:render partial="Address/MapRadius" arguments="{_all}" />
-
     <f:if condition="{settings.categoryType}">
         <f:render partial="Address/Categories" arguments="{_all}" />
     </f:if>
-
     <h1>
         <f:translate key="results" />
     </h1>
-
     <div class="row results">
         <f:for each="{addresses}" as="address">
             <div id="sic_address_marker_popup_{contentUid}_{address.uid}" class="col result">

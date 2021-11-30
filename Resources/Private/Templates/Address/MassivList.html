@@ -1,142 +1,138 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+
 <f:layout name="Default" />
+
 <f:section name="main">
-
-	<f:flashMessages />
-
-	<style>
-		.tx-sic-address .sic_address_search { padding:20px; padding:1.25rem; background:#f2f2f2 }
-		.f3-widget-paginator { list-style: none; text-align: right; }
-		.f3-widget-paginator > li { display: inline; padding-left: 5px; }
-		#sic_address_result_list { display: flex; flex-wrap: wrap;}
-		#sic_address_result {flex: 1 1 33%; max-width: 33%; padding: 10px; }
-
-	</style>
-
-	<div class="sic_address_search">
-		<f:form id="sic_address_search_form" action="search">
-			<f:if condition="{atoz}">
-				<div class="sic_address_charsearch">
-					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
-					<f:for each="{atoz}" as="value">
-						<f:if condition="{value.active}">
-							<f:then>
-								<f:if condition="{value.character} == {atozvalue}">
-									<f:then>
-										<div class="sic_address_char sic_address_all">
-											<span class="activelinkcolor atoz_text atoz_{value.character}">{value.character}</span>
-										</div>
-									</f:then>
-									<f:else>
-										<div class="sic_address_char">
-											<a href="#" class="sic_address_char_{value.character}" onclick="return submitAtoz('{value.character}');">{value.character}</a>
-										</div>
-									</f:else>
-								</f:if>
-							</f:then>
-						</f:if>
-					</f:for>
-				</div>
-			</f:if>
-			<f:if condition="{settings.mainCategoryType} != 'none'">
-				<f:if condition="{maincategories}">
-					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />
-					<div class="address_searchoptions address_category">
-						<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_main_category_filter')}</b>
-						<f:form.select class="address_dropdown" options="{maincategories}" optionValueField="uid" optionLabelField="title" value="{maincategoryvalue}"
-									   additionalAttributes="{onchange: 'submitMainCategory(jQuery(this).val());'}" prependOptionValue="-1"
-									   prependOptionLabel="Bitte auswählen" />
-					</div>
-				</f:if>
-			</f:if>
-			<f:if condition="{categories}">
-				<f:if condition="{settings.categoryType} != 'none'">
-					<div class="address_searchoptions address_category address_category_type_{settings.categoryType}">
-						<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_category_filter')}</b>
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryvalue:categoryvalue, checkall:checkall, settings:settings}" />
-					</div>
-				</f:if>
-			</f:if>
-			<f:if condition="{settings.distanceField} != 'none'">
-				<f:form.hidden id="sic_address_distance" name="distance" value="{distancevalue}" />
-				<div class="search-container distance-container">
-					<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_filter')}</b>
-					<select id="distance" class="address_dropdown" onchange="submitDistance(jQuery(this).val());">
-						<option value="">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option1')}</option>
-						<option value="1">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option2')}</option>
-						<option value="5">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option3')}</option>
-						<option value="10">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option4')}</option>
-						<option value="15">{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_distance_option5')}</option>
-					</select>
-				</div>
-			</f:if>
-			<f:if condition="{settings.queryField} != 'off'">
-				<div class="search-container">
-					<b>{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_query_filter')}</b>
-					<f:form.textfield  id="sic_address_query" name="query" class="search-input" style="font-size: 12px;" value="{queryvalue}" />
-					<f:form.submit value="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_query_button')}" class="search-submit" additionalAttributes="{onclick: 'submitQuery();'}" />
-				</div>
-			</f:if>
-			<f:if condition="{filter}">
-				<strong>Land:</strong> <f:render partial="Address/Filter" arguments="{filter:filter, filtervalue:filtervalue}" />
-			</f:if>
-		</f:form>
-	</div>
-	<f:if condition="{addresses}">
-		<f:then>
-			<f:widget.paginate objects="{addresses}" as="addresspage"
-							   configuration="{itemsPerPage: 12, addQueryStringMethod: 'GET', insertAbove: 0,insertBelow: 1}">
-			<div id="sic_address_result_list">
-					<f:for each="{addresspage}" as="address" key="index">
-						<div id="sic_address_result">
-							<f:if condition="{address.company}">
-								<strong>{address.company}</strong><br/>
-							</f:if>
-							<f:if condition="{address.street}">
-								{address.street}<br/>
-							</f:if>
-							<f:if condition="{address.zip}">
-								{address.zip}
-							</f:if>
-							<f:if condition="{address.city}">
-								{address.city}<br/>
-							</f:if>
-							<f:if condition="{address.phone}">
-								{address.phone}<br/>
-							</f:if>
-							<f:if condition="{address.www}">
-								<f:link.external uri="{address.www}" target="_blank" class="linkExt">
-									{address.www}<br/>
-								</f:link.external>
-							</f:if>
+	<div class="filterandmap">
+		<div class="sic-address-categories">
+			<div class="groups">
+				<f:form id="massivmap" action="map">
+					<f:form.hidden id="sic_address_category" name="currentCategories" value="{categoryvalue}" />
+					<f:for each="{categories}" as="category" key="groupTitle">
+						<div class="col sic_adress_col">
+							<div class="group">
+								<h2>{groupTitle}</h2>
+								<f:for each="{category.children}" as="subCategory" key="title">
+									<div class="checkbox {f:if(condition:'{subCategory.active}', then:'active')}">
+										<label>
+											<i class="fas fa-check"></i>
+											<f:form.checkbox value="{subCategory.uid}" onclick="submitCheckbox('{subCategory.uid}');"
+															 checked="{f:if(condition:'{subCategory.active}', then:'checked')}" />
+											{title}
+										</label>
+										<f:if condition="{subCategory.arguments.marker}">
+											<f:image image="{subCategory.arguments.marker}" width="30"/>
+											<f:link.typolink class="sicfancybox" parameter="320"
+															 additionalAttributes="{data-fancybox: ' ', data-type: 'iframe'}">
+												<i class="fas fa-info"></i>
+											</f:link.typolink>
+										</f:if>
+									</div>
+								</f:for>
+							</div>
 						</div>
 					</f:for>
-				</div>
-			</f:widget.paginate>
-		</f:then>
-		<f:else>
-			<div class="sorry">
-				{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+					<script>
+						function submitCheckbox(iCat) {
+							var currentVal = jQuery('#sic_address_category').val();
+							var cats = currentVal ? currentVal.split(",") : [];
+							var bRemove = cats.indexOf(iCat);
+							if (bRemove > -1) {
+								cats.splice(bRemove, 1)
+							} else {
+								cats.push(iCat)
+							}
+							// Submit Category choice
+							jQuery('#sic_address_category').val(cats.join());
+							document.getElementById('massivmap').submit();
+						}
+					</script>
+					<div class="col">
+						<div class="group">
+							<h2>Standort</h2>
+							<div class="row">
+								<f:form.select name="country" class="col form-control" options="{countries}"
+											   additionalAttributes="{onchange: 'submitCountry();'}"
+											   value="{args.country}"/>
+							</div>
+							<div class="row">
+								<f:form.textfield id="mapcenter" name="center" class="col form-control massivplz{f:if(condition:'{centerNotFound}', then:' mapcentererror')}" value="{args.center}"
+												  placeholder="PLZ"/>
+								<f:form.select id="mapdistance" name="distance" class="col form-control"
+											   additionalAttributes="{onchange: 'this.form.submit()'}"
+											   options="{distances}"
+											   value="{args.distance}" prependOptionLabel="Umkreis"
+											   prependOptionValue=""/>
+							</div>
+						</div>
+					</div>
+					<script>
+						function submitCountry() {
+							jQuery('#mapcenter').val('');
+							jQuery('#mapdistance').prop('selectedIndex',0);
+							document.getElementById('massivmap').submit();
+						}
+					</script>
+				</f:form>
 			</div>
-		</f:else>
-	</f:if>
+		</div>
+		<f:render partial="Address/Map" arguments="{_all}" />
+	</div>
+	<br />
+	<br />
+	<div class="hitlist">
+		<h1>
+			<f:translate key="results"/>
+		</h1>
+		<div class="row results">
+			{f:variable(name: 'firstHersteller', value: '1')}
+			<f:for each="{addresses}" as="address" iteration="i">
+				<f:for each="{address.categories}" as="cat">
+					<f:if condition="{cat.uid} === 35">
+						<f:if condition="{firstHersteller}">
+							<div class="col-12"><h2>Hersteller</h2></div>
+						</f:if>
+						{f:variable(name: 'firstHersteller', value: '0')}
+						<f:render section="result" arguments="{address: address, contentUid: contentUid}"/>
+					</f:if>
+				</f:for>
+			</f:for>
+		</div>
+		<div class="row results">
+			{f:variable(name: 'firstPartner', value: '1')}
+			<f:for each="{addresses}" as="address">
+				<f:for each="{address.categories}" as="cat">
+					<f:if condition="{cat.uid} === 36">
+						<f:if condition="{firstPartner}">
+							<div class="col-12"><h2>Partner</h2></div>
+						</f:if>
+						{f:variable(name: 'firstPartner', value: '0')}
+						<f:render section="result" arguments="{address: address, contentUid: contentUid}"/>
+					</f:if>
+				</f:for>
+			</f:for>
+		</div>
+	</div>
+</f:section>
 
-	<script>
-		function documentReadyJsHook () {
-			// Hide right side list boxes when no info is given
-			jQuery('.address_description').each(function() {
-				if($.trim(jQuery(this).html()).length < 1)
-					jQuery(this).css('display', 'none');
-			});
-			// Translate pagination
-			jQuery('.previous > a').each(function() {
-				jQuery(this).html('zur&uuml;ck');
-			});
-			jQuery('.next > a').each(function() {
-				jQuery(this).html('weiter');
-			});
-			// Distance selection
-			jQuery('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
-		}
-	</script>
-
+<f:section name="result">
+	<div id="sic_address_marker_popup_{contentUid}_{address.uid}"
+		 style="display: {f:if(condition: '{address.position} == 1', then: 'none', else: 'block')}"
+		 class="col-12 col-sm-6 col-md-4 result">
+		<strong>{address.company}</strong><br/>
+		{address.address}<br/>
+		{address.zip} {address.city}<br/>
+		<f:if condition="{address.country}">
+			{address.country}<br/>
+		</f:if>
+		<f:if condition="{address.phone}">
+			Tel.: <f:link.external uri="tel:{address.phone}">{address.phone}</f:link.external><br/>
+		</f:if>
+		<f:if condition="{address.email}">
+			<f:link.email email="{address.email}" /><br/>
+		</f:if>
+		<f:if condition="{address.www}">
+			<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+		</f:if><br /><br/>
+	</div>
 </f:section>

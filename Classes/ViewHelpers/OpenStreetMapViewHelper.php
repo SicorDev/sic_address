@@ -10,7 +10,6 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
         $this->registerArgument('id', 'integer', 'id of map', true);
         $this->registerArgument('markers', 'array', 'array of markers to show on map');
         $this->registerArgument('center', 'object', 'center marker object of map');
-        $this->registerArgument('fit-bounds', 'boolean', 'fit bounds of markers');
         $this->registerArgument('radius', 'float', 'given radius of radial search');
         $this->registerArgument('settings', 'array', 'map settings');
     }
@@ -20,7 +19,6 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
         $id = $this->arguments['id'];
         $markers = $this->arguments['markers'];
         $center = $this->arguments['center'];
-        $fitBounds = $this->arguments['fit-bounds'];
         $radius = $this->arguments['radius'];
         $settings = $this->arguments['settings']['map'];
         $iconSettings = $this->arguments['settings']['icon'];
@@ -46,10 +44,12 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
             foreach($marker->getCategories() as $category) {
                 $categoryUid = $category->getUid();
                 if(empty($icons[$categoryUid])) {
+                    // Try adding missing icon(s)
                     foreach($category->getSicAddressMarker() as $markerFile) {
-                        $icons[$categoryUid] = $icon = '/fileadmin' . $markerFile->getOriginalResource()->getOriginalFile()->getIdentifier();
+                        $icons[$categoryUid] = '/fileadmin' . $markerFile->getOriginalResource()->getOriginalFile()->getIdentifier();
                     }
                 }
+                if(!empty($icons[$categoryUid])) break;
             }
 
             if(!empty($icons[$categoryUid])) {
@@ -62,20 +62,15 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
                 ').bindPopup(document.getElementById("sic_address_marker_popup_' . $id . '_' . $marker->getUid().'").innerHTML);' . "\n";
         }
 
-        $latlngObj = 'var latlngs = ' . ($fitBounds ? self::a2json($latlngs,true) : '[]');
         $iconObj = '';
         foreach($icons as $categoryUid=>$icon) {
             $iconSettings['iconUrl'] = $icon;
             $iconObj .= 'var sic_address_icon_' . $id . '_' . $categoryUid . ' = L.icon('.self::a2json($iconSettings).');';
         }
 
-        if($fitBounds) {
-            $markerObj .= '; if(latlngs.length) sic_address_map_' . $id . '.fitBounds(latlngs)';
-        }
-
         $circleObj = '';
-        if(\is_numeric($radius)) {
-            $circleObj = 'L.circle([' . $center->getLatitude() . ',' . $center->getLongitude() . '],';
+        if(\is_numeric($radius) && !empty($center)) {
+            $circleObj = 'var circle = L.circle([' . $center->getLatitude() . ',' . $center->getLongitude() . '],';
             $circleSettings = array();
 
             $circleSettings['radius'] = $radius * 1000;
@@ -91,10 +86,13 @@ $mapObj;
 L.tileLayer('$tileLayerUrl', $tileLayerSettings).addTo(sic_address_map_${id});
     
 $iconObj;
-$latlngObj;
 $markerObj;
 $circleObj;
-		
+
+if(typeof circle != "undefined") {
+    sic_address_map_$id.fitBounds(circle.getBounds());
+}
+
 })
 </script>
 

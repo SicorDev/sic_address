@@ -247,45 +247,14 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * @param $centerAddress
-     * @param $distance
+     *  Find all Map Markers matching current category selection
+     *
      * @param $currentCategories
-     * @param $currentCountry
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function findGeoEntries($centerAddress, $distance, $currentCategories, $currentCountry) {
+    public function findMapEntries($currentCategories)
+    {
         $query = $this->createQuery();
-
-        if(!empty($centerAddress) && !empty($distance)) {
-            $lat = $centerAddress->getLatitude() / 180 * M_PI;
-            $lon = $centerAddress->getLongitude() / 180 * M_PI;
-
-            $having = $limit = '';
-            if(is_numeric($distance)) {
-                $having = 'HAVING distance <= ' . $distance;
-            } else {
-                $having = 'HAVING distance > 0';
-                $limit = 'LIMIT 1';
-            }
-
-            $sql = <<< SQL
-                SELECT *,(6368 * SQRT(2*(1-cos(RADIANS(latitude)) * 
-                cos($lat) * (sin(RADIANS(longitude)) *
-                sin($lon) + cos(RADIANS(longitude)) * 
-                cos($lon)) - sin(RADIANS(latitude)) *
-                sin($lat)))) AS distance
-                FROM tt_address
-                WHERE
-                  hidden = 0
-                  AND
-                  deleted = 0
-                $having
-                ORDER BY distance
-                $limit
-SQL;
-
-            return $query->statement($sql)->execute();
-        }
 
         $constraints = array(
             $query->logicalNot(
@@ -296,14 +265,18 @@ SQL;
             )
         );
 
-        foreach($currentCategories as $currentCategory) {
-            if($currentCategory) {
-                $constraints[] = $query->contains('categories', $currentCategory);
+        foreach ($currentCategories as $maincat) {
+            $catConstraints = [];
+            foreach ($maincat['children'] as $subcat) {
+                if($subcat['active']) {
+                    $catConstraints[] = $query->contains('categories', $subcat['uid']);
+                }
             }
-        }
-
-        if(!empty($currentCountry)) {
-            $constraints[] = $query->equals('country', $currentCountry);
+            if(!empty($catConstraints)) {
+                $constraints[] = $query->logicalAnd(
+                    $query->logicalOr($catConstraints)
+                );
+            }
         }
 
         $query->matching(
@@ -489,5 +462,24 @@ SQL;
         }
 
         return $pids;
+    }
+
+    /**
+     * Retrieve a list of all countries
+     *
+     * @return array
+     */
+    public function findAllCountries()
+    {
+        $query = $this->createQuery();
+        $table = $query->getSource()->getSelectorName();
+        $sql = 'SELECT DISTINCT country FROM ' . $table . ';';
+
+        $countries = array();
+        foreach ($query->statement($sql)->execute(true) as $row) {
+            $countries[$row['country']] = $row['country'];
+        }
+
+        return $countries;
     }
 }

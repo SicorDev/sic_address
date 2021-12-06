@@ -19,7 +19,7 @@ $EM_CONF[$_EXTKEY] = array (
   'state' => 'stable',
   'uploadfolder' => false,
   'clearCacheOnLoad' => 0,
-  'version' => '3.1.5',
+  'version' => '3.1.6',
   'constraints' =>
   array (
     'depends' =>

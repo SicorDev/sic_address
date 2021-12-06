@@ -65,25 +65,13 @@
                     <f:for each="{categories}" as="category" key="groupTitle">
                         <div class="col">
                             <div class="group">
-                                <f:if condition="{category.uid} == {currentCategory}">
-                                    <f:then>
-                                        <f:link.action class="active" arguments="{currentCategory:0}" pluginName="{pluginName}" extensionName="{extensionName}">
-                                            {groupTitle}
-                                        </f:link.action>
-                                    </f:then>
-                                    <f:else>
-                                        <f:link.action arguments="{currentCategory:category.uid}" pluginName="{pluginName}" extensionName="{extensionName}">
-                                            {groupTitle}
-                                        </f:link.action>
-                                    </f:else>
-                                </f:if>
-
+                                <strong>{groupTitle}</strong>
                                 <ul>
                                     <f:for each="{category.children}" as="subCategory" key="title">
                                         <li class="{f:if(condition:'{subCategory.active}',then:'active')}">
-                                            <f:link.action arguments="{subCategory.arguments}">
-                                                {title}
-                                            </f:link.action>
+                                            <f:form.checkbox value="{subCategory.uid}" onclick="submitCheckbox('{subCategory.uid}');"
+                                                             checked="{f:if(condition:'{subCategory.active}', then:'checked')}" />
+                                            {title}
                                             <f:if condition="{subCategory.arguments.marker}">
                                                 <f:image image="{subCategory.arguments.marker}" width="30" />
                                             </f:if>
@@ -93,11 +81,21 @@
                             </div>
                         </div>
                     </f:for>
-                    <f:if condition="{postPartial}">
-                        <div class="col">
-                            <f:render partial="{postPartial}" arguments="{_all}" />
-                        </div>
-                    </f:if>
+                    <script>
+                        function submitCheckbox(iCat) {
+                            var currentVal = jQuery('#sic_address_category').val();
+                            var cats = currentVal ? currentVal.split(",") : [];
+                            var bRemove = cats.indexOf(iCat);
+                            if (bRemove > -1) {
+                                cats.splice(bRemove, 1)
+                            } else {
+                                cats.push(iCat)
+                            }
+                            // Submit Category choice
+                            jQuery('#sic_address_category').val(cats.join());
+                            document.getElementById('sicaddressmap').submit();
+                        }
+                    </script>
                 </div>
             </div>
         </f:case>

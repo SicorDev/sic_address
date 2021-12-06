@@ -4,10 +4,18 @@
 
 <f:section name="main">
     <f:render partial="Address/Map" arguments="{_all}" />
-    <f:render partial="Address/MapRadius" arguments="{_all}" />
-    <f:if condition="{settings.categoryType}">
-        <f:render partial="Address/Categories" arguments="{_all}" />
-    </f:if>
+    <f:form id="sicaddressmap" action="map">
+        <div class="row">
+        <f:form.textfield name="center" class="col" value="{args.center}" placeholder="PLZ"/>
+        <f:form.select name="country" class="col" additionalAttributes="{onchange: 'this.form.submit()'}" options="{countries}" value="{args.country}" prependOptionLabel="Land" prependOptionValue="" />
+        <f:form.select name="distance" class="col" additionalAttributes="{onchange: 'this.form.submit()'}" options="{distances}" value="{args.distance}" prependOptionLabel="Umkreis" prependOptionValue="" />
+        </div>
+        <f:if condition="{settings.categoryType}">
+            <div>
+            <f:render partial="Address/Categories" arguments="{_all}"/>
+            </div>
+        </f:if>
+    </f:form>
     <h1>
         <f:translate key="results" />
     </h1>

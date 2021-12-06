@@ -155,68 +155,56 @@ class AddressController extends AbstractController
     public function mapAction() {
         $args = $this->request->getArguments();
 
-        $currentCategories = array();
-        if($this->request->hasArgument('currentCategories')) {
-            $currentCategories = $this->request->getArgument('currentCategories');
-        }
-        $currentCategory = '';
-        if($this->request->hasArgument('currentCategory')) {
-            $currentCategory = $this->request->getArgument('currentCategory');
-            $currentCategories = array($currentCategory);
-        }
-
-        $currentCountry = null;
+        $currentCountry = "Deutschland";
         if($this->request->hasArgument('country')) {
             $currentCountry = $this->request->getArgument('country');
         }
 
+        $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
+        $center = $this->geoService->getCoordinatesForPostalCode($args['center'], $currentCountry);
+        $centerNotFound = !$center && !empty($args['center']);
+        if(!empty($center['longitude']) && !empty($center['latitude'])) {
+            if($centerAddress) {
+                $centerAddress = clone $centerAddress;
+            } else {
+                $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
+            }
+
+            $centerAddress->setLongitude($center['longitude']);
+            $centerAddress->setLatitude($center['latitude']);
+        }
+
+        $currentCategories = "";
+        if($this->request->hasArgument('category')) {
+            $currentCategories = $this->request->getArgument('category');
+        }
         $categories = array();
         if(!empty($this->settings['rootCategory'])) {
             if($this->settings['categoryType'] === 'groups') {
-                $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'], $currentCategories);
+                $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'], explode(",", $currentCategories));
             } else {
                 $categories = $this->categoryRepository->findByParent($this->settings['rootCategory']);
             }
         }
 
-        $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
-        if(!empty($args['center'])) {
-            $center = $this->geoService->getCoordinatesForAddress($args['center']);
-            if(!empty($center['longitude']) && !empty($center['latitude'])) {
-                if($centerAddress) {
-                    $centerAddress = clone $centerAddress;
-                } else {
-                    $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
-                }
-
-                $centerAddress->setLongitude($center['longitude']);
-                $centerAddress->setLatitude($center['latitude']);
+        $addresses = $this->addressRepository->findMapEntries($categories);
+        if($centerAddress && $args['distance']) {
+            $lat = $centerAddress->getLatitude();
+            $lon = $centerAddress->getLongitude();
+            foreach ($addresses as $address) {
+                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
+                $address->setPosition($dist > $args['distance'] ? '1' : '0');
             }
         }
-        if(!$centerAddress) {
-            $args['fitBounds'] = true;
-        }
 
-        $addresses = $this->addressRepository->findGeoEntries($centerAddress, $args['distance'], $currentCategories, $currentCountry);
-        if(!$addresses->getFirst()) {
-            $addresses = $this->addressRepository->findGeoEntries($centerAddress, 'nearest', $currentCategories, $currentCountry);
-        }
-
-        $countries = array();
-        if($addresses->getFirst())
-        if(method_exists($addresses->getFirst(),'getCountry'))
-        foreach($addresses as $address) {
-            $country = $address->getCountry();
-            $country = trim($country);
-            if(!empty($country)) {
-                $countries[$country] = $country;
-            }
+        $countries = array_filter($this->addressRepository->findAllCountries());
+        if(empty($args['country']) && count($countries) > 0) {
+            $args['country'] = array_key_first($countries);
         }
         ksort($countries);
 
         $this->view->assignMultiple(array(
-            'currentCategory' => $currentCategory,
-            'currentCategories' => $currentCategories,
+            'categoryvalue' => $currentCategories,
             'args' => $args,
             'categories' => $categories,
             'settings' => $this->settings,
@@ -224,6 +212,7 @@ class AddressController extends AbstractController
             'addresses' => $addresses,
             'countries' => $countries,
             'centerAddress' => $centerAddress,
+            'centerNotFound' => $centerNotFound,
             'distances' => $this->getDistances(),
             'radius' => $args['distance'],
             'contentUid' => $this->configurationManager->getContentObject()->data['uid']
@@ -710,5 +699,24 @@ class AddressController extends AbstractController
 
         $this->sortCategories($filterList);
         return $filterList;
+    }
+
+    /**
+     * @param float $latitudeFrom
+     * @param float $longitudeFrom
+     * @param float $latitudeTo
+     * @param float $longitudeTo
+     *
+     * @return float [km]
+     */
+    function getDistanceinKM($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
+    {
+        $rad = M_PI / 180;
+        $theta = $longitudeFrom - $longitudeTo;
+        $dist = sin($latitudeFrom * $rad)
+            * sin($latitudeTo * $rad) +  cos($latitudeFrom * $rad)
+            * cos($latitudeTo * $rad) * cos($theta * $rad);
+
+        return acos($dist) / $rad * 60 *  1.853;
     }
 }

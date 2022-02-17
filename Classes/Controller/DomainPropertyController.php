@@ -208,7 +208,7 @@ class DomainPropertyController extends AbstractController
      */
     public function getFlexFilterFields($config)
     {
-        return $this->getFlexFields($config, "mmtable");
+        return $this->getFlexFields($config, "string,mmtable");
     }
 
     /**
@@ -234,7 +234,7 @@ class DomainPropertyController extends AbstractController
      */
     public function getFlexFields($config, $types)
     {
-        # auto inject doesnt work here because of direct call as userFunc in flex form
+        // Auto inject doesnt work here because of direct call as userFunc in flex form
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->domainPropertyRepository = $this->objectManager->get(\SICOR\SicAddress\Domain\Repository\DomainPropertyRepository::class);
 
@@ -242,7 +242,12 @@ class DomainPropertyController extends AbstractController
 
         $optionList = array();
         $optionList[0] = array(0 => $this->translate('label_none'), 1 => 'none');
-        $optionList[1] = array(0 => 'uid', 1 => 'uid');
+
+        if (strrpos($types, "integer") !== false) {
+            // Add missing uid when integer was requested
+            $optionList[1] = array(0 => 'uid', 1 => 'uid');
+        }
+
         foreach ($fields as $field) {
             $value = ($field["type"] == "mmtable") ? $field["title"] . ".title" : $field["title"];
             $optionList[] = array(0 => $field["tca_label"], 1 => $value);

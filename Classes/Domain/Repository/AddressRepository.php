@@ -208,12 +208,15 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         // Build filter constraint
-        if ($filterField && !($filterField === "none") && $filterValue > 0)
-        {
-            // Correction for mmtable
-            $filterField = substr($filterField, 0, strpos($filterField, '.'));
-
-            $constraints[] = $query->contains($filterField, $filterValue);
+        if ($filterField && !($filterField === "none") && $filterValue && !($filterValue === "-1")) {
+            if (strpos($filterField, '.') !== false) {
+                // Filter via mmtable
+                $filterField = substr($filterField, 0, strpos($filterField, '.'));
+                $constraints[] = $query->contains($filterField, $filterValue);
+            } else {
+                // Filter via string
+                $constraints[] = $query->equals($filterField, $filterValue);
+            }
         }
 
         // Localization constraint

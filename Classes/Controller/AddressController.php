@@ -208,7 +208,6 @@ class AddressController extends AbstractController
             'args' => $args,
             'categories' => $categories,
             'settings' => $this->settings,
-            'mapSettings' => $this->settings['map'],
             'addresses' => $addresses,
             'countries' => $countries,
             'centerAddress' => $centerAddress,
@@ -414,6 +413,7 @@ class AddressController extends AbstractController
 
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
+        $this->view->assign('contentUid', $this->configurationManager->getContentObject()->data['uid']);
 
         $this->setConfiguredTemplate();
     }
@@ -682,22 +682,36 @@ class AddressController extends AbstractController
         $field = $this->settings['filterField'];
         if (empty($field) || $field === "none") return null;
 
-        // Correction for mmtable
-       $field = substr($field, 0, strpos($field, '.'));
+        if (strpos($field, '.') !== false) {
+            // Correction for mmtable
+            $field = substr($field, 0, strpos($field, '.'));
+        }
 
         // Query Database
-        $filterList = array();
         $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
 
         // Build filter list
+        $filterList = [];
         foreach ($res as $address) {
             $filters = ObjectAccess::getProperty($address, GeneralUtility::underscoredToLowerCamelCase($field));
-            foreach ($filters as $filter) {
-                $filterList[] = $filter;
+            if (empty($filters)) continue;
+
+            if (is_string($filters)) {
+                // Filter field is type string
+                $filterList[] = ['label' => $filters, 'value' => $filters];
+            } else {
+                // Filter field is type mmtable
+                foreach ($filters as $filter) {
+                    $filterList[] = ['label' => $filters['title'], 'value' => $filters['uid']];
+                }
             }
         }
 
-        $this->sortCategories($filterList);
+        // Sort filters alphabetically
+        usort($filterList, function ($filter1, $filter2) {
+            return strcmp($filter1['label'], $filter2['label']);
+        });
+
         return $filterList;
     }
 

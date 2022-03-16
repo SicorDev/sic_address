@@ -1,16 +1,3 @@
-function submitAtoz (choice) {
-    // Reset other selections
-    jQuery('#sic_address_main_category').val('-1');
-    jQuery('#sic_address_category').val('-1');
-    jQuery('#sic_address_filter').val('-1');
-    jQuery('#sic_address_query').val('');
-
-    // Submit Atoz choice
-    jQuery('#sic_address_atoz').val(choice);
-    jQuery('#sic_address_search_form').submit();
-    return false;
-}
-
 function submitCategory (choice) {
     // Reset other selections
     jQuery('#sic_address_atoz').val('alle');

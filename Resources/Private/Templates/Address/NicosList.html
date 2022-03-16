@@ -3,7 +3,9 @@
 	<f:flashMessages />
 	<style>
 		.listview { width: 100%;}
-		.abisz { height: 22px; text-align: center; }
+		.sic_address_atoz { height: 22px; text-align: center; }
+		.sic_address_atoz_activelink { color: #CC0000;}
+		.sic_address_atoz_deadlink { color: #999999;}
 		.category { margin-top: 10px; margin-bottom: 10px; }
 		.search { margin-top: 10px; margin-bottom: 10px; }
 		.list { border: solid lightgrey 1px; margin: 5px;}
@@ -15,34 +17,13 @@
 		.f3-widget-paginator > li.previous,
 		.f3-widget-paginator > li.next  { display:none; }
 		.f3-widget-paginator::before { content: 'Seite'; }
-		.activelinkcolor { color: #CC0000;}
-		.deadlinkcolor { color: #999999;}
 	</style>
 
 	<div class="listview">
 		<f:form id="sic_address_search_form" action="search">
-			<div class="abisz">
-				<f:if condition="{atoz}">
-					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
-					<f:for each="{atoz}" as="value">
-						<f:if condition="{value.active}">
-							<f:then>
-								<f:if condition="{value.character} == {atozvalue}">
-									<f:then>
-										<span class="activelinkcolor">{value.character}</span>
-									</f:then>
-									<f:else>
-										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
-									</f:else>
-								</f:if>
-							</f:then>
-							<f:else>
-								<span class="deadlinkcolor">{value.character}</span>
-							</f:else>
-						</f:if>
-					</f:for>
-				</f:if>
-			</div>
+			<f:if condition="{atoz}">
+				<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
+			</f:if>
 			<div class="row">
 				<div class="category col-xs-5 col-xs-offset-1">
 					<f:if condition="{categories}">

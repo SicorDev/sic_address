@@ -5,9 +5,10 @@
 
 	<style>
 		.tx-sic-address .sic_address_search { padding:20px; padding:1.25rem; background:#f2f2f2 }
-		.tx-sic-address .sic_address_search .sic_address_charsearch { display:flex; justify-content:space-between }
-		.tx-sic-address .sic_address_search .sic_address_charsearch a,.tx-sic-address .sic_address_search .sic_address_charsearch span { padding:7px 12px; padding:0.4375rem 0.75rem; background:#fff; display:block }
-		.tx-sic-address .sic_address_search .sic_address_charsearch a:hover,.tx-sic-address .sic_address_search .sic_address_charsearch span:hover,.tx-sic-address .sic_address_search .sic_address_charsearch a.activelinkcolor,.tx-sic-address .sic_address_search .sic_address_charsearch span.activelinkcolor { background:#002c5a; color:#fff; display:block }
+		.tx-sic-address .sic_address_search .sic_address_atoz { display:flex; justify-content:space-between }
+		.tx-sic-address .sic_address_search .sic_address_atoz a,.tx-sic-address .sic_address_search .sic_address_atoz span { padding:7px 12px; padding:0.4375rem 0.75rem; background:#fff; display:block }
+		.tx-sic-address .sic_address_search .sic_address_atoz a:hover,.tx-sic-address .sic_address_search .sic_address_atoz span:hover,.tx-sic-address .sic_address_search .sic_address_atoz a.activelinkcolor,.tx-sic-address .sic_address_search .sic_address_atoz .sic_address_atoz_activelink { background:#002c5a; color:#fff; display:block }
+		.tx-sic-address .sic_address_search .sic_address_atoz .sic_address_atoz_deadlink { display: none;}
 		.tx-sic-address .sic_address_resultcount { padding:5px 20px; padding:0.3125rem 1.25rem; margin-top:3px; margin-top:0.1875rem; background:#f2f2f2; font-style:italic }
 		.tx-sic-address #sic_address_results .card { border:none }
 		.tx-sic-address #sic_address_results .card .card-header { padding:0; border-radius:0; border-bottom:1px solid rgba(0, 0, 0, 0.3); background:transparent }
@@ -18,31 +19,9 @@
 
 	<div class="sic_address_search">
 		<f:form id="sic_address_search_form" action="search">
-
 			<f:if condition="{atoz}">
-				<div class="sic_address_charsearch">
-					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
-					<f:for each="{atoz}" as="value">
-						<f:if condition="{value.active}">
-							<f:then>
-								<f:if condition="{value.character} == {atozvalue}">
-									<f:then>
-										<div class="sic_address_char sic_address_all">
-											<span class="activelinkcolor atoz_text atoz_{value.character}">{value.character}</span>
-										</div>
-									</f:then>
-									<f:else>
-										<div class="sic_address_char">
-											<a href="#" class="sic_address_char_{value.character}" onclick="return submitAtoz('{value.character}');">{value.character}</a>
-										</div>
-									</f:else>
-								</f:if>
-							</f:then>
-						</f:if>
-					</f:for>
-				</div>
+				<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
 			</f:if>
-
 			<f:if condition="{settings.mainCategoryType} != 'none'">
 				<f:if condition="{maincategories}">
 					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />

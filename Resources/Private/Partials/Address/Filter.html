@@ -1,4 +1,8 @@
 <f:form.hidden id="sic_address_filter" name="filter" value="{filtervalue}" />
-<f:form.select class="address_dropdown" options="{filter}" optionValueField="value" optionLabelField="label" value="{filtervalue}"
+<f:form.select class="address_dropdown" value="{filtervalue}"
                additionalAttributes="{onchange: 'submitFilter(jQuery(this).val());'}" prependOptionValue="-1"
-               prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}" />
+               prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}">
+    <f:for each="{filter}" as="param" key="label">
+        <option value="<f:uri.action action="search" arguments="{filter:param}"></f:uri.action>">{label}</option>
+    </f:for>
+</f:form.select>

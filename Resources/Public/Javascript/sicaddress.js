@@ -10,13 +10,7 @@ function submitCategory (choice) {
 }
 
 function submitFilter (choice) {
-    // Reset other selections
-    jQuery('#sic_address_atoz').val('alle');
-    jQuery('#sic_address_query').val('');
-
-    // Submit Filter choice
-    jQuery('#sic_address_filter').val(choice);
-    jQuery('#sic_address_search_form').submit();
+    top.location.href = choice;
     return false;
 }
 

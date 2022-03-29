@@ -698,18 +698,20 @@ class AddressController extends AbstractController
 
             if (is_string($filters)) {
                 // Filter field is type string
-                $filterList[] = ['label' => $filters, 'value' => $filters];
+                $filterList[$filters] = $filters;
             } else {
                 // Filter field is type mmtable
                 foreach ($filters as $filter) {
-                    $filterList[] = ['label' => $filters['title'], 'value' => $filters['uid']];
+                    $filterList[$filters['title']] = $filters['uid'];
                 }
             }
         }
 
         // Sort filters alphabetically
-        usort($filterList, function ($filter1, $filter2) {
-            return strcmp($filter1['label'], $filter2['label']);
+        uasort($filterList, function ($filter1, $filter2) {
+            $a = preg_replace('#[^\w\s]+#', '', iconv('utf-8', 'ascii//TRANSLIT', $filter1));
+            $b = preg_replace('#[^\w\s]+#', '', iconv('utf-8', 'ascii//TRANSLIT', $filter2));
+            return strcmp($a, $b);
         });
 
         return $filterList;

@@ -22,6 +22,9 @@
 			<f:if condition="{atoz}">
 				<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
 			</f:if>
+			<f:if condition="{filter}">
+				<f:render partial="Address/Filter" arguments="{filter:filter, filtervalue:filtervalue}" />
+			</f:if>
 			<f:if condition="{settings.mainCategoryType} != 'none'">
 				<f:if condition="{maincategories}">
 					<f:form.hidden id="sic_address_main_category" name="maincategory" value="{maincategoryvalue}" />

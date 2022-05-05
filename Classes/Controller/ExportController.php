@@ -37,30 +37,6 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 class ExportController extends ModuleController {
 
     /**
-     * addressRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $addressRepository = NULL;
-
-    /**
-     * categoryRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $categoryRepository = NULL;
-
-    /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
      * renderTemplatesPath
      * @var string
      */

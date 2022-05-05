@@ -43,21 +43,20 @@
         </f:form>
         <f:if condition="{addresses}">
             <f:then>
-                <f:widget.paginate objects="{addresses}" as="addresspage" configuration="{itemsPerPage: 5, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'GET'}">
-                    <f:for each="{addresspage}" as="address">
-                        <div class="list row">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <strong>{address.title} {address.firstName} {address.lastName}</strong>
-                                </div>
-                                <div class="col-md-7">
-                                    <f:render partial="Address/ImagesSlider" arguments="{address:address}"/>
-                                </div>
+                <f:for each="{pagination.paginator.paginatedItems}" as="address">
+                    <div class="list row">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <strong>{address.title} {address.firstName} {address.lastName}</strong>
                             </div>
-                            <f:format.html>{address.description}</f:format.html>
+                            <div class="col-md-7">
+                                <f:render partial="Address/ImagesSlider" arguments="{address:address}"/>
+                            </div>
                         </div>
-                    </f:for>
-                </f:widget.paginate>
+                        <f:format.html>{address.description}</f:format.html>
+                    </div>
+                </f:for>
+                <f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
             </f:then>
             <f:else>
                 <div class="list row" style="height: 100px;">

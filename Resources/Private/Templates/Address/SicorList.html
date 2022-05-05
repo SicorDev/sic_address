@@ -20,57 +20,70 @@
 	</style>
 
 	<div class="listview">
-		<f:form id="sic_address_search_form" action="search">
-			<f:if condition="{atoz}">
-				<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
-			</f:if>
-			<div class="row">
-				<div class="category col-xs-5 col-xs-offset-1">
-					<f:if condition="{categories}">
-						<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+		<div style="display: flex;">
+			<div style="width: 25%;padding-right: 1rem;">
+				<f:form id="sic_address_search_form" action="search">
+					<f:if condition="{atoz}">
+						<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
 					</f:if>
-				</div>
-				<div class="search col-xs-5">
-					<f:if condition="{settings.queryField} != 'off'">
-						<f:form.textfield id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
-						<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
-					</f:if>
-				</div>
+					<div class="row">
+						<div class="category col-xs-5 col-xs-offset-1">
+							<f:if condition="{categories}">
+								<f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+							</f:if>
+						</div>
+						<f:if condition="{filter}">
+							<label>Ortsteil</label>
+							<f:render partial="Address/Filter" arguments="{filter:filter, filtervalue:filtervalue}" />
+						</f:if>
+						<div class="search col-xs-5">
+							<f:if condition="{settings.queryField} != 'off'">
+								<f:form.textfield placeholder="Suche" id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+								<f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
+							</f:if>
+						</div>
+					</div>
+				</f:form>
 			</div>
-		</f:form>
+			<div style="width: 75%">
+				<f:render partial="Address/Map" arguments="{_all}" />
+			</div>
+		</div>
+
 		<f:if condition="{addresses}">
 			<f:then>
-				<f:widget.paginate objects="{addresses}" as="addresspage"
-								   configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'GET'}">
-					<f:for each="{addresspage}" as="address">
-						<div class="list row">
-							<div class="col-xs-4">
-								<strong>{address.company}</strong><br><br>
-								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
-								<f:if condition="{settings.detailPageField}">
-									<f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address, listPageUid: listPageUid}">
-										Detail
-									</f:link.action>
-									<f:link.action action="show" pageUid="{settings.detailPageField}" additionalParams="{type:24853078}" arguments="{vcard:1, filename:'{address.company} - {address.name}', address:'{address}'}">
-										(vCard)
-									</f:link.action>
-								</f:if>
-							</div>
-							<div class="col-xs-4">
-								<address>
-									{address.street}<br>
-									{address.city}<br>
-									{address.tel}<br>
-									{address.fax}
-								</address>
-							</div>
-							<div class="col-xs-4 image">
-								<f:render partial="Address/Images" arguments="{address:address}" />
-							</div>
+				<f:for each="{pagination.paginator.paginatedItems}" as="address">
+					<div class="list row">
+						<div class="col-xs-4">
+							<strong>{address.name}</strong><br><br>
+							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+							<f:if condition="{settings.detailPageField}">
+								<f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address, listPageUid: listPageUid}">
+									Detail
+								</f:link.action>
+								<f:link.action action="show" pageUid="{settings.detailPageField}" additionalParams="{type:24853078}" arguments="{vcard:1, filename:'{address.company} - {address.name}', address:'{address}'}">
+									(vCard)
+								</f:link.action>
+							</f:if>
 						</div>
-					</f:for>
-				</f:widget.paginate>
+						<div class="col-xs-4">
+							<address>
+								{address.address}<br>
+								{address.city} {address.city}<br>
+								<f:if condition="{address.phone}">
+									Tel.: {address.phone}
+									<br>
+								</f:if>
+								<f:link.email email="{address.email}" />
+							</address>
+						</div>
+						<div class="col-xs-4 image">
+							<f:render partial="Address/Images" arguments="{address:address}" />
+						</div>
+					</div>
+				</f:for>
+				<f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
 			</f:then>
 			<f:else>
 				<div class="list row" style="height: 100px;">

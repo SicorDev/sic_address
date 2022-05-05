@@ -26,43 +26,37 @@ namespace SICOR\SicAddress\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+use Psr\Http\Message\ResponseInterface;
+use SICOR\SicAddress\Domain\Model\DomainProperty;
+use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use function json_encode;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * DomainPropertyController
  */
 class DomainPropertyController extends AbstractController
 {
-
     protected $objectManager = null;
+    protected ?DomainPropertyRepository $domainPropertyRepository;
+    protected ?PersistenceManager $persistenceManager;
 
-    /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
-     * Persistence Manager
-     *
-     *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     *@TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $persistenceManager;
-
-    /**
-     * action create
-     *
-     * @param \SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty
-     * @return void
-     */
-    public function createAction(\SICOR\SicAddress\Domain\Model\DomainProperty $newDomainProperty)
+    public function __construct(
+        DomainPropertyRepository $domainPropertyRepository,
+        PersistenceManager $persistenceManager
+    )
     {
-        if (TYPO3_MODE == 'BE') {
-            $this->response->setHeader('Content-Type','application/json');
+        $this->domainPropertyRepository = $domainPropertyRepository;
+        $this->persistenceManager = $persistenceManager;
+    }
 
+    public function createAction(DomainProperty $newDomainProperty): ResponseInterface
+    {
+        if (ApplicationType::fromRequest($this->request)->isBackend()) {
             $errorMessages = [];
             if($newDomainProperty->getTcaLabels()) {
                 foreach ($newDomainProperty->getTcaLabels() as $languageUid => $tcaLabel) {
@@ -70,7 +64,7 @@ class DomainPropertyController extends AbstractController
                         $existingObjectWithSameName = $this->domainPropertyRepository->findByTitle(strtolower($newDomainProperty->getTitle()));
                         if ($existingObjectWithSameName->count() > 0) {
                             $errorMessages['title'] = $this->translate('error_field_already_exists');
-                            return json_encode($errorMessages);
+                            return $this->jsonResponse(json_encode($errorMessages));
                         }
                         $subProperty = clone $newDomainProperty;
                         $subProperty->setTcaLabels(array());
@@ -81,19 +75,14 @@ class DomainPropertyController extends AbstractController
                 }
                 $this->persistenceManager->persistAll();
             }
-            return json_encode(array());
         }
+
+        return $this->jsonResponse(json_encode([]));
     }
 
-    /**
-     * action update
-     *
-     * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
-     * @return void
-     */
-    public function updateAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty = null)
+    public function updateAction(DomainProperty $domainProperty = null)
     {
-        if (TYPO3_MODE == 'BE') {
+        if (ApplicationType::fromRequest($this->request)->isBackend()) {
             $arguments = $this->request->getArgument("domainProperty");
             if(empty($domainProperty)) {
                 $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments['__identity']));
@@ -117,7 +106,7 @@ class DomainPropertyController extends AbstractController
                         }
                     } else {
                         if(!empty($tcaLabel)) {
-                            $subProperty = new \SICOR\SicAddress\Domain\Model\DomainProperty();
+                            $subProperty = new DomainProperty();
                             $subProperty->setTitle($domainProperty->getTitle());
                             $subProperty->_setProperty('_languageUid', $propertyUid);
                             $subProperty->setTcaLabel($tcaLabel);
@@ -129,20 +118,14 @@ class DomainPropertyController extends AbstractController
             }
             $this->domainPropertyRepository->update($domainProperty);
             $this->persistenceManager->persistAll();
-            $this->response->setHeader('Content-Type','application/json');
-            return json_encode(array());
         }
+
+        return $this->jsonResponse(json_encode([]));
     }
 
-    /**
-     * action delete
-     *
-     * @param \SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty
-     * @return void
-     */
-    public function deleteAction(\SICOR\SicAddress\Domain\Model\DomainProperty $domainProperty = null)
+    public function deleteAction(DomainProperty $domainProperty = null): void
     {
-        if (TYPO3_MODE == 'BE') {
+        if (ApplicationType::fromRequest($this->request)->isBackend()) {
             $arguments = $this->request->getArgument("domainProperty");
             if(empty($domainProperty)) {
                 $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments));
@@ -170,7 +153,8 @@ class DomainPropertyController extends AbstractController
         }
     }
 
-    public function sortAction() {
+    public function sortAction(): bool
+    {
         $args = $this->request->getArguments();
 
         if(!empty($args['ordered'])) {
@@ -235,8 +219,8 @@ class DomainPropertyController extends AbstractController
     public function getFlexFields($config, $types)
     {
         // Auto inject doesnt work here because of direct call as userFunc in flex form
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->domainPropertyRepository = $this->objectManager->get(\SICOR\SicAddress\Domain\Repository\DomainPropertyRepository::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->domainPropertyRepository = $this->objectManager->get(DomainPropertyRepository::class);
 
         $fields = $this->domainPropertyRepository->findByTypes( explode(',',$types) );
 

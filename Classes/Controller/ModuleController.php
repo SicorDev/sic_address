@@ -27,39 +27,43 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use SICOR\SicAddress\Domain\Model\Address;
+use SICOR\SicAddress\Domain\Model\DomainObject\BooleanType;
+use SICOR\SicAddress\Domain\Model\DomainObject\ChecklistType;
+use SICOR\SicAddress\Domain\Model\DomainObject\FloatType;
+use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
+use SICOR\SicAddress\Domain\Model\DomainObject\IntegerType;
+use SICOR\SicAddress\Domain\Model\DomainObject\RichType;
+use SICOR\SicAddress\Domain\Model\DomainObject\SelectType;
+use SICOR\SicAddress\Domain\Model\DomainObject\StringType;
+use SICOR\SicAddress\Domain\Repository\AddressRepository;
+use SICOR\SicAddress\Domain\Repository\CategoryRepository;
+use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
 use SICOR\SicAddress\Utility\Service;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
+use StdClass;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use function str_replace;
 
 /**
  * ModuleController
  */
 class ModuleController extends AbstractController
 {
-
-    /**
-     * addressRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $addressRepository = NULL;
-
-    /**
-     * categoryRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $categoryRepository = NULL;
+    protected ?AddressRepository $addressRepository;
+    protected ?CategoryRepository $categoryRepository;
+    protected ?DomainPropertyRepository $domainPropertyRepository;
 
     /**
      * Holds all domainProperties
      *
      * @var array
      */
-    protected $configuration;
+    protected array $configuration;
 
     /**
      * Fixed set of fieldTypes
@@ -71,7 +75,7 @@ class ModuleController extends AbstractController
     /**
      * Holds the Typoscript configuration
      *
-     * @var \TYPO3\CMS\Extbase\Configuration
+     * @var Configuration
      */
     protected $extbaseFrameworkConfiguration = NULL;
 
@@ -99,12 +103,23 @@ class ModuleController extends AbstractController
      */
     protected $languages = array();
 
+    public function __construct(
+        AddressRepository $addressRepository,
+        CategoryRepository $categoryRepository,
+        DomainPropertyRepository $domainPropertyRepository
+    )
+    {
+        $this->addressRepository = $addressRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->domainPropertyRepository = $domainPropertyRepository;
+    }
+
     /**
      * Called before any action
      */
     public function initializeAction()
     {
-        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->extensionConfiguration = Service::getConfiguration();
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
 
@@ -131,7 +146,7 @@ class ModuleController extends AbstractController
                 $type = $this->configuration[$key][$language]->getType();
                 $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
 
-                $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
                 $this->configuration[$key][$language]->setType($objectManager->get($class));
             }
 
@@ -167,7 +182,7 @@ class ModuleController extends AbstractController
             $this->addFlashMessage(
                 $this->translate('flash_tt_address_missing'),
                 $messageTitle = $this->translate('flash_warning'),
-                $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
+                $severity = AbstractMessage::WARNING,
                 $storeInSession = FALSE
             );
         }
@@ -302,26 +317,26 @@ class ModuleController extends AbstractController
         $content .= '<div itemscope class="sicaddress-address" itemid="{f:uri.action(action:\'show\',absolute:true,arguments:\'{pageUid:settings.detailPagefield,address:address}\')}">' . "\n\n";
         foreach ($domainProperties as $prop) {
 
-            if (!$prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\BooleanType) {
+            if (!$prop->getType() instanceof BooleanType) {
                 $content .= "\t" . '<f:if condition="{address.' . $prop->getTitle() . '}">' . "\n";
                 $content .= "\t" . '<span itemprop="' . $prop->getTitle() . '"';
             }
 
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\StringType) {
+            if ($prop->getType() instanceof StringType) {
                 $content .= ' class="sicaddress-string sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\IntegerType) {
+            if ($prop->getType() instanceof IntegerType) {
 
                 $content .= ' class="sicaddress-integer sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\FloatType) {
+            if ($prop->getType() instanceof FloatType) {
 
                 $content .= ' class="sicaddress-float sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\SelectType) {
+            if ($prop->getType() instanceof SelectType) {
                 $content .= ' class="sicaddress-select sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
                 $content .= "\t\t" . '<f:switch expression="{address.'. $prop->getTitle() . '}">' . "\n";
@@ -334,18 +349,18 @@ class ModuleController extends AbstractController
                 $content .= "\t\t" . "</f:switch>\n";
 
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\ImageType) {
+            if ($prop->getType() instanceof ImageType) {
                 $content .= ' class="sicaddress-image sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t" . '<f:render partial="Address/Images.html" arguments="{_all}" />' . "\n";
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\RichType) {
+            if ($prop->getType() instanceof RichType) {
                 $content .= ' class="sicaddress-RTE">' . "\n";
                 $content .= "\t\t\t" . "<f:format.html parseFuncTSPath=\"lib.parseFunc_RTE\">";
                 $content .= "{address." . $prop->getTitle() . "}";
                 $content .= "</f:format.html>\n";
 
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\BooleanType) {
+            if ($prop->getType() instanceof BooleanType) {
                 $content .= "\t" . '<f:if condition="{address.' . $prop->getTitle() . '}">' . "\n";
                 $content .= "\t\t" . '<f:then>' . "\n";
                 $content .= "\t\t" . '<span itemprop="' . $prop->getTitle() . '" data-value="true">' . "\n";
@@ -357,7 +372,7 @@ class ModuleController extends AbstractController
                 $content .= "\t\t" . '</f:else>' . "\n";
                 $content .= "\t" . "</f:if>\n\n";
             }
-            if ($prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\ChecklistType) {
+            if ($prop->getType() instanceof ChecklistType) {
                 $content .= ' class="sicaddress-checklist' . '">' . "\n";
                 $selectString = explode("\n", $prop->getSettings());
                 $i = 0;
@@ -368,7 +383,7 @@ class ModuleController extends AbstractController
                 }
             }
 
-            if (!$prop->getType() instanceof \SICOR\SicAddress\Domain\Model\DomainObject\BooleanType) {
+            if (!$prop->getType() instanceof BooleanType) {
                 $content .= "\t" . '</span>' . "\n";
                 $content .= "\t" . "</f:if>\n\n";
             }
@@ -497,7 +512,7 @@ class ModuleController extends AbstractController
         $customView->assign('now', $ts=date('c'));
 
         $content = $customView->render();
-        $content = \str_replace('{now}', $ts, $content);
+        $content = str_replace('{now}', $ts, $content);
         $filename = ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
 
         return (boolean)file_put_contents($filename, $content);
@@ -541,7 +556,7 @@ class ModuleController extends AbstractController
     {
         $result = array();
         foreach ($this->fieldTypes as $fieldType) {
-            $field = new \StdClass();
+            $field = new StdClass();
             $field->key = $fieldType;
             $field->value = ucfirst($fieldType);
 
@@ -652,7 +667,7 @@ class ModuleController extends AbstractController
     /**
      * Remove action for address entries called over ajax
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address $address
+     * @param Address $address
      * @return void
      */
     public function ajaxDeleteDoubletAction($address)

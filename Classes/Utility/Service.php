@@ -26,37 +26,61 @@ namespace SICOR\SicAddress\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use SICOR\SicAddress\Domain\Model\Address;
+use SICOR\SicAddress\Domain\Repository\AddressRepository;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use function array_pop;
+use function explode;
 
 /**
  * Service
  */
-class Service implements \TYPO3\CMS\Core\SingletonInterface
+class Service implements SingletonInterface
 {
-    public static function startsWith($haystack, $needle) {
+    protected ConfigurationManager $configurationManager;
+    protected AddressRepository $addressRepository;
+
+    public function __construct(
+        ConfigurationManager $configurationManager,
+        AddressRepository $addressRepository
+    )
+    {
+        $this->configurationManager = $configurationManager;
+        $this->addressRepository = $addressRepository;
+    }
+
+    public function getPluginSettings(): array
+    {
+        return $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, null, 'tx_sicaddress_sicaddress');
+    }
+
+    /** @noinspection PhpIncompatibleReturnTypeInspection */
+    public function getCenterAddressObjectFromFlexConfig(): ?Address
+    {
+        $centerAddressSetting = $this->getPluginSettings()['centerAddress'];
+        if($centerAddressSetting) {
+            $arr = explode('_', $centerAddressSetting);
+            $centerAddressUid = array_pop($arr);
+
+            return $this->addressRepository->findByUid($centerAddressUid);
+        }
+
+        return new Address();
+    }
+
+    public function startsWith($haystack, $needle): bool
+    {
         // search backwards starting from haystack length characters from the end
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 
-    /**
-     * Get the current extension configuration.
-     * @return array
-     */
     public static function getConfiguration(): array
     {
-        static $configuration;
-        if (\is_array($configuration)) {
-            return $configuration;
-        }
-
-        // Try this as long as we support TYPO3 8:
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sic_address']);
-        if(!$configuration) {
-            // This works from TYPO3 9 onward:
-            $configuration = (array)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
-        }
-
-        return $configuration;
+        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('sic_address');
     }
 }

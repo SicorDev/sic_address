@@ -1,22 +1,26 @@
 <?php
 
+use SICOR\SicAddress\Domain\Model\Address;
+use SICOR\SicAddress\Domain\Model\Category;
+use SICOR\SicAddress\Domain\Model\Content;
+use SICOR\SicAddress\Domain\Model\FileReference;
 use SICOR\SicAddress\Utility\Service;
 
 $mapping = [
-    \SICOR\SicAddress\Domain\Model\FileReference::class => [
+    FileReference::class => [
         'tableName' => 'sys_file_reference'
     ],
-    \SICOR\SicAddress\Domain\Model\Category::class => [
+    Category::class => [
         'tableName' => 'sys_category'
     ],
-    \SICOR\SicAddress\Domain\Model\Content::class => [
+    Content::class => [
         'tableName' => 'tt_content'
     ]
 ];
 
 $extensionConfiguration = Service::getConfiguration();
 if ($extensionConfiguration["ttAddressMapping"]) {
-    $mapping[SICOR\SicAddress\Domain\Model\Address::class] = [
+    $mapping[Address::class] = [
         'tableName' => 'tt_address'
     ];
 }

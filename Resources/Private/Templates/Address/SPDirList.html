@@ -48,54 +48,52 @@
 		</f:form>
 		<f:if condition="{addresses}">
 			<f:then>
-				<f:widget.paginate objects="{addresses}" as="addresspage"
-								   configuration="{itemsPerPage: 5, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'GET'}">
-					<f:for each="{addresspage}" as="address">
-						<div class="tx_spdirectory-pi1-element">
-							<div class="tx_spdirectory-pi1-row"></div>
-							<div class="tx_spdirectory-pi1-row"></div>
-							<div class="row">
-								<div class="col-md-4">
+				<f:for each="{pagination.paginator.paginatedItems}" as="address">
+					<div class="tx_spdirectory-pi1-element">
+						<div class="tx_spdirectory-pi1-row"></div>
+						<div class="tx_spdirectory-pi1-row"></div>
+						<div class="row">
+							<div class="col-md-4">
+								<f:if condition="{address.description}">
+									<f:then>
+										<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
+									</f:then>
+									<f:else>
+										{address.company}<br>
+									</f:else>
+								</f:if>
+								{address.address}<br>
+								{address.zip} {address.city}
+							</div>
+							<div class="col-md-4">
+								<f:if condition="{address.phone}">
+									TEL: {address.phone}<br>
+								</f:if>
+								<f:if condition="{address.email}">
+									Mail: <f:link.email email="{address.email}">{address.email}</f:link.email><br>
+								</f:if>
+								<f:if condition="{address.fax}">
+									FAX: {address.fax}
+								</f:if>
+							</div>
+							<div class="col-md-4">
+									<a style="outline: none;" href="http://maps.poing.de/#SOURCE=gemeinde-poing&FID={address.uid}" target="ortsplan">
+										<img src="/fileadmin/templates/img/ortsplan_anzeigen.gif" border=0>
+									</a><br>
+									<f:if condition="{address.www}">
+										<f:link.external style="outline: none;" uri="{address.www}" target="_blank">Webauftritt</f:link.external><br>
+									</f:if>
 									<f:if condition="{address.description}">
-										<f:then>
-											<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">{address.company}</a><br>
-										</f:then>
-										<f:else>
-											{address.company}<br>
-										</f:else>
+										<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">Details</a>&nbsp;<span style="font-size: 11px;" class="glyphicon glyphicon-chevron-down"></span>
 									</f:if>
-									{address.address}<br>
-									{address.zip} {address.city}
-								</div>
-								<div class="col-md-4">
-									<f:if condition="{address.phone}">
-										TEL: {address.phone}<br>
-									</f:if>
-									<f:if condition="{address.email}">
-										Mail: <f:link.email email="{address.email}">{address.email}</f:link.email><br>
-									</f:if>
-									<f:if condition="{address.fax}">
-										FAX: {address.fax}
-									</f:if>
-								</div>
-								<div class="col-md-4">
-										<a style="outline: none;" href="http://maps.poing.de/#SOURCE=gemeinde-poing&FID={address.uid}" target="ortsplan">
-											<img src="/fileadmin/templates/img/ortsplan_anzeigen.gif" border=0>
-										</a><br>
-										<f:if condition="{address.www}">
-											<f:link.external style="outline: none;" uri="{address.www}" target="_blank">Webauftritt</f:link.external><br>
-										</f:if>
-										<f:if condition="{address.description}">
-											<a href="#" style="outline: none;" onclick="toggleDescription({address.uid}); return false;">Details</a>&nbsp;<span style="font-size: 11px;" class="glyphicon glyphicon-chevron-down"></span>
-										</f:if>
-								</div>
-								<div class="col-md-12">
-									<div id="sic_address_description_{address.uid}" style="display: none;" class="tx_spdirectory-pi1-row"><f:format.html>{address.description}</f:format.html></div>
-								</div>
+							</div>
+							<div class="col-md-12">
+								<div id="sic_address_description_{address.uid}" style="display: none;" class="tx_spdirectory-pi1-row"><f:format.html>{address.description}</f:format.html></div>
 							</div>
 						</div>
-					</f:for>
-				</f:widget.paginate>
+					</div>
+				</f:for>
+				<f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
 			</f:then>
 			<f:else>
 				<div class="list row" style="height: 100px;">

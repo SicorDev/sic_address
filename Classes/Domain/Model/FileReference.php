@@ -1,6 +1,6 @@
 <?php
-namespace SICOR\SicAddress\Domain\Model;
 
+namespace SICOR\SicAddress\Domain\Model;
 
 /***************************************************************
  *
@@ -27,8 +27,12 @@ namespace SICOR\SicAddress\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
+class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+{
     /**
      * Uid of the referenced sys_file. Needed for extbase to serialize the
      * reference correctly.
@@ -50,21 +54,24 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
     /**
      * @return string
      */
-    public function getTablenames() {
+    public function getTablenames()
+    {
         return $this->tablenames;
     }
 
     /**
      * @param string $tablenames
      */
-    public function setTablenames($tablenames) {
+    public function setTablenames($tablenames)
+    {
         $this->tablenames = $tablenames;
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\ResourceInterface $originalResource
+     * @param ResourceInterface $originalResource
      */
-    public function setOriginalResource(\TYPO3\CMS\Core\Resource\ResourceInterface $originalResource) {
+    public function setOriginalResource(ResourceInterface $originalResource)
+    {
         $this->originalResource = $originalResource;
         $this->uidLocal = (int)$originalResource->getUid();
     }
@@ -72,9 +79,10 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder {
     /**
      * @return \TYPO3\CMS\Core\Resource\FileReference
      */
-    public function getOriginalResource() {
+    public function getOriginalResource()
+    {
         if ($this->originalResource === null) {
-            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($this->getUid());
+            $this->originalResource = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($this->getUid());
         }
 
         return $this->originalResource;

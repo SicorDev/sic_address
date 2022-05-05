@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
@@ -6,40 +7,37 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'SICOR.sic_address',
     'Sicaddress',
-    array(
-        'Address' => 'list, show, new, create, edit, update, delete, search',
-        'Category' => 'list, show, new, create, edit, update, delete',
-    ),
-    // non-cacheable actions
-    array(
-        'Address' => 'create, update, delete, search, map',
-        'Category' => 'create, update, delete',
-    )
+    [
+        \SICOR\SicAddress\Controller\AddressController::class => 'list, show, new, create, edit, update, delete, search'
+    ],
+    [
+        \SICOR\SicAddress\Controller\AddressController::class => 'create, update, delete, search, map'
+    ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'SICOR.sic_address',
     'SicaddressVianovisExport',
-    array(
-        'Export' => 'exportVianovis',
-    ),
-    // non-cacheable actions
-    array()
+    [
+        \SICOR\SicAddress\Controller\ExportController::class => 'exportVianovis',
+    ],
+    []
 );
 
 // Register used signals
-$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 $signalSlotDispatcher->connect(
-    'TYPO3\\CMS\\Extensionmanager\\Service\\ExtensionManagementService',
+    \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
     'hasInstalledExtensions',
-    'SICOR\\SicAddress\\Domain\\Service\\SignalService',
+    \SICOR\SicAddress\Domain\Service\SignalService::class,
     'afterExtensionInstall',
     false
 );
+
 $signalSlotDispatcher->connect(
     'TYPO3\\CMS\\Extensionmanager\\Controller\\ConfigurationController',
     'afterExtensionConfigurationWrite',
-    'SICOR\\SicAddress\\Domain\\Service\\SignalService',
+    \SICOR\SicAddress\Domain\Service\SignalService::class,
     'refreshModuleList',
     false
 );

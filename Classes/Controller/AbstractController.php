@@ -28,28 +28,14 @@ namespace SICOR\SicAddress\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AbstractController extends ActionController
 {
-    /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
-     * Returns translation for given key (and extension)
-     *
-     * @param string $key
-     * @param string $extension
-     * @return string
-     */
-    protected function translate($key, $extension = 'sic_address')
+    protected function translate(string $key, string $extension = 'sic_address'): string
     {
         return LocalizationUtility::translate($key, $extension);
     }
@@ -57,7 +43,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     /**
      * @param ViewInterface $view
      */
-    public function initializeView(ViewInterface $view)
+    public function initializeView(ViewInterface $view): void
     {
         parent::initializeView($view);
 

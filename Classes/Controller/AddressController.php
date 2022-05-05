@@ -26,65 +26,65 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use SICOR\SicAddress\Domain\Model\Address;
+use SICOR\SicAddress\Domain\Repository\AddressRepository;
+use SICOR\SicAddress\Domain\Repository\CategoryRepository;
+use SICOR\SicAddress\Domain\Repository\ContentRepository;
+use SICOR\SicAddress\Domain\Service\GeocodeService;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use SICOR\SicAddress\Domain\Service\FALService;
 use SICOR\SicAddress\Utility\Service;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use function array_filter;
+use function class_exists;
+use function count;
+use function explode;
+use function ksort;
 
 /**
  * AddressController
  */
 class AddressController extends AbstractController
 {
-    /**
-     * addressRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $addressRepository = NULL;
+    protected ?AddressRepository $addressRepository;
+    protected ?ContentRepository $contentRepository;
+    protected ?CategoryRepository $categoryRepository;
+    protected ?GeocodeService $geocodeService;
+    protected Typo3QuerySettings $querySettings;
+    protected Service $service;
 
-    /**
-     * contentRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\ContentRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $contentRepository = NULL;
-
-    /**
-     * categoryRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\CategoryRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $categoryRepository = NULL;
-
-    /**
-     * @var \SICOR\SicAddress\Domain\Service\GeocodeService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $geoService = NULL;
-
-    /**
-     * Holds the Extension configuration
-     *
-     * @var array
-     */
-    protected $extensionConfiguration = NULL;
-
-    // Other variables
+    protected array $extensionConfiguration;
     protected $displayCategoryList = null;
     protected $mainCategoryList = null;
     protected $maincategoryvalue = '';
     protected $searchCategoryList = null;
     protected $addresstable = '';
 
-    /**
-     * Called before any action
-     */
-    public function initializeAction()
+    public function __construct(
+        AddressRepository $addressRepository,
+        ContentRepository $contentRepository,
+        CategoryRepository $categoryRepository,
+        GeocodeService $geocodeService,
+        Typo3QuerySettings $querySettings,
+        Service $service
+    )
+    {
+        $this->addressRepository = $addressRepository;
+        $this->contentRepository = $contentRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->geocodeService = $geocodeService;
+        $this->querySettings = $querySettings;
+        $this->service = $service;
+    }
+
+
+    public function initializeAction(): void
     {
         // Init config
         $this->extensionConfiguration = Service::getConfiguration();
@@ -95,30 +95,29 @@ class AddressController extends AbstractController
         $direction = $this->settings['sortDirection'];
         if ($field && !($field === "none")) {
             $this->addressRepository->setDefaultOrderings(array(
-                $field => $direction !== 'desc' ? \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING : \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+                $field => $direction !== 'desc' ? QueryInterface::ORDER_ASCENDING : QueryInterface::ORDER_DESCENDING
             ));
         }
 
         // Make search respect configured pages if there are some
         $pages = $this->configurationManager->getContentObject()->data['pages'];
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 
         if (strlen($pages) > 0) {
-            $querySettings->setRespectStoragePage(TRUE);
-            $querySettings->setStoragePageIds(explode(',', $pages));
+            $this->querySettings->setRespectStoragePage(TRUE);
+            $this->querySettings->setStoragePageIds(explode(',', $pages));
         } else {
-            $querySettings->setRespectStoragePage(FALSE);
+            $this->querySettings->setRespectStoragePage(FALSE);
         }
 
-        $this->addressRepository->setDefaultQuerySettings($querySettings);
+        $this->addressRepository->setDefaultQuerySettings($this->querySettings);
 
         // Include js
         $GLOBALS['TSFE']->additionalFooterData['tx_sicaddress_sicaddress'] = '<script src="typo3conf/ext/sic_address/Resources/Public/Javascript/sicaddress.js" type="text/javascript"></script>';
     }
 
-    public function initializeView(ViewInterface $view)
+    public function initializeView(ViewInterface $view): void
     {
-        parent::initializeView($view); // TODO: Change the autogenerated stub
+        parent::initializeView($view);
 
         $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
@@ -150,83 +149,20 @@ class AddressController extends AbstractController
     }
 
     /**
+     * @deprecated
+     *
      * @return void
      */
-    public function mapAction() {
-        $args = $this->request->getArguments();
-
-        $currentCountry = "Deutschland";
-        if($this->request->hasArgument('country')) {
-            $currentCountry = $this->request->getArgument('country');
-        }
-
-        $centerAddress = $this->getCenterAddressObjectFromFlexConfig();
-        $center = $this->geoService->getCoordinatesForPostalCode($args['center'], $currentCountry);
-        $centerNotFound = !$center && !empty($args['center']);
-        if(!empty($center['longitude']) && !empty($center['latitude'])) {
-            if($centerAddress) {
-                $centerAddress = clone $centerAddress;
-            } else {
-                $centerAddress = new \SICOR\SicAddress\Domain\Model\Address();
-            }
-
-            $centerAddress->setLongitude($center['longitude']);
-            $centerAddress->setLatitude($center['latitude']);
-        }
-
-        $currentCategories = "";
-        if($this->request->hasArgument('category')) {
-            $currentCategories = $this->request->getArgument('category');
-        }
-        $categories = array();
-        if(!empty($this->settings['rootCategory'])) {
-            if($this->settings['categoryType'] === 'groups') {
-                $categories = $this->getCategoriesAndChildren($this->settings['rootCategory'], explode(",", $currentCategories));
-            } else {
-                $categories = $this->categoryRepository->findByParent($this->settings['rootCategory']);
-            }
-        }
-
-        $addresses = $this->addressRepository->findMapEntries($categories);
-        if($centerAddress && $args['distance']) {
-            $lat = $centerAddress->getLatitude();
-            $lon = $centerAddress->getLongitude();
-            foreach ($addresses as $address) {
-                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
-                $address->setPosition($dist > $args['distance'] ? '1' : '0');
-            }
-        }
-
-        $countries = array_filter($this->addressRepository->findAllCountries());
-        if(empty($args['country']) && count($countries) > 0) {
-            $args['country'] = array_key_first($countries);
-        }
-        ksort($countries);
-
-        $this->view->assignMultiple(array(
-            'categoryvalue' => $currentCategories,
-            'args' => $args,
-            'categories' => $categories,
-            'settings' => $this->settings,
-            'addresses' => $addresses,
-            'countries' => $countries,
-            'centerAddress' => $centerAddress,
-            'centerNotFound' => $centerNotFound,
-            'distances' => $this->getDistances(),
-            'radius' => $args['distance'],
-            'contentUid' => $this->configurationManager->getContentObject()->data['uid']
-        ));
+    public function mapAction(): void
+    {
+        $this->listAction();
     }
 
-    /**
-     * @param $mainCategory
-     * @param array $currentCategories
-     * @return array
-     */
-    public function getCategoriesAndChildren( $mainCategory, $currentCategories ) {
+    public function getCategoriesAndChildren(int $mainCategory, array $currentCategories) : array
+    {
         $categories = array();
         $this->categoryRepository->setDefaultOrderings(array(
-            'sorting' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+            'sorting' => QueryInterface::ORDER_ASCENDING
         ));
 
         foreach($this->categoryRepository->findByParent($mainCategory) as $index=>$category) {
@@ -258,24 +194,20 @@ class AddressController extends AbstractController
     }
 
     /**
-     * @return object
+     * @return Address
      */
-    public function getCenterAddressObjectFromFlexConfig() {
-        $centerAddressUid = 0;
-
+    public function getCenterAddressObjectFromFlexConfig(): ?Address
+    {
         if(!empty($this->settings['centerAddress'])) {
             $arr = explode('_',$this->settings['centerAddress']);
             $centerAddressUid = array_pop($arr);
+
+            return $this->addressRepository->findByUid($centerAddressUid);
         }
 
-        return $this->addressRepository->findByUid($centerAddressUid);
+        return new Address();
     }
 
-    /**
-     * action search
-     *
-     * @return void
-     */
     public function searchAction()
     {
         if(!empty($this->settings['ignoreDemands'])) {
@@ -308,8 +240,8 @@ class AddressController extends AbstractController
     {
         // Categories
         $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
-        if($this->settings['categoryType'] == 'groups') {
-            $this->displayCategoryList = $this->getCategoriesAndChildren($this->settings['rootCategory'], array());
+        if($this->settings['categoryType'] === 'groups') {
+            $this->displayCategoryList = $this->getCategoriesAndChildren($this->settings['rootCategory'], explode(',', $categoryValue));
         }
         $this->view->assign('categories', $this->displayCategoryList);
         $this->view->assign('categoryvalue', $categoryValue);
@@ -411,12 +343,74 @@ class AddressController extends AbstractController
             }
         }
 
+        $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
+        $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, 1);
+        $paginationClass = $paginationConfiguration['class'] ?? SimplePagination::class;
+        if (class_exists($paginationClass)) {
+            $pagination = GeneralUtility::makeInstance($paginationClass, $paginator);
+        } else {
+            $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
+        }
+
+        $this->view->assignMultiple([
+            'pagination' => [
+                'currentPage' => $currentPage,
+                'paginator' => $paginator,
+                'pagination' => $pagination,
+            ]
+        ]);
+
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
         $this->view->assign('contentUid', $this->configurationManager->getContentObject()->data['uid']);
 
+        $this->addMapProperties($addresses);
+
         $this->setConfiguredTemplate();
     }
+
+    public function addMapProperties(iterable $addresses): void
+    {
+        $args = $this->request->getArguments();
+
+        $currentCountry = $arg['country'] ?? "Deutschland";
+
+        /** @var Address $centerAddress */
+        $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
+        if($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
+            $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
+            if($center['longitude'] > 0 && $center['latitude'] > 0) {
+                $centerAddress->setLongitude($center['longitude']);
+                $centerAddress->setLatitude($center['latitude']);
+            }
+        }
+
+        if($args['distance']) {
+            $lat = $centerAddress->getLatitude();
+            $lon = $centerAddress->getLongitude();
+            foreach ($addresses as $address) {
+                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
+                $address->setPosition($dist > $args['distance'] ? '1' : '0');
+            }
+        }
+
+        $countries = array_filter($this->addressRepository->findAllCountries());
+        if(empty($args['country']) && count($countries) > 0) {
+            $args['country'] = array_key_first($countries);
+        }
+        ksort($countries);
+
+        $this->view->assignMultiple([
+            'addresses' => $addresses,
+            'args' => $args,
+            'countries' => $countries,
+            'centerAddress' => $centerAddress,
+            'centerNotFound' => !$center && !empty($args['center']),
+            'distances' => $this->getDistances(),
+            'radius' => $args['distance'],
+        ]);
+    }
+
 
     /**
      * Return categories as configured by the according tt_content element
@@ -638,12 +632,7 @@ class AddressController extends AbstractController
 
         }
         if (method_exists($this->view, 'setTemplate')) {
-            // TYPO3 8 specific
             $this->view->setTemplate($template);
-        } else {
-            // TYPO3 7 specific
-            $action = str_replace('.html','', lcfirst($template));
-            $this->request->setControllerActionName($action);
         }
     }
 

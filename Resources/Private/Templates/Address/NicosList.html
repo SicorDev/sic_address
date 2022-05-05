@@ -3,9 +3,7 @@
 	<f:flashMessages />
 	<style>
 		.listview { width: 100%;}
-		.sic_address_atoz { height: 22px; text-align: center; }
-		.sic_address_atoz_activelink { color: #CC0000;}
-		.sic_address_atoz_deadlink { color: #999999;}
+		.abisz { height: 22px; text-align: center; }
 		.category { margin-top: 10px; margin-bottom: 10px; }
 		.search { margin-top: 10px; margin-bottom: 10px; }
 		.list { border: solid lightgrey 1px; margin: 5px;}
@@ -17,13 +15,34 @@
 		.f3-widget-paginator > li.previous,
 		.f3-widget-paginator > li.next  { display:none; }
 		.f3-widget-paginator::before { content: 'Seite'; }
+		.activelinkcolor { color: #CC0000;}
+		.deadlinkcolor { color: #999999;}
 	</style>
 
 	<div class="listview">
 		<f:form id="sic_address_search_form" action="search">
-			<f:if condition="{atoz}">
-				<f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
-			</f:if>
+			<div class="abisz">
+				<f:if condition="{atoz}">
+					<f:form.hidden id="sic_address_atoz" name="atoz" value="{atozvalue}" />
+					<f:for each="{atoz}" as="value">
+						<f:if condition="{value.active}">
+							<f:then>
+								<f:if condition="{value.character} == {atozvalue}">
+									<f:then>
+										<span class="activelinkcolor">{value.character}</span>
+									</f:then>
+									<f:else>
+										<a href="#" onclick="return submitAtoz('{value.character}');">{value.character}</a>
+									</f:else>
+								</f:if>
+							</f:then>
+							<f:else>
+								<span class="deadlinkcolor">{value.character}</span>
+							</f:else>
+						</f:if>
+					</f:for>
+				</f:if>
+			</div>
 			<div class="row">
 				<div class="category col-xs-5 col-xs-offset-1">
 					<f:if condition="{categories}">
@@ -40,27 +59,25 @@
 		</f:form>
 		<f:if condition="{addresses}">
 			<f:then>
-				<f:widget.paginate objects="{addresses}" as="addresspage"
-								   configuration="{itemsPerPage: 10, insertAbove: 0, insertBelow: 1, addQueryStringMethod: 'GET'}">
-					<f:for each="{addresspage}" as="address">
-						<div class="list row">
-							<div class="col-xs-4">
-								<strong>{address.company}</strong><br><br>
-								<f:link.email email="{address.email}">{address.email}</f:link.email><br>
-								<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
-							</div>
-							<div class="col-xs-4">
-								{address.street}<br>
-								{address.city}<br>
-								{address.phone}<br>
-								{address.fax}
-							</div>
-							<div class="col-xs-4 image">
-								<f:render partial="Address/Images" arguments="{address:address}" />
-							</div>
+				<f:for each="{addresses}" as="address">
+					<div class="list row">
+						<div class="col-xs-4">
+							<strong>{address.company}</strong><br><br>
+							<f:link.email email="{address.email}">{address.email}</f:link.email><br>
+							<f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
 						</div>
-					</f:for>
-				</f:widget.paginate>
+						<div class="col-xs-4">
+							{address.street}<br>
+							{address.city}<br>
+							{address.phone}<br>
+							{address.fax}
+						</div>
+						<div class="col-xs-4 image">
+							<f:render partial="Address/Images" arguments="{address:address}" />
+						</div>
+					</div>
+				</f:for>
+				<f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
 			</f:then>
 			<f:else>
 				<div class="list row" style="height: 100px;">

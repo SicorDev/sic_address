@@ -1,6 +1,8 @@
 <?php
 namespace SICOR\SicAddress\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *
  *  Copyright notice
@@ -29,7 +31,7 @@ namespace SICOR\SicAddress\Domain\Repository;
 /**
  * The repository for Categories
  */
-class CategoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class CategoryRepository extends Repository
 {
     /**
      * @var array

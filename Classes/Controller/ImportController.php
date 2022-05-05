@@ -41,22 +41,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ImportController extends ModuleController {
 
     /**
-     * addressRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\AddressRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $addressRepository = NULL;
-
-    /**
-     * domainPropertyRepository
-     *
-     * @var \SICOR\SicAddress\Domain\Repository\DomainPropertyRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $domainPropertyRepository = NULL;
-
-    /**
      * Persistence Manager
      *
      *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager

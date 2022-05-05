@@ -71,10 +71,152 @@
 			<div class="sic_address_resultcount">
 				<f:count subject="{addresses}" /> {f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:frontend_results')}
 			</div>
-			<f:widget.paginate objects="{addresses}" as="addresspage"
-							   configuration="{itemsPerPage: 20, maximumNumberOfLinks: 9, addQueryStringMethod: 'GET', insertAbove: 0,insertBelow: 1}">
-				<f:render partial="Address/UALLists" arguments="{settings:settings, addresspage:addresspage}" />
-			</f:widget.paginate>
+			<f:switch expression="{settings.listType}">
+				<f:case value="vcard">
+					<div id="sic_address_results">
+						<f:for each="{addresses}" as="address" key="index">
+							<div class="card">
+								<div class="card-header" id="heading{index}">
+									<a class="collapsed" data-toggle="collapse" data-target="#collapse{index}" aria-expanded="false" aria-controls="collapse{index}">
+										{address.company}
+									</a>
+								</div>
+
+								<div id="collapse{index}" class="collapse" aria-labelledby="heading{index}" data-parent="#sic_address_results">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-lg-8">
+
+												<f:format.html><b>Beschreibung</b><br/>{address.description}</f:format.html>
+											</div>
+
+											<div class="col-lg-4">
+												<p>
+													<b>Kontakt</b><br/>
+													<f:if condition="{address.name}">
+														{address.name}<br/>
+													</f:if>
+													<f:if condition="{address.zip}">
+														{address.zip}
+													</f:if>
+													<f:if condition="{address.city}">
+														{address.city}<br/>
+													</f:if>
+													<f:if condition="{address.region}">
+														{address.region}<br/>
+													</f:if>
+													<f:if condition="{address.country}">
+														{address.country}
+													</f:if>
+												</p>
+
+												<p>
+													<f:if condition="{address.phone}">
+														<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;{address.phone}<br/>
+													</f:if>
+													<f:if condition="{address.mobile}">
+														<i class="fa fa-mobile" aria-hidden="true"></i>&nbsp;{address.mobile}<br/>
+													</f:if>
+													<f:if condition="{address.fax}">
+														<i class="fa fa-fax" aria-hidden="true"></i>&nbsp;{address.fax}<br/>
+													</f:if>
+													<f:if condition="{address.www}">
+														<f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt"><i class="fa fa-desktop" aria-hidden="true"></i> Internetseite</f:link.external><br/>
+													</f:if>
+													<f:if condition="{address.email}">
+														<f:link.email email="{address.email}" class="linkmailto"><i class="fa fa-paper-plane" aria-hidden="true"></i> eMail</f:link.email>
+													</f:if>
+													<f:if condition="{address.categories}">
+														<br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+													</f:if>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</f:for>
+					</div>
+				</f:case>
+				<f:case value="2column">
+					<table>
+						<thead>
+						<tr>
+							<th id="anschrift">Anschrift</th>
+							<th id="kontaktdaten">Infos für Behinderte</th>
+						</tr>
+						</thead>
+						<tbody>
+						<f:for each="{pagination.paginator.paginatedItems}" as="address" iteration="addressIterator">
+							<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+								<td headers="anschrift">
+									<b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
+									<span>{address.street}</span><br><br>
+									<span>{address.zip} {address.city}</span><br><br>
+									<f:if condition="{address.categories}">
+										<br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+									</f:if>
+								</td>
+								<td headers="Infos für Behinderte">
+									<f:if condition="{address.txTtaddresshandicappedinfoAdditionalInfo}">
+										<f:format.html>{address.txTtaddresshandicappedinfoAdditionalInfo}</f:format.html>
+									</f:if>
+								</td>
+							</tr>
+						</f:for>
+						</tbody>
+					</table>
+				</f:case>
+				<f:case value="3column">
+					<table>
+						<thead>
+						<tr>
+							<th id="anschrift">Anschrift</th>
+							<th id="kontaktdaten">Kontaktdaten</th>
+							<th id="bemerkungen">Bemerkungen</th>
+						</tr>
+						</thead>
+						<tbody>
+						<f:for each="{pagination.paginator.paginatedItems}" as="address" iteration="addressIterator">
+							<tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+
+								<td headers="anschrift">
+									<b>{address.company}</b><br>
+									<span>{address.title} {address.name}</span><br>
+									<span>{address.street}</span><br><br>
+									<span>{address.zip} {address.city}</span>
+								</td>
+								<td headers="kontaktdaten">
+									<f:if condition="{address.phone}">
+										<span>Tel.:&nbsp;{address.phone}</span><br>
+									</f:if>
+									<f:if condition="{address.fax}">
+										<span>Fax:&nbsp;{address.fax}</span><br>
+									</f:if>
+									<f:if condition="{address.www}">
+										<f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external><br>
+									</f:if>
+									<f:if condition="{address.email}">
+										<f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
+									</f:if>
+								</td>
+								<td headers="bemerkungen">
+									<f:format.html>{address.description}</f:format.html>
+									<f:if condition="{address.openinghours}">
+										<b>&Ouml;ffnungszeiten:</b>
+										<f:format.html>{address.openinghours}</f:format.html>
+									</f:if>
+									<f:if condition="{address.categories}">
+										<br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+									</f:if>
+								</td>
+							</tr>
+						</f:for>
+						</tbody>
+					</table>
+				</f:case>
+			</f:switch>
+			<f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
 		</f:then>
 		<f:else>
 			<div class="sorry">

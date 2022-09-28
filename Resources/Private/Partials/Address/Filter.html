@@ -3,6 +3,9 @@
                additionalAttributes="{onchange: 'submitFilter(jQuery(this).val());'}" prependOptionValue="-1"
                prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}">
     <f:for each="{filter}" as="param" key="label">
-        <option value="<f:uri.action action="search" arguments="{filter:param}"></f:uri.action>">{label}</option>
+        <option value="<f:uri.action action="search" arguments="{filter:param}"></f:uri.action>"
+        {f:if(condition: '{param} === {filtervalue}', then: 'selected')}>
+        {label}
+        </option>
     </f:for>
 </f:form.select>

@@ -360,6 +360,25 @@ class AddressController extends AbstractController
             ]
         ]);
 
+        // Count adresses per category phase 1
+        $categorycounts = [];
+        foreach ($addresses as $adress) {
+            foreach ($adress->getCategories() as $category) {
+                if(array_key_exists($category->getTitle(), $categorycounts)) {
+                    $categorycounts[$category->getTitle()]++;
+                }
+                else {
+                    $categorycounts[$category->getTitle()] = 1;
+                }
+            }
+        }
+        // Count adresses per category phase 2
+        foreach ($this->displayCategoryList as $category) {
+            if(array_key_exists($category->getTitle(), $categorycounts)) {
+                $category->setCount($categorycounts[$category->getTitle()]);
+            }
+        }
+
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
         $this->view->assign('contentUid', $this->configurationManager->getContentObject()->data['uid']);

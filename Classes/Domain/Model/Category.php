@@ -38,6 +38,11 @@ class Category extends \TYPO3\CMS\Extbase\Domain\Model\Category
     protected $sicAddressMarker = NULL;
 
     /**
+     * @var integer
+     */
+    protected $count = 0;
+
+    /**
      * Initialize images
      *
      * @return \GeorgRinger\News\Domain\Model\Category
@@ -73,5 +78,21 @@ class Category extends \TYPO3\CMS\Extbase\Domain\Model\Category
      */
     public function removeSicAddressMarker(FileReference $sicAddressMarker) {
         $this->sicAddressMarker->detach($sicAddressMarker);
+    }
+
+    /**
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * @param int $count
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
     }
 }

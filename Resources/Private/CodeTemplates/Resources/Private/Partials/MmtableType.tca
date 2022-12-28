@@ -1,5 +1,6 @@
             array (
                 'type' => 'select',
+                'renderType' => 'selectCheckBox',
                 'foreign_table' => 'tx_sicaddress_domain_model_{title}',
                 'MM' => 'tx_sicaddress_domain_model_address_{title}_mm',
                 "foreign_table_where" => "AND tx_sicaddress_domain_model_{title}.pid=###CURRENT_PID### AND tx_sicaddress_domain_model_{title}.sys_language_uid IN (-1,###REC_FIELD_sys_language_uid###) ORDER BY title",
@@ -8,4 +9,3 @@
                 'maxitems' => 9999,
                 'multiple' => 0,
             )
-

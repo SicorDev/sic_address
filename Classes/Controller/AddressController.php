@@ -710,13 +710,13 @@ class AddressController extends AbstractController
             } else {
                 // Filter field is type mmtable
                 foreach ($filters as $filter) {
-                    $filterList[$filters['title']] = $filters['uid'];
+                    $filterList[$filter->getTitle()] = $filter->getUid();
                 }
             }
         }
 
         // Sort filters alphabetically
-        uasort($filterList, function ($filter1, $filter2) {
+        uksort($filterList, function ($filter1, $filter2) {
             $a = preg_replace('#[^\w\s]+#', '', iconv('utf-8', 'ascii//TRANSLIT', $filter1));
             $b = preg_replace('#[^\w\s]+#', '', iconv('utf-8', 'ascii//TRANSLIT', $filter2));
             return strcmp($a, $b);

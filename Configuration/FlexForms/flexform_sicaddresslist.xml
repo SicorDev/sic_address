@@ -325,24 +325,22 @@
                 </TCEforms>
             </settings.singleAddress>
             <settings.rootCategory>
-                <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_root_category</label>
-                <config>
-                    <type>select</type>
-                    <renderType>selectSingle</renderType>
-                    <items type="array">
-                        <numIndex index="0" type="array">
-                            <numIndex index="0"></numIndex>
-                            <numIndex index="1"></numIndex>
-                        </numIndex>
-                    </items>
-                    <foreign_table>sys_category</foreign_table>
-                </config>
-                <displayCond>
-                    <or>
-                        <value1>FIELD:switchableControllerActions:=:Address->map</value1>
-                        <value2>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</value2>
-                    </or>
-                </displayCond>
+                <TCEforms>
+                <exclude>1</exclude>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_root_category</label>
+                    <config>
+                        <type>select</type>
+                        <renderType>selectSingle</renderType>
+                        <items type="array">
+                            <numIndex index="0" type="array">
+                                <numIndex index="0"></numIndex>
+                                <numIndex index="1"></numIndex>
+                            </numIndex>
+                        </items>
+                        <foreign_table>sys_category</foreign_table>
+                    </config>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                </TCEforms>
             </settings.rootCategory>
             <settings.singleTtAddress>
                 <TCEforms>

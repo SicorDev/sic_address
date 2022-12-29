@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2022-12-29
+
+### Major
+- This the first official release for TYPO3 11 and PHP 7.4 or higher.
+- Compatibility to 9/10 dropped due to massive core changes. 
+
+### Changed
+- Fully integrated Map into List Action. Please reconfigure your frontend Plugins after upgrading.
+
+### Added
+- Count adresses per category!
+- Option for route planner link
+
 ## [3.2.0] - 2022-02-17
 
 ### Added

@@ -18,7 +18,6 @@
 		.f3-widget-paginator > li.next  { display:none; }
 		.f3-widget-paginator::before { content: 'Seite'; }
 	</style>
-
 	<div class="listview">
 		<div style="display: flex;">
 			<div style="width: 25%;padding-right: 1rem;">
@@ -49,7 +48,6 @@
 				<f:render partial="Address/Map" arguments="{_all}" />
 			</div>
 		</div>
-
 		<f:if condition="{addresses}">
 			<f:then>
 				<f:for each="{pagination.paginator.paginatedItems}" as="address">
@@ -65,6 +63,11 @@
 								<f:link.action action="show" pageUid="{settings.detailPageField}" additionalParams="{type:24853078}" arguments="{vcard:1, filename:'{address.company} - {address.name}', address:'{address}'}">
 									(vCard)
 								</f:link.action>
+							</f:if>
+							<f:if condition="{settings.routeplanner}">
+								<f:if condition="{address.address} && {address.zip} && {address.city}">
+									<a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}" target="_blank">In Google Maps öffnen</a>
+								</f:if>
 							</f:if>
 						</div>
 						<div class="col-xs-4">
@@ -94,5 +97,4 @@
 			</f:else>
 		</f:if>
 	</div>
-
 </f:section>

@@ -1,8 +1,6 @@
 <f:layout name="Default"/>
 <f:section name="main">
-
     <f:flashMessages/>
-
     <dl class="vcard">
         <dd class="vcard" itemscope>
             <f:if condition="{address.categories}">
@@ -48,6 +46,11 @@
                 <br />
                 <br />
             </f:if>
+            <f:if condition="{settings.routeplanner}">
+                <f:if condition="{address.address} && {address.zip} && {address.city}">
+                    <a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}" target="_blank">In Google Maps öffnen</a>
+                </f:if>
+            </f:if>
             <f:if condition="{listPageUid}">
                 <f:then>
                     <f:link.action pageUid="{listPageUid}">zurück</f:link.action>
@@ -56,8 +59,6 @@
                     <a href="javascript:history.back()">zurück</a>
                 </f:else>
             </f:if>
-
         </dd>
     </dl>
-
 </f:section>

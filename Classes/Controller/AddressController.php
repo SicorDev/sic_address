@@ -148,16 +148,6 @@ class AddressController extends AbstractController
         return $distances;
     }
 
-    /**
-     * @deprecated
-     *
-     * @return void
-     */
-    public function mapAction(): void
-    {
-        $this->listAction();
-    }
-
     public function getCategoriesAndChildren(int $mainCategory, array $currentCategories) : array
     {
         $categories = array();
@@ -638,17 +628,18 @@ class AddressController extends AbstractController
         $template = '';
         switch ($this->extensionConfiguration["templateSet"])
         {
+            case 'sicor': $template = 'SicorList.html'; break;
+            case 'map': $template = 'MapList.html'; break;
+            case 'auto': $template = 'AutoList.html'; break;
             case 'nicosdir': $template = 'NicosList.html'; break;
             case 'spdir': $template = 'SPDirList.html'; break;
-            case 'sicor': $template = 'SicorList.html'; break;
+            case 'diakonie': $template = 'DiakonieList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
             case 'obgdir': $template = 'OBGList.html'; break;
             case 'sachon': $template = 'SachonList.html'; break;
             case 'ualdir': $template = 'UALList.html'; break;
-            case 'auto': $template = 'AutoList.html'; break;
-
         }
         if (method_exists($this->view, 'setTemplate')) {
             $this->view->setTemplate($template);

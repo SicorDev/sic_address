@@ -22,7 +22,7 @@
                         <items type="array">
                             <numIndex index="1" type="array">
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_list</numIndex>
-                                <numIndex index="1">Address->list;Address->search;Address->Map</numIndex>
+                                <numIndex index="1">Address->list;Address->search</numIndex>
                             </numIndex>
                             <numIndex index="3" type="array">
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_detail</numIndex>
@@ -81,7 +81,7 @@
                             </suggest>
                         </wizards>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.detailPageField>
             <settings.atozField>
@@ -93,7 +93,7 @@
                         <renderType>selectSingle</renderType>
                         <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexStringFields</itemsProcFunc>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.atozField>
             <settings.queryField>
@@ -114,7 +114,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.queryField>
             <settings.sortField>
@@ -126,7 +126,7 @@
                         <renderType>selectSingle</renderType>
                         <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexSortableFields</itemsProcFunc>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.sortField>
             <settings.sortDirection>
@@ -147,12 +147,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>
-                        <or>
-                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</value1>
-                            <value2>FIELD:switchableControllerActions:=:Address->map</value2>
-                        </or>
-                    </displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.sortDirection>
             <settings.filterField>
@@ -164,12 +159,7 @@
                         <renderType>selectSingle</renderType>
                         <itemsProcFunc>SICOR\SicAddress\Controller\DomainPropertyController->getFlexFilterFields</itemsProcFunc>
                     </config>
-                    <displayCond>
-                        <or>
-                        <value1>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</value1>
-                        <value2>FIELD:switchableControllerActions:=:Address->map</value2>
-                        </or>
-                    </displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.filterField>
             <settings.mainCategoryType>
@@ -190,7 +180,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.mainCategoryType>
             <settings.categoryType>
@@ -231,12 +221,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>
-                        <or>
-                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</value1>
-                            <value2>FIELD:switchableControllerActions:=:Address->map</value2>
-                        </or>
-                    </displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.categoryType>
             <settings.categoryDefault>
@@ -252,7 +237,7 @@
                         <minitems>0</minitems>
                         <show_thumbs>1</show_thumbs>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.categoryDefault>
             <settings.listType>
@@ -277,7 +262,7 @@
                             </numIndex>
                         </items>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.listType>
             <settings.noListStartup>
@@ -287,7 +272,7 @@
                     <config>
                         <type>check</type>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.noListStartup>
             <settings.singleAddress>
@@ -334,7 +319,7 @@
                         </items>
                         <foreign_table>sys_category</foreign_table>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.rootCategory>
             <settings.singleTtAddress>
@@ -391,7 +376,12 @@
                     <config>
                         <type>check</type>
                     </config>
-                    <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search;Address->Map</displayCond>
+                    <displayCond>
+                        <or>
+                            <value1>FIELD:switchableControllerActions:=:Address->list;Address->search</value1>
+                            <value2>FIELD:switchableControllerActions:=:Address->show</value2>
+                        </or>
+                    </displayCond>
                 </TCEforms>
             </settings.routeplanner>
         </el>

@@ -344,7 +344,7 @@ class AddressController extends AbstractController
         }
 
         $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
-        $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, 1);
+        $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, 10);
         $paginationClass = $paginationConfiguration['class'] ?? SimplePagination::class;
         if (class_exists($paginationClass)) {
             $pagination = GeneralUtility::makeInstance($paginationClass, $paginator);

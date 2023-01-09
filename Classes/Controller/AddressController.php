@@ -282,7 +282,7 @@ class AddressController extends AbstractController
 
         if ($emptyList) {
             // No search on startup
-            $addresses = null;
+            $addresses = [];
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));

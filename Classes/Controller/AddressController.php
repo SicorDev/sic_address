@@ -331,24 +331,25 @@ class AddressController extends AbstractController
                     });
                 }
             }
-        }
 
-        $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
-        $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, 10);
-        $paginationClass = $paginationConfiguration['class'] ?? SimplePagination::class;
-        if (class_exists($paginationClass)) {
-            $pagination = GeneralUtility::makeInstance($paginationClass, $paginator);
-        } else {
-            $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
-        }
+            // Handle pagination
+            $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
+            $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, 10);
+            $paginationClass = $paginationConfiguration['class'] ?? SimplePagination::class;
+            if (class_exists($paginationClass)) {
+                $pagination = GeneralUtility::makeInstance($paginationClass, $paginator);
+            } else {
+                $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
+            }
 
-        $this->view->assignMultiple([
-            'pagination' => [
-                'currentPage' => $currentPage,
-                'paginator' => $paginator,
-                'pagination' => $pagination,
-            ]
-        ]);
+            $this->view->assignMultiple([
+                'pagination' => [
+                    'currentPage' => $currentPage,
+                    'paginator' => $paginator,
+                    'pagination' => $pagination,
+                ]
+            ]);
+        }
 
         // Count adresses per category phase 1
         $categorycounts = [];
@@ -419,7 +420,6 @@ class AddressController extends AbstractController
             'radius' => $args['distance'],
         ]);
     }
-
 
     /**
      * Return categories as configured by the according tt_content element

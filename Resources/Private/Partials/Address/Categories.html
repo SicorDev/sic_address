@@ -61,41 +61,44 @@
         </f:case>
         <f:case value="groups">
             <div class="groups">
-                <div class="row">
-                    <f:for each="{categories}" as="category" key="groupTitle">
-                        <div class="col">
-                            <div class="group">
-                                <strong>{groupTitle}</strong>
-                                <ul>
-                                    <f:for each="{category.children}" as="subCategory" key="title">
-                                        <li class="{f:if(condition:'{subCategory.active}',then:'active')}">
-                                            <f:form.checkbox value="{subCategory.uid}" onclick="submitCheckbox('{subCategory.uid}');"
-                                                             checked="{f:if(condition:'{subCategory.active}', then:'checked')}" />
-                                            {title}
-                                            <f:if condition="{subCategory.arguments.marker}">
-                                                <f:image image="{subCategory.arguments.marker}" width="30" />
-                                            </f:if>
-                                        </li>
-                                    </f:for>
-                                </ul>
+                <div class="row accordion" data-accordion data-allow-all-closed="true" data-multi-expand="true">
+                        <f:for each="{categories}" as="category" key="groupTitle">
+                            <div class="col accordion-item" data-accordion-item>
+                                <a class="accordion-title" href="#">
+                                    <strong>{groupTitle}</strong>
+                                </a>
+                                <div class="group accordion-content" data-tab-content>
+                                    <ul>
+                                        <f:for each="{category.children}" as="subCategory" key="title">
+                                            <li class="{f:if(condition:'{subCategory.active}',then:'active')}">
+                                                <f:form.checkbox id="categorie-{subCategory.uid}" value="{subCategory.uid}" onclick="submitCheckbox('{subCategory.uid}');"
+                                                                 checked="{f:if(condition:'{subCategory.active}', then:'checked')}" />
+
+                                                <label for="categorie-{subCategory.uid}" ><i class="far fa-square"></i><i class="fas fa-check-square"></i>{title}</label>
+                                                <f:if condition="{subCategory.arguments.marker}">
+                                                    <f:image image="{subCategory.arguments.marker}" width="30" />
+                                                </f:if>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    </f:for>
-                    <script>
-                        function submitCheckbox(iCat) {
-                            var currentVal = jQuery('#sic_address_category').val();
-                            var cats = currentVal ? currentVal.split(",") : [];
-                            var bRemove = cats.indexOf(iCat);
-                            if (bRemove > -1) {
-                                cats.splice(bRemove, 1)
-                            } else {
-                                cats.push(iCat)
+                        </f:for>
+                        <script>
+                            function submitCheckbox(iCat) {
+                                var currentVal = jQuery('#sic_address_category').val();
+                                var cats = currentVal ? currentVal.split(",") : [];
+                                var bRemove = cats.indexOf(iCat);
+                                if (bRemove > -1) {
+                                    cats.splice(bRemove, 1)
+                                } else {
+                                    cats.push(iCat)
+                                }
+                                // Submit Category choice
+                                jQuery('#sic_address_category').val(cats.join());
+                                jQuery('#sic_address_category')[0].form.submit();
                             }
-                            // Submit Category choice
-                            jQuery('#sic_address_category').val(cats.join());
-                            jQuery('#sic_address_category')[0].form.submit();
-                        }
-                    </script>
+                        </script>
                 </div>
             </div>
         </f:case>

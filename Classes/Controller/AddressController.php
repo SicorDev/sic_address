@@ -283,11 +283,18 @@ class AddressController extends AbstractController
         if ($emptyList) {
             // No search on startup
             $addresses = [];
+        } elseif (!empty($this->settings['selectedAddresses'])) {
+            // Display configured addresses
+            $selectedAdresses = explode(',', $this->settings['selectedAddresses']);
+            foreach ($selectedAdresses as $address) {
+                $addresses[] = $this->addressRepository->findByUid($address);
+            }
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
+            /* Sachon speciality only... can be removed once it's offline...
             // mmtable resolver
             $field = $this->settings['filterField'];
             if ($field && !is_bool(strpos($field, ".title")))
@@ -331,6 +338,7 @@ class AddressController extends AbstractController
                     });
                 }
             }
+            Sachon speciality only... can be removed once it's offline... */
 
             // Handle pagination
             $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
@@ -341,7 +349,6 @@ class AddressController extends AbstractController
             } else {
                 $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
             }
-
             $this->view->assignMultiple([
                 'pagination' => [
                     'currentPage' => $currentPage,
@@ -351,22 +358,24 @@ class AddressController extends AbstractController
             ]);
         }
 
-        // Count adresses per category phase 1
-        $categorycounts = [];
-        foreach ($addresses as $adress) {
-            foreach ($adress->getCategories() as $category) {
-                if(array_key_exists($category->getTitle(), $categorycounts)) {
-                    $categorycounts[$category->getTitle()]++;
-                }
-                else {
-                    $categorycounts[$category->getTitle()] = 1;
+        if($this->settings['categoryType'] !== 'groups') {
+            // Count adresses per category phase 1
+            $categorycounts = [];
+            foreach ($addresses as $adress) {
+                foreach ($adress->getCategories() as $category) {
+                    if(array_key_exists($category->getTitle(), $categorycounts)) {
+                        $categorycounts[$category->getTitle()]++;
+                    }
+                    else {
+                        $categorycounts[$category->getTitle()] = 1;
+                    }
                 }
             }
-        }
-        // Count adresses per category phase 2
-        foreach ($this->displayCategoryList as $category) {
-            if(array_key_exists($category->getTitle(), $categorycounts)) {
-                $category->setCount($categorycounts[$category->getTitle()]);
+            // Count adresses per category phase 2
+            foreach ($this->displayCategoryList as $category) {
+                if(array_key_exists($category->getTitle(), $categorycounts)) {
+                    $category->setCount($categorycounts[$category->getTitle()]);
+                }
             }
         }
 
@@ -420,6 +429,7 @@ class AddressController extends AbstractController
             'radius' => $args['distance'],
         ]);
     }
+
 
     /**
      * Return categories as configured by the according tt_content element
@@ -634,6 +644,7 @@ class AddressController extends AbstractController
             case 'nicosdir': $template = 'NicosList.html'; break;
             case 'spdir': $template = 'SPDirList.html'; break;
             case 'diakonie': $template = 'DiakonieList.html'; break;
+            case 'duelmen': $template = 'DuelmenList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
@@ -685,20 +696,29 @@ class AddressController extends AbstractController
             // Correction for mmtable
             $field = substr($field, 0, strpos($field, '.'));
         }
+        $field = GeneralUtility::underscoredToLowerCamelCase($field);
 
-        // Query Database
-        $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
+        $fieldType = $this->addressRepository->getFieldType($field);
+        if($fieldType === 'string') {
+            // Query Database
+            $res = $this->addressRepository->getFilterArray($field);
 
-        // Build filter list
-        $filterList = [];
-        foreach ($res as $address) {
-            $filters = ObjectAccess::getProperty($address, GeneralUtility::underscoredToLowerCamelCase($field));
-            if (empty($filters)) continue;
+            // Build filter list
+            $filterList = [];
+            foreach ($res as $filter) {
+                $filterList[$filter[$field]] = $filter[$field];
+            }
+        }
+        else {
+            // Query Database
+            $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
 
-            if (is_string($filters)) {
-                // Filter field is type string
-                $filterList[$filters] = $filters;
-            } else {
+            // Build filter list
+            $filterList = [];
+            foreach ($res as $address) {
+                $filters = ObjectAccess::getProperty($address, $field);
+                if (empty($filters)) continue;
+
                 // Filter field is type mmtable
                 foreach ($filters as $filter) {
                     $filterList[$filter->getTitle()] = $filter->getUid();

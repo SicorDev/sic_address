@@ -485,4 +485,26 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         return $countries;
     }
+
+    /**
+     * @return string
+     */
+    public function getFieldType($field)
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_sicaddress_domain_model_domainproperty');
+        $queryBuilder = $connection->createQueryBuilder();
+        $query = $queryBuilder->select('type')->from('tx_sicaddress_domain_model_domainproperty')->where('title = \''.$field.'\'');
+        return $query->execute()->fetchAll()[0]['type'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilterArray($field)
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_sicaddress_domain_model_address');
+        $queryBuilder = $connection->createQueryBuilder();
+        $query = $queryBuilder->select($field)->from('tx_sicaddress_domain_model_address')->groupBy($field);
+        return $query->execute()->fetchAll();
+    }
 }

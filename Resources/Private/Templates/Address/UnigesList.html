@@ -21,7 +21,8 @@
 
     <div class="listview">
         <f:form id="sic_address_search_form" action="search">
-            <f:if condition="{atoz}">
+			<f:form.hidden id="sic_address_currentpage" name="currentPage" value="{pagination.currentPage}" />
+			<f:if condition="{atoz}">
                 <f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
             </f:if>
             <div class="row">

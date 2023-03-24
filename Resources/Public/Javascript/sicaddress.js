@@ -10,7 +10,8 @@ function submitCategory (choice) {
 }
 
 function submitFilter (choice) {
-    top.location.href = choice;
+    jQuery('#sic_address_filter').val(choice);
+    jQuery('#sic_address_search_form').submit();
     return false;
 }
 
@@ -62,6 +63,12 @@ function submitCategories () {
 
     // Submit Category choice
     jQuery('#sic_address_category').val(res.slice(0, -1));
+    jQuery('#sic_address_search_form').submit();
+    return false;
+}
+
+function paginateTo (page) {
+    jQuery('#sic_address_currentpage').val(page);
     jQuery('#sic_address_search_form').submit();
     return false;
 }

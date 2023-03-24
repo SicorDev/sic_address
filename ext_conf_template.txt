@@ -7,7 +7,7 @@ ttAddressMapping = 0
 # cat=templates/10; type=string; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_export_templates
 exportRenderTemplates = EXT:sic_address/Resources/Private/Templates/Export/
 
-# cat=templates/20; type=options[sicor,map,auto,nicosdir,spdir,diakonie,irsee,massiv,muniges,obgdir,sachon,ualdir]; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_template_sets
+# cat=templates/20; type=options[sicor,map,auto,nicosdir,spdir,diakonie,duelmen,irsee,massiv,muniges,obgdir,sachon,ualdir]; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_template_sets
 templateSet = sicor
 
 # cat=modules/10; type=boolean; label=LLL:EXT:sic_address/Resources/Private/Language/locallang_conf.xlf:basic_developer_mode

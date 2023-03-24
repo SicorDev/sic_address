@@ -1,0 +1,214 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:ac="http://typo3.org/ns/B13/Assetcollector/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+<f:section name="main">
+    <f:flashMessages/>
+    <ac:css>
+        .listview {width: 100%;}
+        .sic_address_atoz {height: 22px;text-align: center;}
+        .sic_address_atoz_activelink {color: #CC0000;}
+        .sic_address_atoz_deadlink {color: #999999;}
+        .sic-address-categories .accordion-title {padding: 6px 8px; background-color: var(--cone); color: white; text-decoration: none;}
+        .sic-address-categories .accordion-title:before {margin-top: -13px;}
+        .category {margin-top: 10px;margin-bottom: 10px;}
+        .search {margin-top: 10px;margin-bottom: 10px;}
+        .list {border: solid lightgrey 1px;margin-bottom: 10px;}
+        .sorry {text-align: center;margin-top: 45px;}
+        .image > img {padding: 5px;}
+        .f3-widget-paginator {list-style: none;text-align: center;}
+        .f3-widget-paginator > li {display: inline;}
+        .f3-widget-paginator > li.current {color: #CC0000;}
+        .f3-widget-paginator > li.previous,
+        .f3-widget-paginator > li.next {display: none;}
+        .f3-widget-paginator::before {content: 'Seite';}
+        .content {display: flex;}
+        .verein {padding:10px;font-weight: bold;width: 70%;}
+        .vereinsbild {width: 30%;}
+        .verein a {font-weight: bold;}
+
+        @media (max-width:992px) {
+            .content {flex-direction: column;}
+            .verein{width:100%;}
+            .vereinsbild{width:100%;}
+        }
+
+        @media (max-width: 1200px) {
+            .vereinflex {flex-direction: column;}
+            .vereinsuchmaschine {width: 100%!important;margin-bottom: 20px;}
+            .vereinlist {width: 100%!important;padding: 0!important;}
+        }
+    </ac:css>
+
+    <div class="listview {settings.listType}">
+        <f:if condition="!({settings.listType} == 'marginal')">
+            <div class="vereinflex" style="display: flex;">
+                <div class="vereinsuchmaschine" style="width: 30%;">
+                    <f:form id="sic_address_search_form" action="search"
+                            style="background: var(--csix);padding: 1rem;position: sticky; top: 100px;">
+                        <f:form.hidden id="sic_address_currentpage" name="currentPage" value="{pagination.currentPage}" />
+                        <div class="row">
+                            <div class="search col-xs-5">
+                                <f:if condition="{settings.queryField} != 'off'">
+                                    <f:form.textfield placeholder="Vereinsname" id="sic_address_query" name="query"
+                                                      class="tx_nicosdirectory-pi1-small" style="font-size: 12px;"
+                                                      value="{queryvalue}"/>
+                                    <f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small"
+                                                   additionalAttributes="{onclick: 'submitQuery();'}"/>
+                                </f:if>
+                            </div>
+                            <f:if condition="{filter}">
+                                <label>{f:if(condition: '{settings.filterField} === "suburb"', then: 'Ortsteil', else: 'Straße')}</label>
+                                <f:render partial="Address/Filter"
+                                          arguments="{filter:filter, filtervalue:filtervalue}"/>
+                            </f:if>
+                            <div class="category col-xs-5 col-xs-offset-1">
+                                <f:if condition="{categories}">
+                                    <label>Kategorien</label>
+                                    <f:render partial="Address/Categories"
+                                              arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}"/>
+                                </f:if>
+                            </div>
+                        </div>
+                    </f:form>
+                </div>
+                <div class="vereinlist"style="width: 70%; padding: 0 1rem;">
+                    <f:if condition="{addresses}">
+                        <f:then>
+                            <f:for each="{pagination.paginator.paginatedItems}" as="address">
+                                <div class="list grid-x">
+                                    <div id="sic_address_marker_popup_{contentUid}_{address.uid}"
+                                         class="small-12 cell">
+                                        <f:if condition="{address.name}">
+                                            <strong style="font-size: 1.2rem !important;padding:10px;line-height: 1.1;border-bottom: 5px solid #69acdf;width: 100%;display: inline-block;">{address.name}</strong><br>
+                                        </f:if>
+                                        <div class="content">
+                                            <div class="verein">
+                                                <p>
+                                                <f:if condition="{address.address}">
+                                                    {address.address}<br>
+                                                </f:if>
+                                                <f:if condition="{address.room}">
+                                                    Raum: {address.room}<br>
+                                                </f:if>
+                                                <f:if condition="{address.city}">
+                                                    {address.zip} {address.city} <br><br>
+                                                </f:if>
+                                                <f:if condition="{address.phone}">
+                                                    <a style="text-decoration: none;" href="tel:{address.phone}">
+                                                        <i class="fa-solid fa-phone"></i>&nbsp;{address.phone}<br>
+                                                    </a>
+                                                </f:if>
+                                                <f:if condition="{address.email}">
+                                                    <i class="fa-solid fa-envelope"></i>&nbsp;<f:link.email
+                                                        style="text-decoration: none;" email="{address.email}"/>
+                                                    <br>
+                                                </f:if>
+                                                <f:if condition="{address.www}">
+                                                    <f:link.external uri="{address.www}" style="text-decoration: none;"
+                                                                     target="_blank">
+                                                        <i class="fa-solid fa-globe"></i>&nbsp;{address.www}
+                                                    </f:link.external>
+                                                    <br>
+                                                </f:if>
+                                                </p>
+                                                <f:if condition="{address.description}">
+                                                    <f:format.html>{address.description}</f:format.html>
+                                                </f:if>
+                                            </div>
+                                            <div class="vereinsbild">
+                                                <f:if condition="{settings.routeplanner}">
+                                                    <f:if condition="{address.address} && {address.zip} && {address.city}">
+                                                        <a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}"
+                                                           target="_blank">In Karte anzeigen</a>
+                                                    </f:if>
+                                                </f:if>
+                                                <f:render partial="Address/Images" arguments="{address:address, imageWidth:400}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:for>
+                            <f:render partial="List/Pagination"
+                                      arguments="{pagination: pagination.pagination, paginator: pagination.paginator, filtervalue:filtervalue}"/>
+                        </f:then>
+                        <f:else>
+                            <div class="list grid-x" style="height: 100px;">
+                                <div class="sorry">
+                                    {f:translate(key:
+                                    'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+                                </div>
+                            </div>
+                        </f:else>
+                    </f:if>
+                </div>
+            </div>
+        </f:if>
+    <f:if condition="({settings.listType} == 'marginal')">
+        <f:if condition="{addresses}">
+            <f:then>
+                <div class="ansprechpartner">
+                    <h2>
+                        Kontakt
+                    </h2>
+                </div>
+                <f:for each="{addresses}" as="address">
+                    <div class="list grid-x">
+                        <div id="sic_address_marker_popup_{contentUid}_{address.uid}" class="small-12 cell">
+                            <f:if condition="{address.name}">
+                                <strong class="address-item address-name">{address.name}</strong><br>
+                            </f:if>
+                            <f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+                            <f:if condition="{address.firstName}">
+                                <strong class="address-item address-firstName">{address.firstName}</strong>
+                            </f:if>
+                            <f:if condition="{address.lastName}">
+                                <strong class="address-item address-lastName"> {address.lastName}</strong><br>
+                            </f:if>
+                            <f:if condition="{address.www}">
+                                <f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+                            </f:if>
+                            <p style="margin-bottom: 0;">
+                                <f:if condition="{address.address}">
+                                    {address.address}<br>
+                                </f:if>
+                                <f:if condition="{address.city}">
+                                    {address.zip} {address.city} <br>
+                                </f:if>
+                                <f:if condition="{address.phone}">
+                                    <a href="tel:{address.phone}">
+                                        Tel.: {address.phone}
+                                    </a>
+                                </f:if>
+                                <f:if condition="{address.email}">
+                                    <f:link.email email="{address.email}"/>
+                                </f:if>
+                            </p>
+                            <f:if condition="{settings.routeplanner}">
+                                <f:if condition="{address.address} && {address.zip} && {address.city}">
+                                    <a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}"
+                                       target="_blank">In Karte anzeigen</a>
+                                </f:if>
+                            </f:if>
+                        </div>
+                        <f:if condition="!({settings.listType} == 'marginal')">
+                            <div class="small-12 medium-4 cell image">
+                                <f:render partial="Address/Images" arguments="{address:address}"/>
+                            </div>
+                        </f:if>
+                    </div>
+                </f:for>
+            </f:then>
+            <f:else>
+                <div class="list grid-x" style="height: 100px;">
+                    <div class="sorry">
+                        {f:translate(key:
+                        'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+                    </div>
+                </div>
+            </f:else>
+        </f:if>
+    </f:if>
+    </div>
+</f:section>
+</html>

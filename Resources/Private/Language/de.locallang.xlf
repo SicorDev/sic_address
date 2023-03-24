@@ -174,6 +174,9 @@
 			<trans-unit id="label_cattype_3column">
 				<target>3spalter</target>
 			</trans-unit>
+			<trans-unit id="label_cattype_marginal">
+				<target>Randspalte</target>
+			</trans-unit>
 			<trans-unit id="label_noListStartup">
 				<target>Zeige keine Einträge beim Start</target>
 			</trans-unit>
@@ -279,9 +282,12 @@
 			<trans-unit id="label_clickenlarge">
 				<target>Bilder bei Klick vergrössern</target>
 			</trans-unit>
-            <trans-unit id="label_routeplanner">
-                 <target>Zeige Google Maps Routenplanerlink</target>
-            </trans-unit>
+			<trans-unit id="label_selectedAddresses">
+				<target>Ausgewählte Datensätze (Deaktiviert den Kategoriemodus)</target>
+			</trans-unit>
+			<trans-unit id="label_routeplanner">
+				<target>Zeige Google Maps Routenplanerlink</target>
+			</trans-unit>
 			<trans-unit id="internal">
 				<target>intern</target>
 			</trans-unit>

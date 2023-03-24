@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Template duelmenList
 
 ### Changed
+- Made pagination items per page configurable 
 - Speedup for String Filters
 
 ### Fixed

@@ -180,6 +180,9 @@
 			<trans-unit id="label_noListStartup">
 				<target>Zeige keine Einträge beim Start</target>
 			</trans-unit>
+			<trans-unit id="label_itemsPerPage" xml:space="preserve">
+				<target>Einträge pro Seite</target>
+			</trans-unit>
 			<trans-unit id="noselect_label">
 				<target>Alle</target>
 			</trans-unit>

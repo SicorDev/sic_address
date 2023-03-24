@@ -279,6 +279,15 @@
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>
                 </TCEforms>
             </settings.noListStartup>
+            <settings.itemsPerPage>
+                <TCEforms>
+                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_itemsPerPage</label>
+                    <config>
+                        <type>input</type>
+                        <size>2</size>
+                    </config>
+                </TCEforms>
+            </settings.itemsPerPage>
             <settings.rootCategory>
                 <TCEforms>
                 <exclude>1</exclude>

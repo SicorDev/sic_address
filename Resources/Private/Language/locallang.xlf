@@ -180,6 +180,9 @@
 			<trans-unit id="label_noListStartup">
 				<source>Do not show all datasets by default</source>
 			</trans-unit>
+			<trans-unit id="label_itemsPerPage" xml:space="preserve">
+				<source>Items per Page</source>
+			</trans-unit>
 			<trans-unit id="noselect_label">
 				<source>All</source>
 			</trans-unit>

@@ -27,6 +27,7 @@ namespace SICOR\SicAddress\Domain\Repository;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -159,14 +160,14 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             $where .= "1=0 )";
         }
-        
+
         $sql = 'select DISTINCT UPPER(LEFT('.$field.', 1)) as letter from ' . $addresstable . ' where ' . $where;
 
         $res = array();
         foreach($query->statement($sql)->execute(true) as $result) {
             $res[] = $result['letter'];
         }
-        
+
         return $res;
     }
 

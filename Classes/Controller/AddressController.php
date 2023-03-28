@@ -392,11 +392,15 @@ class AddressController extends AbstractController
     public function addMapProperties(iterable $addresses): void
     {
         $args = $this->request->getArguments();
+        if(!array_key_exists('distance', $args)) {
+            $args['distance'] = null;
+        }
 
         $currentCountry = $arg['country'] ?? "Deutschland";
 
         /** @var Address $centerAddress */
         $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
+        $center = false;
         if($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
             $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
             if($center['longitude'] > 0 && $center['latitude'] > 0) {

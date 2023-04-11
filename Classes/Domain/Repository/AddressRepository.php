@@ -503,9 +503,11 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function getFilterArray($field)
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_sicaddress_domain_model_address');
+        $query = $this->createQuery();
+        $table = $query->getSource()->getSelectorName();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
-        $query = $queryBuilder->select($field)->from('tx_sicaddress_domain_model_address')->groupBy($field);
+        $query = $queryBuilder->select($field)->from($table)->groupBy($field);
         return $query->execute()->fetchAll();
     }
 }

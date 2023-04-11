@@ -341,7 +341,10 @@ class AddressController extends AbstractController
             Sachon speciality only... can be removed once it's offline... */
 
             // Handle pagination
-            $currentPage = $this->request->hasArgument('currentPage') ? (int)$this->request->getArgument('currentPage') : 1;
+            $currentPage = 1;
+            if($this->request->hasArgument('currentPage') && (int)$this->request->getArgument('currentPage') > 1) {
+                $currentPage = (int)$this->request->getArgument('currentPage');
+            }
             $itemsPerPage = (int)(($this->settings['itemsPerPage'] ?? '') ?: 10);
             $paginator = GeneralUtility::makeInstance(QueryResultPaginator::class, $addresses, $currentPage, $itemsPerPage);
             $paginationClass = $paginationConfiguration['class'] ?? SimplePagination::class;
@@ -697,6 +700,7 @@ class AddressController extends AbstractController
         $field = $this->settings['filterField'];
         if (empty($field) || $field === "none") return null;
 
+        // Get field
         if (strpos($field, '.') !== false) {
             // Correction for mmtable
             $field = substr($field, 0, strpos($field, '.'));
@@ -705,7 +709,7 @@ class AddressController extends AbstractController
 
         $fieldType = $this->addressRepository->getFieldType($field);
         if($fieldType === 'string') {
-            // Query Database
+            // Filter field is type string
             $res = $this->addressRepository->getFilterArray($field);
 
             // Build filter list
@@ -713,21 +717,21 @@ class AddressController extends AbstractController
             foreach ($res as $filter) {
                 $filterList[$filter[$field]] = $filter[$field];
             }
+            return $filterList;
         }
-        else {
-            // Query Database
-            $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
+
+        // Filter field is type mmtable
+        $res = $this->addressRepository->search('', '', $categories, '', '', '', '', '', '');
+
+        // Build filter list
+        $filterList = [];
+        foreach ($res as $address) {
+            $filters = ObjectAccess::getProperty($address, GeneralUtility::underscoredToLowerCamelCase($field));
+            if (empty($filters)) continue;
 
             // Build filter list
-            $filterList = [];
-            foreach ($res as $address) {
-                $filters = ObjectAccess::getProperty($address, $field);
-                if (empty($filters)) continue;
-
-                // Filter field is type mmtable
-                foreach ($filters as $filter) {
-                    $filterList[$filter->getTitle()] = $filter->getUid();
-                }
+            foreach ($filters as $filter) {
+                $filterList[$filter->getTitle()] = $filter->getUid();
             }
         }
 

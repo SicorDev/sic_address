@@ -63,7 +63,7 @@
                                           arguments="{filter:filter, filtervalue:filtervalue}"/>
                             </f:if>
                             <div class="category col-xs-5 col-xs-offset-1">
-                                <f:if condition="{categories}">
+                                <f:if condition="{settings.categoryType} != 'none'">
                                     <label>Kategorien</label>
                                     <f:render partial="Address/Categories"
                                               arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}"/>

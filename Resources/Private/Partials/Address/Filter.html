@@ -3,7 +3,7 @@
                additionalAttributes="{onchange: 'submitFilter(jQuery(this).val());'}"
                prependOptionLabel="{f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:noselect_label')}">
     <f:for each="{filter}" as="param" key="label">
-        <option value="{param}" {f:if(condition: '{param} === {filtervalue}', then: 'selected')}>
+        <option value="{param}" {f:if(condition: '{param} == {filtervalue}', then: 'selected')}>
         {label}
         </option>
     </f:for>

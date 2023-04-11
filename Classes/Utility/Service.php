@@ -73,7 +73,7 @@ class Service implements SingletonInterface
         return new Address();
     }
 
-    public function startsWith($haystack, $needle): bool
+    public static function startsWith($haystack, $needle): bool
     {
         // search backwards starting from haystack length characters from the end
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;

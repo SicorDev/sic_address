@@ -70,7 +70,7 @@ class Service implements SingletonInterface
             return $this->addressRepository->findByUid($centerAddressUid);
         }
 
-        return new Address();
+        return null;
     }
 
     public static function startsWith($haystack, $needle): bool

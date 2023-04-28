@@ -183,21 +183,6 @@ class AddressController extends AbstractController
         return $categories;
     }
 
-    /**
-     * @return Address
-     */
-    public function getCenterAddressObjectFromFlexConfig(): ?Address
-    {
-        if(!empty($this->settings['centerAddress'])) {
-            $arr = explode('_',$this->settings['centerAddress']);
-            $centerAddressUid = array_pop($arr);
-
-            return $this->addressRepository->findByUid($centerAddressUid);
-        }
-
-        return new Address();
-    }
-
     public function searchAction()
     {
         if(!empty($this->settings['ignoreDemands'])) {
@@ -404,28 +389,30 @@ class AddressController extends AbstractController
         /** @var Address $centerAddress */
         $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
         $center = false;
-        if($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
-            $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
-            if($center['longitude'] > 0 && $center['latitude'] > 0) {
-                $centerAddress->setLongitude($center['longitude']);
-                $centerAddress->setLatitude($center['latitude']);
+        if ($centerAddress) {
+            if ($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
+                $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
+                if ($center['longitude'] > 0 && $center['latitude'] > 0) {
+                    $centerAddress->setLongitude($center['longitude']);
+                    $centerAddress->setLatitude($center['latitude']);
+                }
             }
-        }
 
-        if($args['distance']) {
-            $lat = $centerAddress->getLatitude();
-            $lon = $centerAddress->getLongitude();
-            foreach ($addresses as $address) {
-                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
-                $address->setPosition($dist > $args['distance'] ? '1' : '0');
+            if ($args['distance']) {
+                $lat = $centerAddress->getLatitude();
+                $lon = $centerAddress->getLongitude();
+                foreach ($addresses as $address) {
+                    $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
+                    $address->setPosition($dist > $args['distance'] ? '1' : '0');
+                }
             }
-        }
 
-        $countries = array_filter($this->addressRepository->findAllCountries());
-        if(empty($args['country']) && count($countries) > 0) {
-            $args['country'] = array_key_first($countries);
+            $countries = array_filter($this->addressRepository->findAllCountries());
+            if (empty($args['country']) && count($countries) > 0) {
+                $args['country'] = array_key_first($countries);
+            }
+            ksort($countries);
         }
-        ksort($countries);
 
         $this->view->assignMultiple([
             'addresses' => $addresses,
@@ -715,6 +702,7 @@ class AddressController extends AbstractController
             // Build filter list
             $filterList = [];
             foreach ($res as $filter) {
+                if (empty($filter[$field])) continue;
                 $filterList[$filter[$field]] = $filter[$field];
             }
             return $filterList;

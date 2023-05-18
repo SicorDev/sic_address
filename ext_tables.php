@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die('Access denied.');
+defined('TYPO3') or die('Access denied.');
 
 // Register Sicor icon
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
@@ -9,7 +9,7 @@ $iconRegistry->registerIcon('extensions-sicor-icon', \TYPO3\CMS\Core\Imaging\Ico
 ]);
 
 $extensionConfiguration = \SICOR\SicAddress\Utility\Service::getConfiguration();
-if (defined('TYPO3_MODE') && $extensionConfiguration["developerMode"]) {
+if (defined('TYPO3') && $extensionConfiguration["developerMode"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -29,7 +29,7 @@ if (defined('TYPO3_MODE') && $extensionConfiguration["developerMode"]) {
     );
 }
 
-if (defined('TYPO3_MODE') && $extensionConfiguration["addressExport"]) {
+if (defined('TYPO3') && $extensionConfiguration["addressExport"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -47,7 +47,7 @@ if (defined('TYPO3_MODE') && $extensionConfiguration["addressExport"]) {
     );
 }
 
-if (defined('TYPO3_MODE') && $extensionConfiguration["addressImport"]) {
+if (defined('TYPO3') && $extensionConfiguration["addressImport"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -65,7 +65,7 @@ if (defined('TYPO3_MODE') && $extensionConfiguration["addressImport"]) {
     );
 }
 
-if (defined('TYPO3_MODE') && $extensionConfiguration["doublets"]) {
+if (defined('TYPO3') && $extensionConfiguration["doublets"]) {
     // Registers Backend Doublets Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',

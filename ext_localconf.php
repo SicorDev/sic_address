@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('TYPO3')) {
-    die('Access denied.');
-}
+defined('TYPO3') or die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'SICOR.sic_address',

@@ -9,7 +9,7 @@ $iconRegistry->registerIcon('extensions-sicor-icon', \TYPO3\CMS\Core\Imaging\Ico
 ]);
 
 $extensionConfiguration = \SICOR\SicAddress\Utility\Service::getConfiguration();
-if (defined('TYPO3') && $extensionConfiguration["developerMode"]) {
+if ($extensionConfiguration["developerMode"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -29,7 +29,7 @@ if (defined('TYPO3') && $extensionConfiguration["developerMode"]) {
     );
 }
 
-if (defined('TYPO3') && $extensionConfiguration["addressExport"]) {
+if ($extensionConfiguration["addressExport"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -47,7 +47,7 @@ if (defined('TYPO3') && $extensionConfiguration["addressExport"]) {
     );
 }
 
-if (defined('TYPO3') && $extensionConfiguration["addressImport"]) {
+if ($extensionConfiguration["addressImport"]) {
     // Registers Backend Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',
@@ -65,7 +65,7 @@ if (defined('TYPO3') && $extensionConfiguration["addressImport"]) {
     );
 }
 
-if (defined('TYPO3') && $extensionConfiguration["doublets"]) {
+if ($extensionConfiguration["doublets"]) {
     // Registers Backend Doublets Module
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'SICOR.sic_address',

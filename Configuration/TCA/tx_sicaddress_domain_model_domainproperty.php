@@ -7,7 +7,6 @@ return array(
 		'hideTable' => 1,
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
-		'cruser_id' => 'cruser_id',
 		'dividers2tabs' => TRUE,
 		'sortby' => 'sorting',
 		'languageField' => 'sys_language_uid',

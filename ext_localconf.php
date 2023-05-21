@@ -3,7 +3,7 @@
 defined('TYPO3') or die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'SICOR.sic_address',
+    'SicAddress',
     'Sicaddress',
     [
         \SICOR\SicAddress\Controller\AddressController::class => 'list, show, new, create, edit, update, delete, search'
@@ -14,7 +14,7 @@ defined('TYPO3') or die('Access denied.');
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'SICOR.sic_address',
+    'SicAddress',
     'SicaddressVianovisExport',
     [
         \SICOR\SicAddress\Controller\ExportController::class => 'exportVianovis',

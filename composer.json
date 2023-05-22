@@ -11,10 +11,11 @@
 		}
 	],
 	"require": {
-		"typo3/cms-core": "^9.5 || ^10.4",
-		"php": ">=7.0 <=7.4"
+		"typo3/cms-core": "^11.5 || ^12.4",
+		"php": "^7.4 || ^8"
 	},
-	"authors": [
+	"authors":
+	[
 		{
 			"name": "SICOR DEVTEAM",
 			"email": "dev@sicor-kdl.net",

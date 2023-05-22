@@ -438,7 +438,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @return boolean
      */
     public function isRelevant($property) {
-        if(in_array($property, array('crdate','tstamp','l10n_diffsource','cruser_id'))) return false;
+        if(in_array($property, array('crdate','tstamp','l10n_diffsource'))) return false;
 
         $query = $this->createQuery();
         $table = $query->getSource()->getSelectorName();

@@ -6,7 +6,6 @@ return array(
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'dividers2tabs' => TRUE,
         'default_sortby' => 'ORDER BY title',
         'languageField' => 'sys_language_uid',

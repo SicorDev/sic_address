@@ -81,8 +81,8 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
 window.addEventListener("load", function(event) {
 $mapObj;
 
-L.tileLayer('$tileLayerUrl', $tileLayerSettings).addTo(sic_address_map_${id});
-    
+L.tileLayer('$tileLayerUrl', $tileLayerSettings).addTo(sic_address_map_{$id});
+
 $iconObj;
 $markerObj;
 $circleObj;

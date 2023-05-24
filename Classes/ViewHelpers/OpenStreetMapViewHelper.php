@@ -22,9 +22,9 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
         $radius = $this->arguments['radius'];
         $settings = $this->arguments['settings']['map'];
         $iconSettings = $this->arguments['settings']['icon'];
-        $markerSettings = $this->arguments['settings']['marker'];
         $tileLayerUrl = $this->arguments['settings']['tileLayerUrl'];
         $tileLayerSettings = self::a2json($this->arguments['settings']['tileLayer']);
+        $markerSettings = (array_key_exists('marker', $this->arguments['settings'])) ? $this->arguments['settings']['marker'] : [];
 
         if($center) {
             $settings['center'] = array($center->getLatitude(), $center->getLongitude());
@@ -35,11 +35,9 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
         $mapObj = 'var sic_address_map_' . $id . ' = L.map("sic_address_map_' . $id . '", ' . self::a2json($settings) . ')';
 
         $markerObj = '';
-        $icons = $latlngs = array();
+        $icons = [];
         foreach($markers as $marker) {
             $markerLatLng = array($marker->getLatitude(), $marker->getLongitude());
-            $latlngs[] = array($marker->getLatitude(), $marker->getLongitude());
-
             $categoryUid = 0;
             foreach($marker->getCategories() as $category) {
                 $categoryUid = $category->getUid();
@@ -83,8 +81,8 @@ class OpenStreetMapViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstract
 window.addEventListener("load", function(event) {
 $mapObj;
 
-L.tileLayer('$tileLayerUrl', $tileLayerSettings).addTo(sic_address_map_${id});
-    
+L.tileLayer('$tileLayerUrl', $tileLayerSettings).addTo(sic_address_map_{$id});
+
 $iconObj;
 $markerObj;
 $circleObj;

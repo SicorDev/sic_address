@@ -273,7 +273,7 @@ class DomainProperty extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param integer $sorting
      */
     public function setSorting($sorting) {
-        $this->sorting = abs($sorting);
+        $this->sorting = abs((int)$sorting);
     }
 
     /**

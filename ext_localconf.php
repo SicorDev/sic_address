@@ -23,6 +23,7 @@ defined('TYPO3') or die('Access denied.');
 );
 
 // Register used signals
+/*
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
 $signalSlotDispatcher->connect(
     \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
@@ -39,3 +40,4 @@ $signalSlotDispatcher->connect(
     'refreshModuleList',
     false
 );
+*/

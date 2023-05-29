@@ -2,6 +2,11 @@
 
 use SICOR\SicAddress\Utility\Service;
 
+if (!class_exists(SICOR\SicAddress\Utility\Service::class)) {
+    $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sic_address');
+    require_once($path . 'Classes/Utility/Service.php');
+}
+
 $extensionConfiguration = Service::getConfiguration();
 
 if (!$extensionConfiguration["ttAddressMapping"]) {

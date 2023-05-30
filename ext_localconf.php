@@ -25,20 +25,21 @@ call_user_func(function($extensionName)
     );
 
     // Register used signals
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    $signalSlotDispatcher->connect(
-        \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
-        'hasInstalledExtensions',
-        \SICOR\SicAddress\Domain\Service\SignalService::class,
-        'afterExtensionInstall',
-        false
-    );
-
-    $signalSlotDispatcher->connect(
-        'TYPO3\\CMS\\Extensionmanager\\Controller\\ConfigurationController',
-        'afterExtensionConfigurationWrite',
-        \SICOR\SicAddress\Domain\Service\SignalService::class,
-        'refreshModuleList',
-        false
-    );
+//     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+//     $signalSlotDispatcher->connect(
+//         \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService::class,
+//         'hasInstalledExtensions',
+//         \SICOR\SicAddress\Domain\Service\SignalService::class,
+//         'afterExtensionInstall',
+//         false
+//     );
+// 
+//     $signalSlotDispatcher->connect(
+//         'TYPO3\\CMS\\Extensionmanager\\Controller\\ConfigurationController',
+//         'afterExtensionConfigurationWrite',
+//         \SICOR\SicAddress\Domain\Service\SignalService::class,
+//         'refreshModuleList',
+//         false
+//     );
 }, 'SicAddress');
+

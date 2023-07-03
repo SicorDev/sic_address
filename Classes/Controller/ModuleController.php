@@ -230,8 +230,8 @@ class ModuleController extends AbstractController
             $value->getType()->setClassName($title);
 
             if ($value->getType()->getTitle() === "mmtable") {
-                if (!$this->saveTemplate("Classes/Domain/Model/" . $title . ".php", $value, "Classes/Domain/Model/Table.php"))
-                    $errorMessages[] = "Unable to save Model: " . $title . ".php";
+                if (!$this->saveTemplate("Classes/Domain/Model/" . ucfirst($title) . ".php", $value, "Classes/Domain/Model/Table.php"))
+                    $errorMessages[] = "Unable to save Model: " . ucfirst($title) . ".php";
                 if (!$this->saveTemplate("Configuration/TCA/tx_sicaddress_domain_model_" . strtolower($title) . ".php", $this->getSingleTCAConfiguration($value), "Configuration/TCA/tx_sicaddress_domain_model_table.php"))
                     $errorMessages[] = "Unable to save TCA: tx_sicaddress_domain_model_" . strtolower($title) . ".php";
             }

@@ -532,8 +532,10 @@ class AddressController extends AbstractController
     public function showAction(\SICOR\SicAddress\Domain\Model\Address $address = null)
     {
         if(empty($address)) {
-            $uid = $this->settings['singleAddress'];
-            if(!empty($this->settings['singleTtAddress'])) {
+            if (isset($this->settings['singleAddress'])) {
+                $uid = $this->settings['singleAddress'];
+            }
+            if (isset($this->settings['singleTtAddress'])) {
                 $uid = $this->settings['singleTtAddress'];
             }
             $addresses = array();

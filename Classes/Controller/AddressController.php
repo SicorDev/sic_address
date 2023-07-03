@@ -91,12 +91,14 @@ class AddressController extends AbstractController
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting
-        $field = $this->settings['sortField'];
-        $direction = $this->settings['sortDirection'];
-        if ($field && !($field === "none")) {
-            $this->addressRepository->setDefaultOrderings(array(
-                $field => $direction !== 'desc' ? QueryInterface::ORDER_ASCENDING : QueryInterface::ORDER_DESCENDING
-            ));
+        if(isset($this->settings['sortField']) && isset($this->settings['sortDirection'])) {
+            $field = $this->settings['sortField'];
+            $direction = $this->settings['sortDirection'];
+            if ($field && !($field === "none")) {
+                $this->addressRepository->setDefaultOrderings(array(
+                    $field => $direction !== 'desc' ? QueryInterface::ORDER_ASCENDING : QueryInterface::ORDER_DESCENDING
+                ));
+            }
         }
 
         // Make search respect configured pages if there are some

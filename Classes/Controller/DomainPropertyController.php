@@ -135,7 +135,7 @@ class DomainPropertyController extends AbstractController
                 $extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("sic_address");
 
                 // Delete extra files
-                $delFile = $extPath . 'Classes/Domain/Model/' . $title . '.php';
+                $delFile = $extPath . 'Classes/Domain/Model/' . ucfirst($title) . '.php';
                 if (is_file($delFile)) unlink($delFile);
                 $delFile = $extPath . 'Configuration/TCA/tx_sicaddress_domain_model_' . strtolower($title) . '.php';
                 if (is_file($delFile)) unlink($delFile);

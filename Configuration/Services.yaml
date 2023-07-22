@@ -8,3 +8,10 @@ services:
     resource: '../Classes/*'
     exclude:
       - '../Classes/Domain/Model/*'
+
+  SICOR\SicAddress\EventListener\ExtensionManagerListener:
+    tags:
+     - name: event.listener
+       method: handleEvent
+       identifier: 'sicorExtensionsActivated'
+

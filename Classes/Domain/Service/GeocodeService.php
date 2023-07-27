@@ -1,6 +1,6 @@
 <?php
 
-namespace SICOR\SicAddress\Service;
+namespace SICOR\SicAddress\Domain\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

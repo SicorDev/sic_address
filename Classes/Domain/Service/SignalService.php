@@ -1,6 +1,6 @@
 <?php
 
-namespace SICOR\SicAddress\EventListener;
+namespace SICOR\SicAddress\Domain\Service;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,36 +32,28 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-
-
 /**
- * Extension Manager Listener
+ * SignalService
  */
-class ExtensionManagerListener
+class SignalService implements \TYPO3\CMS\Core\SingletonInterface
 {
-    public function __invoke(AfterPackageActivationEvent $event): void
-    {
-        if ($event->getPackageKey() == 'sic_address') {
-            $this->afterExtensionInstall();
-        }
-    }
-
     /**
      * Called after installation
      * Create default generated files
      *
      * @param array $extname
      */
-    public function afterExtensionInstall()
+    public function afterExtensionInstall($extname = null)
     {
+        if ($extname !== 'sic_address') {
+            return;
+        }
+
         // Create default files
-        $this->saveTemplate('Classes/Domain/Model/Address.php', []);
-        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', []);
-        $this->saveTemplate('ext_typoscript_setup.typoscript', []);
-        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', []);
+        $this->saveTemplate('Classes/Domain/Model/Address.php', array());
+        $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array());
+        $this->saveTemplate('ext_typoscript_setup.typoscript', array());
+        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array());
 
         // 'Autoload' above classes...
         ClassLoadingInformation::dumpClassLoadingInformation();
@@ -78,19 +70,33 @@ class ExtensionManagerListener
     private function saveTemplate($filename, $properties)
     {
         // Build filenames
-        $path = ExtensionManagementUtility::extPath('sic_address');
-        $templatePathAndFilename = GeneralUtility::getFileAbsFileName($path) . 'Resources/Private/CodeTemplates/' . $filename;
-        $pathAndFilename = $path . $filename;
-        if (file_exists($pathAndFilename))
+        $templatePathAndFilename = GeneralUtility::getFileAbsFileName(ExtensionManagementUtility::extPath("sic_address")) . "Resources/Private/CodeTemplates/" . $filename;
+        $filename = ExtensionManagementUtility::extPath("sic_address") . $filename;
+        if (file_exists($filename))
             return true;
 
-        $customView = GeneralUtility::makeInstance(StandaloneView::class);
+        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $customView = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
-        $customView->assign('settings', []);
-        $customView->assign('properties', $properties);
+        $customView->assign("settings", array());
+        $customView->assign("properties", $properties);
         $content = $customView->render();
 
-        return (file_put_contents($pathAndFilename, $content) !== false);
+        return (file_put_contents($filename, $content) !== false);
+    }
+
+    /**
+     * Called after saving extension configuration
+     * Refresh module list when backend module is activated
+     *
+     * @param string $extensionKey
+     * @param array $newConfiguration
+     */
+    public function refreshModuleList($extensionKey, $newConfiguration)
+    {
+        if ($extensionKey === 'sic_address') {
+            BackendUtility::setUpdateSignal('updateModuleMenu');
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace SICOR\SicAddress\Service;
+namespace SICOR\SicAddress\Domain\Service;
 
     /***************************************************************
      *
@@ -27,13 +27,13 @@ namespace SICOR\SicAddress\Service;
      ***************************************************************/
 
 /**
- * FAL Service
+ * FALService
  */
 class FALService {
 
-    protected static $allowedFileExtensions = [
-        'image' => ['jpg', 'JPG', 'JPEG', 'jpeg', 'gif', 'GIF', 'png', 'PNG']
-    ];
+    protected static $allowedFileExtensions = array(
+        "image" => array("jpg", "JPG", "JPEG", "jpeg", "gif", "GIF", "png", "PNG")
+    );
 
     /**
      *
@@ -46,12 +46,12 @@ class FALService {
      */
     public static function uploadFalFile($fileData, $folder, $className, $validator = null) {
         if (self::isValidFile($fileData, $validator) && !empty($fileData['name'])) {
-            $storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\StorageRepository::class);
-            $newFileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\SICOR\SicAddress\Domain\Model\FileReference::class);
+            $storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
+            $newFileReference = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SICOR\\SicAddress\\Domain\\Model\\FileReference');
 
             //Check if storage exists and get it, otherwise create it
             $storage = $storageRepository->findByUid(1); #Fileadmin = 1
-            $saveFolder = ($storage->hasFolder('./' . $folder)) ? $storage->getFolder('./' . $folder) : $storage->createFolder($folder);
+            $saveFolder = ($storage->hasFolder("./" . $folder)) ? $storage->getFolder('./' . $folder) : $storage->createFolder($folder);
 
             $fileObject = $storage->addFile($fileData['tmp_name'], $saveFolder, $fileData['name']);
             $newFileReference->setOriginalResource($fileObject);
@@ -71,8 +71,8 @@ class FALService {
      * @return boolean
      */
     private static function isValidFile($fileData, $type) {
-        $fileExtension = explode('.', $fileData['name'])[1];
-        $fileType = explode('/', $fileData['type'])[0];
+        $fileExtension = explode(".", $fileData['name'])[1];
+        $fileType = explode("/", $fileData['type'])[0];
 
         //No type given => No validation
         if (!$type)

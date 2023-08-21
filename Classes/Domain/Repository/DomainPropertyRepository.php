@@ -27,6 +27,9 @@ namespace SICOR\SicAddress\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * The repository for DomainProperties
  */
@@ -44,7 +47,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     public function initializeObject()
     {
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(FALSE);
         $querySettings->setIgnoreEnableFields(TRUE);
         $querySettings->setRespectSysLanguage(FALSE);
@@ -53,7 +56,7 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
     public function initializeRegularObject()
     {
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(FALSE);
         $querySettings->setIgnoreEnableFields(false);
         $querySettings->setRespectSysLanguage(true);

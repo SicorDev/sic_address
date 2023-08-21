@@ -1,14 +1,6 @@
 <?php
-namespace SICOR\SicAddress\Controller;
 
-use In2code\Powermail\ViewHelpers\String\UnderscoredToLowerCamelCaseViewHelper;
-use SICOR\SicAddress\Domain\Model\Address;
-use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
-use SICOR\SicAddress\Domain\Model\DomainObject\MmtableType;
-use SICOR\SicAddress\Domain\Model\DomainProperty;
-use SICOR\SicAddress\Utility\Service;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+namespace SICOR\SicAddress\Controller;
 
 /***************************************************************
  *
@@ -35,52 +27,26 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use In2code\Powermail\ViewHelpers\String\UnderscoredToLowerCamelCaseViewHelper;
+use SICOR\SicAddress\Domain\Model\Address;
+use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
+use SICOR\SicAddress\Domain\Model\DomainObject\MmtableType;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
 /**
  * ImportController
  */
-class ImportController extends ModuleController {
-
-    /**
-     * Persistence Manager
-     *
-     *@var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
-     *@TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $persistenceManager;
-
-
-    /**
-     * action importTTAddress
-     *
-     * @return void
-     */
-    public function importTTAddressAction()
+class ImportController extends ModuleController
+{
+    public function importAction()
     {
-        if ($this->extensionConfiguration["ttAddressMapping"]) {
-            // Clear database
-            $this->domainPropertyRepository->deleteFieldDefinitions(1);
-
-            $fields = $this->addressRepository->getFields();
-            foreach ($fields as $field) {
-                if (preg_match("/^(uid|pid|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $field) === 0) {
-                    $domainProperty = new DomainProperty();
-                    $domainProperty->setTitle($field);
-                    $domainProperty->setTcaLabel($field);
-                    $domainProperty->setType(($field === 'image') ? 'image' : 'string');
-                    $domainProperty->setExternal(!Service::startsWith($field, 'tx_'));
-
-                    $this->domainPropertyRepository->add($domainProperty);
-                }
-            }
-        }
-
-        $this->redirect("list", "Module");
-    }
-
-    public function importAction() {
         $this->domainPropertyRepository->initializeRegularObject();
         $this->view->assign('properties', $this->domainPropertyRepository->findAllImportable());
         $this->view->assign('pids', $this->addressRepository->findPids());
+
+        return $this->htmlResponse($this->wrapModuleTemplate());
     }
 
     /**
@@ -88,23 +54,16 @@ class ImportController extends ModuleController {
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function importFromFileAction() {
+    public function importFromFileAction()
+    {
         $args = $this->request->getArguments();
 
-        if($args['file']['error']) {
-            $this->addFlashMessage(
-                $args['file']['name'],
-                $this->translate('label_import_error_upload'),
-                AbstractMessage::ERROR
-            );
+        if ($args['file']['error']) {
+            $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_upload'), ContextualFeedbackSeverity::ERROR);
             $this->redirect('import');
         }
-        if($args['file']['type'] !== 'text/csv') {
-            $this->addFlashMessage(
-                $args['file']['name'],
-                $this->translate('label_import_error_mime'),
-                AbstractMessage::ERROR
-            );
+        if ($args['file']['type'] !== 'text/csv') {
+            $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_mime'), ContextualFeedbackSeverity::ERROR);
             $this->redirect('import');
         }
 
@@ -113,14 +72,10 @@ class ImportController extends ModuleController {
             $properties = $this->domainPropertyRepository->findAll();
             $total = $line = 0;
             while (($data = fgetcsv($handle, 0, ";")) !== FALSE) {
-                if($line === 0) {
+                if ($line === 0) {
                     $this->fillCSVheader($header, $data, $properties);
-                    if(empty($header)) {
-                        $this->addFlashMessage(
-                            $args['file']['name'],
-                            $this->translate('label_import_error_csv'),
-                            AbstractMessage::ERROR
-                        );
+                    if (empty($header)) {
+                        $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_csv'), ContextualFeedbackSeverity::ERROR);
                         $this->redirect('import');
                     }
                 } else {
@@ -132,29 +87,32 @@ class ImportController extends ModuleController {
                 }
                 $line++;
             }
-            $this->persistenceManager->persistAll();
-            $this->addFlashMessage(
-                $total . ' ' .$this->translate('label_import_total') . ' (' . $args['pids'][ $args['pid'] ] . ')',
-                $args['file']['name'],
-                AbstractMessage::OK
-            );
+
+            $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+            $persistenceManager->persistAll();
+
+            $this->addFlashMessage($total . ' ' . $this->translate('label_import_total') . ' (' . $args['pids'][$args['pid']] . ')', $args['file']['name'], ContextualFeedbackSeverityessage::OK);
             $this->redirect('import');
         }
+
+        return $this->htmlResponse();
     }
 
-    public function fillCSVheader(&$header, &$data, &$properties) {
-        foreach($data as $index=>$val) {
-            if(empty($properties[$val])) continue;
+    public function fillCSVheader(&$header, &$data, &$properties)
+    {
+        foreach ($data as $index => $val) {
+            if (empty($properties[$val])) continue;
             $header[$index]['property'] = GeneralUtility::underscoredToLowerCamelCase($val);
             $header[$index]['field'] = $val;
         }
     }
 
-    public function fillAddressWithCSVdata($address, &$data, &$header, &$properties) {
-        foreach($data as $index=>$val) {
-            if(empty($properties[  $header[$index]['field']  ])) continue;
-            $propertyType = $properties[  $header[$index]['field']  ][0]->getType();
-            if($propertyType instanceof ImageType || $propertyType instanceof MmtableType) continue;
+    public function fillAddressWithCSVdata($address, &$data, &$header, &$properties)
+    {
+        foreach ($data as $index => $val) {
+            if (empty($properties[$header[$index]['field']])) continue;
+            $propertyType = $properties[$header[$index]['field']][0]->getType();
+            if ($propertyType instanceof ImageType || $propertyType instanceof MmtableType) continue;
             $address->_setProperty($header[$index]['property'], $val);
         }
     }

@@ -8,79 +8,31 @@ $iconRegistry->registerIcon('extensions-sicor-icon', \TYPO3\CMS\Core\Imaging\Ico
     'source' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
 ]);
 
-$extensionConfiguration = \SICOR\SicAddress\Utility\Service::getConfiguration();
-if ($extensionConfiguration["developerMode"]) {
-    // Registers Backend Module
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'SICOR.sic_address',
-        'web',     // Make module a submodule of 'web'
-        'sicaddress',    // Submodule key
-        '',                        // Position
-        [
-            \SICOR\SicAddress\Controller\ModuleController::class => 'list, create, deleteFieldDefinitions',
-            \SICOR\SicAddress\Controller\ImportController::class => 'migrateNicosDirectory, migrateSPDirectory, migrateOBG, migrateBezugsquelle, importTTAddress',
-            \SICOR\SicAddress\Controller\DomainPropertyController::class => 'create, update, delete, sort',
-        ],
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
-            'labels' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_sicaddress.xlf',
-        ]
+$extensionConfiguration = \SICOR\SicAddress\Domain\Service\ConfigurationService::getConfiguration();
+if ($extensionConfiguration["ttAddressMapping"]) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\SICOR\SicAddress\Task\AddGeoLocationTask::class] = array(
+        'extension' => 'sic_address',
+        'title' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:geolocation_task_title',
+        'description' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:geolocation_task_description',
+        'additionalFields' => NULL
     );
 }
 
-if ($extensionConfiguration["addressExport"]) {
-    // Registers Backend Module
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'SICOR.sic_address',
-        'web',     // Make module a submodule of 'web'
-        'sicaddressexport',    // Submodule key
-        '',                        // Position
-        [
-            \SICOR\SicAddress\Controller\ExportController::class => 'export, exportToFile',
-        ],
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
-            'labels' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_sicaddressexport.xlf',
-        ]
-    );
+// Toggle Backend Module son/off according to extension config
+if (!$extensionConfiguration["developerMode"]) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddress)');
 }
 
-if ($extensionConfiguration["addressImport"]) {
-    // Registers Backend Module
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'SICOR.sic_address',
-        'web',     // Make module a submodule of 'web'
-        'sicaddressimport',    // Submodule key
-        '',                        // Position
-        [
-            \SICOR\SicAddress\Controller\ImportController::class => 'import, importFromFile',
-        ],
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
-            'labels' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_sicaddressimport.xlf',
-        ]
-    );
+if (!$extensionConfiguration["addressExport"]) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressexport)');
 }
 
-if ($extensionConfiguration["doublets"]) {
-    // Registers Backend Doublets Module
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'SICOR.sic_address',
-        'web',     // Make module a submodule of 'web'
-        'sicaddressdoublets',    // Submodule key
-        '',                        // Position
-        [
-            \SICOR\SicAddress\Controller\ModuleController::class => 'doublets,ajaxDoublets,ajaxDeleteDoublet,switchDatasets',
-        ],
-        [
-            'access' => 'user,group',
-            'icon' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
-            'labels' => 'LLL:EXT:sic_address/Resources/Private/Language/locallang_sicaddress_doublets.xlf',
-        ]
-    );
+if (!$extensionConfiguration["addressImport"]) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressimport)');
+}
+
+if (!$extensionConfiguration["doublets"]) {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressdoublets)');
 }
 
 if ($extensionConfiguration["ttAddressMapping"]) {

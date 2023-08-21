@@ -1,4 +1,5 @@
 <?php
+
 namespace SICOR\SicAddress\Task;
 
 /***************************************************************
@@ -27,11 +28,10 @@ namespace SICOR\SicAddress\Task;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use SICOR\SicAddress\Domain\Repository\AddressRepository;
+use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use SICOR\SicAddress\Domain\Service\GeocodeService;
-use SICOR\SicAddress\Utility\Service;
 
 /**
  * AddGeoLocationTask
@@ -42,14 +42,13 @@ class AddGeoLocationTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     public function execute()
     {
         // Check configuration
-        $extensionManagerSettings = Service::getConfiguration();
+        $extensionManagerSettings = ConfigurationService::getConfiguration();
         if(!$extensionManagerSettings["ttAddressMapping"])
             return FALSE;
         
         // Prepare Address repository
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $addressRepository = $objectManager->get(AddressRepository::class);
-        $querySettings = $objectManager->get(QuerySettingsInterface::class);
+        $addressRepository = GeneralUtility::makeInstance(AddressRepository::class);
+        $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
         $querySettings->setRespectStoragePage(FALSE);
         $querySettings->setIgnoreEnableFields(true);
         $addressRepository->setDefaultQuerySettings($querySettings);

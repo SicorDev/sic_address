@@ -1,4 +1,5 @@
 <?php
+
 namespace SICOR\SicAddress\Controller;
 
 /***************************************************************
@@ -32,14 +33,14 @@ use SICOR\SicAddress\Domain\Repository\CategoryRepository;
 use SICOR\SicAddress\Domain\Repository\ContentRepository;
 use SICOR\SicAddress\Domain\Service\GeocodeService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use SICOR\SicAddress\Domain\Service\FALService;
-use SICOR\SicAddress\Utility\Service;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use function array_filter;
 use function class_exists;
@@ -57,7 +58,7 @@ class AddressController extends AbstractController
     protected ?CategoryRepository $categoryRepository;
     protected ?GeocodeService $geocodeService;
     protected Typo3QuerySettings $querySettings;
-    protected Service $service;
+    protected ConfigurationService $service;
 
     protected array $extensionConfiguration;
     protected $displayCategoryList = null;
@@ -72,7 +73,7 @@ class AddressController extends AbstractController
         CategoryRepository $categoryRepository,
         GeocodeService $geocodeService,
         Typo3QuerySettings $querySettings,
-        Service $service
+        ConfigurationService $service
     )
     {
         $this->addressRepository = $addressRepository;
@@ -82,7 +83,6 @@ class AddressController extends AbstractController
         $this->querySettings = $querySettings;
         $this->service = $service;
     }
-
 
     public function initializeAction(): void
     {
@@ -117,10 +117,8 @@ class AddressController extends AbstractController
         $GLOBALS['TSFE']->additionalFooterData['tx_sicaddress_sicaddress'] = '<script src="typo3conf/ext/sic_address/Resources/Public/Javascript/sicaddress.js" type="text/javascript"></script>';
     }
 
-    public function initializeView(ViewInterface $view): void
+    protected function initializeView($view)
     {
-        parent::initializeView($view);
-
         $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 
@@ -624,7 +622,7 @@ class AddressController extends AbstractController
             }
         }
 
-        $this->addFlashMessage($this->translate('label_address_created'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->addFlashMessage($this->translate('label_address_created'), '', ContextualFeedbackSeverity::OK);
         $this->addressRepository->add($newAddress);
         $this->redirect('new');
     }

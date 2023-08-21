@@ -69,8 +69,4 @@ if(!empty($GLOBALS['TCA']['tt_address'])) {
         'size' => '8',
         'default' => 0
     );
-
-    // Link to sys_category
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable('sic_address', 'tt_address');
-
 }

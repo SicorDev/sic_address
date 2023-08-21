@@ -27,10 +27,9 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class AbstractController extends ActionController
@@ -40,21 +39,12 @@ class AbstractController extends ActionController
         return LocalizationUtility::translate($key, $extension);
     }
 
-    /**
-     * @param ViewInterface $view
-     */
-    public function initializeView(ViewInterface $view): void
+    protected function initializeView($view)
     {
-        parent::initializeView($view);
-
         if (!in_array($this->request->getControllerActionName(), array('create', 'update'))) {
             $updateOrFirstInstall = is_file(ExtensionManagementUtility::extPath("sic_address") . 'PLEASE_GENERATE');
             if ($updateOrFirstInstall && $this->domainPropertyRepository && $this->domainPropertyRepository->countAll()) {
-                $this->addFlashMessage(
-                    $this->translate('label_update_message'),
-                    $this->translate('label_update_title'),
-                    AbstractMessage::ERROR
-                );
+                $this->addFlashMessage($this->translate('label_update_message'), $this->translate('label_update_title'), ContextualFeedbackSeverity::ERROR);
             }
         }
     }

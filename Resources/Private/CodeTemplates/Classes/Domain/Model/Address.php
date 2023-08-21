@@ -44,12 +44,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     protected $sortField;
 
     /**
-     * uid
-     * @var int
-     */
-    protected $uid;
-
-    /**
      * hidden
      * @var boolean
      */
@@ -79,7 +73,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
     * Adds a Category
-    *
     * @param \SICOR\SicAddress\Domain\Model\Category $category
     * @return void
     */
@@ -89,7 +82,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
     * Removes a Category
-    *
     * @param \SICOR\SicAddress\Domain\Model\Category $categoryToRemove The Category to be removed
     * @return void
     */
@@ -99,7 +91,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
     * Returns the categories
-    *
     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\Category> $categories
     */
     public function getCategories() {
@@ -108,7 +99,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
     /**
     * Sets the categories
-    *
     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\SICOR\SicAddress\Domain\Model\Category> $categories
     * @return void
     */
@@ -164,13 +154,6 @@ class Address extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
      */
     public function setSortField($sortField) {
         $this->sortField = $sortField;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUid() {
-        return $this->uid;
     }
 
     /**

@@ -120,6 +120,12 @@ return array(
                 ],
             ]
         ],
+        'categories' => [
+            'config' => [
+                'type' => 'category',
+                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.title',
+            ]
+        ],
     <f:for each="{properties}" as="field">
         <f:format.htmlentitiesDecode>
     '{field.title}' => array(

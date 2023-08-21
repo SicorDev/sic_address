@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * ExportController
@@ -69,6 +70,8 @@ class ExportController extends ModuleController {
         $this->view->assign("templates", $this->getTemplates());
         $this->view->assign("sorting", $this->domainPropertyRepository->findByType("string"));
         $this->view->assign('categoryTree', $this->buildCategoryTree($categoryUids));
+
+        return $this->htmlResponse($this->wrapModuleTemplate());
     }
 
     /**
@@ -79,7 +82,7 @@ class ExportController extends ModuleController {
     public function exportVianovisAction() 
     {
         // Set template
-        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $customView = GeneralUtility::makeInstance(StandaloneView::class);
         $customView->setTemplatePathAndFilename($this->renderTemplatesPath.'ExportVianovis.html');
         $customView->setPartialRootPaths([$this->renderTemplatesPath.'ExportVianovis.html']);
 
@@ -91,7 +94,9 @@ class ExportController extends ModuleController {
         $domain = $GLOBALS['TSFE']->tmpl->setup['config.']['baseURL'];
         $customView->assign("domain", $domain);
 
-        return $customView->render();
+        return $this->responseFactory->createResponse()
+            ->withAddedHeader('Content-Type', 'text/html; charset=utf-8')
+            ->withBody($this->streamFactory->createStream($customView->render()));
     }
 
     /**
@@ -170,9 +175,8 @@ class ExportController extends ModuleController {
      * @param $template
      */
     private function exportToCSV($addresses, $template) {
-        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-
         $templatePathAndFilename = $this->renderTemplatesPath . $template;
+        $customView = GeneralUtility::makeInstance(StandaloneView::class);
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $this->parseCSV($addresses));
@@ -184,7 +188,6 @@ class ExportController extends ModuleController {
         exit;
     }
 
-
     /**
      * exportToHTMLAction
      *
@@ -192,9 +195,8 @@ class ExportController extends ModuleController {
      * @param $template
      */
     private function exportToHTML($addresses, $template) {
-        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-
         $templatePathAndFilename = $this->renderTemplatesPath . $template;
+        $customView = GeneralUtility::makeInstance(StandaloneView::class);
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("addresses", $addresses);

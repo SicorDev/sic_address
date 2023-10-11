@@ -103,23 +103,6 @@ class DomainPropertyRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     }
 
     /**
-     * Return sys_language items
-     *
-     * @return array
-     */
-    public function getSysLanguages() {
-        $query = $this->createQuery();
-
-        $sql = 'select uid,flag,title,language_isocode as iso from sys_language where hidden=0 order by uid';
-
-        $languages = array(0 => '');
-        foreach($query->statement($sql)->execute(true) as $row) {
-            $languages[ $row['uid'] ] = $row;
-        }
-        return $languages;
-    }
-
-    /**
      *
      * @param int $external
      * @return void

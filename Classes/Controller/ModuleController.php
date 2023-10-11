@@ -44,6 +44,7 @@ use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use StdClass;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -105,11 +106,6 @@ class ModuleController extends AbstractController
      */
     protected $external = 0;
 
-    /**
-     * @var array
-     */
-    protected $languages = array();
-
     public function __construct(
         AddressRepository $addressRepository,
         CategoryRepository $categoryRepository,
@@ -131,6 +127,7 @@ class ModuleController extends AbstractController
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->extensionConfiguration = ConfigurationService::getConfiguration();
         $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        $this->setBackendModuleTemplates();
 
         if (!empty($this->extensionConfiguration['ttAddressMapping'])) {
             if (empty($GLOBALS['TCA']['tt_address'])) {
@@ -155,9 +152,6 @@ class ModuleController extends AbstractController
                 }
             }
         }
-
-        $this->setBackendModuleTemplates();
-        $this->languages = $this->domainPropertyRepository->getSysLanguages();
 
         // Reset JavaScript and CSS files
         GeneralUtility::makeInstance(PageRenderer::class);
@@ -209,7 +203,7 @@ class ModuleController extends AbstractController
             $types[1] = $this->translate('external');
         }
         $this->view->assign('types', $types);
-        $this->view->assign('languages', $this->domainPropertyRepository->getSysLanguages());
+        $this->view->assign('languages', $this->request->getAttribute('site')->getLanguages());
 
         return $this->htmlResponse($this->wrapModuleTemplate());
     }
@@ -570,8 +564,7 @@ class ModuleController extends AbstractController
             }
         }
 
-        $languages = $this->domainPropertyRepository->getSysLanguages();
-
+        $languages = $this->request->getAttribute('site')->getLanguages();
         foreach ($locales as $languageUid => $localeProperties) {
             $prefix = $languageUid ? $languages[$languageUid]['iso'] : '';
             if (!$this->saveTemplate($filename, $localeProperties, '', '', '', $prefix))

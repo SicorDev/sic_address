@@ -55,14 +55,17 @@ class ConfigurationService implements SingletonInterface
         $this->addressRepository = $addressRepository;
     }
 
-    /** @noinspection PhpIncompatibleReturnTypeInspection */
     public function getCenterAddressObjectFromFlexConfig(): ?Address
     {
+        $flexSettings = $this->getPluginSettings();
+        if(!array_key_exists('centerAddress', $flexSettings)) {
+            return null;
+        }
+
         $centerAddressSetting = $this->getPluginSettings()['centerAddress'];
         if ($centerAddressSetting) {
             $arr = explode('_', $centerAddressSetting);
             $centerAddressUid = array_pop($arr);
-
             return $this->addressRepository->findByUid($centerAddressUid);
         }
 

@@ -87,7 +87,7 @@ class AddressController extends AbstractController
     public function initializeAction(): void
     {
         // Init config
-        $this->extensionConfiguration = Service::getConfiguration();
+        $this->extensionConfiguration = ConfigurationService::getConfiguration();
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting
@@ -134,13 +134,19 @@ class AddressController extends AbstractController
         $emptyList = $this->settings['noListStartup'];
 
         $this->fillAddressList($this->translate('label_all'), $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
+
+        return $this->htmlResponse();
     }
 
     /**
      * @return array|mixed
      */
     protected function getDistances() {
-        $distances = array();
+        $distances = [];
+        if(!array_key_exists('distances', $this->settings)) {
+            return $distances;
+        }
+
         foreach(explode(',', $this->settings['distances']) as $distance) {
             $distances[$distance] = $distance . ' km';
         }
@@ -199,6 +205,8 @@ class AddressController extends AbstractController
 
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
         $this->view->assign('listPageUid', $GLOBALS['TSFE']->id);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -279,52 +287,6 @@ class AddressController extends AbstractController
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
-            /* Sachon speciality only... can be removed once it's offline...
-            // mmtable resolver
-            $field = $this->settings['filterField'];
-            if ($field && !is_bool(strpos($field, ".title")))
-            {
-                $addressPlus = null;
-                $field = GeneralUtility::underscoredToLowerCamelCase(substr($field, 0, strpos($field, '.')));
-
-                foreach ($addresses as $address)
-                {
-                    // Get object representing our mm target
-                    $mmObject = ObjectAccess::getProperty($address, $field)->toArray();
-                    $iCount = count($mmObject);
-
-                    // Instead of one entry with three filters we create three entries with one filter...
-                    for ($i=0; $i<$iCount;  $i++) {
-                        // Clone is required, else original is destroyed
-                        $addressClone = clone $address;
-
-                        // Same here
-                        $storageClone = clone ObjectAccess::getProperty($address, $field);
-
-                        // Silly workaround, as remove all is buggy...
-                        while($storageClone->count() > 0)
-                            $storageClone->removeAll($storageClone);
-
-                        // Replace mm target with single entry
-                        $storageClone->attach($mmObject[$i]);
-                        ObjectAccess::setProperty($addressClone, $field, $storageClone);
-
-                        // Set sort string for upcoming usort
-                        $addressClone->setSortField($this->normalize($mmObject[$i]->getTitle()));
-                        $addressPlus [] = $addressClone;
-                    }
-                }
-                $addresses = $addressPlus;
-
-                // Sort everything once again (actually groups by filter!)
-                if(count($addresses) > 1) {
-                    usort($addresses, function ($adr1, $adr2) {
-                        return strcmp($adr1->getSortField(), $adr2->getSortField());
-                    });
-                }
-            }
-            Sachon speciality only... can be removed once it's offline... */
-
             // Handle pagination
             $currentPage = 1;
             if($this->request->hasArgument('currentPage') && (int)$this->request->getArgument('currentPage') > 1) {
@@ -385,6 +347,7 @@ class AddressController extends AbstractController
         }
 
         $currentCountry = $arg['country'] ?? "Deutschland";
+        $countries = [];
 
         /** @var Address $centerAddress */
         $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
@@ -593,6 +556,8 @@ class AddressController extends AbstractController
 
             die ($this->view->render());
         }
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -602,7 +567,7 @@ class AddressController extends AbstractController
      */
     public function newAction()
     {
-
+        return $this->htmlResponse();
     }
 
     /**
@@ -625,6 +590,8 @@ class AddressController extends AbstractController
         $this->addFlashMessage($this->translate('label_address_created'), '', ContextualFeedbackSeverity::OK);
         $this->addressRepository->add($newAddress);
         $this->redirect('new');
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -646,7 +613,6 @@ class AddressController extends AbstractController
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
             case 'obgdir': $template = 'OBGList.html'; break;
-            case 'sachon': $template = 'SachonList.html'; break;
             case 'ualdir': $template = 'UALList.html'; break;
         }
         if (method_exists($this->view, 'setTemplate')) {

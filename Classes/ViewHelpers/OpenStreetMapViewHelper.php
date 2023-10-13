@@ -130,9 +130,6 @@ JS;
                 if(is_array($val)) {
                     $value = self::a2json($val, true);
                 } else {
-                    if($val[0] === '.') {
-                        $val[0] = ' ';
-                    }
                     $value = trim($val);
                 }
             }

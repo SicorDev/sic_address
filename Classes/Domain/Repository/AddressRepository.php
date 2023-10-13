@@ -96,7 +96,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         foreach($categories as $item) {
             $constraints[] = $query->contains("categories", $item);
         }
-        $con = $query->logicalOr($constraints);
+        $con = $query->logicalOr(...$constraints);
         $query->matching($query->logicalAnd($con));
 
         return $query->execute();
@@ -195,7 +195,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             foreach ($queryFields as $field) {
                 $queryconstraints[] = $query->like($field, '%'.$queryvalue.'%');
             }
-            $constraints[] = $query->logicalOr($queryconstraints);
+            $constraints[] = $query->logicalOr(...$queryconstraints);
         }
 
         // Build category constraints
@@ -205,7 +205,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             foreach ($categories as $category) {
                 $catconstraints[] = $query->contains("categories", $category->getUid());
             }
-            $constraints[] = $query->logicalOr($catconstraints);
+            $constraints[] = $query->logicalOr(...$catconstraints);
         }
 
         // Build filter constraint
@@ -229,7 +229,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             return $this->findAll();
         }
 
-        $query->matching($query->logicalAnd($constraints));
+        $query->matching($query->logicalAnd(...$constraints));
         return $query->execute();
     }
 
@@ -247,7 +247,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $query->equals('longitude', null)
         ];
 
-        return $query->matching($query->logicalOr($constraints))->execute();
+        return $query->matching($query->logicalOr(...$constraints))->execute();
     }
 
     /**
@@ -278,13 +278,13 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
             if(!empty($catConstraints)) {
                 $constraints[] = $query->logicalAnd(
-                    $query->logicalOr($catConstraints)
+                    $query->logicalOr(...$catConstraints)
                 );
             }
         }
 
         $query->matching(
-            $query->logicalAnd($constraints)
+            $query->logicalAnd(...$constraints)
         );
 
         return $query->execute();
@@ -414,7 +414,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             }
         }
 
-        $query->matching($query->logicalAnd($constraints));
+        $query->matching($query->logicalAnd(...$constraints));
         $query->getQuerySettings()->setRespectStoragePage(false);
 
         return $query->execute();

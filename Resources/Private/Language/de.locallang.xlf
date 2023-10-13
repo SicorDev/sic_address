@@ -102,6 +102,9 @@
             <trans-unit id="label_detailPageField">
                 <target>Detailseite/Snippet</target>
             </trans-unit>
+			<trans-unit id="label_ajaxMode">
+				<target>AJAX Modus aktivieren</target>
+			</trans-unit>
 			<trans-unit id="label_atozField">
 				<target>A-Z Feld</target>
 			</trans-unit>

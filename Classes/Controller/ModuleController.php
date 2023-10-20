@@ -420,11 +420,20 @@ class ModuleController extends AbstractController
 
             $fields = $this->addressRepository->getFields();
             foreach ($fields as $field) {
-                if (preg_match("/^(uid|pid|cruser_id|t3.*|tstamp|hidden|deleted|categories|sorting)$/", $field) === 0) {
+                if (preg_match("/^(uid|pid|cruser_id|t3.*|tstamp|deleted|categories|sorting)$/", $field) === 0) {
                     $domainProperty = new DomainProperty();
                     $domainProperty->setTitle($field);
                     $domainProperty->setTcaLabel($field);
-                    $domainProperty->setType(($field === 'image') ? 'image' : 'string');
+                    switch ($field) {
+                        case 'image':
+                            $domainProperty->setType('image');
+                            break;
+                        case 'hidden':
+                            $domainProperty->setType('boolean');
+                            break;
+                        default:
+                            $domainProperty->setType('string');
+                    }
                     $domainProperty->setExternal(!str_starts_with($field, 'tx_'));
                     $this->domainPropertyRepository->add($domainProperty);
                 }

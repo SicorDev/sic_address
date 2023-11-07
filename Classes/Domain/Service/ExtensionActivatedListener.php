@@ -52,7 +52,12 @@ final class ExtensionActivatedListener
         $this->saveTemplate('Classes/Domain/Model/Address.php', array());
         $this->saveTemplate('Resources/Private/Language/locallang_db.xlf', array());
         $this->saveTemplate('ext_typoscript_setup.typoscript', array());
-        $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array());
+
+        $extensionConfiguration = \SICOR\SicAddress\Domain\Service\ConfigurationService::getConfiguration();
+        if(!$extensionConfiguration['ttAddressMapping']) {
+            // This one is only required in native mode
+            $this->saveTemplate('Configuration/TCA/tx_sicaddress_domain_model_address.php', array());
+        }
 
         // 'Autoload' above classes...
         ClassLoadingInformation::dumpClassLoadingInformation();

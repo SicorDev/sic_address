@@ -22,15 +22,12 @@ if ($extensionConfiguration["ttAddressMapping"]) {
 if (!$extensionConfiguration["developerMode"]) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddress)');
 }
-
 if (!$extensionConfiguration["addressExport"]) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressexport)');
 }
-
 if (!$extensionConfiguration["addressImport"]) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressimport)');
 }
-
 if (!$extensionConfiguration["doublets"]) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(sicaddressdoublets)');
 }
@@ -45,5 +42,3 @@ if ($extensionConfiguration["ttAddressMapping"]) {
 }
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:sic_address/Configuration/TSconfig/Page/wizard.typoscript">');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_sicaddress_domain_model_domainproperty', 'EXT:sic_address/Resources/Private/Language/locallang_csh_tx_sicaddress_domain_model_domainproperty.xlf');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_sicaddress_domain_model_domainproperty');

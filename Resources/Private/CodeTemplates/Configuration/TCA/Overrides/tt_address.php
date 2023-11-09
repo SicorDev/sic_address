@@ -47,7 +47,7 @@ if(!empty($GLOBALS['TCA']['tt_address'])) {
     // Set company field as label, name and email as alternative label, ordering by company
     $GLOBALS['TCA']['tt_address']['ctrl']['label'] = 'company';
     $GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';
-
+    $GLOBALS['TCA']['tt_address']['ctrl']['label_userFunc'] = null;
 
     <f:if condition="{orderbyquery}">
         <f:then>

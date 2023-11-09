@@ -1,0 +1,47 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<table>
+    <thead>
+    <tr>
+        <th id="anschrift">Anschrift</th>
+        <th id="kontaktdaten">Kontaktdaten</th>
+        <th id="bemerkungen">Bemerkungen</th>
+    </tr>
+    </thead>
+    <tbody>
+    <f:for each="{pagination.paginator.paginatedItems}" as="address" iteration="addressIterator">
+        <tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+
+            <td headers="anschrift">
+                <b>{address.company}</b><br>
+                <span>{address.title} {address.name}</span><br>
+                <span>{address.street}</span><br><br>
+                <span>{address.zip} {address.city}</span>
+            </td>
+            <td headers="kontaktdaten">
+                <f:if condition="{address.phone}">
+                    <span>Tel.:&nbsp;{address.phone}</span><br>
+                </f:if>
+                <f:if condition="{address.fax}">
+                    <span>Fax:&nbsp;{address.fax}</span><br>
+                </f:if>
+                <f:if condition="{address.www}">
+                    <f:link.external uri="{address.www}" target="_blank" title="Externer Link, öffnet sich in neuem Browserfenster" class="linkExt">Internetseite</f:link.external><br>
+                </f:if>
+                <f:if condition="{address.email}">
+                    <f:link.email email="{address.email}" class="linkmailto">eMail</f:link.email>
+                </f:if>
+            </td>
+            <td headers="bemerkungen">
+                <f:format.html>{address.description}</f:format.html>
+                <f:if condition="{address.openinghours}">
+                    <b>&Ouml;ffnungszeiten:</b>
+                    <f:format.html>{address.openinghours}</f:format.html>
+                </f:if>
+                <f:if condition="{address.categories}">
+                    <br/><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+                </f:if>
+            </td>
+        </tr>
+    </f:for>
+    </tbody>
+</table>

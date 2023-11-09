@@ -276,6 +276,10 @@
                                 <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_marginal</numIndex>
                                 <numIndex index="1">marginal</numIndex>
                             </numIndex>
+                            <numIndex index="5" type="array">
+                                <numIndex index="0">LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_cattype_map</numIndex>
+                                <numIndex index="1">map</numIndex>
+                            </numIndex>
                         </items>
                     </config>
                     <displayCond>FIELD:switchableControllerActions:=:Address->list;Address->search</displayCond>

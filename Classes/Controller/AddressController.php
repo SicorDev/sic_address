@@ -346,48 +346,54 @@ class AddressController extends AbstractController
             $args['distance'] = null;
         }
 
-        $currentCountry = $arg['country'] ?? "Deutschland";
-        $countries = [];
-
-        /** @var Address $centerAddress */
+        $mapCenter = new \SICOR\SicAddress\Domain\Model\Address();
         $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
-        $center = false;
-        if ($centerAddress) {
-            if ($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
-                $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
-                if ($center['longitude'] > 0 && $center['latitude'] > 0) {
-                    $centerAddress->setLongitude($center['longitude']);
-                    $centerAddress->setLatitude($center['latitude']);
-                }
-            }
-
-            if ($args['distance']) {
-                $lat = $centerAddress->getLatitude();
-                $lon = $centerAddress->getLongitude();
-                foreach ($addresses as $address) {
-                    $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
-                    $address->setPosition($dist > $args['distance'] ? '1' : '0');
-                }
-            }
-
-            $countries = array_filter($this->addressRepository->findAllCountries());
-            if (empty($args['country']) && count($countries) > 0) {
-                $args['country'] = array_key_first($countries);
-            }
-            ksort($countries);
+        if($centerAddress) {
+            // Default: Use coordinates of center address for map center
+            $mapCenter = clone $centerAddress;
         }
+
+        $centerNotFound = false;
+        if(!empty($args['center'])) {
+            $currentCountry = $arg['country'] ?? "Deutschland";
+            $searchCenter = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
+            if($searchCenter && !empty($searchCenter['longitude']) && !empty($searchCenter['latitude'])) {
+                // Search: Use coordinates of found address for map center
+                $mapCenter->setLongitude($searchCenter['longitude']);
+                $mapCenter->setLatitude($searchCenter['latitude']);
+            }
+            else {
+                // We tried, but couldn't find it...
+                $centerNotFound = true;
+            }
+        }
+
+        if ($args['distance']) {
+            $lat = $mapCenter->getLatitude();
+            $lon = $mapCenter->getLongitude();
+            foreach ($addresses as $address) {
+                // Set a flag wether it's inside or outside of search circle
+                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
+                $address->setPosition($dist > $args['distance'] ? '1' : '0');
+            }
+        }
+
+        $countries = array_filter($this->addressRepository->findAllCountries());
+        if (empty($args['country']) && count($countries) > 0) {
+            $args['country'] = array_key_first($countries);
+        }
+        ksort($countries);
 
         $this->view->assignMultiple([
             'addresses' => $addresses,
             'args' => $args,
             'countries' => $countries,
-            'centerAddress' => $centerAddress,
-            'centerNotFound' => !$center && !empty($args['center']),
+            'centerAddress' => $mapCenter,
+            'centerNotFound' => $centerNotFound,
             'distances' => $this->getDistances(),
             'radius' => $args['distance'],
         ]);
     }
-
 
     /**
      * Return categories as configured by the according tt_content element
@@ -489,10 +495,10 @@ class AddressController extends AbstractController
     /**
      * action show
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address|null $address
+     * @param Address|null $address
      * @return void
      */
-    public function showAction(\SICOR\SicAddress\Domain\Model\Address $address = null)
+    public function showAction(Address $address = null)
     {
         if(empty($address)) {
             if (isset($this->settings['singleAddress'])) {
@@ -573,10 +579,10 @@ class AddressController extends AbstractController
     /**
      * action create
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address $newAddress
+     * @param Address $newAddress
      * @return void
      */
-    public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
+    public function createAction(Address $newAddress)
     {
         $arguments = $this->request->getArguments();
         if ($arguments["images"]) {

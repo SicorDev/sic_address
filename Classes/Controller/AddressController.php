@@ -609,7 +609,6 @@ class AddressController extends AbstractController
         switch ($this->extensionConfiguration["templateSet"])
         {
             case 'sicor': $template = 'SicorList.html'; break;
-            case 'map': $template = 'MapList.html'; break;
             case 'auto': $template = 'AutoList.html'; break;
             case 'nicosdir': $template = 'NicosList.html'; break;
             case 'spdir': $template = 'SPDirList.html'; break;

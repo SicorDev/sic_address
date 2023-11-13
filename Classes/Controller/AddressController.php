@@ -611,7 +611,6 @@ class AddressController extends AbstractController
             case 'sicor': $template = 'SicorList.html'; break;
             case 'auto': $template = 'AutoList.html'; break;
             case 'nicosdir': $template = 'NicosList.html'; break;
-            case 'spdir': $template = 'SPDirList.html'; break;
             case 'diakonie': $template = 'DiakonieList.html'; break;
             case 'duelmen': $template = 'DuelmenList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;

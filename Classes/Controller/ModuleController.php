@@ -126,7 +126,9 @@ class ModuleController extends AbstractController
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->extensionConfiguration = ConfigurationService::getConfiguration();
-        $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        if(!empty($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'])) {
+            $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        }
         $this->setBackendModuleTemplates();
 
         if (!empty($this->extensionConfiguration['ttAddressMapping'])) {

@@ -1,13 +1,12 @@
 <?php
-
 defined('TYPO3') or die('Access denied.');
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('SicAddress', 'Sicaddress',
-    [\SICOR\SicAddress\Controller\AddressController::class => 'list, show, new, create, edit, update, delete, search'],
-    [\SICOR\SicAddress\Controller\AddressController::class => 'create, update, delete, search']
-);
+use SICOR\SicAddress\Controller\AddressController;
+use SICOR\SicAddress\Controller\ExportController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('SicAddress', 'SicaddressVianovisExport',
-    [\SICOR\SicAddress\Controller\ExportController::class => 'exportVianovis'],
-    []
-);
+ExtensionUtility::configurePlugin('SicAddress', 'SicAddress', [AddressController::class => 'list, search'], [AddressController::class => 'search']);
+ExtensionUtility::configurePlugin('SicAddress', 'AddressShow', [AddressController::class => 'show']);
+ExtensionUtility::configurePlugin('SicAddress', 'AddressNew', [AddressController::class => 'new, create'], [AddressController::class => 'create']);
+
+ExtensionUtility::configurePlugin('SicAddress', 'SicaddressVianovisExport', [ExportController::class => 'exportVianovis']);

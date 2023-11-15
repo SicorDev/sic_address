@@ -10,7 +10,6 @@ return array(
         'dividers2tabs' => TRUE,
         'sortby' => 'sorting',
         'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => array(
@@ -20,9 +19,6 @@ return array(
         ),
         'searchFields' => '<f:for each="{properties}" as="field">{field.title}, </f:for>',
         'iconfile' => 'EXT:sic_address/Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories,<f:for each="{properties}" as="field"> {field.title},</f:for>',
     ),
     'types' => array(
         '1' => array('showitem' => '

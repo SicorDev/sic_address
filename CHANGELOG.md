@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0] - 2024-01-19
+
+### Major
+- This the first official release for TYPO3 12 and PHP 8.
+- Compatibility to 11 dropped due to insane core changes.
+
+### Breaking
+- Removed switchable controller actions. Please check and reconfigure your frontend Plugins after upgrading.
+
+### Added
+- 5 different List types with dummy partials.
+- Added example Powermail finisher
+
 ## [4.1.0] - 2023-03-24
 
 ### Added

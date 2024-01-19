@@ -39,6 +39,9 @@ plugin.tx_sicaddress_sicaddress {
     }
 }
 
+plugin.tx_sicaddress_addressshow < plugin.tx_sicaddress_sicaddress
+plugin.tx_sicaddress_addressnew < plugin.tx_sicaddress_sicaddress
+
 # Module configuration
 module.tx_sicaddress {
 	persistence {

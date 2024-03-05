@@ -33,6 +33,7 @@ use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
 use SICOR\SicAddress\Domain\Model\DomainObject\MmtableType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
@@ -58,16 +59,12 @@ class ImportController extends ModuleController
     {
         $args = $this->request->getArguments();
 
-        if ($args['file']['error']) {
-            $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_upload'), ContextualFeedbackSeverity::ERROR);
-            $this->redirect('import');
-        }
-        if ($args['file']['type'] !== 'text/csv') {
-            $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_mime'), ContextualFeedbackSeverity::ERROR);
-            $this->redirect('import');
+        if ($args['error']) {
+            $this->addFlashMessage($args['name'], $this->translate('label_import_error_upload'), ContextualFeedbackSeverity::ERROR);
+            return new ForwardResponse('import');
         }
 
-        if (($handle = fopen($args['file']['tmp_name'], "rb")) !== FALSE) {
+        if (($handle = fopen($args['tmp_name'], "rb")) !== FALSE) {
             $header = array();
             $properties = $this->domainPropertyRepository->findAll();
             $total = $line = 0;
@@ -75,8 +72,8 @@ class ImportController extends ModuleController
                 if ($line === 0) {
                     $this->fillCSVheader($header, $data, $properties);
                     if (empty($header)) {
-                        $this->addFlashMessage($args['file']['name'], $this->translate('label_import_error_csv'), ContextualFeedbackSeverity::ERROR);
-                        $this->redirect('import');
+                        $this->addFlashMessage($args['name'], $this->translate('label_import_error_csv'), ContextualFeedbackSeverity::ERROR);
+                        return new ForwardResponse('import');
                     }
                 } else {
                     $address = new Address();
@@ -91,11 +88,11 @@ class ImportController extends ModuleController
             $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
             $persistenceManager->persistAll();
 
-            $this->addFlashMessage($total . ' ' . $this->translate('label_import_total') . ' (' . $args['pids'][$args['pid']] . ')', $args['file']['name'], ContextualFeedbackSeverityessage::OK);
-            $this->redirect('import');
+            $this->addFlashMessage($total . ' ' . $this->translate('label_import_total') . ' (' . $args['pids'][$args['pid']] . ')', $args['name'], ContextualFeedbackSeverity::OK);
+            return new ForwardResponse('import');
         }
 
-        return $this->htmlResponse();
+        return new ForwardResponse('import');
     }
 
     public function fillCSVheader(&$header, &$data, &$properties)
@@ -110,9 +107,18 @@ class ImportController extends ModuleController
     public function fillAddressWithCSVdata($address, &$data, &$header, &$properties)
     {
         foreach ($data as $index => $val) {
+            if (empty($header[$index])) continue;
             if (empty($properties[$header[$index]['field']])) continue;
+
             $propertyType = $properties[$header[$index]['field']][0]->getType();
             if ($propertyType instanceof ImageType || $propertyType instanceof MmtableType) continue;
+
+            if ($this->extensionConfiguration['ttAddressMapping']) {
+                if ($header[$index]['property'] === 'zip' && strlen($val) > 20) {
+                    continue;
+                }
+            }
+
             $address->_setProperty($header[$index]['property'], $val);
         }
     }

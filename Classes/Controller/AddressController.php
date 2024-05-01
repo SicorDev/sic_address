@@ -1,4 +1,5 @@
 <?php
+
 namespace SICOR\SicAddress\Controller;
 
 /***************************************************************
@@ -32,14 +33,14 @@ use SICOR\SicAddress\Domain\Repository\CategoryRepository;
 use SICOR\SicAddress\Domain\Repository\ContentRepository;
 use SICOR\SicAddress\Domain\Service\GeocodeService;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use SICOR\SicAddress\Domain\Service\FALService;
-use SICOR\SicAddress\Utility\Service;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use function array_filter;
 use function class_exists;
@@ -57,7 +58,7 @@ class AddressController extends AbstractController
     protected ?CategoryRepository $categoryRepository;
     protected ?GeocodeService $geocodeService;
     protected Typo3QuerySettings $querySettings;
-    protected Service $service;
+    protected ConfigurationService $service;
 
     protected array $extensionConfiguration;
     protected $displayCategoryList = null;
@@ -72,7 +73,7 @@ class AddressController extends AbstractController
         CategoryRepository $categoryRepository,
         GeocodeService $geocodeService,
         Typo3QuerySettings $querySettings,
-        Service $service
+        ConfigurationService $service
     )
     {
         $this->addressRepository = $addressRepository;
@@ -83,11 +84,10 @@ class AddressController extends AbstractController
         $this->service = $service;
     }
 
-
     public function initializeAction(): void
     {
         // Init config
-        $this->extensionConfiguration = Service::getConfiguration();
+        $this->extensionConfiguration = ConfigurationService::getConfiguration();
         $this->addresstable = $this->extensionConfiguration['ttAddressMapping'] ? 'tt_address' : 'tx_sicaddress_domain_model_address';
 
         // Init sorting
@@ -117,10 +117,8 @@ class AddressController extends AbstractController
         $GLOBALS['TSFE']->additionalFooterData['tx_sicaddress_sicaddress'] = '<script src="typo3conf/ext/sic_address/Resources/Public/Javascript/sicaddress.js" type="text/javascript"></script>';
     }
 
-    public function initializeView(ViewInterface $view): void
+    protected function initializeView($view)
     {
-        parent::initializeView($view);
-
         $this->view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 
@@ -136,13 +134,19 @@ class AddressController extends AbstractController
         $emptyList = $this->settings['noListStartup'];
 
         $this->fillAddressList($this->translate('label_all'), $defcat ? $defcat->getUid() : '', '', '', '', '', $emptyList);
+
+        return $this->htmlResponse();
     }
 
     /**
      * @return array|mixed
      */
     protected function getDistances() {
-        $distances = array();
+        $distances = [];
+        if(!array_key_exists('distances', $this->settings)) {
+            return $distances;
+        }
+
         foreach(explode(',', $this->settings['distances']) as $distance) {
             $distances[$distance] = $distance . ' km';
         }
@@ -201,6 +205,8 @@ class AddressController extends AbstractController
 
         $this->fillAddressList($atozvalue, $categoryvalue, $filtervalue, $queryvalue, $distanceValue, $checkall);
         $this->view->assign('listPageUid', $GLOBALS['TSFE']->id);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -281,52 +287,6 @@ class AddressController extends AbstractController
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
-            /* Sachon speciality only... can be removed once it's offline...
-            // mmtable resolver
-            $field = $this->settings['filterField'];
-            if ($field && !is_bool(strpos($field, ".title")))
-            {
-                $addressPlus = null;
-                $field = GeneralUtility::underscoredToLowerCamelCase(substr($field, 0, strpos($field, '.')));
-
-                foreach ($addresses as $address)
-                {
-                    // Get object representing our mm target
-                    $mmObject = ObjectAccess::getProperty($address, $field)->toArray();
-                    $iCount = count($mmObject);
-
-                    // Instead of one entry with three filters we create three entries with one filter...
-                    for ($i=0; $i<$iCount;  $i++) {
-                        // Clone is required, else original is destroyed
-                        $addressClone = clone $address;
-
-                        // Same here
-                        $storageClone = clone ObjectAccess::getProperty($address, $field);
-
-                        // Silly workaround, as remove all is buggy...
-                        while($storageClone->count() > 0)
-                            $storageClone->removeAll($storageClone);
-
-                        // Replace mm target with single entry
-                        $storageClone->attach($mmObject[$i]);
-                        ObjectAccess::setProperty($addressClone, $field, $storageClone);
-
-                        // Set sort string for upcoming usort
-                        $addressClone->setSortField($this->normalize($mmObject[$i]->getTitle()));
-                        $addressPlus [] = $addressClone;
-                    }
-                }
-                $addresses = $addressPlus;
-
-                // Sort everything once again (actually groups by filter!)
-                if(count($addresses) > 1) {
-                    usort($addresses, function ($adr1, $adr2) {
-                        return strcmp($adr1->getSortField(), $adr2->getSortField());
-                    });
-                }
-            }
-            Sachon speciality only... can be removed once it's offline... */
-
             // Handle pagination
             $currentPage = 1;
             if($this->request->hasArgument('currentPage') && (int)$this->request->getArgument('currentPage') > 1) {
@@ -386,47 +346,54 @@ class AddressController extends AbstractController
             $args['distance'] = null;
         }
 
-        $currentCountry = $arg['country'] ?? "Deutschland";
-
-        /** @var Address $centerAddress */
+        $mapCenter = new \SICOR\SicAddress\Domain\Model\Address();
         $centerAddress = $this->service->getCenterAddressObjectFromFlexConfig();
-        $center = false;
-        if ($centerAddress) {
-            if ($centerAddress->getLatitude() === '' || $centerAddress->getLongitude() === '') {
-                $center = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
-                if ($center['longitude'] > 0 && $center['latitude'] > 0) {
-                    $centerAddress->setLongitude($center['longitude']);
-                    $centerAddress->setLatitude($center['latitude']);
-                }
-            }
-
-            if ($args['distance']) {
-                $lat = $centerAddress->getLatitude();
-                $lon = $centerAddress->getLongitude();
-                foreach ($addresses as $address) {
-                    $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
-                    $address->setPosition($dist > $args['distance'] ? '1' : '0');
-                }
-            }
-
-            $countries = array_filter($this->addressRepository->findAllCountries());
-            if (empty($args['country']) && count($countries) > 0) {
-                $args['country'] = array_key_first($countries);
-            }
-            ksort($countries);
+        if($centerAddress) {
+            // Default: Use coordinates of center address for map center
+            $mapCenter = clone $centerAddress;
         }
+
+        $centerNotFound = false;
+        if(!empty($args['center'])) {
+            $currentCountry = $arg['country'] ?? "Deutschland";
+            $searchCenter = $this->geocodeService->getCoordinatesForPostalCode($args['center'], $currentCountry);
+            if($searchCenter && !empty($searchCenter['longitude']) && !empty($searchCenter['latitude'])) {
+                // Search: Use coordinates of found address for map center
+                $mapCenter->setLongitude($searchCenter['longitude']);
+                $mapCenter->setLatitude($searchCenter['latitude']);
+            }
+            else {
+                // We tried, but couldn't find it...
+                $centerNotFound = true;
+            }
+        }
+
+        if ($args['distance']) {
+            $lat = $mapCenter->getLatitude();
+            $lon = $mapCenter->getLongitude();
+            foreach ($addresses as $address) {
+                // Set a flag wether it's inside or outside of search circle
+                $dist = $this->getDistanceinKM($lat, $lon, $address->getLatitude(), $address->getLongitude());
+                $address->setPosition($dist > $args['distance'] ? '1' : '0');
+            }
+        }
+
+        $countries = array_filter($this->addressRepository->findAllCountries());
+        if (empty($args['country']) && count($countries) > 0) {
+            $args['country'] = array_key_first($countries);
+        }
+        ksort($countries);
 
         $this->view->assignMultiple([
             'addresses' => $addresses,
             'args' => $args,
             'countries' => $countries,
-            'centerAddress' => $centerAddress,
-            'centerNotFound' => !$center && !empty($args['center']),
+            'centerAddress' => $mapCenter,
+            'centerNotFound' => $centerNotFound,
             'distances' => $this->getDistances(),
             'radius' => $args['distance'],
         ]);
     }
-
 
     /**
      * Return categories as configured by the according tt_content element
@@ -528,10 +495,10 @@ class AddressController extends AbstractController
     /**
      * action show
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address|null $address
+     * @param Address|null $address
      * @return void
      */
-    public function showAction(\SICOR\SicAddress\Domain\Model\Address $address = null)
+    public function showAction(Address $address = null)
     {
         if(empty($address)) {
             if (isset($this->settings['singleAddress'])) {
@@ -595,6 +562,8 @@ class AddressController extends AbstractController
 
             die ($this->view->render());
         }
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -604,16 +573,16 @@ class AddressController extends AbstractController
      */
     public function newAction()
     {
-
+        return $this->htmlResponse();
     }
 
     /**
      * action create
      *
-     * @param \SICOR\SicAddress\Domain\Model\Address $newAddress
+     * @param Address $newAddress
      * @return void
      */
-    public function createAction(\SICOR\SicAddress\Domain\Model\Address $newAddress)
+    public function createAction(Address $newAddress)
     {
         $arguments = $this->request->getArguments();
         if ($arguments["images"]) {
@@ -624,9 +593,11 @@ class AddressController extends AbstractController
             }
         }
 
-        $this->addFlashMessage($this->translate('label_address_created'), '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
+        $this->addFlashMessage($this->translate('label_address_created'), '', ContextualFeedbackSeverity::OK);
         $this->addressRepository->add($newAddress);
         $this->redirect('new');
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -638,17 +609,14 @@ class AddressController extends AbstractController
         switch ($this->extensionConfiguration["templateSet"])
         {
             case 'sicor': $template = 'SicorList.html'; break;
-            case 'map': $template = 'MapList.html'; break;
             case 'auto': $template = 'AutoList.html'; break;
             case 'nicosdir': $template = 'NicosList.html'; break;
-            case 'spdir': $template = 'SPDirList.html'; break;
             case 'diakonie': $template = 'DiakonieList.html'; break;
             case 'duelmen': $template = 'DuelmenList.html'; break;
             case 'irsee': $template = 'IrseeList.html'; break;
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
             case 'obgdir': $template = 'OBGList.html'; break;
-            case 'sachon': $template = 'SachonList.html'; break;
             case 'ualdir': $template = 'UALList.html'; break;
         }
         if (method_exists($this->view, 'setTemplate')) {

@@ -1,0 +1,36 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+
+<div style="display: flex;gap: 1rem;">
+    <f:form id="sic_address_search_form" action="search">
+        Postleitzahl: <f:form.textfield name="center" class="col form-control" value="{args.center}" placeholder="PLZ"/>
+        Entfernung: <f:form.select name="distance" class="col" additionalAttributes="{onchange: 'this.form.submit()'}" options="{distances}" value="{args.distance}" prependOptionLabel="Umkreis" prependOptionValue="" />
+    </f:form>
+    <f:render partial="Address/Map" arguments="{_all}"/>
+</div>
+
+<h1>
+    <f:translate key="results"/>
+</h1>
+<div id="sic_address_search_list">
+    <f:for each="{addresses}" as="address">
+        <div id="sic_address_marker_popup_{contentUid}_{address.uid}" class="col result">
+            <f:if condition="{address.image}">
+                <f:render partial="Address/Images"
+                          arguments="{address:address, imageWidth:'150c'}"/>
+            </f:if>
+            <strong>{address.name}</strong>
+            <br>
+            {address.address}
+            <br>
+            {address.zip} {address.city}
+            <br>
+            <f:if condition="{address.phone}">
+                Tel.: {address.phone}
+                <br>
+            </f:if>
+            <f:link.email email="{address.email}"/>
+            <br>
+            <f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+        </div>
+    </f:for>
+</div>

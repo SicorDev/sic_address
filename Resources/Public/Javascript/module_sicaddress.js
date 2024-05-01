@@ -1,9 +1,10 @@
 var sicQuery = {};
 var propertiesSelector = 'div#sic_address_properties';
 
-require(['jquery', 'jquery-ui/sortable'], function(jQuery, cookie, ui) {
-    
+require(['jquery', 'TYPO3/CMS/Backend/Modal', 'jquery-ui/sortable'], function (jQuery, Modal, ui) {
+
     sicQuery = jQuery;
+    sicModal = Modal;
 
     SicAddress.checkboxListener();
 
@@ -25,7 +26,7 @@ require(['jquery', 'jquery-ui/sortable'], function(jQuery, cookie, ui) {
             return false;
         });
 
-        jQuery('.btn.delete').click(SicAddress.btnDeleteClicked);
+        jQuery('.btn.delete').on('click', SicAddress.createDeleteButtonModal);
     });
 
 });
@@ -37,7 +38,7 @@ var SicAddress = {
             sicQuery(this).next().next().find('input:checkbox').prop('checked', sicQuery(this).prop("checked"));
         });
     },
-    
+
     checkAll: function() {
         sicQuery('.export input:checkbox').prop('checked', 'true');
     },
@@ -78,7 +79,7 @@ var SicAddress = {
         .toggleClass('panel-collapsed')
         .toggleClass('panel-visible');
     },
-    
+
     headerOpenClicked: function(link) {
         sicQuery(SicAddress.getPanelObject(link))
         .toggleClass('panel-collapsed')
@@ -158,37 +159,44 @@ var SicAddress = {
         return formData;
     },
 
-    btnDeleteClicked: function() {
+    createDeleteButtonModal: function () {
         var link = this;
-        var ajax = sicQuery(this).data('ajax');
-        var deleteUri = sicQuery(this).data('deleteUri');
-        var modalType = sicQuery(this).data('modalType');
-        var modalContent = sicQuery(this).data('modalContent');
-        var modalTitle = sicQuery(this).data('modalTitle');
-        var modalButtonCancel = sicQuery(this).data('modalButtonCancel');
-        var modalButtonDelete = sicQuery(this).data('modalButtonDelete');
-        top.TYPO3.Modal.confirm(modalTitle, modalContent, modalType=='error' ? top.TYPO3.Severity.error : top.TYPO3.Severity.warning, [
-            {
-                text: modalButtonCancel,
-                btnClass: 'btn btn-default',
-                trigger: function() {
-                    top.TYPO3.Modal.dismiss();
+        var button = jQuery(this);
+        var ajax = button.data('ajax');
+        var deleteUri = button.data('deleteUri');
+        var modalType = button.data('modalType');
+        var modalContent = button.data('modalContent');
+        var modalTitle = button.data('modalTitle');
+        var modalButtonCancel = button.data('modalButtonCancel');
+        var modalButtonDelete = button.data('modalButtonDelete');
+
+        const modal = sicModal.advanced({
+            title: modalTitle,
+            content: modalContent,
+            severity: modalType == 'error' ? top.TYPO3.Severity.error : top.TYPO3.Severity.warning,
+            buttons: [
+                {
+                    text: modalButtonCancel,
+                    btnClass: 'btn-primary',
+                    trigger: function (event, modal) {
+                        modal.hideModal();
+                    }
+                },
+                {
+                    text: modalButtonDelete,
+                    btnClass: 'btn btn-danger',
+                    active: true,
+                    trigger: function (event, modal) {
+                        modal.hideModal();
+                        if (ajax) {
+                            sicQuery.get(deleteUri, {}, function () {
+                                sicQuery(SicAddress.getPanelObject(link)).remove();
+                            });
+                        } else location.href = deleteUri;
+                    }
                 }
-            },
-            {
-                text: modalButtonDelete,
-                btnClass: 'btn btn-danger',
-                active: true,
-                trigger: function() {
-                    top.TYPO3.Modal.dismiss();
-                    if(ajax) {
-                        sicQuery.get(deleteUri,{},function(){
-                            sicQuery(SicAddress.getPanelObject(link)).remove();
-                        });
-                    } else location.href = deleteUri;
-                }
-            }
-        ]);
+            ]
+        });
     },
 
     droppedObj: null,

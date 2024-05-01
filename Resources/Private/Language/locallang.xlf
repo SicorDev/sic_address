@@ -102,6 +102,9 @@
             <trans-unit id="label_detailPageField">
                 <source>Detail Page</source>
             </trans-unit>
+			<trans-unit id="label_ajaxMode">
+				<source>Activate AJAX Mode</source>
+			</trans-unit>
 			<trans-unit id="label_atozField">
 				<source>A-Z Field</source>
 			</trans-unit>
@@ -176,6 +179,9 @@
 			</trans-unit>
 			<trans-unit id="label_cattype_marginal">
 				<source>Marginal column</source>
+			</trans-unit>
+			<trans-unit id="label_cattype_map">
+				<source>Map</source>
 			</trans-unit>
 			<trans-unit id="label_noListStartup">
 				<source>Do not show all datasets by default</source>

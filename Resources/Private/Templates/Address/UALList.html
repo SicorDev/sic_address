@@ -225,24 +225,4 @@
 			</div>
 		</f:else>
 	</f:if>
-
-	<script>
-		function documentReadyJsHook () {
-			// Hide right side list boxes when no info is given
-			jQuery('.address_description').each(function() {
-				if($.trim(jQuery(this).html()).length < 1)
-					jQuery(this).css('display', 'none');
-			});
-			// Translate pagination
-			jQuery('.previous > a').each(function() {
-				jQuery(this).html('zur&uuml;ck');
-			});
-			jQuery('.next > a').each(function() {
-				jQuery(this).html('weiter');
-			});
-			// Distance selection
-			jQuery('#distance').find('option[value={distancevalue}]').attr('selected', 'selected');
-		}
-	</script>
-
 </f:section>

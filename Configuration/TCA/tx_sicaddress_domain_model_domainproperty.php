@@ -10,7 +10,6 @@ return array(
 		'dividers2tabs' => TRUE,
 		'sortby' => 'sorting',
 		'languageField' => 'sys_language_uid',
-		'transOrigPointerField' => 'l10n_parent',
 		'transOrigDiffSourceField' => 'l10n_diffsource',
 		'delete' => 'deleted',
 		'enablecolumns' => array(
@@ -21,9 +20,6 @@ return array(
 		'searchFields' => 'title,tca_label,tca_override,settings,',
 		'iconfile' => 'EXT:sic_address/Resources/Public/Icons/tx_sicaddress_domain_model_domainproperty.gif'
 	),
-	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, tca_label, tca_override, settings, is_list_label, type',
-	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, --palette--;;1, title, tca_label, tca_override, settings, is_list_label, type, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'),
 	),
@@ -31,20 +27,13 @@ return array(
 		'1' => array('showitem' => ''),
 	),
 	'columns' => array(
-		'sys_language_uid' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-			'config' => array(
-				'type' => 'select',
-				'renderType' => 'selectSingle',
-				'foreign_table' => 'sys_language',
-				'foreign_table_where' => ' ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xlf:LGL.default_value', 0)
-				),
-			),
-		),
+        'sys_language_uid' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
+            'config' => [
+                'type' => 'language',
+            ],
+        ],
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude' => 1,

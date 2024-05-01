@@ -1,6 +1,5 @@
 <?php
 namespace SICOR\SicAddress\Userfuncs;
-use SICOR\SicAddress\Domain\Model\Address;
 
 /***************************************************************
  *
@@ -27,13 +26,13 @@ use SICOR\SicAddress\Domain\Model\Address;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Tca {
+use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+class Tca {
     public function addressTitle(&$parameters, $parentObject) {
         $addressRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($parameters['table'], $parameters['row']['uid']);
-        $extbaseObjectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $domainPropertyRepository = $extbaseObjectManager->get('SICOR\\SicAddress\\Domain\\Repository\\DomainPropertyRepository');
-
+        $domainPropertyRepository = GeneralUtility::makeInstance(DomainPropertyRepository::class);
         $domainProperties = $domainPropertyRepository->findAll();
         foreach($domainProperties as $key => $value) {
             if(is_array($value)) $value = $value[0];

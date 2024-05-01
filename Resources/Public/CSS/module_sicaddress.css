@@ -1,6 +1,8 @@
 /* ************** */
 /* Backend Module */
 /* ************** */
+body { overflow: auto;}
+
 input[type="text"], textarea {width: 100%;}
 input[type="text"], textarea {padding: 10px;border: none;border-bottom: solid 2px #c9c9c9;transition: border 0.3s;}
 input[type="text"]:focus,textarea:focus {border-bottom: solid 2px #969696;box-shadow: none;}

@@ -36,17 +36,24 @@ use SICOR\SicAddress\Domain\Model\DomainObject\IntegerType;
 use SICOR\SicAddress\Domain\Model\DomainObject\RichType;
 use SICOR\SicAddress\Domain\Model\DomainObject\SelectType;
 use SICOR\SicAddress\Domain\Model\DomainObject\StringType;
+use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Domain\Repository\AddressRepository;
 use SICOR\SicAddress\Domain\Repository\CategoryRepository;
 use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
-use SICOR\SicAddress\Utility\Service;
+use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use StdClass;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\View\NotFoundView;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use function str_replace;
 
 /**
@@ -57,13 +64,14 @@ class ModuleController extends AbstractController
     protected ?AddressRepository $addressRepository;
     protected ?CategoryRepository $categoryRepository;
     protected ?DomainPropertyRepository $domainPropertyRepository;
+    private ?PageRenderer $pageRenderer = null;
 
     /**
      * Holds all domainProperties
      *
      * @var array
      */
-    protected array $configuration;
+    protected array $configuration = [];
 
     /**
      * Fixed set of fieldTypes
@@ -98,20 +106,17 @@ class ModuleController extends AbstractController
      */
     protected $external = 0;
 
-    /**
-     * @var array
-     */
-    protected $languages = array();
-
     public function __construct(
         AddressRepository $addressRepository,
         CategoryRepository $categoryRepository,
-        DomainPropertyRepository $domainPropertyRepository
+        DomainPropertyRepository $domainPropertyRepository,
+        PageRenderer $pageRenderer
     )
     {
         $this->addressRepository = $addressRepository;
         $this->categoryRepository = $categoryRepository;
         $this->domainPropertyRepository = $domainPropertyRepository;
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -120,8 +125,11 @@ class ModuleController extends AbstractController
     public function initializeAction()
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->extensionConfiguration = Service::getConfiguration();
-        $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        $this->extensionConfiguration = ConfigurationService::getConfiguration();
+        if(!empty($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'])) {
+            $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
+        }
+        $this->setBackendModuleTemplates();
 
         if (!empty($this->extensionConfiguration['ttAddressMapping'])) {
             if (empty($GLOBALS['TCA']['tt_address'])) {
@@ -130,29 +138,25 @@ class ModuleController extends AbstractController
         }
 
         $this->external = $this->request->hasArgument('external') ? abs($this->request->getArgument('external')) : 0;
-        if (
-            $this->request->getControllerActionName() === 'list'
-            ||
-            empty($this->extensionConfiguration['ttAddressMapping'])
-        ) {
+        if ($this->request->getControllerActionName() === 'list' || empty($this->extensionConfiguration['ttAddressMapping'])) {
             $this->configuration = $this->domainPropertyRepository->findByExternal($this->external);
         } else {
             $this->configuration = $this->domainPropertyRepository->findAll();
         }
 
-        foreach ($this->configuration as $key => $languages)
+        foreach ($this->configuration as $key => $languages) {
             foreach ($languages as $language => $value) {
-                // Initialize Type Objects
                 $type = $this->configuration[$key][$language]->getType();
-                $class = "SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type";
-
-                $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-                $this->configuration[$key][$language]->setType($objectManager->get($class));
+                if(is_string($type)) {
+                    // Initialize Type Objects
+                    $class = GeneralUtility::makeInstance("SICOR\\SicAddress\\Domain\\Model\\DomainObject\\" . ucfirst($type) . "Type");
+                    $this->configuration[$key][$language]->setType($class);
+                }
             }
+        }
 
-        $this->setBackendModuleTemplates();
-
-        $this->languages = $this->domainPropertyRepository->getSysLanguages();
+        // Reset JavaScript and CSS files
+        GeneralUtility::makeInstance(PageRenderer::class);
     }
 
     /**
@@ -179,12 +183,7 @@ class ModuleController extends AbstractController
     public function listAction()
     {
         if ($this->extensionConfiguration['ttAddressMapping'] === null) {
-            $this->addFlashMessage(
-                $this->translate('flash_tt_address_missing'),
-                $messageTitle = $this->translate('flash_warning'),
-                $severity = AbstractMessage::WARNING,
-                $storeInSession = FALSE
-            );
+            $this->addFlashMessage($this->translate('flash_tt_address_missing'), $this->translate('flash_warning'), ContextualFeedbackSeverity::WARNING, FALSE);
         }
 
         // Bailout if static template is missing
@@ -206,7 +205,9 @@ class ModuleController extends AbstractController
             $types[1] = $this->translate('external');
         }
         $this->view->assign('types', $types);
-        $this->view->assign('languages', $this->domainPropertyRepository->getSysLanguages());
+        $this->view->assign('languages', $this->request->getAttribute('site')->getLanguages());
+
+        return $this->htmlResponse($this->wrapModuleTemplate());
     }
 
     /**
@@ -297,6 +298,8 @@ class ModuleController extends AbstractController
             $delFile = $extPath.'PLEASE_GENERATE';
             if (is_file($delFile)) unlink($delFile);
         }
+
+        return $this->htmlResponse($this->wrapModuleTemplate());
     }
 
     /**
@@ -402,7 +405,40 @@ class ModuleController extends AbstractController
     public function deleteFieldDefinitionsAction($external)
     {
         $this->domainPropertyRepository->deleteFieldDefinitions($external);
-        $this->redirect("list");
+        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $persistenceManager->persistAll();
+        return new ForwardResponse('list');
+    }
+
+    /**
+     * action importTTAddress
+     * @return void
+     */
+    public function importTTAddressAction()
+    {
+        if ($this->extensionConfiguration["ttAddressMapping"]) {
+            // Clear database
+            $this->domainPropertyRepository->deleteFieldDefinitions(1);
+
+            $fields = $this->addressRepository->getFields();
+            foreach ($fields as $field) {
+                if (preg_match("/^(uid|pid|cruser_id|t3.*|tstamp|deleted|categories|sorting|hidden)$/", $field) === 0) {
+                    $domainProperty = new DomainProperty();
+                    $domainProperty->setTitle($field);
+                    $domainProperty->setTcaLabel($field);
+                    switch ($field) {
+                        case 'image':
+                            $domainProperty->setType('image');
+                            break;
+                        default:
+                            $domainProperty->setType('string');
+                    }
+                    $domainProperty->setExternal(!str_starts_with($field, 'tx_'));
+                    $this->domainPropertyRepository->add($domainProperty);
+                }
+            }
+        }
+        return new ForwardResponse('list');
     }
 
     /**
@@ -467,7 +503,7 @@ class ModuleController extends AbstractController
 
         // Render the TCA snippets
         $templatePathAndFilename = $this->templateRootPath . "Resources/Private/Partials/" . ucfirst($value->getType()->getTitle()) . "Type.tca";
-        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $customView = GeneralUtility::makeInstance(StandaloneView::class);
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
 
         $customView->assign("properties", $settings);
@@ -496,7 +532,7 @@ class ModuleController extends AbstractController
      */
     private function saveTemplate($filename, $properties, $templatePath = "", $headline = "", $orderbyquery = "", $prefix = '')
     {
-        $customView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $customView = GeneralUtility::makeInstance(StandaloneView::class);
 
         $targetFilename = str_replace('###prefix###', $prefix ? $prefix . '.' : '', $filename);
         $filename = str_replace('###prefix###', '', $filename);
@@ -536,8 +572,7 @@ class ModuleController extends AbstractController
             }
         }
 
-        $languages = $this->domainPropertyRepository->getSysLanguages();
-
+        $languages = $this->request->getAttribute('site')->getLanguages();
         foreach ($locales as $languageUid => $localeProperties) {
             $prefix = $languageUid ? $languages[$languageUid]['iso'] : '';
             if (!$this->saveTemplate($filename, $localeProperties, '', '', '', $prefix))
@@ -570,7 +605,7 @@ class ModuleController extends AbstractController
      */
     private function updateExtension()
     {
-        $service = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+        $service = GeneralUtility::makeInstance(InstallUtility::class);
         $service->install($this->request->getControllerExtensionKey());
     }
 
@@ -626,6 +661,8 @@ class ModuleController extends AbstractController
         }
         $this->view->assign('pages', $pages);
         $this->view->assign('searched', $searched);
+
+        return $this->htmlResponse($this->wrapModuleTemplate());
     }
 
     /**
@@ -640,6 +677,8 @@ class ModuleController extends AbstractController
         $addresses = $this->addressRepository->findByArgs($args);
         $this->view->assign('addresses', $addresses);
         $this->view->assign('properties', $this->getRelevantOnly($properties));
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -673,7 +712,7 @@ class ModuleController extends AbstractController
     public function ajaxDeleteDoubletAction($address)
     {
         $this->addressRepository->remove($address);
-        return json_encode(array());
+        return $this->jsonResponse(json_encode(array()));
     }
 
     /**
@@ -702,5 +741,18 @@ class ModuleController extends AbstractController
         }
 
         return;
+    }
+
+    protected function wrapModuleTemplate(): string
+    {
+        // Prepare module setup
+        $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate->setContent($this->view->render());
+
+        $this->pageRenderer->loadRequireJsModule('/typo3conf/ext/sic_address/Resources/Public/Javascript/module_sicaddress.js');
+        $this->pageRenderer->addCssFile('EXT:sic_address/Resources/Public/CSS/module_sicaddress.css');
+
+        return $moduleTemplate->renderContent();
     }
 }

@@ -10,7 +10,6 @@ return array(
         'dividers2tabs' => TRUE,
         'sortby' => 'sorting',
         'languageField' => 'sys_language_uid',
-        'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
         'enablecolumns' => array(
@@ -20,9 +19,6 @@ return array(
         ),
         'searchFields' => '<f:for each="{properties}" as="field">{field.title}, </f:for>',
         'iconfile' => 'EXT:sic_address/Resources/Public/Icons/tx_sicaddress_domain_model_address.gif'
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, categories,<f:for each="{properties}" as="field"> {field.title},</f:for>',
     ),
     'types' => array(
         '1' => array('showitem' => '
@@ -45,18 +41,8 @@ return array(
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'special' => 'languages',
-                'items' => [
-                    [
-                        'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages',
-                        -1,
-                        'flags-multiple'
-                    ],
-                ],
-                'default' => 0,
-            ]
+                'type' => 'language',
+            ],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -118,6 +104,12 @@ return array(
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
+            ]
+        ],
+        'categories' => [
+            'config' => [
+                'type' => 'category',
+                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1, 0) ORDER BY sys_category.title',
             ]
         ],
     <f:for each="{properties}" as="field">

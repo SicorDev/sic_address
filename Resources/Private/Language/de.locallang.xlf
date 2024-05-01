@@ -102,6 +102,9 @@
             <trans-unit id="label_detailPageField">
                 <target>Detailseite/Snippet</target>
             </trans-unit>
+			<trans-unit id="label_ajaxMode">
+				<target>AJAX Modus aktivieren</target>
+			</trans-unit>
 			<trans-unit id="label_atozField">
 				<target>A-Z Feld</target>
 			</trans-unit>
@@ -176,6 +179,9 @@
 			</trans-unit>
 			<trans-unit id="label_cattype_marginal">
 				<target>Randspalte</target>
+			</trans-unit>
+			<trans-unit id="label_cattype_map">
+				<target>Karte</target>
 			</trans-unit>
 			<trans-unit id="label_noListStartup">
 				<target>Zeige keine Einträge beim Start</target>

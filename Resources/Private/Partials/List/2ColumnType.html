@@ -1,0 +1,28 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<table>
+    <thead>
+    <tr>
+        <th id="column-left">Links</th>
+        <th id="column-right">Rechts</th>
+    </tr>
+    </thead>
+    <tbody>
+    <f:for each="{pagination.paginator.paginatedItems}" as="address" iteration="addressIterator">
+        <tr class="{f:if(condition: addressIterator.isEven, then:'even')}{f:if(condition: addressIterator.isOdd, then:'odd')}">
+            <td headers="anschrift">
+                <b>{address.title} {address.firstName} {address.middleName} {address.lastName}</b><br>
+                <span>{address.street}</span><br><br>
+                <span>{address.zip} {address.city}</span><br><br>
+                <f:if condition="{address.categories}">
+                    <br><br/><span class="groupList">(<f:for each="{address.categories}" as="category" iteration="index"><f:if condition="{index.isFirst} != '1'">, </f:if>{category.title}</f:for>)</span>
+                </f:if>
+            </td>
+            <td headers="Infos für Behinderte">
+                <f:if condition="{address.txTtaddresshandicappedinfoAdditionalInfo}">
+                    <f:format.html>{address.txTtaddresshandicappedinfoAdditionalInfo}</f:format.html>
+                </f:if>
+            </td>
+        </tr>
+    </f:for>
+    </tbody>
+</table>

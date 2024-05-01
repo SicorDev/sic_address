@@ -1,0 +1,64 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<f:if condition="{addresses}">
+    <f:then>
+        <div class="ansprechpartner">
+            <h2>
+                Kontakt
+            </h2>
+        </div>
+        <f:for each="{addresses}" as="address">
+            <div class="list grid-x">
+                <div id="sic_address_marker_popup_{contentUid}_{address.uid}" class="small-12 cell">
+                    <f:if condition="{address.name}">
+                        <strong class="address-item address-name">{address.name}</strong><br>
+                    </f:if>
+                    <f:render partial="Address/Images" arguments="{address:address, imageWidth:'250', imageHeight:'250m'}" />
+                    <f:if condition="{address.firstName}">
+                        <strong class="address-item address-firstName">{address.firstName}</strong>
+                    </f:if>
+                    <f:if condition="{address.lastName}">
+                        <strong class="address-item address-lastName"> {address.lastName}</strong><br>
+                    </f:if>
+                    <f:if condition="{address.www}">
+                        <f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+                    </f:if>
+                    <p style="margin-bottom: 0;">
+                        <f:if condition="{address.address}">
+                            {address.address}<br>
+                        </f:if>
+                        <f:if condition="{address.city}">
+                            {address.zip} {address.city} <br>
+                        </f:if>
+                        <f:if condition="{address.phone}">
+                            <a href="tel:{address.phone}">
+                                Tel.: {address.phone}
+                            </a>
+                        </f:if>
+                        <f:if condition="{address.email}">
+                            <f:link.email email="{address.email}"/>
+                        </f:if>
+                    </p>
+                    <f:if condition="{settings.routeplanner}">
+                        <f:if condition="{address.address} && {address.zip} && {address.city}">
+                            <a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}"
+                               target="_blank">In Karte anzeigen</a>
+                        </f:if>
+                    </f:if>
+                </div>
+                <f:if condition="!({settings.listType} == 'marginal')">
+                    <div class="small-12 medium-4 cell image">
+                        <f:render partial="Address/Images" arguments="{address:address}"/>
+                    </div>
+                </f:if>
+            </div>
+        </f:for>
+    </f:then>
+    <f:else>
+        <div class="list grid-x" style="height: 100px;">
+            <div class="sorry">
+                {f:translate(key:
+                'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+            </div>
+        </div>
+    </f:else>
+</f:if>

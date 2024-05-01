@@ -1,5 +1,16 @@
-
 <div class="tx-sic-address">
 	<f:flashMessages />
 	<f:render section="main" />
+	<f:if condition="{settings.ajaxMode}">
+		<f:asset.script identifier="sic_address_ajax">
+			jQuery(document).ready(function() {
+				var ajaxUrl = '<f:uri.action noCache="1" action="search" controller="Address" pageType="24853078" />';
+				jQuery(document).on('submit', '#sic_address_search_form', function () {
+				// Hijack submit and launch ajax call instead
+				reloadResults(ajaxUrl);
+				return false;
+				});
+			});
+		</f:asset.script>
+	</f:if>
 </div>

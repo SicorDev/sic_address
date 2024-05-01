@@ -27,7 +27,7 @@ namespace SICOR\SicAddress\Userfuncs;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use SICOR\SicAddress\Utility\Service;
+use SICOR\SicAddress\Domain\Service\ConfigurationService;
 
 class Flex
 {
@@ -42,7 +42,7 @@ class Flex
      */
     public function __construct()
     {
-        $this->extensionConfiguration = Service::getConfiguration();
+        $this->extensionConfiguration = ConfigurationService::getConfiguration();
     }
 
     /**

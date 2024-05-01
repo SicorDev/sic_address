@@ -1,0 +1,75 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+<div style="display: flex;">
+    <div style="width: 25%;padding-right: 1rem;">
+        <f:form id="sic_address_search_form" action="search">
+            <f:form.hidden id="sic_address_currentpage" name="currentPage" value="{pagination.currentPage}" />
+            <f:if condition="{atoz}">
+                <f:render partial="Address/Atoz" arguments="{atoz:atoz, atozvalue:atozvalue}"/>
+            </f:if>
+            <div class="row">
+                <div class="category col-xs-5 col-xs-offset-1">
+                    <f:if condition="{categories}">
+                        <f:render partial="Address/Categories" arguments="{categories:categories, categoryparentuid:categoryparentuid, categoryvalue:categoryvalue, settings:settings}" />
+                    </f:if>
+                </div>
+                <f:if condition="{filter}">
+                    <f:render partial="Address/Filter" arguments="{filter:filter, filtervalue:filtervalue}" />
+                </f:if>
+                <div class="search col-xs-5">
+                    <f:if condition="{settings.queryField} != 'off'">
+                        <f:form.textfield placeholder="Suche" id="sic_address_query" name="query" class="tx_nicosdirectory-pi1-small" style="font-size: 12px;" value="{queryvalue}" />
+                        <f:form.submit value="Suche" class="tx_nicosdirectory-pi1-small" additionalAttributes="{onclick: 'submitQuery();'}" />
+                    </f:if>
+                </div>
+            </div>
+        </f:form>
+    </div>
+</div>
+<f:if condition="{addresses}">
+    <f:then>
+        <f:for each="{pagination.paginator.paginatedItems}" as="address">
+            <div class="list row">
+                <div class="col-xs-4">
+                    <strong>{address.name}</strong><br><br>
+                    <f:link.email email="{address.email}">{address.email}</f:link.email><br>
+                    <f:link.external uri="{address.www}" target="_blank">{address.www}</f:link.external>
+                    <f:if condition="{settings.detailPageField}">
+                        <f:link.action action="show" pageUid="{settings.detailPageField}" arguments="{address: address, listPageUid: listPageUid}">
+                            Detail
+                        </f:link.action>
+                        <f:link.action action="show" pageUid="{settings.detailPageField}" additionalParams="{type:24853078}" arguments="{vcard:1, filename:'{address.company} - {address.name}', address:'{address}'}">
+                            (vCard)
+                        </f:link.action>
+                    </f:if>
+                    <f:if condition="{settings.routeplanner}">
+                        <f:if condition="{address.address} && {address.zip} && {address.city}">
+                            <a href="https://maps.google.com/?q={address.address}+{address.zip}+{address.city}+{address.company}" target="_blank">In Google Maps öffnen</a>
+                        </f:if>
+                    </f:if>
+                </div>
+                <div class="col-xs-4">
+                    <address>
+                        {address.address}<br>
+                        {address.city} {address.city}<br>
+                        <f:if condition="{address.phone}">
+                            Tel.: {address.phone}
+                            <br>
+                        </f:if>
+                        <f:link.email email="{address.email}" />
+                    </address>
+                </div>
+                <div class="col-xs-4 image">
+                    <f:render partial="Address/Images" arguments="{address:address}" />
+                </div>
+            </div>
+        </f:for>
+        <f:render partial="List/Pagination" arguments="{pagination: pagination.pagination, paginator: pagination.paginator}" />
+    </f:then>
+    <f:else>
+        <div class="list row" style="height: 100px;">
+            <div class="sorry">
+                {f:translate(key: 'LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:search_no_hits_message')}
+            </div>
+        </div>
+    </f:else>
+</f:if>

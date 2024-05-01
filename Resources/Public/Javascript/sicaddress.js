@@ -83,9 +83,6 @@ function reloadResults (ajaxUrl, href) {
     jQuery.post(ajaxUrl, form.serialize(), function(response) {
         list = jQuery(response).find('#sic_address_search_list').contents();
         jQuery('#sic_address_search_list').html(list);
-        if (typeof ajaxReadyJsHook === "function") {
-            ajaxReadyJsHook();
-        }
     });
     return false;
 }
@@ -111,9 +108,6 @@ function getUrlParameter(sParam, href) {
 }
 
 jQuery(document).ready(function() {
-    if (typeof documentReadyJsHook === "function") {
-        documentReadyJsHook();
-    }
     if (typeof fillCheckBoxes === "function") {
         fillCheckBoxes();
     }

@@ -32,16 +32,15 @@ use SICOR\SicAddress\Domain\Model\DomainProperty;
 use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use function json_encode;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * DomainPropertyController
  */
 class DomainPropertyController extends AbstractController
 {
-    protected $objectManager = null;
     protected ?DomainPropertyRepository $domainPropertyRepository;
     protected ?PersistenceManager $persistenceManager;
 
@@ -80,7 +79,7 @@ class DomainPropertyController extends AbstractController
         return $this->jsonResponse(json_encode([]));
     }
 
-    public function updateAction(DomainProperty $domainProperty = null)
+    public function updateAction(DomainProperty $domainProperty = null): ResponseInterface
     {
         if (ApplicationType::fromRequest($this->request)->isBackend()) {
             $arguments = $this->request->getArgument("domainProperty");
@@ -123,7 +122,7 @@ class DomainPropertyController extends AbstractController
         return $this->jsonResponse(json_encode([]));
     }
 
-    public function deleteAction(DomainProperty $domainProperty = null): void
+    public function deleteAction(DomainProperty $domainProperty = null): ResponseInterface
     {
         if (ApplicationType::fromRequest($this->request)->isBackend()) {
             $arguments = $this->request->getArgument("domainProperty");
@@ -147,13 +146,15 @@ class DomainPropertyController extends AbstractController
                     if($property->getExternal() === $domainProperty->getExternal()) {
                         $this->domainPropertyRepository->remove($property);
                     }                    
-                }                
+                }
+                $this->persistenceManager->persistAll();
             }
-            $this->redirect('list', 'Module');
         }
+
+        return (new ForwardResponse('list'))->withControllerName('Module');
     }
 
-    public function sortAction(): bool
+    public function sortAction(): ResponseInterface
     {
         $args = $this->request->getArguments();
 
@@ -162,8 +163,8 @@ class DomainPropertyController extends AbstractController
 
             foreach($uids as $sorting=>$uid) {
                 if($uid>0) {
-
                     $property = $this->domainPropertyRepository->findByUid($uid);
+
                     if($property) {
                         $subProperties = $this->domainPropertyRepository->findByTitle($property->getTitle());
                         foreach($subProperties as $subProperty) {
@@ -174,7 +175,8 @@ class DomainPropertyController extends AbstractController
                 }
             }
         }
-        return true;
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -218,11 +220,8 @@ class DomainPropertyController extends AbstractController
      */
     public function getFlexFields($config, $types)
     {
-        // Auto inject doesnt work here because of direct call as userFunc in flex form
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->domainPropertyRepository = $this->objectManager->get(DomainPropertyRepository::class);
-
-        $fields = $this->domainPropertyRepository->findByTypes( explode(',',$types) );
+        $domainPropertyRepository = GeneralUtility::makeInstance(DomainPropertyRepository::class);
+        $fields = $domainPropertyRepository->findByTypes( explode(',',$types) );
 
         $optionList = array();
         $optionList[0] = array(0 => $this->translate('label_none'), 1 => 'none');

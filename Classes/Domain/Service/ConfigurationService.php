@@ -1,11 +1,12 @@
 <?php
-namespace SICOR\SicAddress\Utility;
+
+namespace SICOR\SicAddress\Domain\Service;
 
 /***************************************************************
  *
  *  Copyright notice
  *
- *  (c) 2016 SICOR DEVTEAM <dev@sicor-kdl.net>, Sicor KDL GmbH
+ *  (c) 2023 SICOR DEVTEAM <dev@sicor-kdl.net>, Sicor KDL GmbH
  *
  *  All rights reserved
  *
@@ -40,43 +41,40 @@ use function explode;
 /**
  * Service
  */
-class Service implements SingletonInterface
+class ConfigurationService implements SingletonInterface
 {
     protected ConfigurationManager $configurationManager;
     protected AddressRepository $addressRepository;
 
     public function __construct(
         ConfigurationManager $configurationManager,
-        AddressRepository $addressRepository
+        AddressRepository    $addressRepository
     )
     {
         $this->configurationManager = $configurationManager;
         $this->addressRepository = $addressRepository;
     }
 
-    public function getPluginSettings(): array
-    {
-        return $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, null, 'tx_sicaddress_sicaddress');
-    }
-
-    /** @noinspection PhpIncompatibleReturnTypeInspection */
     public function getCenterAddressObjectFromFlexConfig(): ?Address
     {
+        $flexSettings = $this->getPluginSettings();
+        if(!array_key_exists('centerAddress', $flexSettings)) {
+            return null;
+        }
+
         $centerAddressSetting = $this->getPluginSettings()['centerAddress'];
-        if($centerAddressSetting) {
+        if ($centerAddressSetting) {
             $arr = explode('_', $centerAddressSetting);
             $centerAddressUid = array_pop($arr);
-
             return $this->addressRepository->findByUid($centerAddressUid);
         }
 
         return null;
     }
 
-    public static function startsWith($haystack, $needle): bool
+    public function getPluginSettings(): array
     {
-        // search backwards starting from haystack length characters from the end
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+        return $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, null, 'tx_sicaddress_sicaddress');
     }
 
     public static function getConfiguration(): array

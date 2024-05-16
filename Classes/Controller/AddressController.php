@@ -515,10 +515,9 @@ class AddressController extends AbstractController
                 if($item) $addresses[] = $item;
             }
             if(count($addresses) > 1) {
-                $this->request->setControllerActionName('showMultiple');
-                $this->view->setControllerContext($this->getControllerContext());
+                $this->view->setTemplate('ShowMultiple.html');
                 $this->view->assign('addresses', $addresses);
-                die($this->view->render());
+                return $this->htmlResponse();
             }
 
             $address = $this->addressRepository->findByUid($uid);

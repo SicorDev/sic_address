@@ -57,12 +57,12 @@ CREATE TABLE tx_sicaddress_domain_model_address_{field.title}_mm (
 # Table structure for table 'tx_sicaddress_domain_model_domainproperty'
 #
 CREATE TABLE tx_sicaddress_domain_model_domainproperty (
-	title varchar(255) DEFAULT '' NOT NULL,
-	tca_label varchar(255) DEFAULT '' NOT NULL,
-	tca_override text NOT NULL,
-	settings text NOT NULL,
-	is_list_label SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
-	external SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
-	type varchar(255) DEFAULT '' NOT NULL,
-
+    external SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
+    is_list_label SMALLINT UNSIGNED DEFAULT 0 NOT NULL,
+    settings text NOT NULL,
+    tca_label varchar(255) DEFAULT '' NOT NULL,
+    tca_override text NOT NULL,
+    title varchar(255) DEFAULT '' NOT NULL,
+    type varchar(255) DEFAULT '' NOT NULL,
+    l10n_parent int(11) DEFAULT '0' NOT NULL,
 );

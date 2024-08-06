@@ -1,0 +1,18 @@
+            [
+                'type' => 'input',
+                'renderType' => 'inputLink',
+                'fieldControl' => [
+                    'linkPopup' => [
+                        'options' => [
+                            'blindLinkOptions' => 'mail,file,spec,folder',
+                        ],
+                    ],
+                ],
+                'eval' => 'trim',
+                'size' => 20,
+                'max' => 255,
+                'softref' => 'typolink,url',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+            ]

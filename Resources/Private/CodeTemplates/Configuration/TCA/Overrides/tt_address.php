@@ -30,6 +30,9 @@ if(!empty($GLOBALS['TCA']['tt_address'])) {
     $GLOBALS['TCA']['tt_address']['ctrl']['label_alt'] = 'name, email';
     $GLOBALS['TCA']['tt_address']['ctrl']['label_userFunc'] = null;
 
+    // Improve Slug generation
+    $GLOBALS['TCA']['tt_address']['columns']['slug']['config']['generatorOptions']['fields'] = ['first_name', 'middle_name', 'last_name', 'company'];
+
     <f:if condition="{orderbyquery}">
         <f:then>
     $GLOBALS['TCA']['tt_address']['ctrl']['sortby'] = 'sorting';

@@ -34,20 +34,18 @@ return array(
                 'type' => 'language',
             ],
         ],
-		'l10n_parent' => array(
-			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
-			'config' => array(
-				'type' => 'select',
-				'renderType' => 'selectSingle',
-				'items' => array(
-					array('', 0),
-				),
-				'foreign_table' => 'tx_sicaddress_domain_model_domainproperty',
-				'foreign_table_where' => 'AND tx_sicaddress_domain_model_domainproperty.pid=###CURRENT_PID### AND tx_sicaddress_domain_model_domainproperty.sys_language_uid IN (-1,0)',
-			),
-		),
+        'l10n_parent' => [
+            'displayCond' => 'FIELD:sys_language_uid:>:0',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.l18n_parent',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'tx_sicaddress_domain_model_domainproperty',
+                'size' => 1,
+                'maxitems' => 1,
+                'minitems' => 0,
+                'default' => 0,
+            ],
+        ],
 		'l10n_diffsource' => array(
 			'config' => array(
 				'type' => 'passthrough',

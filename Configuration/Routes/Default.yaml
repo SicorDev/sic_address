@@ -1,3 +1,4 @@
+routeEnhancers:
   SicAddress:
     type: Extbase
     extension: SicAddress
@@ -28,3 +29,19 @@
         type: StaticRangeMapper
         start: '1'
         end: '200'
+  SicAddressDetail:
+    type: Extbase
+    extension: SicAddress
+    plugin: sicaddress
+    routes:
+      -
+        routePath: '/{address_title}'
+        _controller: 'Address::show'
+        _arguments:
+          address_title: address
+    defaultController: 'Address::show'
+    aspects:
+      address_title:
+        type: PersistedAliasMapper
+        tableName: tt_address
+        routeFieldName: slug

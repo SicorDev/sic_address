@@ -27,6 +27,8 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Http\Message\ResponseInterface;
+
 use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Model\DomainObject\BooleanType;
 use SICOR\SicAddress\Domain\Model\DomainObject\ChecklistType;
@@ -123,7 +125,7 @@ class ModuleController extends AbstractController
     /**
      * Called before any action
      */
-    public function initializeAction()
+    public function initializeAction(): void
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->extensionConfiguration = ConfigurationService::getConfiguration();
@@ -181,7 +183,7 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
         if ($this->extensionConfiguration['ttAddressMapping'] === null) {
             $this->addFlashMessage($this->translate('flash_tt_address_missing'), $this->translate('flash_warning'), ContextualFeedbackSeverity::WARNING, FALSE);
@@ -216,7 +218,7 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function createAction()
+    public function createAction(): ResponseInterface
     {
         $errorMessages = array();
 
@@ -405,7 +407,7 @@ class ModuleController extends AbstractController
      * Delete DomainProperties
      * @param string $external
      */
-    public function deleteFieldDefinitionsAction($external)
+    public function deleteFieldDefinitionsAction($external): ResponseInterface
     {
         $this->domainPropertyRepository->deleteFieldDefinitions($external);
         $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
@@ -417,7 +419,7 @@ class ModuleController extends AbstractController
      * action importTTAddress
      * @return void
      */
-    public function importTTAddressAction()
+    public function importTTAddressAction(): ResponseInterface
     {
         if ($this->extensionConfiguration["ttAddressMapping"]) {
             // Clear database
@@ -617,7 +619,7 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function doubletsAction()
+    public function doubletsAction(): ResponseInterface
     {
         $args = $this->request->getArguments();
         $properties = $this->getRelevantOnly($this->domainPropertyRepository->findAll());
@@ -673,7 +675,7 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function ajaxDoubletsAction()
+    public function ajaxDoubletsAction(): ResponseInterface
     {
         $properties = $this->domainPropertyRepository->findAll();
         $args = $this->request->getArguments();
@@ -712,7 +714,7 @@ class ModuleController extends AbstractController
      * @param Address $address
      * @return void
      */
-    public function ajaxDeleteDoubletAction($address)
+    public function ajaxDeleteDoubletAction($address): ResponseInterface
     {
         $this->addressRepository->remove($address);
         return $this->jsonResponse(json_encode(array()));
@@ -723,7 +725,7 @@ class ModuleController extends AbstractController
      *
      * @return void
      */
-    public function switchDatasetsAction()
+    public function switchDatasetsAction(): ResponseInterface
     {
         $sourceUid = $this->request->hasArgument('source') ? $this->request->getArgument('source') : 0;
         $targetUid = $this->request->hasArgument('target') ? $this->request->getArgument('target') : 0;

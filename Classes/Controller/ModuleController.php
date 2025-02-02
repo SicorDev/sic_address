@@ -745,7 +745,7 @@ class ModuleController extends AbstractController
             }
         }
 
-        return;
+        return $this->htmlResponse();;
     }
 
     protected function wrapModuleTemplate(): string

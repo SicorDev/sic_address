@@ -43,10 +43,8 @@ class ExportController extends ModuleController {
      */
     protected $renderTemplatesPath = "";
 
-    /**
-     * Called before any action
-     */
-    public function initializeAction() {
+    public function initializeAction(): void
+    {
         // Call base
         parent::initializeAction();
 
@@ -63,15 +61,14 @@ class ExportController extends ModuleController {
      * Display export page
      */
     public function exportAction() {
-        $pid = GeneralUtility::_GP('id');
+        $pid = $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
         $categories = $this->categoryRepository->findByPid($pid)->toArray();
         $categoryUids = $this->getCategoryParents($categories);
 
-        $this->view->assign("templates", $this->getTemplates());
-        $this->view->assign("sorting", $this->domainPropertyRepository->findByType("string"));
-        $this->view->assign('categoryTree', $this->buildCategoryTree($categoryUids));
-
-        return $this->htmlResponse($this->wrapModuleTemplate());
+        $this->moduleTemplate->assign("templates", $this->getTemplates());
+        $this->moduleTemplate->assign("sorting", $this->domainPropertyRepository->findByType("string"));
+        $this->moduleTemplate->assign('categoryTree', $this->buildCategoryTree($categoryUids));
+        return $this->wrapModuleTemplate('Module/Export');
     }
 
     /**

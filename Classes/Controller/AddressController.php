@@ -616,7 +616,6 @@ class AddressController extends AbstractController
             case 'massiv': $template = 'MassivList.html'; break;
             case 'muniges': $template = 'UnigesList.html'; break;
             case 'obgdir': $template = 'OBGList.html'; break;
-            case 'ualdir': $template = 'UALList.html'; break;
         }
         if (method_exists($this->view, 'setTemplate')) {
             $this->view->setTemplate($template);

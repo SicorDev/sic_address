@@ -1,9 +1,7 @@
 {namespace sic=SICOR\SicAddress\ViewHelpers}
-<f:layout name="Default" />
-
+<f:layout name="Module" />
 <f:section name="content">
     <h1><f:translate key="BackendListTitle" /></h1>
-
     <f:if condition="{errorMessages}">
         <f:then>
             <f:for each="{errorMessages}" as="message">
@@ -14,6 +12,5 @@
             <div class="alert alert-success"><f:translate key="label_extension_successfully_updated" /></div>
         </f:else>
     </f:if>
-
     <f:link.action action="list" controller="Module">back</f:link.action>
 </f:section>

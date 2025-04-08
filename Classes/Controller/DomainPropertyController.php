@@ -81,51 +81,61 @@ class DomainPropertyController extends AbstractController
 
     public function updateAction(DomainProperty $domainProperty = null): ResponseInterface
     {
-        if (ApplicationType::fromRequest($this->request)->isBackend()) {
-            $arguments = $this->request->getArgument("domainProperty");
-            if(empty($domainProperty)) {
-                $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments['__identity']));
-                if(empty($arguments['hidden'])) {
-                    $domainProperty->setHidden(false);
-                }
+        if (!ApplicationType::fromRequest($this->request)->isBackend()) {
+            // Code is only for Backend Module!
+            return $this->jsonResponse(json_encode([]));
+        }
+
+        $arguments = $this->request->getArgument("domainProperty") ?? null;
+        if(empty($domainProperty)) {
+            // Try finding property in the database
+            $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments['__identity']));
+            if(!$domainProperty) {
+                // Property does not exist...
+                return $this->jsonResponse(json_encode([]));
             }
-            if (!array_key_exists("isListLabel", $arguments)) {
-                $domainProperty->setIsListLabel(false);
-            }
-            if($domainProperty->getTcaLabels()) {
-                foreach($domainProperty->getTcaLabels() as $propertyUid=>$tcaLabel) {                    
-                    if($propertyUid < 0) {
-                        $propertyUid = abs($propertyUid);
-                        $subProperty = $this->domainPropertyRepository->findByUid($propertyUid);
-                        if(empty($tcaLabel)) {
-                            $this->domainPropertyRepository->remove($subProperty);
-                        } else {
-                            $subProperty->setTcaLabel($tcaLabel);
-                            $this->domainPropertyRepository->update($subProperty);
-                        }
+        }
+
+        if(empty($arguments['hidden'])) {
+            $domainProperty->setHidden(false);
+        }
+        if(empty($arguments['isListLabel'])) {
+            $domainProperty->setIsListLabel(false);
+        }
+
+        if($domainProperty->getTcaLabels()) {
+            foreach($domainProperty->getTcaLabels() as $propertyUid=>$tcaLabel) {
+                if($propertyUid < 0) {
+                    $propertyUid = abs($propertyUid);
+                    $subProperty = $this->domainPropertyRepository->findByUid($propertyUid);
+                    if(empty($tcaLabel)) {
+                        $this->domainPropertyRepository->remove($subProperty);
                     } else {
-                        if(!empty($tcaLabel)) {
-                            $subProperty = new DomainProperty();
-                            $subProperty->setTitle($domainProperty->getTitle());
-                            $subProperty->_setProperty('_languageUid', $propertyUid);
-                            $subProperty->setTcaLabel($tcaLabel);
-                            $subProperty->setType($domainProperty->getType());                            
-                            $this->domainPropertyRepository->add($subProperty);
-                        }                        
+                        $subProperty->setTcaLabel($tcaLabel);
+                        $this->domainPropertyRepository->update($subProperty);
+                    }
+                } else {
+                    if(!empty($tcaLabel)) {
+                        $subProperty = new DomainProperty();
+                        $subProperty->setTitle($domainProperty->getTitle());
+                        $subProperty->_setProperty('_languageUid', $propertyUid);
+                        $subProperty->setTcaLabel($tcaLabel);
+                        $subProperty->setType($domainProperty->getType());
+                        $this->domainPropertyRepository->add($subProperty);
                     }
                 }
             }
-            $this->domainPropertyRepository->update($domainProperty);
-            $this->persistenceManager->persistAll();
         }
 
+        $this->domainPropertyRepository->update($domainProperty);
+        $this->persistenceManager->persistAll();
         return $this->jsonResponse(json_encode([]));
     }
 
     public function deleteAction(DomainProperty $domainProperty = null): ResponseInterface
     {
         if (ApplicationType::fromRequest($this->request)->isBackend()) {
-            $arguments = $this->request->getArgument("domainProperty");
+            $arguments = $this->request->getArgument("domainProperty") ?? null;
             if(empty($domainProperty)) {
                 $domainProperty = $this->domainPropertyRepository->findOneByUid(abs($arguments));
             }
@@ -156,7 +166,7 @@ class DomainPropertyController extends AbstractController
 
     public function sortAction(): ResponseInterface
     {
-        $args = $this->request->getArguments();
+        $args = $this->request->getArguments() ?? [];
 
         if(!empty($args['ordered'])) {
             $uids = explode(',', $args['ordered']);
@@ -176,7 +186,7 @@ class DomainPropertyController extends AbstractController
             }
         }
 
-        return $this->htmlResponse();
+        return (new ForwardResponse('list'))->withControllerName('Module');
     }
 
     /**

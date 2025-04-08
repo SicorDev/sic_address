@@ -44,10 +44,9 @@ class ImportController extends ModuleController
     public function importAction()
     {
         $this->domainPropertyRepository->initializeRegularObject();
-        $this->view->assign('properties', $this->domainPropertyRepository->findAllImportable());
-        $this->view->assign('pids', $this->addressRepository->findPids());
-
-        return $this->htmlResponse($this->wrapModuleTemplate());
+        $this->moduleTemplate->assign('properties', $this->domainPropertyRepository->findAllImportable());
+        $this->moduleTemplate->assign('pids', $this->addressRepository->findPids());
+        return $this->wrapModuleTemplate('Import/Import');
     }
 
     /**

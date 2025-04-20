@@ -27,7 +27,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SICOR\\SicAddress\\": "Classes/"
+			"SICOR\\SicAddress\\": "Classes"
 		}
 	},
 	"extra": {

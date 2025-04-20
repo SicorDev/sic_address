@@ -45,7 +45,9 @@ use SICOR\SicAddress\Domain\Repository\CategoryRepository;
 use SICOR\SicAddress\Domain\Repository\DomainPropertyRepository;
 use SICOR\SicAddress\Domain\Service\ConfigurationService;
 use StdClass;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -67,7 +69,7 @@ class ModuleController extends AbstractController
     protected ?AddressRepository $addressRepository;
     protected ?CategoryRepository $categoryRepository;
     protected ?DomainPropertyRepository $domainPropertyRepository;
-    private ?PageRenderer $pageRenderer = null;
+    protected ?ModuleTemplate $moduleTemplate = null;
 
     /**
      * Holds all domainProperties
@@ -113,18 +115,16 @@ class ModuleController extends AbstractController
         AddressRepository $addressRepository,
         CategoryRepository $categoryRepository,
         DomainPropertyRepository $domainPropertyRepository,
-        PageRenderer $pageRenderer
+        protected readonly PageRenderer $pageRenderer,
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly InstallUtility $installUtility
     )
     {
         $this->addressRepository = $addressRepository;
         $this->categoryRepository = $categoryRepository;
         $this->domainPropertyRepository = $domainPropertyRepository;
-        $this->pageRenderer = $pageRenderer;
     }
 
-    /**
-     * Called before any action
-     */
     public function initializeAction(): void
     {
         $this->extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -132,7 +132,6 @@ class ModuleController extends AbstractController
         if(!empty($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'])) {
             $this->templateRootPath = GeneralUtility::getFileAbsFileName($this->extbaseFrameworkConfiguration['view']['codeTemplateRootPaths'][0]);
         }
-        $this->setBackendModuleTemplates();
 
         if (!empty($this->extensionConfiguration['ttAddressMapping'])) {
             if (empty($GLOBALS['TCA']['tt_address'])) {
@@ -160,28 +159,11 @@ class ModuleController extends AbstractController
 
         // Reset JavaScript and CSS files
         GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    /**
-     * Set Backend Module Templates
-     * @return void
-     */
-    protected function setBackendModuleTemplates()
-    {
-        $viewConfiguration = array(
-            'view' => array(
-                'templateRootPath' => 'EXT:sic_address/Resources/Private/Backend/Templates/',
-                'partialRootPath' => 'EXT:sic_address/Resources/Private/Backend/Partials/',
-                'layoutRootPath' => 'EXT:sic_address/Resources/Private/Backend/Layouts/',
-            )
-        );
-        $this->configurationManager->setConfiguration(array_merge($this->extbaseFrameworkConfiguration, $viewConfiguration));
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
     }
 
     /**
      * action list
-     *
-     * @return void
      */
     public function listAction(): ResponseInterface
     {
@@ -197,20 +179,20 @@ class ModuleController extends AbstractController
             }
         }
         if ($this->request->hasArgument('errorMessages')) {
-            $this->view->assign("errorMessages", $this->request->getArgument('errorMessages'));
+            $this->moduleTemplate->assign("errorMessages", $this->request->getArgument('errorMessages'));
         }
-        $this->view->assign('ttAddressMapping', $this->extensionConfiguration['ttAddressMapping']);
-        $this->view->assign("properties", $this->configuration);
-        $this->view->assign("fieldTypes", $this->getFieldTypeList());
-        $this->view->assign('external', $this->external);
+        $this->moduleTemplate->assign('ttAddressMapping', $this->extensionConfiguration['ttAddressMapping']);
+        $this->moduleTemplate->assign("properties", $this->configuration);
+        $this->moduleTemplate->assign("fieldTypes", $this->getFieldTypeList());
+        $this->moduleTemplate->assign('external', $this->external);
         $types = array(0 => $this->translate('internal'));
         if ($this->extensionConfiguration['ttAddressMapping']) {
             $types[1] = $this->translate('external');
         }
-        $this->view->assign('types', $types);
-        $this->view->assign('languages', $this->request->getAttribute('site')->getLanguages());
+        $this->moduleTemplate->assign('types', $types);
+        $this->moduleTemplate->assign('languages', $this->request->getAttribute('site')->getLanguages());
 
-        return $this->htmlResponse($this->wrapModuleTemplate());
+        return $this->wrapModuleTemplate('Module/List');
     }
 
     /**
@@ -294,15 +276,15 @@ class ModuleController extends AbstractController
         if (!$this->createShowTemplate($domainProperties, 'Resources/Private/Partials/Address/AutoGeneratedPropertyList.html'))
             $errorMessages[] = "Unable to create Show Template: PropertyList.html";
 
-        $this->updateExtension();
-        $this->view->assign("errorMessages", $errorMessages);
+        $this->installUtility->install($this->request->getControllerExtensionKey());
+        $this->moduleTemplate->assign("errorMessages", $errorMessages);
 
         if(empty($errorMessages)) {
             $delFile = $extPath.'PLEASE_GENERATE';
             if (is_file($delFile)) unlink($delFile);
         }
 
-        return $this->htmlResponse($this->wrapModuleTemplate());
+        return $this->wrapModuleTemplate('Module/Create');
     }
 
     /**
@@ -606,15 +588,6 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * Clear Cache
-     */
-    private function updateExtension()
-    {
-        $service = GeneralUtility::makeInstance(InstallUtility::class);
-        $service->install($this->request->getControllerExtensionKey());
-    }
-
-    /**
      * Show doublet finder page for address entries
      *
      * @return void
@@ -654,20 +627,16 @@ class ModuleController extends AbstractController
             }
         }
         ksort($letters);
-        $this->view->assign('letters', $letters);
-        $this->view->assign('sources', $sources);
-        $this->view->assign('fields', $fields);
+        $this->moduleTemplate->assign('letters', $letters);
+        $this->moduleTemplate->assign('sources', $sources);
+        $this->moduleTemplate->assign('fields', $fields);
 
-        $pages = [];
-        $searched = false;
         if (!empty($fields)) {
-            $searched = array_sum($fields);
             $pages = $this->addressRepository->findDoublets($fields);
+            $this->moduleTemplate->assign('pages', $pages);
         }
-        $this->view->assign('pages', $pages);
-        $this->view->assign('searched', $searched);
 
-        return $this->htmlResponse($this->wrapModuleTemplate());
+        return $this->wrapModuleTemplate('Module/Doublets');
     }
 
     /**
@@ -748,16 +717,11 @@ class ModuleController extends AbstractController
         return $this->htmlResponse();;
     }
 
-    protected function wrapModuleTemplate(): string
+    protected function wrapModuleTemplate(string $template): Response
     {
-        // Prepare module setup
-        $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
-        $moduleTemplate->setContent($this->view->render());
-
-        $this->pageRenderer->loadRequireJsModule('/typo3conf/ext/sic_address/Resources/Public/Javascript/module_sicaddress.js');
+        // Inject js and css
+        $this->pageRenderer->loadJavaScriptModule('@sicor/sic-address/module_sicaddress.js');
         $this->pageRenderer->addCssFile('EXT:sic_address/Resources/Public/CSS/module_sicaddress.css');
-
-        return $moduleTemplate->renderContent();
+        return $this->moduleTemplate->renderResponse($template);
     }
 }

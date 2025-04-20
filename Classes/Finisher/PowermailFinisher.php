@@ -14,7 +14,6 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use Throwable;
 use function array_key_exists;
@@ -36,8 +35,7 @@ class PowermailFinisher extends AbstractFinisher
 
     public function myFinisher(): void
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = $objectManager->get(PersistenceManager::class);
+        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $addressRepository = GeneralUtility::makeInstance(addressRepository::class);
         $categoryRepository = GeneralUtility::makeInstance(CategoryRepository::class);
 

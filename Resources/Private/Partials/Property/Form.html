@@ -11,7 +11,7 @@
                 <div class="form-irre-header-cell form-irre-header-icon">
                     <span class="caret"></span>
                 </div>
-                <div onclick="SicAddress.headerOpenClicked(this)" class="form-irre-header-cell form-irre-header-body">
+                <div class="form-irre-header-cell form-irre-header-body sicopenproperty">
                     <span>
                         <dl>
                             <dt>
@@ -36,11 +36,11 @@
                 </div>
                 <div class="form-irre-header-cell form-irre-header-control t3js-formengine-irre-control">
                     <div class="btn-group btn-group-sm" role="group">
-                        <a onclick="SicAddress.btnOpenClicked(this)" class="btn btn-default open" data-uid="{property.uid}" title="Edit {property.title}">
+                        <a class="btn btn-default open sicopenproperty" data-uid="{property.uid}" title="Edit {property.title}">
                             <core:icon identifier="actions-open" />
                         </a>
                         <f:if condition="{property.uid}">
-                            <a class="btn btn-default hiddenHandle" onclick="SicAddress.togglePropertyState(this)" data-uid="{property.uid}" title="{f:if(condition:'{property.hidden}',then:'Unhide',else:'Hide')} record">
+                            <a class="btn btn-default hiddenHandle sichideproperty" data-uid="{property.uid}" title="{f:if(condition:'{property.hidden}',then:'Unhide',else:'Hide')} record">
                                 <core:icon identifier="actions-edit-{f:if(condition:'{property.hidden}',then:'un')}hide" />
                             </a>
                             <a

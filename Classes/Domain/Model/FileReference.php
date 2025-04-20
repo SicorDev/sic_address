@@ -31,16 +31,8 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
+class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\FileReference
 {
-    /**
-     * Uid of the referenced sys_file. Needed for extbase to serialize the
-     * reference correctly.
-     *
-     * @var int
-     */
-    protected $uidLocal;
-
     /**
      * @var string
      */
@@ -67,19 +59,13 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
         $this->tablenames = $tablenames;
     }
 
-    /**
-     * @param ResourceInterface $originalResource
-     */
-    public function setOriginalResource(ResourceInterface $originalResource)
+    public function setOriginalResource(\TYPO3\CMS\Core\Resource\FileReference $originalResource): void
     {
         $this->originalResource = $originalResource;
         $this->uidLocal = (int)$originalResource->getUid();
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Resource\FileReference
-     */
-    public function getOriginalResource()
+    public function getOriginalResource(): \TYPO3\CMS\Core\Resource\FileReference
     {
         if ($this->originalResource === null) {
             $this->originalResource = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($this->getUid());

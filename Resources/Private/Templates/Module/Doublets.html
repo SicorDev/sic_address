@@ -1,0 +1,109 @@
+{namespace sic=SICOR\SicAddress\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+<f:layout name="Module" />
+<f:section name="content">
+    <f:form id="doublets">
+        <f:for each="{sources}" as="value" key="source">
+            <label class="{f:if(condition:'{value}',then:'active',else:'')}">
+                <f:form.checkbox name="sources[{source}]" value="1" checked="{value}"
+                                 class="sicdoubletcheckboxlistener"/>
+                <f:translate key="{source}"/>
+            </label>
+        </f:for>
+        <label class="pull-right{f:if(condition:'{fields.pid}',then:' active',else:'')}">
+            <f:form.checkbox name="fields[pid]" value="1" class="sicdoubletcheckboxlistener" checked="{fields.pid}"/>
+            pid
+        </label>
+        <label class="pull-right{f:if(condition:'{fields.deleted}=1',then:' active',else:'')}">
+            <f:form.checkbox name="fields[deleted]" value="1" class="sicdoubletcheckboxlistener"
+                             checked="{fields.deleted}"/>
+            deleted
+        </label>
+        <label class="pull-right{f:if(condition:'{fields.hidden}',then:' active',else:'')}">
+            <f:form.checkbox name="fields[hidden]" value="1" class="sicdoubletcheckboxlistener"
+                             checked="{fields.hidden}"/>
+            hidden
+        </label>
+        <h1><f:translate key="doublets" /></h1>
+        <div class="fields">
+            <div class="btn-toolbar" role="toolbar">
+                <f:for each="{letters}" as="_sources" key="letter">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="{letter}">
+                        <button class="btn btn-primary disabled">
+                            {letter}
+                        </button>
+                        <f:for each="{_sources}" as="_fields">
+                            <f:for each="{_fields}" as="field">
+                                <label class="btn btn-default {f:if(condition:'{field.checked}',then:'active',else:'')}">
+                                    <f:form.checkbox class="hidden field_{field.title}" name="fields[{field.title}]"
+                                                     value="1" class="sicdoubletcheckboxlistener"
+                                                     checked="{field.checked}"/>
+                                    {field.label}
+                                </label>
+                            </f:for>
+                        </f:for>
+                    </div>
+                </f:for>
+            </div>
+        </div>
+    </f:form>
+    <f:if condition="{pages}">
+        <f:then>
+            <f:for each="{pages}" as="page" key="pid">
+                <f:if condition="{pid}">
+                    <h4 class="
+                    {f:if(condition:'{page.page.hidden}',then:'page-hidden')}
+                    {f:if(condition:'{page.page.deleted}',then:'deleted')}
+                    {f:if(condition:'{page.page.uid}',then:'',else:'page-not-found')}">
+                        <f:if condition="{page.page.title}">
+                            {page.page.title}
+                        </f:if>
+                        ({pid})
+                    </h4>
+                </f:if>
+                <f:if condition="{page.datasets}">
+                    <table id="doublets" class="table">
+                        <tr>
+                            <f:for each="{page.datasets.0}" key="field" as="nix">
+                                <th class="field-{field}" width="{f:if(condition:'{field} == \'total\'',then:'100px',else:'')}">{field}</th>
+                            </f:for>
+                        </tr>
+                        <f:for each="{page.datasets}" as="dataset" key="index">
+                            <tr>
+                                <f:for each="{dataset}" as="value">
+                                    <td>{value}</td>
+                                </f:for>
+                                <td>
+                                    <f:form method="post" action="ajaxDoublets" target="ajaxDoublets" noCache="true">
+                                        <f:for each="{dataset}" as="value" key="field">
+                                            <f:if condition="{field} != 'total'">
+                                                <f:form.hidden name="{field}" value="{value}" />
+                                            </f:if>
+                                        </f:for>
+                                        <f:if condition="{dataset -> f:count()} > 1">
+                                            <f:form.button type="button" onclick="SicAddress.ajaxShowDoubletteDatasets(this.form,{index})">
+                                                <f:translate key="datasets" />
+                                            </f:form.button>
+                                        </f:if>
+                                    </f:form>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="{f:count(subject:'{dataset}')}" id="ajax{index}">
+                                </td>
+                            </tr>
+                        </f:for>
+                    </table>
+                </f:if>
+            </f:for>
+        </f:then>
+        <f:else>
+            <span class="alert alert-success"><f:translate key="label_no_doublets_found" /></span>
+        </f:else>
+    </f:if>
+    <f:form method="post" action="switchDatasets" id="switchDatasets">
+        <f:form.hidden class="source" name="source" />
+        <f:form.hidden class="target" name="target" />
+        <f:form.hidden class="property" name="property" />
+    </f:form>
+</f:section>

@@ -32,8 +32,8 @@ class InArrayExplodeViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abstrac
      */
     public function initializeArguments()
     {
-		$this->registerArgument('needle', 'mixed', null);
-		$this->registerArgument('haystack', 'string', '');
+		$this->registerArgument('needle', 'mixed', 'needle', false, null);
+		$this->registerArgument('haystack', 'string', 'haystack', true, '');
     }
 
 	/**

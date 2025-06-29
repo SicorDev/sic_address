@@ -102,7 +102,7 @@ class AddressController extends AbstractController
         }
 
         // Make search respect configured pages if there are some
-        $pages = $this->configurationManager->getContentObject()->data['pages'];
+        $pages = $this->request->getAttribute('currentContentObject')->data['pages'];
 
         if (strlen($pages) > 0) {
             $this->querySettings->setRespectStoragePage(TRUE);
@@ -119,7 +119,7 @@ class AddressController extends AbstractController
 
     protected function initializeView($view)
     {
-        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
+        $this->view->assign('data', $this->request->getAttribute('currentContentObject')->data);
     }
 
     /**
@@ -222,7 +222,7 @@ class AddressController extends AbstractController
     public function fillAddressList($atozValue, $categoryValue, $filterValue, $queryValue, $distanceValue, $checkall, $emptyList = false)
     {
         // Categories
-        $this->fillCategoryLists($this->configurationManager->getContentObject()->data['uid']);
+        $this->fillCategoryLists($this->request->getAttribute('currentContentObject')->data['uid']);
         if($this->settings['categoryType'] === 'groups') {
             $this->displayCategoryList = $this->getCategoriesAndChildren($this->settings['rootCategory'], explode(',', $categoryValue));
         }
@@ -332,7 +332,7 @@ class AddressController extends AbstractController
 
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
-        $this->view->assign('contentUid', $this->configurationManager->getContentObject()->data['uid']);
+        $this->view->assign('contentUid', $this->request->getAttribute('currentContentObject')->data['uid']);
 
         $this->addMapProperties($addresses);
 
@@ -630,7 +630,7 @@ class AddressController extends AbstractController
         // Get config
         $field = $this->settings['atozField'];
         if (empty($field) || $field === "none") return null;
-        $pages = $this->configurationManager->getContentObject()->data['pages'];
+        $pages = $this->request->getAttribute('currentContentObject')->data['pages'];
 
         // Query Database
         $res = $this->addressRepository->findAtoz($field, $this->addresstable, $categories, $pages);

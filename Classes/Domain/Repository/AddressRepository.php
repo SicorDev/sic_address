@@ -142,7 +142,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         // Make A-Z respect configured pages if there are some
         $where = "pid<>-1 ";
-        if(strlen($pages) > 0)
+        if(
+            isset($pages) &&
+            strlen($pages) > 0
+        )
             $where = "pid IN (".$pages.") ";
 
         // Standard constraints

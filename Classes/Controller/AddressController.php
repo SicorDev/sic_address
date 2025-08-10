@@ -275,20 +275,25 @@ class AddressController extends AbstractController
                 }
             }
         }
+        debug ('B');
 
         if ($emptyList) {
             // No search on startup
             $addresses = [];
+            debug ($addresses, '$addresses Pos 1');
         } elseif (!empty($this->settings['selectedAddresses'])) {
             // Display configured addresses
             $selectedAdresses = explode(',', $this->settings['selectedAddresses']);
             foreach ($selectedAdresses as $address) {
                 $addresses[] = $this->addressRepository->findByUid($address);
             }
+            debug ($addresses, '$addresses Pos 2');
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
+
+            debug ($addresses, '$addresses Pos 3');
 
             // Handle pagination
             $currentPage = 1;
@@ -316,6 +321,7 @@ class AddressController extends AbstractController
             // Count adresses per category phase 1
             $categorycounts = [];
             foreach ($addresses as $adress) {
+                debug ($adress, '$adress');
                 foreach ($adress->getCategories() as $category) {
                     if(array_key_exists($category->getTitle(), $categorycounts)) {
                         $categorycounts[$category->getTitle()]++;
@@ -332,6 +338,7 @@ class AddressController extends AbstractController
                 }
             }
         }
+        debug ('E');
 
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);

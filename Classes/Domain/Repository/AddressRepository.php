@@ -166,7 +166,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         $sql = 'select DISTINCT UPPER(LEFT('.$field.', 1)) as letter from ' . $addresstable . ' where ' . $where;
         debug ('B');
-        debug ($sql, '$sql +++');
+        debug ($sql, '$sql');
 
         $res = array();
         foreach($query->statement($sql)->execute(true) as $result) {

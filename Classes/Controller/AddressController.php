@@ -104,7 +104,10 @@ class AddressController extends AbstractController
         // Make search respect configured pages if there are some
         $pages = $this->request->getAttribute('currentContentObject')->data['pages'];
 
-        if (strlen($pages) > 0) {
+        if (
+            isset($pages) &&
+            strlen($pages) > 0
+        ) {
             $this->querySettings->setRespectStoragePage(TRUE);
             $this->querySettings->setStoragePageIds(explode(',', $pages));
         } else {

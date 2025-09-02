@@ -6,8 +6,7 @@ services:
 
   SICOR\SicAddress\:
     resource: '../Classes/*'
-    exclude:
-      - '../Classes/Domain/Model/*'
+    exclude: ['../Classes/Domain/Model/', '../Finisher/']
 
   SICOR\SicAddress\Domain\Service\ExtensionActivatedListener:
     tags:

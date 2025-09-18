@@ -299,8 +299,8 @@ class AddressController extends AbstractController
                 debug ('|' . $k . '|', '$k Pos 3');
             }
 
-            debug ($addressesArray['*dataMapper'], '$addressesArray[\'*dataMapper\'] Pos 4');
-            debug ($addressesArray['*query'], '$addressesArray[\'*query\'] Pos 5');
+            debug ($addressesArray['dataMapper'], '$addressesArray[\'dataMapper\'] Pos 4');
+            debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 5');
 
             // Handle pagination
             $currentPage = 1;

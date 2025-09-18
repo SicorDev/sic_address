@@ -301,7 +301,7 @@ class AddressController extends AbstractController
             debug ($dataMapperArray, '$dataMapperArray Pos 4');
 
             $schemaFactoryArray = $debugApi->object2array($dataMapperArray['tcaSchemaFactory']);
-            debug ($schemaFactoryArray, '$schemaFactoryArray Pos 4');
+            // debug ($schemaFactoryArray, '$schemaFactoryArray Pos 4');
 
             $schemataArray = $debugApi->object2array($schemaFactoryArray['schemata']);
             debug ($schemataArray, '$schemataArray Pos 4');

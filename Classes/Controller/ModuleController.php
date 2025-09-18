@@ -203,6 +203,7 @@ class ModuleController extends AbstractController
     public function createAction(): ResponseInterface
     {
         $errorMessages = array();
+        debug ('B');
 
         // Model
         $domainProperties = array();
@@ -225,6 +226,7 @@ class ModuleController extends AbstractController
             $domainProperties[$key] = clone $value;
             $domainProperties[$key]->setTitle($title);
         }
+        debug ($domainProperties, 'createAction $domainProperties');
 
         if (!$this->saveTemplate('Classes/Domain/Model/Address.php', $domainProperties))
             $errorMessages[] = "Unable to save Model: Address.php";
@@ -283,6 +285,7 @@ class ModuleController extends AbstractController
             $delFile = $extPath.'PLEASE_GENERATE';
             if (is_file($delFile)) unlink($delFile);
         }
+        debug ('E');
 
         return $this->wrapModuleTemplate('Module/Create');
     }
@@ -525,6 +528,7 @@ class ModuleController extends AbstractController
         $filename = str_replace('###prefix###', '', $filename);
 
         $templatePathAndFilename = !$templatePath ? $this->templateRootPath . $filename : $this->templateRootPath . $templatePath;
+        debug ($templatePathAndFilename, 'saveTemplate $templatePathAndFilename');
         $customView->setTemplatePathAndFilename($templatePathAndFilename);
         $customView->setPartialRootPaths([$templatePathAndFilename]);
         $customView->assign("settings", $this->extensionConfiguration);
@@ -535,6 +539,8 @@ class ModuleController extends AbstractController
         $customView->assign('now', $ts=date('c'));
 
         $content = $customView->render();
+        debug ($targetFilename, 'saveTemplate $targetFilename');
+        debug ($content, 'saveTemplate $content');
         $content = str_replace('{now}', $ts, $content);
         $filename = ExtensionManagementUtility::extPath("sic_address") . $targetFilename;
 

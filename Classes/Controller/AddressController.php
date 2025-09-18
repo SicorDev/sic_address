@@ -295,7 +295,7 @@ class AddressController extends AbstractController
 
             // debug ($addresses, '$addresses Pos 3');
             $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
-            $addressesAttributes = $debugApi->getAttributes($addresses);
+            $addressesAttributes = $debugApi->getAttributes(new \ReflectionClass($addresses));
             debug ($addressesAttributes, '$addressesAttributes Pos 3');
 
             // Handle pagination

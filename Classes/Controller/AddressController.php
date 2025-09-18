@@ -295,8 +295,9 @@ class AddressController extends AbstractController
 
             $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
             $addressesArray = (array) $addresses;
-            $debguVariable = $debugApi->var_dump_ret($addressesArray);
-            debug ($debguVariable, '$addressesArray Pos 3');
+            foreach ($addressesArray as $k => $v) {
+                debug ('|' . $k . '|', '$k Pos 3');
+            }
 
             debug ($addressesArray['*dataMapper'], '$addressesArray[\'*dataMapper\'] Pos 4');
             debug ($addressesArray['*query'], '$addressesArray[\'*query\'] Pos 5');

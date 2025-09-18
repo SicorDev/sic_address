@@ -295,11 +295,15 @@ class AddressController extends AbstractController
 
             $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
             $addressesArray = $debugApi->object2array($addresses);
-            foreach ($addressesArray as $k => $v) {
-                debug ('|' . $k . '|', '$k Pos 3');
-            }
 
-            debug ($addressesArray['dataMapper'], '$addressesArray[\'dataMapper\'] Pos 4');
+            // debug ($addressesArray['dataMapper'], '$addressesArray[\'dataMapper\'] Pos 4');
+            $dataMapperArray = $debugApi->object2array($addressesArray['dataMapper']);
+            debug ($dataMapperArray, '$dataMapperArray Pos 4');
+
+            $schemaFactoryArray = $debugApi->object2array($dataMapperArray['tcaSchemaFactory']);
+            debug ($schemaFactoryArray, '$schemaFactoryArray Pos 4');
+
+
             debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 5');
 
             // Handle pagination

@@ -294,8 +294,8 @@ class AddressController extends AbstractController
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
             $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
-            $addressesAttributes = $debugApi->getAttributes((array) $addresses);
-            debug ($addressesAttributes, '$addressesAttributes Pos 3');
+            $addressesArray = (array) $addresses;
+            debug ($addressesArray, '$addressesArray Pos 3');
 
             // Handle pagination
             $currentPage = 1;

@@ -293,7 +293,10 @@ class AddressController extends AbstractController
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
-            debug ($addresses, '$addresses Pos 3');
+            // debug ($addresses, '$addresses Pos 3');
+            debug ($addresses->_getCleanProperties(), '$addresses->_getCleanProperties()');
+            $addressesAttributes = \JambageCom\FhDebug\Api\DebugApi::getAttributes($addresses);
+            debug ($addressesAttributes, '$addressesAttributes Pos 3');
 
             // Handle pagination
             $currentPage = 1;
@@ -338,6 +341,7 @@ class AddressController extends AbstractController
                 }
             }
         }
+        debug ($this->view, 'fillAddressList ENDE $this->view');
         debug ('E');
 
         $this->view->assign('addresses', $addresses);

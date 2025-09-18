@@ -199,7 +199,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         {
             $queryconstraints = array();
             foreach ($queryFields as $field) {
-                $queryconstraints[] = $query->like($field, '%'.$queryvalue.'%');
+                $queryconstraints[] = $query->like($field, '%' . $queryvalue . '%');
             }
             $constraints[] = $query->logicalOr(...$queryconstraints);
         }
@@ -229,7 +229,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         // Localization constraint
         $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
         $currentLanguageUid = $languageAspect->getId();
-        $constraints[] = $query->in('sysLanguageUid', array(-1,$currentLanguageUid));
+        $constraints[] = $query->in('sysLanguageUid', array(-1, $currentLanguageUid));
 
         if(count($constraints) < 1) {
             return $this->findAll();

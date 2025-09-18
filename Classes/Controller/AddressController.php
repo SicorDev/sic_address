@@ -293,8 +293,8 @@ class AddressController extends AbstractController
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
-            $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
-            $addressesArray = (array) $addresses;
+            // $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
+            $addressesArray = \JambageCom\FhDebug\Utility\DebugFunctions::object2array($addresses);
             foreach ($addressesArray as $k => $v) {
                 debug ('|' . $k . '|', '$k Pos 3');
             }

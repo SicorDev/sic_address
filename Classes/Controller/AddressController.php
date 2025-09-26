@@ -293,6 +293,7 @@ class AddressController extends AbstractController
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
 
+            // nur für Debug Anfang:
             $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
             $addressesArray = $debugApi->object2array($addresses);
 
@@ -304,11 +305,12 @@ class AddressController extends AbstractController
             // debug ($schemaFactoryArray, '$schemaFactoryArray Pos 4');
 
             $schemataArray = $debugApi->object2array($schemaFactoryArray['schemata']);
-            debug ($schemataArray, '$schemataArray Pos 4');
+            debug ($schemataArray, '$schemataArray Pos 5');
 
-            debug ($schemataArray['tt_address'], '$schemataArray[\'tt_address\'] Pos 4');
+            debug ($schemataArray['tt_address'], '$schemataArray[\'tt_address\'] Pos 6');
 
-            debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 5');
+            debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 7');
+            // nur für Debug ENDE
 
             // Handle pagination
             $currentPage = 1;

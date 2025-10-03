@@ -187,7 +187,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         // Build A to Z constraint
         $constraints = array();
         if ($atozField && !($atozField === "none") && $atozvalue && strlen(trim($atozvalue)) === 1)
-            $constraints[] = $query->like($atozField, $atozvalue.'%');
+            $constraints[] = $query->like($atozField, $atozvalue . '%');
 
         // Build distance constraint
         if ($distanceField && !($distanceField === "none") && strlen($distanceValue) > 0) {
@@ -236,7 +236,15 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         $query->matching($query->logicalAnd(...$constraints));
-        return $query->execute();
+        debug ($query, 'search $query');
+        // nur für Debug Anfang:
+        $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
+        $queryArray = $debugApi->object2array($query);
+        debug ($queryArray['container'], '$queryArray[\'container\'] search Pos 1');
+        // nur für Debug ENDE
+        $result = $query->execute();
+        debug ($result, 'search ENDE $result');
+        return $result;
     }
 
     /**

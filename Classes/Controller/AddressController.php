@@ -310,6 +310,10 @@ class AddressController extends AbstractController
             debug ($schemataArray['tt_address'], '$schemataArray[\'tt_address\'] Pos 6');
 
             debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 7');
+
+            $queryFactoryArray = $debugApi->object2array($dataMapperArray['queryFactory']);
+            debug ($queryFactoryArray, '$queryFactoryArray Pos 8');
+
             // nur für Debug ENDE
 
             // Handle pagination

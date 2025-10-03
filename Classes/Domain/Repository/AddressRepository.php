@@ -165,14 +165,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         $sql = 'select DISTINCT UPPER(LEFT('.$field.', 1)) as letter from ' . $addresstable . ' where ' . $where;
-        debug ('B');
-        debug ($sql, '$sql');
-
         $res = array();
         foreach($query->statement($sql)->execute(true) as $result) {
             $res[] = $result['letter'];
         }
-        debug ('E');
 
         return $res;
     }
@@ -236,14 +232,7 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
 
         $query->matching($query->logicalAnd(...$constraints));
-        debug ($query, 'search $query');
-        // nur für Debug Anfang:
-        $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
-        $queryArray = $debugApi->object2array($query);
-        debug ($queryArray['container'], '$queryArray[\'container\'] search Pos 1');
-        // nur für Debug ENDE
         $result = $query->execute();
-        debug ($result, 'search ENDE $result');
         return $result;
     }
 

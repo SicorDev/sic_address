@@ -275,46 +275,20 @@ class AddressController extends AbstractController
                 }
             }
         }
-        debug ('B');
 
         if ($emptyList) {
             // No search on startup
             $addresses = [];
-            debug ($addresses, '$addresses Pos 1');
         } elseif (!empty($this->settings['selectedAddresses'])) {
             // Display configured addresses
             $selectedAdresses = explode(',', $this->settings['selectedAddresses']);
             foreach ($selectedAdresses as $address) {
                 $addresses[] = $this->addressRepository->findByUid($address);
             }
-            debug ($addresses, '$addresses Pos 2');
         } else {
             // Search addresses
             $searchFields = explode(",", str_replace(' ', '', $this->extensionConfiguration["searchFields"]));
             $addresses = $this->addressRepository->search($atozValue, $atozField, $currentSearchCategories, $queryValue, $searchFields, $distanceValue, $distanceField, $filterValue, $filterField);
-
-            // nur für Debug Anfang:
-            $debugApi = \JambageCom\FhDebug\Utility\DebugFunctions::getApi();
-            $addressesArray = $debugApi->object2array($addresses);
-
-            // debug ($addressesArray['dataMapper'], '$addressesArray[\'dataMapper\'] Pos 4');
-            $dataMapperArray = $debugApi->object2array($addressesArray['dataMapper']);
-            debug ($dataMapperArray, '$dataMapperArray Pos 4');
-
-            $schemaFactoryArray = $debugApi->object2array($dataMapperArray['tcaSchemaFactory']);
-            // debug ($schemaFactoryArray, '$schemaFactoryArray Pos 4');
-
-            $schemataArray = $debugApi->object2array($schemaFactoryArray['schemata']);
-            debug ($schemataArray, '$schemataArray Pos 5');
-
-            debug ($schemataArray['tt_address'], '$schemataArray[\'tt_address\'] Pos 6');
-
-            debug ($addressesArray['query'], '$addressesArray[\'query\'] Pos 7');
-
-            $queryFactoryArray = $debugApi->object2array($dataMapperArray['queryFactory']);
-            debug ($queryFactoryArray, '$queryFactoryArray Pos 8');
-
-            // nur für Debug ENDE
 
             // Handle pagination
             $currentPage = 1;
@@ -342,7 +316,6 @@ class AddressController extends AbstractController
             // Count adresses per category phase 1
             $categorycounts = [];
             foreach ($addresses as $adress) {
-                debug ($adress, '$adress');
                 foreach ($adress->getCategories() as $category) {
                     if(array_key_exists($category->getTitle(), $categorycounts)) {
                         $categorycounts[$category->getTitle()]++;
@@ -359,9 +332,6 @@ class AddressController extends AbstractController
                 }
             }
         }
-        debug ($this->view, 'fillAddressList ENDE $this->view');
-        debug ('E');
-
         $this->view->assign('addresses', $addresses);
         $this->view->assign('settings', $this->settings);
         $this->view->assign('contentUid', $this->request->getAttribute('currentContentObject')->data['uid']);

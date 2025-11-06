@@ -2,7 +2,7 @@ routeEnhancers:
   SicAddress:
     type: Extbase
     extension: SicAddress
-    plugin: sicaddress
+    plugin: SicAddress
     routes:
       - routePath: 'atoz/{atoz}'
         _controller: 'Address::search'
@@ -32,7 +32,7 @@ routeEnhancers:
   SicAddressDetail:
     type: Extbase
     extension: SicAddress
-    plugin: sicaddress
+    plugin: AddressShow
     routes:
       -
         routePath: '/{address_title}'

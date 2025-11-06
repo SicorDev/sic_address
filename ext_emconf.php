@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
     'description' => 'Address Extension that can either enhance or replace tt_address. You can add required fields dynamically like mask/powermail. Originally it was written in 2016 to replace extensions like nicos_directory, wt_directory or sp_directory and grew from there.',
     'category' => 'plugin',
     'version' => '6.0.0',
-    'state' => 'alpha',
+    'state' => 'beta',
     'uploadfolder' => false,
     'clearcacheonload' => false,
     'author' => 'SICOR DEVTEAM',
@@ -25,7 +25,7 @@ $EM_CONF[$_EXTKEY] = array(
         array(
             'depends' =>
                 array(
-                    'typo3' => '12.4.0-13.4.99',
+                    'typo3' => '13.4.0-13.4.99',
                     'php' => '8.0.0-8.4.99',
                 ),
             'suggests' =>

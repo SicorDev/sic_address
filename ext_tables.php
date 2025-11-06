@@ -40,4 +40,4 @@ if ($extensionConfiguration["ttAddressMapping"]) {
     );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:sic_address/Configuration/TSconfig/Page/wizard.typoscript">');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('@import "EXT:sic_address/Configuration/TSconfig/Page/wizard.tsconfig"');

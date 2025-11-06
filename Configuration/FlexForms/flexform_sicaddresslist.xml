@@ -209,13 +209,11 @@
                 </config>
             </settings.noListStartup>
             <settings.itemsPerPage>
-                <TCEforms>
-                    <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_itemsPerPage</label>
-                    <config>
-                        <type>input</type>
-                        <size>2</size>
-                    </config>
-                </TCEforms>
+                <label>LLL:EXT:sic_address/Resources/Private/Language/locallang.xlf:label_itemsPerPage</label>
+                <config>
+                    <type>input</type>
+                    <size>2</size>
+                </config>
             </settings.itemsPerPage>
             <settings.rootCategory>
             <exclude>1</exclude>

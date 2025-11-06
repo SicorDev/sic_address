@@ -46,7 +46,7 @@ class PowermailFinisher extends AbstractFinisher
             $address->setHidden(true);
 
             // String fields
-            $address->setAllgemeinName($this->getValue('namedesbetriebesfirma'));
+            $address->setCompany($this->getValue('namedesbetriebesfirma'));
             $address->setAllgemeinZuchtstation($this->getValue('namenszusatz'));
             $address->setAllgemeinAdresse($this->getValue('strassenr'));
             $address->setAllgemeinPlz($this->getValue('plz'));
@@ -102,6 +102,9 @@ class PowermailFinisher extends AbstractFinisher
             $storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
             $storage = $storageRepository->getDefaultStorage();
             if ($storage) {
+                $image = $this->getValue('anzeigebild')[0];
+                $this->createFileReference($storage, $address->getUid(), $address->getPid(), 'tt_address', 'allgemein_anzeigebild', $image);
+
                 $image = $this->getValue('logo')[0];
                 $this->createFileReference($storage, $address->getUid(), $address->getPid(), 'tt_address', 'allgemein_logo', $image);
 
@@ -173,7 +176,6 @@ class PowermailFinisher extends AbstractFinisher
                 'uid_foreign' => $record,
                 'tablenames' => $tablenames,
                 'fieldname' => $fieldname,
-                'table_local' => 'sys_file',
             ])
             ->execute();
     }

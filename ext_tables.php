@@ -4,7 +4,7 @@ defined('TYPO3') or die('Access denied.');
 // Register Sicor icon
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $iconRegistry->registerIcon('extensions-sicor-icon', \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class, [
-    'source' => 'EXT:sic_address/Resources/Public/Icons/module_icon_24.png',
+    'source' => 'EXT:sic_address/Resources/Public/Icons/Extension.png',
 ]);
 
 $extensionConfiguration = \SICOR\SicAddress\Domain\Service\ConfigurationService::getConfiguration();

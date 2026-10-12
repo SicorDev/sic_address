@@ -27,6 +27,7 @@ namespace SICOR\SicAddress\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Psr\Http\Message\ResponseInterface;
 use SICOR\SicAddress\Domain\Model\Address;
 use SICOR\SicAddress\Domain\Repository\AddressRepository;
 use SICOR\SicAddress\Domain\Repository\CategoryRepository;
@@ -599,9 +600,9 @@ class AddressController extends AbstractController
      * action create
      *
      * @param Address $newAddress
-     * @return void
+     * @return ResponseInterface
      */
-    public function createAction(Address $newAddress)
+    public function createAction(Address $newAddress): ResponseInterface
     {
         $arguments = $this->request->getArguments();
         if ($arguments["images"]) {
@@ -614,9 +615,8 @@ class AddressController extends AbstractController
 
         $this->addFlashMessage($this->translate('label_address_created'), '', ContextualFeedbackSeverity::OK);
         $this->addressRepository->add($newAddress);
-        $this->redirect('new');
 
-        return $this->htmlResponse();
+        return $this->redirect('new');
     }
 
     /**

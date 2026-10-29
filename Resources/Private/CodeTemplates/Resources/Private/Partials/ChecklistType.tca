@@ -4,5 +4,4 @@
                 'items' => array(
                     {options}
                 ),
-                'eval' => ''
             ),

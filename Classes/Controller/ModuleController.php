@@ -34,6 +34,7 @@ use SICOR\SicAddress\Domain\Model\DomainObject\FloatType;
 use SICOR\SicAddress\Domain\Model\DomainObject\ImageType;
 use SICOR\SicAddress\Domain\Model\DomainObject\IntegerType;
 use SICOR\SicAddress\Domain\Model\DomainObject\LinkType;
+use SICOR\SicAddress\Domain\Model\DomainObject\MediumtextType;
 use SICOR\SicAddress\Domain\Model\DomainObject\RichType;
 use SICOR\SicAddress\Domain\Model\DomainObject\SelectType;
 use SICOR\SicAddress\Domain\Model\DomainObject\StringType;
@@ -81,7 +82,7 @@ class ModuleController extends AbstractController
      *
      * @var array
      */
-    protected $fieldTypes = array("string", "integer", "select", "image", "rich", "boolean", "float", "checklist", "mmtable", "link");
+    protected $fieldTypes = array("string", "integer", "select", "image", "rich", "boolean", "float", "checklist", "mmtable", "link", "mediumtext");
 
     /**
      * Holds the Typoscript configuration
@@ -310,6 +311,10 @@ class ModuleController extends AbstractController
 
             if ($prop->getType() instanceof StringType) {
                 $content .= ' class="sicaddress-string sicaddress-' . $prop->getTitle() . '">' . "\n";
+                $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
+            }
+            if ($prop->getType() instanceof MediumtextType) {
+                $content .= ' class="sicaddress-mediumtext sicaddress-' . $prop->getTitle() . '">' . "\n";
                 $content .= "\t\t\t{address." . $prop->getTitle() . "}<br>\n";
             }
             if ($prop->getType() instanceof IntegerType) {

@@ -470,8 +470,10 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_sicaddress_domain_model_domainproperty');
         $queryBuilder = $connection->createQueryBuilder();
-        $query = $queryBuilder->select('type')->from('tx_sicaddress_domain_model_domainproperty')->where('title = \''.$field.'\'');
-        return $query->execute()->fetchAll()[0]['type'];
+        $query = $queryBuilder->select('type')
+            ->from('tx_sicaddress_domain_model_domainproperty')
+            ->where($queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter($field)));
+        return $query->executeQuery()->fetchAllAssociative()[0]['type'];
     }
 
     /**
@@ -484,6 +486,6 @@ class AddressRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
         $query = $queryBuilder->select($field)->from($table)->groupBy($field);
-        return $query->execute()->fetchAll();
+        return $query->executeQuery()->fetchAllAssociative();
     }
 }
